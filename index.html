@@ -181,6 +181,8 @@
   .imovel-meta { font-size:12.5px; color:#5C6157; margin-top:6px; line-height:1.6; }
   .imovel-link { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; color: var(--brand-dark2); text-decoration:none; background:#F1F2ED; padding:4px 10px; border-radius:20px; margin-top:8px; }
   .imovel-link:hover { background:#E6E8E0; }
+  .imovel-cidade-title { font-size:19px; font-weight:800; color: var(--brand-gold-deep); margin:22px 0 4px; padding-bottom:6px; border-bottom:2px solid var(--brand-gold); display:flex; align-items:center; gap:8px; }
+  .imovel-cidade-title:first-child { margin-top:0; }
   .imovel-tipo-title { font-size:14px; font-weight:800; color: var(--brand-dark2); margin:18px 0 8px; display:flex; align-items:center; gap:6px; }
   .imovel-tipo-title:first-child { margin-top:0; }
   .imovel-bairro-title { font-size:11px; font-weight:700; color:#8A9186; text-transform:uppercase; letter-spacing:.4px; margin:10px 0 6px; }
@@ -446,16 +448,16 @@ const DATA = {
   },
   reativacao: { quente: 0, morno: 0, frio: 0, total: 0 },
   imoveis: [
-    { nome: "Apartamento 3 Quartos Nova Parnamirim 79m² (Cód. 7762)", tipo: "Apartamento", bairro: "Nova Parnamirim", endereco: "Rua Pantanal, Nova Parnamirim - Parnamirim/RN", valor: 399000, detalhes: "3 quartos (1 suíte), 2 banheiros, 2 vagas, 79m²", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7762/apartamento-3-quartos-nova-parnamirim-parnamirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Vila Verde. Condomínio R$ 540,00 + IPTU R$ 120,00." },
-    { nome: "Apartamento 3 Quartos Lagoa Nova 140m² (Cód. 9272)", tipo: "Apartamento", bairro: "Lagoa Nova", endereco: "Rua Desembargador Carlos Augusto, Lagoa Nova - Natal/RN", valor: 1299990, detalhes: "3 quartos (3 suítes), 5 banheiros, 3 vagas, 140m², mobiliado", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/9272/apartamento-3-quartos-lagoa-nova-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Andar alto, vaga com carregador de carro elétrico. Condomínio R$ 1.611,27." },
-    { nome: "Apartamento 2 Quartos Lagoa Nova 94m² (Cód. 8024)", tipo: "Apartamento", bairro: "Lagoa Nova", endereco: "Rua Dos Tororós, Lagoa Nova - Natal/RN", valor: 449990, detalhes: "2 quartos (1 suíte), 2 vagas, 94m² (92m² privativos)", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/8024/apartamento-2-quartos-lagoa-nova-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Therra Mater. Em processo de escrituração. Condomínio R$ 850,00 + IPTU R$ 210,00." },
-    { nome: "Apartamento 3 Quartos Cidade da Esperança 90m² (Cód. 5520)", tipo: "Apartamento", bairro: "Cidade da Esperança", endereco: "Avenida Capitãomor Gouveia, Cidade Da Esperança - Natal/RN", valor: 569900, detalhes: "3 quartos (1 suíte), 2 banheiros, 2 vagas, 90m² privativos (107m² totais)", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/5520/apartamento-3-quartos-cidade-da-esperan%C3%A7a-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Smile Village, reformado e mobiliado. Condomínio R$ 589,00 + IPTU R$ 2.860,00/ano." },
-    { nome: "Apartamento 3 Quartos Tirol 115m² (Cód. 9995)", tipo: "Apartamento", bairro: "Tirol", endereco: "Avenida Governador Juvenal Lamartine, Tirol - Natal/RN", valor: 329990, detalhes: "3 quartos (1 suíte), 3 banheiros, 1 vaga, 115m²", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/9995/apartamento-3-quartos-tirol-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Potencial de reforma/valorização. Condomínio R$ 650,00 + IPTU R$ 223,00." },
-    { nome: "Apartamento 3 Quartos Candelária 96m² (Cód. 5485)", tipo: "Apartamento", bairro: "Candelária", endereco: "Alameda Das Mansões, Candelária - Natal/RN", valor: 669990, detalhes: "3 quartos (1 suíte), 3 banheiros, 2 vagas, 96m²", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/5485/apartamento-3-quartos-candelaria-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Porto Arena, exclusividade. Condomínio R$ 945,00 + IPTU R$ 299,00." },
-    { nome: "Casa 4 Quartos Lagoa Nova 300m² (Cód. 7570)", tipo: "Casa", bairro: "Lagoa Nova", endereco: "Rua Dos Tororós, Lagoa Nova - Natal/RN", valor: 689990, detalhes: "4 quartos (3 suítes), 5 banheiros, 4 vagas, 300m² privativos (390m² de terreno)", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7570/casa-4-quartos-lagoa-nova-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Escritório, lavabo, despensa, quintal. Sem condomínio (casa)." },
-    { nome: "Apartamento 3 Quartos Neópolis 75m² (Cód. 9754)", tipo: "Apartamento", bairro: "Neópolis", endereco: "Rua Lúcia Viveiros, Neópolis - Natal/RN", valor: 549990, detalhes: "3 quartos (1 suíte), 2 banheiros, 2 vagas, 75m², reformado e mobiliado", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/9754/apartamento-3-quartos-neopolis-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Central Park Condomínio Club. Condomínio R$ 650,00 + IPTU R$ 200,00." },
-    { nome: "Apartamento 3 Quartos Candelária 133m² (Cód. 7560)", tipo: "Apartamento", bairro: "Candelária", endereco: "Avenida Governador Tarcísio De Vasconcelos Maia, Candelária - Natal/RN", valor: 419990, detalhes: "3 quartos (1 suíte), 3 banheiros, 2 vagas, 133,28m² internos + 36,34m² externos", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7560/apartamento-3-quartos-candelaria-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Aceita financiamento e permuta. Condomínio R$ 850,00 + IPTU R$ 2.510,00/ano." },
-    { nome: "Casa em Condomínio 3 Quartos Cajupiranga 160m² (Cód. 10558)", tipo: "Casa em Condomínio", bairro: "Cajupiranga", endereco: "Rua Campo Alegre, Cajupiranga - Parnamirim/RN", valor: 799000, detalhes: "3 quartos (1 suíte), 4 banheiros, 2 vagas, 160m² privativos", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/10558/casa-em-condominio-3-quartos-cajupiranga-parnamirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-06", ultimaInteracaoProprietario: "2026-07-06", obs: "Condomínio Ecoville 2 — casa duplex, espaço gourmet, pet friendly. Condomínio R$ 310,00. Aceita financiamento." }
+    { nome: "Apartamento 3 Quartos Nova Parnamirim 79m² (Cód. 7762)", tipo: "Apartamento", bairro: "Nova Parnamirim", cidade: "Parnamirim", endereco: "Rua Pantanal, Nova Parnamirim - Parnamirim/RN", valor: 399000, detalhes: "3 quartos (1 suíte), 2 banheiros, 2 vagas, 79m²", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7762/apartamento-3-quartos-nova-parnamirim-parnamirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Vila Verde. Condomínio R$ 540,00 + IPTU R$ 120,00." },
+    { nome: "Apartamento 3 Quartos Lagoa Nova 140m² (Cód. 9272)", tipo: "Apartamento", bairro: "Lagoa Nova", cidade: "Natal", endereco: "Rua Desembargador Carlos Augusto, Lagoa Nova - Natal/RN", valor: 1299990, detalhes: "3 quartos (3 suítes), 5 banheiros, 3 vagas, 140m², mobiliado", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/9272/apartamento-3-quartos-lagoa-nova-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Andar alto, vaga com carregador de carro elétrico. Condomínio R$ 1.611,27." },
+    { nome: "Apartamento 2 Quartos Lagoa Nova 94m² (Cód. 8024)", tipo: "Apartamento", bairro: "Lagoa Nova", cidade: "Natal", endereco: "Rua Dos Tororós, Lagoa Nova - Natal/RN", valor: 449990, detalhes: "2 quartos (1 suíte), 2 vagas, 94m² (92m² privativos)", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/8024/apartamento-2-quartos-lagoa-nova-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Therra Mater. Em processo de escrituração. Condomínio R$ 850,00 + IPTU R$ 210,00." },
+    { nome: "Apartamento 3 Quartos Cidade da Esperança 90m² (Cód. 5520)", tipo: "Apartamento", bairro: "Cidade da Esperança", cidade: "Natal", endereco: "Avenida Capitãomor Gouveia, Cidade Da Esperança - Natal/RN", valor: 569900, detalhes: "3 quartos (1 suíte), 2 banheiros, 2 vagas, 90m² privativos (107m² totais)", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/5520/apartamento-3-quartos-cidade-da-esperan%C3%A7a-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Smile Village, reformado e mobiliado. Condomínio R$ 589,00 + IPTU R$ 2.860,00/ano." },
+    { nome: "Apartamento 3 Quartos Tirol 115m² (Cód. 9995)", tipo: "Apartamento", bairro: "Tirol", cidade: "Natal", endereco: "Avenida Governador Juvenal Lamartine, Tirol - Natal/RN", valor: 329990, detalhes: "3 quartos (1 suíte), 3 banheiros, 1 vaga, 115m²", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/9995/apartamento-3-quartos-tirol-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Potencial de reforma/valorização. Condomínio R$ 650,00 + IPTU R$ 223,00." },
+    { nome: "Apartamento 3 Quartos Candelária 96m² (Cód. 5485)", tipo: "Apartamento", bairro: "Candelária", cidade: "Natal", endereco: "Alameda Das Mansões, Candelária - Natal/RN", valor: 669990, detalhes: "3 quartos (1 suíte), 3 banheiros, 2 vagas, 96m²", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/5485/apartamento-3-quartos-candelaria-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Porto Arena, exclusividade. Condomínio R$ 945,00 + IPTU R$ 299,00." },
+    { nome: "Casa 4 Quartos Lagoa Nova 300m² (Cód. 7570)", tipo: "Casa", bairro: "Lagoa Nova", cidade: "Natal", endereco: "Rua Dos Tororós, Lagoa Nova - Natal/RN", valor: 689990, detalhes: "4 quartos (3 suítes), 5 banheiros, 4 vagas, 300m² privativos (390m² de terreno)", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7570/casa-4-quartos-lagoa-nova-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Escritório, lavabo, despensa, quintal. Sem condomínio (casa)." },
+    { nome: "Apartamento 3 Quartos Neópolis 75m² (Cód. 9754)", tipo: "Apartamento", bairro: "Neópolis", cidade: "Natal", endereco: "Rua Lúcia Viveiros, Neópolis - Natal/RN", valor: 549990, detalhes: "3 quartos (1 suíte), 2 banheiros, 2 vagas, 75m², reformado e mobiliado", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/9754/apartamento-3-quartos-neopolis-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Central Park Condomínio Club. Condomínio R$ 650,00 + IPTU R$ 200,00." },
+    { nome: "Apartamento 3 Quartos Candelária 133m² (Cód. 7560)", tipo: "Apartamento", bairro: "Candelária", cidade: "Natal", endereco: "Avenida Governador Tarcísio De Vasconcelos Maia, Candelária - Natal/RN", valor: 419990, detalhes: "3 quartos (1 suíte), 3 banheiros, 2 vagas, 133,28m² internos + 36,34m² externos", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7560/apartamento-3-quartos-candelaria-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Aceita financiamento e permuta. Condomínio R$ 850,00 + IPTU R$ 2.510,00/ano." },
+    { nome: "Casa em Condomínio 3 Quartos Cajupiranga 160m² (Cód. 10558)", tipo: "Casa em Condomínio", bairro: "Cajupiranga", cidade: "Parnamirim", endereco: "Rua Campo Alegre, Cajupiranga - Parnamirim/RN", valor: 799000, detalhes: "3 quartos (1 suíte), 4 banheiros, 2 vagas, 160m² privativos", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/10558/casa-em-condominio-3-quartos-cajupiranga-parnamirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-06", ultimaInteracaoProprietario: "2026-07-06", obs: "Condomínio Ecoville 2 — casa duplex, espaço gourmet, pet friendly. Condomínio R$ 310,00. Aceita financiamento." }
   ],
   historico: {
     anos: [
@@ -971,38 +973,53 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
     <span class="followup-chip">🟢 ${emDia} em dia</span>
     <span class="followup-chip">Cadência máxima: 30 dias sem falar com o proprietário</span>`;
 
-  const porTipo = {};
+  const porCidade = {};
   DATA.imoveis.forEach(im => {
-    const t = tipoOrdem.includes(im.tipo) ? im.tipo : "Outro";
-    (porTipo[t] = porTipo[t] || []).push(im);
+    const c = im.cidade || 'Cidade a definir';
+    (porCidade[c] = porCidade[c] || []).push(im);
   });
+  const cidades = Object.keys(porCidade).sort((a, b) => porCidade[b].length - porCidade[a].length || a.localeCompare(b, 'pt-BR'));
 
-  tipoOrdem.forEach(tipo => {
-    const lista = porTipo[tipo];
-    if (!lista || lista.length === 0) return;
+  cidades.forEach(cidade => {
+    const listaCidade = porCidade[cidade];
+    const tituloCidade = document.createElement('div');
+    tituloCidade.className = 'imovel-cidade-title';
+    tituloCidade.textContent = `📍 ${cidade} (${listaCidade.length})`;
+    imoveisCard.appendChild(tituloCidade);
 
-    const tituloTipo = document.createElement('div');
-    tituloTipo.className = 'imovel-tipo-title';
-    tituloTipo.textContent = `${tipoIcone[tipo] || '🔑'} ${tipo}s (${lista.length})`;
-    imoveisCard.appendChild(tituloTipo);
-
-    const porBairro = {};
-    lista.forEach(im => {
-      const b = im.bairro || 'Bairro a definir';
-      (porBairro[b] = porBairro[b] || []).push(im);
+    const porTipo = {};
+    listaCidade.forEach(im => {
+      const t = tipoOrdem.includes(im.tipo) ? im.tipo : "Outro";
+      (porTipo[t] = porTipo[t] || []).push(im);
     });
-    const bairros = Object.keys(porBairro).sort((a, b) => a.localeCompare(b, 'pt-BR'));
-    bairros.forEach(bairro => {
-      if (bairros.length > 1) {
-        const tituloBairro = document.createElement('div');
-        tituloBairro.className = 'imovel-bairro-title';
-        tituloBairro.textContent = bairro;
-        imoveisCard.appendChild(tituloBairro);
-      }
-      porBairro[bairro]
-        .slice()
-        .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
-        .forEach(im => imoveisCard.appendChild(renderCard(im)));
+
+    tipoOrdem.forEach(tipo => {
+      const lista = porTipo[tipo];
+      if (!lista || lista.length === 0) return;
+
+      const tituloTipo = document.createElement('div');
+      tituloTipo.className = 'imovel-tipo-title';
+      tituloTipo.textContent = `${tipoIcone[tipo] || '🔑'} ${tipo}s (${lista.length})`;
+      imoveisCard.appendChild(tituloTipo);
+
+      const porBairro = {};
+      lista.forEach(im => {
+        const b = im.bairro || 'Bairro a definir';
+        (porBairro[b] = porBairro[b] || []).push(im);
+      });
+      const bairros = Object.keys(porBairro).sort((a, b) => a.localeCompare(b, 'pt-BR'));
+      bairros.forEach(bairro => {
+        if (bairros.length > 1) {
+          const tituloBairro = document.createElement('div');
+          tituloBairro.className = 'imovel-bairro-title';
+          tituloBairro.textContent = bairro;
+          imoveisCard.appendChild(tituloBairro);
+        }
+        porBairro[bairro]
+          .slice()
+          .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
+          .forEach(im => imoveisCard.appendChild(renderCard(im)));
+      });
     });
   });
 }
