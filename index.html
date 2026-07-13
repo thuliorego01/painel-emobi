@@ -411,7 +411,7 @@ const DATA = {
       { mes: "Dezembro", ano: 2026, mesNum: 12, recebido: 0 }
     ]
   },
-  comissao: { paga: 66462.5, aguardando: 0, totalRecebimentos: 66462.5, prevista: 27875 },
+  comissao: { paga: 66462.5, aguardando: 0, totalRecebimentos: 66462.5, prevista: 0 },
   negociacoes: {
     vendas: { qtd: 7, valor: 2355000, comissao: 64412.5 },
     locacoes: { qtd: 1, valor: 4100, comissao: 2050 },
@@ -429,12 +429,12 @@ const DATA = {
     { imovel: "Bacara 1102", cliente: "Cor. Camila Araújo", valor: 4100, comissao: 2050, mes: "Fevereiro", status: "pago", tipo: "Locação" }
   ],
   funil: [
-    ["Novo Lead", 0], ["Primeiro Contato Feito", 0], ["Qualificado", 2], ["Visita Agendada", 2],
+    ["Novo Lead", 0], ["Primeiro Contato Feito", 0], ["Qualificado", 2], ["Visita Agendada", 1],
     ["Visita Realizada", 0], ["Proposta Enviada", 0], ["Em Negociação", 0], ["Fechado Ganho", 0],
-    ["Fechado Perdido", 0], ["Inativo", 1]
+    ["Fechado Perdido", 0], ["Inativo", 2]
   ],
   leads: [
-    { nome: "Tácito Barreto", telefone: "84987371817", origem: "Relacionamento", fase: "Visita Agendada", temperatura: "Morno", valor: 1115000, comissaoPrevista: 27875, proximaAcao: "Confirmar dia/horário e realizar visita ao Vivant (Lagoa Nova)", dataProximaAcao: "2026-07-10", status: "Atrasado", obs: "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso entre os dois, mas prefere condomínios mais novos — sugerido o Vivant (Lagoa Nova). Agendando visita para até o final da semana (10/07). Parceria 5% dividido, sua parte 2,5%", imoveisCompativeis: ["Cód. 9272"] /* Apartamento, Lagoa Nova */, visitaResumo: null, visitaDetalhe: "o mais novo que você tava procurando", statusReativacao: "🟢 Em dia", interesse: "apartamento novo em Lagoa Nova (Vivant)" },
+    { nome: "Tácito Barreto", telefone: "84987371817", origem: "Relacionamento", fase: "Inativo", temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Busca ativa a cada 15 dias — apartamento ~150m² em Lagoa Nova, até R$1,3M", dataProximaAcao: "2026-07-28", status: "Inativo", obs: "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso, mas prefere condomínios mais novos — sugerido o Vivant. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M.", imoveisCompativeis: null, visitaResumo: null, visitaDetalhe: null, statusReativacao: null, interesse: "apartamento ~150m² em Lagoa Nova, até R$1,3M" },
     { nome: "Amarildo Jorge de Morais Costa", telefone: "84988202035", origem: "CRM Emobi", fase: "Inativo", temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Ligação de retomada sobre unidade no Bosque do Tirol", dataProximaAcao: "2026-08-28", status: "Inativo", obs: "Quer apê no Edifício Bosque do Tirol (Av. Alm. Alexandrino de Alencar 1362-1366, Tirol), ~100m². Retomada agendada 28/08. Monitoramento automático de portais a cada ~10 dias.", imoveisCompativeis: null, statusReativacao: null, interesse: "apartamento no Edifício Bosque do Tirol" },
     { nome: "Maria Eduarda Revorêdo", telefone: "84981761829", origem: "CRM Emobi", fase: "Qualificado", temperatura: "Morno", valor: 380000, comissaoPrevista: null, proximaAcao: "Fazer mais um follow-up", dataProximaAcao: "2026-07-09", status: "Em dia", obs: "Referência de estilo: Cód. 9723 — casa em condomínio 3 quartos (1 suíte), 119m², Nova Parnamirim, R$380.000. Follow-up feito em 06/07, próximo em 09/07.", imoveisCompativeis: ["Cód. 10594"] /* Casa em Condomínio, Extremoz */, statusReativacao: "🟢 Em dia", interesse: "casa em condomínio em Nova Parnamirim" },
     { nome: "Kamylla Gadelha", telefone: "84999020411", origem: "CRM Emobi", fase: "Visita Agendada", temperatura: "Morno", valor: 500000, comissaoPrevista: null, proximaAcao: "2ª visita (com a mãe da cliente) — Casa em Capim Macio", dataProximaAcao: "2026-07-08", status: "Em dia", obs: "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente quer levar a mãe numa segunda visita antes de decidir. 2ª visita agendada para quarta-feira, 08/07, às 16h — ⚠️ data já passada, confirmar com Thúlio se a visita ocorreu ou precisa remarcar.", imoveisCompativeis: [], visitaResumo: null, visitaDetalhe: "pra você trazer sua mãe dessa vez", statusReativacao: "🟢 Em dia", interesse: "casa em Capim Macio" },
