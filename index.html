@@ -265,8 +265,12 @@
       <div id="acoesAgoraList"></div>
     </div>
     <div class="section-title"><span class="dot" aria-hidden="true"></span>📅 Agenda (Google Calendar)</div>
-    <div class="card">
+    <div class="card" style="margin-bottom:18px;">
       <div id="agendaList"></div>
+    </div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>🗓️ Próximos Compromissos</div>
+    <div class="card">
+      <div id="agendaProximosList"></div>
     </div>
   </div>
 
@@ -478,7 +482,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-18T17:36:00-03:00",
+  ultimaAtualizacao: "2026-07-18T17:40:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -582,6 +586,10 @@ const DATA = {
   },
   agendaHoje: [],
   agendaAmanha: [],
+  agendaProximos: [
+    { data: "2026-07-20", hora: "15:00", titulo: "Captação Locação — Estrela do Atlântico (2402-A)", local: "Cliente Natasha" },
+    { data: "2026-07-20", hora: "16:00", titulo: "Visita Madson (cliente Iara e Denis)", local: "Cód. 10627 — Califórnia Gardens, Nova Parnamirim" }
+  ],
   lembretes: [
     { texto: "Retomar contato com Daianne — cliente estava de viagem, ver Candelária/Lagoa Nova até R$630 mil", dataFmt: "01/08", hora: "", relacionado: "Daianne", quando: "Futuro" },
     { texto: "Falar com Cláudia Montenegro (Natal Brisa)", dataFmt: "06/07", hora: "", relacionado: "Cláudia Montenegro", quando: "Atrasado" },
@@ -695,6 +703,41 @@ if (!temHoje && !temAmanha) {
   else agendaList.innerHTML = '<div style="font-size:var(--fs-sm);color:#8A9186;margin-bottom:8px;">Nada marcado para hoje.</div>';
   if (temAmanha) renderAgenda(DATA.agendaAmanha, 'Amanhã');
 }
+
+// ---- Próximos Compromissos (além de hoje/amanhã) ----
+(function renderAgendaProximos() {
+  const container = document.getElementById('agendaProximosList');
+  const itens = DATA.agendaProximos || [];
+  if (itens.length === 0) {
+    container.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nada marcado além de hoje e amanhã, por enquanto.</div>';
+    return;
+  }
+  const porData = {};
+  itens.forEach(a => {
+    if (!porData[a.data]) porData[a.data] = [];
+    porData[a.data].push(a);
+  });
+  const datasOrdenadas = Object.keys(porData).sort();
+  let html = '';
+  datasOrdenadas.forEach(d => {
+    const [y, m, dia] = d.split('-').map(Number);
+    const dt = new Date(y, m - 1, dia);
+    const label = dt.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit' });
+    html += `<div style="font-size:var(--fs-xs);font-weight:700;color:#8C6D1F;text-transform:uppercase;letter-spacing:.4px;margin:12px 4px 8px;">${label}</div>`;
+    porData[d].sort((a, b) => (a.hora || '').localeCompare(b.hora || '')).forEach(a => {
+      html += `
+        <div class="agenda-row">
+          <div class="agenda-time">${a.hora || ''}</div>
+          <div class="agenda-icon" aria-hidden="true">🏠</div>
+          <div class="agenda-info">
+            <div class="titulo">${a.titulo}</div>
+            <div class="local">${a.local || ''}</div>
+          </div>
+        </div>`;
+    });
+  });
+  container.innerHTML = html;
+})();
 
 const pct = Math.min(100, (DATA.meta2026.realizado / DATA.meta2026.meta) * 100);
 document.getElementById('metaPct').textContent = pct.toFixed(1) + '%';
