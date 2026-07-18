@@ -32,6 +32,15 @@
   .brandmark img { height: 54px; width: auto; display:block; }
   .header .today { text-align: right; font-size: 12.5px; opacity: 0.85; }
   .header .today b { font-size: 17px; display:block; color: var(--brand-gold-light); }
+  .header .sync-info { font-size: 11px; opacity: 0.75; margin-top: 4px; }
+  .header .sync-info b { color: var(--brand-gold-light); font-weight: 700; }
+
+  .acao-group { margin-bottom: 14px; }
+  .acao-group:last-child { margin-bottom: 0; }
+  .acao-group-title { font-size: 11.5px; font-weight: 800; color: #8C6D1F; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 6px; }
+  .acao-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 4px; border-bottom: 1px solid #F1F2ED; font-size: 12.5px; }
+  .acao-item:last-child { border-bottom: none; }
+  .acao-all-clear { text-align: center; padding: 14px 10px; color: #1F7A4D; font-weight: 700; font-size: 14px; }
 
   .section-title {
     font-size: 15px; font-weight: 700; color: var(--brand-dark2); margin: 28px 2px 12px;
@@ -210,6 +219,7 @@
     <div class="today">
       Atualizado em
       <b id="todayDate"></b>
+      <div class="sync-info">Dados sincronizados: <b id="syncTimestamp">—</b></div>
     </div>
   </div>
 
@@ -224,6 +234,10 @@
   </div>
 
   <div class="tab-panel" data-tab="agenda">
+    <div class="section-title"><span class="dot"></span>⚡ O Que Fazer Agora</div>
+    <div class="card" style="margin-bottom:18px;">
+      <div id="acoesAgoraList"></div>
+    </div>
     <div class="section-title"><span class="dot"></span>📅 Agenda (Google Calendar)</div>
     <div class="card">
       <div id="agendaList"></div>
@@ -396,6 +410,7 @@
 
 <script>
 const DATA = {
+  ultimaAtualizacao: "2026-07-18T07:35:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -436,9 +451,9 @@ const DATA = {
   leads: [
     { nome: "Tácito Barreto", telefone: "84987371817", origem: "Relacionamento", fase: "Inativo", temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Busca ativa a cada 15 dias — apartamento ~150m² em Lagoa Nova, até R$1,3M", dataProximaAcao: "2026-07-28", status: "Inativo", obs: "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso, mas prefere condomínios mais novos — sugerido o Vivant. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M.", imoveisCompativeis: null, visitaResumo: null, visitaDetalhe: null, statusReativacao: null, interesse: "apartamento ~150m² em Lagoa Nova, até R$1,3M" },
     { nome: "Amarildo Jorge de Morais Costa", telefone: "84988202035", origem: "CRM Emobi", fase: "Inativo", temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Ligação de retomada sobre unidade no Bosque do Tirol", dataProximaAcao: "2026-08-28", status: "Inativo", obs: "Quer apê no Edifício Bosque do Tirol (Av. Alm. Alexandrino de Alencar 1362-1366, Tirol), ~100m². Retomada agendada 28/08. Monitoramento automático de portais a cada ~10 dias.", imoveisCompativeis: null, statusReativacao: null, interesse: "apartamento no Edifício Bosque do Tirol" },
-    { nome: "Maria Eduarda Revorêdo", telefone: "84981761829", origem: "CRM Emobi", fase: "Qualificado", temperatura: "Morno", valor: 380000, comissaoPrevista: null, proximaAcao: "Fazer mais um follow-up", dataProximaAcao: "2026-07-09", status: "Atrasado", obs: "Referência de estilo: Cód. 9723 — casa em condomínio 3 quartos (1 suíte), 119m², Nova Parnamirim, R$380.000. Follow-up feito em 06/07, próximo em 09/07.", imoveisCompativeis: ["Cód. 10594"] /* Casa em Condomínio, Extremoz */, statusReativacao: "🔴 Reativar agora", interesse: "casa em condomínio em Nova Parnamirim" },
-    { nome: "Kamylla Gadelha", telefone: "84999020411", origem: "CRM Emobi", fase: "Visita Agendada", temperatura: "Morno", valor: 500000, comissaoPrevista: null, proximaAcao: "2ª visita (com a mãe da cliente) — Casa em Capim Macio", dataProximaAcao: "2026-07-08", status: "Atrasado", obs: "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente quer levar a mãe numa segunda visita antes de decidir. 2ª visita agendada para quarta-feira, 08/07, às 16h — ⚠️ data já passada, confirmar com Thúlio se a visita ocorreu ou precisa remarcar.", imoveisCompativeis: [], visitaResumo: null, visitaDetalhe: "pra você trazer sua mãe dessa vez", statusReativacao: "🔴 Reativar agora", interesse: "casa em Capim Macio" },
-    { nome: "Daianne", telefone: "84988351048", origem: "CRM Emobi", fase: "Qualificado", temperatura: "Frio", valor: 630000, comissaoPrevista: null, proximaAcao: "Retomar contato após viagem (fim do mês)", dataProximaAcao: "2026-08-01", status: "Atrasado", obs: "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08.", imoveisCompativeis: ["Cód. 9272", "Cód. 8024", "Cód. 5485", "Cód. 7560", "Cód. 10567", "Cód. 7454"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária ou Lagoa Nova" }
+    { nome: "Maria Eduarda Revorêdo", telefone: "84981761829", origem: "CRM Emobi", fase: "Qualificado", temperatura: "Morno", valor: 380000, comissaoPrevista: null, proximaAcao: "Fazer mais um follow-up", dataProximaAcao: "2026-07-09", status: "Em dia", obs: "Referência de estilo: Cód. 9723 — casa em condomínio 3 quartos (1 suíte), 119m², Nova Parnamirim, R$380.000. Follow-up feito em 06/07, próximo em 09/07.", imoveisCompativeis: ["Cód. 10594"] /* Casa em Condomínio, Extremoz */, statusReativacao: "🟢 Em dia", interesse: "casa em condomínio em Nova Parnamirim" },
+    { nome: "Kamylla Gadelha", telefone: "84999020411", origem: "CRM Emobi", fase: "Visita Agendada", temperatura: "Morno", valor: 500000, comissaoPrevista: null, proximaAcao: "2ª visita (com a mãe da cliente) — Casa em Capim Macio", dataProximaAcao: "2026-07-08", status: "Em dia", obs: "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente quer levar a mãe numa segunda visita antes de decidir. 2ª visita agendada para quarta-feira, 08/07, às 16h — ⚠️ data já passada, confirmar com Thúlio se a visita ocorreu ou precisa remarcar.", imoveisCompativeis: [], visitaResumo: null, visitaDetalhe: "pra você trazer sua mãe dessa vez", statusReativacao: "🟢 Em dia", interesse: "casa em Capim Macio" },
+    { nome: "Daianne", telefone: "84988351048", origem: "CRM Emobi", fase: "Qualificado", temperatura: "Frio", valor: 630000, comissaoPrevista: null, proximaAcao: "Retomar contato após viagem (fim do mês)", dataProximaAcao: "2026-08-01", status: "Em dia", obs: "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08.", imoveisCompativeis: ["Cód. 9272", "Cód. 8024", "Cód. 5485", "Cód. 7560", "Cód. 10567", "Cód. 7454"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária ou Lagoa Nova" }
   ],
   captacaoStatus: { emCaptacao: 0, disponivel: 18, reservado: 0, vendido: 0, suspenso: 0, total: 18 },
   funilConversao: {
@@ -456,7 +471,7 @@ const DATA = {
     taxaFechamento: 0,
     taxaPerda: 0
   },
-  reativacao: { quente: 0, morno: 2, frio: 0, total: 2 },
+  reativacao: { quente: 0, morno: 0, frio: 0, total: 0 },
   imoveis: [
     { nome: "Apartamento 3 Quartos Nova Parnamirim 79m² (Cód. 7762)", tipo: "Apartamento", bairro: "Nova Parnamirim", cidade: "Parnamirim", endereco: "Rua Pantanal, Nova Parnamirim - Parnamirim/RN", valor: 399000, detalhes: "3 quartos (1 suíte), 2 banheiros, 2 vagas, 79m²", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7762/apartamento-3-quartos-nova-parnamirim-parnamirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Vila Verde. Condomínio R$ 540,00 + IPTU R$ 120,00." },
     { nome: "Apartamento 3 Quartos Lagoa Nova 140m² (Cód. 9272)", tipo: "Apartamento", bairro: "Lagoa Nova", cidade: "Natal", endereco: "Rua Desembargador Carlos Augusto, Lagoa Nova - Natal/RN", valor: 1299990, detalhes: "3 quartos (3 suítes), 5 banheiros, 3 vagas, 140m², mobiliado", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/9272/apartamento-3-quartos-lagoa-nova-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Andar alto, vaga com carregador de carro elétrico. Condomínio R$ 1.611,27." },
@@ -515,6 +530,10 @@ function brl(v) {
 }
 
 document.getElementById('todayDate').textContent = new Date().toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });
+if (DATA.ultimaAtualizacao) {
+  const su = new Date(DATA.ultimaAtualizacao);
+  document.getElementById('syncTimestamp').textContent = su.toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit' }) + ' às ' + su.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+}
 
 // ---- Banner: proxima acao mais urgente ----
 (function renderUrgentBanner() {
@@ -835,6 +854,71 @@ DATA.leads.forEach(l => {
     <div>${waHtml}${confirmHtml}${reativarHtml}</div>`;
   leadsCard.appendChild(card);
 });
+
+// ---- O Que Fazer Agora: consolida leads atrasados, reativação, follow-up de proprietários e lembretes ----
+(function renderAcoesAgora() {
+  const list = document.getElementById('acoesAgoraList');
+  if (!list) return;
+
+  function waHref(telefone, msg) {
+    const digits = String(telefone).replace(/\D/g, '');
+    const withCountry = digits.startsWith('55') ? digits : '55' + digits;
+    return 'https://wa.me/' + withCountry + (msg ? ('?text=' + encodeURIComponent(msg)) : '');
+  }
+  function diasSemContato(dataStr) {
+    const [y, m, d] = dataStr.split('-').map(Number);
+    const dt = new Date(y, m - 1, d);
+    return Math.floor((new Date() - dt) / (1000 * 60 * 60 * 24));
+  }
+
+  const leadsAtrasados = (DATA.leads || []).filter(l => l.status === 'Atrasado');
+  const leadsReativar = (DATA.leads || []).filter(l => l.statusReativacao === '🔴 Reativar agora');
+  const imoveisAtrasados = (DATA.imoveis || []).filter(im =>
+    im.status === 'Disponível' && im.ultimaInteracaoProprietario && diasSemContato(im.ultimaInteracaoProprietario) > 30
+  );
+  const lembretesUrgentes = (DATA.lembretes || []).filter(x => x.quando === 'Atrasado' || x.quando === 'Hoje');
+
+  const total = leadsAtrasados.length + leadsReativar.length + imoveisAtrasados.length + lembretesUrgentes.length;
+
+  if (total === 0) {
+    list.innerHTML = '<div class="acao-all-clear">✅ Tudo em dia — nenhuma ação urgente agora.</div>';
+    return;
+  }
+
+  let html = '';
+
+  if (leadsAtrasados.length > 0) {
+    html += `<div class="acao-group"><div class="acao-group-title">🔴 Leads atrasados (${leadsAtrasados.length})</div>` +
+      leadsAtrasados.map(l => {
+        const wa = l.telefone ? `<a class="wa-link" href="${waHref(l.telefone)}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+        return `<div class="acao-item"><span>${l.nome} — ${l.proximaAcao || 'follow-up pendente'}</span>${wa}</div>`;
+      }).join('') + `</div>`;
+  }
+
+  if (leadsReativar.length > 0) {
+    html += `<div class="acao-group"><div class="acao-group-title">🔥 Leads para reativar (${leadsReativar.length})</div>` +
+      leadsReativar.map(l => {
+        const wa = l.telefone ? `<a class="wa-link confirm" href="${waHref(l.telefone, buildReativacaoMsg(l))}" target="_blank" rel="noopener">🔥 Reativar</a>` : '';
+        return `<div class="acao-item"><span>${l.nome}</span>${wa}</div>`;
+      }).join('') + `</div>`;
+  }
+
+  if (imoveisAtrasados.length > 0) {
+    html += `<div class="acao-group"><div class="acao-group-title">🏠 Follow-up de proprietários atrasado (${imoveisAtrasados.length})</div>` +
+      imoveisAtrasados.map(im => {
+        const dias = diasSemContato(im.ultimaInteracaoProprietario);
+        const wa = im.telefone ? `<a class="wa-link" href="${waHref(im.telefone)}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+        return `<div class="acao-item"><span>${im.nome} — ${dias}d sem contato</span>${wa}</div>`;
+      }).join('') + `</div>`;
+  }
+
+  if (lembretesUrgentes.length > 0) {
+    html += `<div class="acao-group"><div class="acao-group-title">🔔 Lembretes de hoje/atrasados (${lembretesUrgentes.length})</div>` +
+      lembretesUrgentes.map(x => `<div class="acao-item"><span>${x.texto}</span></div>`).join('') + `</div>`;
+  }
+
+  list.innerHTML = html;
+})();
 
 const lembretesCard = document.getElementById('lembretesCard');
 if (!DATA.lembretes || DATA.lembretes.length === 0) {
