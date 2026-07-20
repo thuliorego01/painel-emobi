@@ -550,7 +550,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-19T21:52:00-03:00",
+  ultimaAtualizacao: "2026-07-19T22:00:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -583,36 +583,14 @@ const DATA = {
     { imovel: "João Mendonça", cliente: "Victor e Monaira", valor: 380000, comissao: 6650, mes: "Maio", status: "pago", tipo: "Venda" },
     { imovel: "Bacara 1102", cliente: "Cor. Camila Araújo", valor: 4100, comissao: 2050, mes: "Fevereiro", status: "pago", tipo: "Locação" }
   ],
-  funil: [
-    ["Novo Lead", 0], ["Primeiro Contato Feito", 0], ["Qualificado", 3], ["Visita Agendada", 1],
-    ["Visita Realizada", 0], ["Proposta Enviada", 0], ["Em Negociação", 0], ["Fechado Ganho", 0],
-    ["Fechado Perdido", 0], ["Inativo", 2]
-  ],
   leads: [
-    { nome: "Tácito Barreto", telefone: "84987371817", origem: "Relacionamento", fase: "Inativo", temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Busca ativa a cada 15 dias — apartamento ~150m² em Lagoa Nova, até R$1,3M", dataProximaAcao: "2026-07-28", status: "Inativo", obs: "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso, mas prefere condomínios mais novos — sugerido o Vivant. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M.", imoveisCompativeis: null, visitaResumo: null, visitaDetalhe: null, statusReativacao: null, interesse: "apartamento ~150m² em Lagoa Nova, até R$1,3M" },
-    { nome: "Amarildo Jorge de Morais Costa", telefone: "84988202035", origem: "CRM Emobi", fase: "Inativo", temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Ligação de retomada sobre unidade no Bosque do Tirol", dataProximaAcao: "2026-08-28", status: "Inativo", obs: "Quer apê no Edifício Bosque do Tirol (Av. Alm. Alexandrino de Alencar 1362-1366, Tirol), ~100m². Retomada agendada 28/08. Monitoramento automático de portais a cada ~10 dias.", imoveisCompativeis: null, statusReativacao: null, interesse: "apartamento no Edifício Bosque do Tirol" },
-    { nome: "Maria Eduarda Revorêdo", telefone: "84981761829", origem: "CRM Emobi", fase: "Qualificado", temperatura: "Morno", valor: 380000, comissaoPrevista: null, proximaAcao: "Fazer mais um follow-up", dataProximaAcao: "2026-07-09", status: "Atrasado", obs: "Referência de estilo: Cód. 9723 — casa em condomínio 3 quartos (1 suíte), 119m², Nova Parnamirim, R$380.000. Follow-up feito em 06/07, próximo em 09/07 (já passou — sem contato há 13 dias).", imoveisCompativeis: ["Cód. 10594"] /* Casa em Condomínio, Extremoz */, statusReativacao: "🔴 Reativar agora", interesse: "casa em condomínio em Nova Parnamirim" },
-    { nome: "Kamylla Gadelha", telefone: "84999020411", origem: "CRM Emobi", fase: "Visita Agendada", temperatura: "Morno", valor: 500000, comissaoPrevista: null, proximaAcao: "Entrar em contato com a mãe da cliente", dataProximaAcao: "2026-07-21", status: "Atrasado", obs: "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente pediu que Thúlio entre em contato diretamente com a mãe dela, em vez da 2ª visita conjunta antes combinada — data original (08/07) já passada ou precisa remarcar. Sem contato há 11 dias.", imoveisCompativeis: [], visitaResumo: null, visitaDetalhe: "pra você trazer sua mãe dessa vez", statusReativacao: "🔴 Reativar agora", interesse: "casa em Capim Macio" },
-    { nome: "Daianne", telefone: "84988351048", origem: "CRM Emobi", fase: "Qualificado", temperatura: "Frio", valor: 630000, comissaoPrevista: null, proximaAcao: "Retomar contato após viagem (fim do mês)", dataProximaAcao: "2026-08-01", status: "Em dia", obs: "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08.", imoveisCompativeis: ["Cód. 9272", "Cód. 8024", "Cód. 5485", "Cód. 7560", "Cód. 10567", "Cód. 7454"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária ou Lagoa Nova" },
-    { nome: "Diana Rêgo", telefone: "84987706107", origem: "Relacionamento", fase: "Visita Realizada", temperatura: "Quente", valor: 600000, comissaoPrevista: null, proximaAcao: "Contatar Diana para saber se combinou a nova visita com a arquiteta", dataProximaAcao: "2026-07-20", status: "Em dia", obs: "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita realizada no Porto Arena (Cód. 5485). Cliente vai ajustar com a arquiteta dela para uma nova visita.", imoveisCompativeis: ["Cód. 5485"], visitaResumo: null, visitaDetalhe: null, statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária, Lagoa Nova ou Tirol" }
+    { nome: "Tácito Barreto", telefone: "84987371817", origem: "Relacionamento", fase: "Inativo", maiorFaseIndex: 5, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Busca ativa a cada 15 dias — apartamento ~150m² em Lagoa Nova, até R$1,3M", dataProximaAcao: "2026-07-28", status: "Inativo", obs: "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso, mas prefere condomínios mais novos — sugerido o Vivant. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M.", imoveisCompativeis: null, visitaResumo: null, visitaDetalhe: null, statusReativacao: null, interesse: "apartamento ~150m² em Lagoa Nova, até R$1,3M" },
+    { nome: "Amarildo Jorge de Morais Costa", telefone: "84988202035", origem: "CRM Emobi", fase: "Inativo", maiorFaseIndex: 1, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Ligação de retomada sobre unidade no Bosque do Tirol", dataProximaAcao: "2026-08-28", status: "Inativo", obs: "Quer apê no Edifício Bosque do Tirol (Av. Alm. Alexandrino de Alencar 1362-1366, Tirol), ~100m². Retomada agendada 28/08. Monitoramento automático de portais a cada ~10 dias.", imoveisCompativeis: null, statusReativacao: null, interesse: "apartamento no Edifício Bosque do Tirol" },
+    { nome: "Maria Eduarda Revorêdo", telefone: "84981761829", origem: "CRM Emobi", fase: "Qualificado", maiorFaseIndex: 3, temperatura: "Morno", valor: 380000, comissaoPrevista: null, proximaAcao: "Fazer mais um follow-up", dataProximaAcao: "2026-07-09", status: "Atrasado", obs: "Referência de estilo: Cód. 9723 — casa em condomínio 3 quartos (1 suíte), 119m², Nova Parnamirim, R$380.000. Follow-up feito em 06/07, próximo em 09/07 (já passou — sem contato há 13 dias).", imoveisCompativeis: ["Cód. 10594"] /* Casa em Condomínio, Extremoz */, statusReativacao: "🔴 Reativar agora", interesse: "casa em condomínio em Nova Parnamirim" },
+    { nome: "Kamylla Gadelha", telefone: "84999020411", origem: "CRM Emobi", fase: "Visita Agendada", maiorFaseIndex: 5, temperatura: "Morno", valor: 500000, comissaoPrevista: null, proximaAcao: "Entrar em contato com a mãe da cliente", dataProximaAcao: "2026-07-21", status: "Atrasado", obs: "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente pediu que Thúlio entre em contato diretamente com a mãe dela, em vez da 2ª visita conjunta antes combinada — data original (08/07) já passada ou precisa remarcar. Sem contato há 11 dias.", imoveisCompativeis: [], visitaResumo: null, visitaDetalhe: "pra você trazer sua mãe dessa vez", statusReativacao: "🔴 Reativar agora", interesse: "casa em Capim Macio" },
+    { nome: "Daianne", telefone: "84988351048", origem: "CRM Emobi", fase: "Qualificado", maiorFaseIndex: 3, temperatura: "Frio", valor: 630000, comissaoPrevista: null, proximaAcao: "Retomar contato após viagem (fim do mês)", dataProximaAcao: "2026-08-01", status: "Em dia", obs: "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08.", imoveisCompativeis: ["Cód. 9272", "Cód. 8024", "Cód. 5485", "Cód. 7560", "Cód. 10567", "Cód. 7454"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária ou Lagoa Nova" },
+    { nome: "Diana Rêgo", telefone: "84987706107", origem: "Relacionamento", fase: "Visita Realizada", maiorFaseIndex: 5, temperatura: "Quente", valor: 600000, comissaoPrevista: null, proximaAcao: "Contatar Diana para saber se combinou a nova visita com a arquiteta", dataProximaAcao: "2026-07-20", status: "Em dia", obs: "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita realizada no Porto Arena (Cód. 5485). Cliente vai ajustar com a arquiteta dela para uma nova visita.", imoveisCompativeis: ["Cód. 5485"], visitaResumo: null, visitaDetalhe: null, statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária, Lagoa Nova ou Tirol" }
   ],
-  captacaoStatus: { emCaptacao: 1, disponivel: 18, reservado: 0, vendido: 0, suspenso: 0, total: 19 },
-  funilConversao: {
-    totalCadastrados: 6,
-    fases: [
-      { fase: "Novo Lead", alcancaram: 6, conversao: 0.8333333333333333 },
-      { fase: "Primeiro Contato Feito", alcancaram: 5, conversao: 1 },
-      { fase: "Qualificado", alcancaram: 5, conversao: 0.6 },
-      { fase: "Visita Agendada", alcancaram: 3, conversao: 1 },
-      { fase: "Visita Realizada", alcancaram: 3, conversao: 0 },
-      { fase: "Proposta Enviada", alcancaram: 0, conversao: null },
-      { fase: "Em Negociação", alcancaram: 0, conversao: null },
-      { fase: "Fechado Ganho", alcancaram: 0, conversao: null }
-    ],
-    taxaFechamento: 0,
-    taxaPerda: 0
-  },
-  reativacao: { quente: 0, morno: 2, frio: 0, total: 2 },
   imoveis: [
     { nome: "Apartamento 3 Quartos Nova Parnamirim 79m² (Cód. 7762)", tipo: "Apartamento", bairro: "Nova Parnamirim", cidade: "Parnamirim", endereco: "Rua Pantanal, Nova Parnamirim - Parnamirim/RN", valor: 399000, detalhes: "3 quartos (1 suíte), 2 banheiros, 2 vagas, 79m²", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7762/apartamento-3-quartos-nova-parnamirim-parnamirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Vila Verde. Condomínio R$ 540,00 + IPTU R$ 120,00." },
     { nome: "Apartamento 3 Quartos Lagoa Nova 140m² (Cód. 9272)", tipo: "Apartamento", bairro: "Lagoa Nova", cidade: "Natal", endereco: "Rua Desembargador Carlos Augusto, Lagoa Nova - Natal/RN", valor: 1299990, detalhes: "3 quartos (3 suítes), 5 banheiros, 3 vagas, 140m², mobiliado", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/9272/apartamento-3-quartos-lagoa-nova-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Andar alto, vaga com carregador de carro elétrico. Condomínio R$ 1.611,27." },
@@ -672,11 +650,6 @@ const DATA = {
     { texto: "Falar com Filipe Ideli sobre chegada da irmã e procura de apartamento em Tirol ou Petrópolis", dataFmt: "30/09", hora: "", relacionado: "Filipe Ideli", quando: "Futuro" }
   ],
   conectaTR: {
-    indicadoresAtivos: 3,
-    registradas: 2,
-    captadas: 1,
-    vendidas: 0,
-    valorDevidoAberto: 0,
     lista: [
       { protocolo: "IND-TR-2026-0002", imovel: "Estrela do Atlântico", indicador: "Jozimar Alves de Lima Júnior", proprietario: "Natasha Ferreira", status: "Registrada", valorDevido: 0 },
       { protocolo: "IND-TR-2026-0004", imovel: "Califórnia Gardens (Cód. 10627)", indicador: "Nisia Raquel Gadelha de Lima", proprietario: "Michelle", status: "Captada", valorDevido: 0, vinculadoId: 18 },
@@ -918,8 +891,12 @@ DATA.listaNegociacoes.forEach(n => {
 });
 
 const funilList = document.getElementById('funilList');
-const maxFunil = Math.max(1, ...DATA.funil.map(f => f[1]));
-DATA.funil.forEach(([label, count]) => {
+// Calculado ao vivo a partir de DATA.leads (fase atual de cada lead) — nunca fica dessincronizado,
+// mesmo que DATA.funil não seja atualizado manualmente em algum dia.
+const FASES_FUNIL = ["Novo Lead", "Primeiro Contato Feito", "Qualificado", "Visita Agendada", "Visita Realizada", "Proposta Enviada", "Em Negociação", "Fechado Ganho", "Fechado Perdido", "Inativo"];
+const funilCalculado = FASES_FUNIL.map(fase => [fase, DATA.leads.filter(l => l.fase === fase).length]);
+const maxFunil = Math.max(1, ...funilCalculado.map(f => f[1]));
+funilCalculado.forEach(([label, count]) => {
   const w = Math.max(6, (count / maxFunil) * 100);
   const row = document.createElement('div');
   row.className = 'funil-row';
@@ -954,28 +931,50 @@ if (origemEntries.length === 0) {
 }
 
 // ---- Conversao entre fases ----
+// Calculado ao vivo a partir de DATA.leads[].maiorFaseIndex (maior fase já alcançada por cada lead),
+// nunca precisa ser mantido manualmente em paralelo — elimina o risco de ficar desatualizado.
+const FUNIL_CONVERSAO_FASES = ["Novo Lead", "Primeiro Contato Feito", "Qualificado", "Visita Agendada", "Visita Realizada", "Proposta Enviada", "Em Negociação", "Fechado Ganho"];
+const totalCadastrados = DATA.leads.length;
+const alcancaramPorIndex = FUNIL_CONVERSAO_FASES.map((_, i) => DATA.leads.filter(l => (l.maiorFaseIndex || 0) >= (i + 1)).length);
+const funilConversaoCalculado = FUNIL_CONVERSAO_FASES.map((fase, i) => {
+  const alcancaram = alcancaramPorIndex[i];
+  const proximo = alcancaramPorIndex[i + 1];
+  const conversao = (proximo === undefined || alcancaram === 0) ? null : proximo / alcancaram;
+  return { fase, alcancaram, conversao };
+});
+const taxaFechamentoCalc = totalCadastrados === 0 ? 0 : DATA.leads.filter(l => l.fase === 'Fechado Ganho').length / totalCadastrados;
+const taxaPerdaCalc = totalCadastrados === 0 ? 0 : DATA.leads.filter(l => l.fase === 'Fechado Perdido').length / totalCadastrados;
+
 document.getElementById('amostraNota').textContent =
-  `⚠️ Amostra pequena (${DATA.funilConversao.totalCadastrados} leads cadastrados no total) — os % ficam mais confiáveis conforme mais leads entrarem no funil. Acompanhe a tendência mês a mês, não o valor isolado.`;
+  `⚠️ Amostra pequena (${totalCadastrados} leads cadastrados no total) — os % ficam mais confiáveis conforme mais leads entrarem no funil. Acompanhe a tendência mês a mês, não o valor isolado.`;
 const conversaoTabela = document.getElementById('conversaoTabela');
-DATA.funilConversao.fases.forEach(f => {
+funilConversaoCalculado.forEach(f => {
   const conv = f.conversao === null ? '—' : Math.round(f.conversao * 100) + '%';
   const tr = document.createElement('tr');
   tr.innerHTML = `<td>${f.fase}</td><td>${f.alcancaram}</td><td>${conv}</td>`;
   conversaoTabela.appendChild(tr);
 });
 const trFecha = document.createElement('tr');
-trFecha.innerHTML = `<td><b>Taxa de Fechamento Geral</b></td><td colspan="2"><b>${Math.round(DATA.funilConversao.taxaFechamento * 100)}%</b></td>`;
+trFecha.innerHTML = `<td><b>Taxa de Fechamento Geral</b></td><td colspan="2"><b>${Math.round(taxaFechamentoCalc * 100)}%</b></td>`;
 conversaoTabela.appendChild(trFecha);
 const trPerda = document.createElement('tr');
-trPerda.innerHTML = `<td><b>Taxa de Perda</b></td><td colspan="2"><b>${Math.round(DATA.funilConversao.taxaPerda * 100)}%</b></td>`;
+trPerda.innerHTML = `<td><b>Taxa de Perda</b></td><td colspan="2"><b>${Math.round(taxaPerdaCalc * 100)}%</b></td>`;
 conversaoTabela.appendChild(trPerda);
 
 // ---- Reativacao por temperatura ----
+// Calculado ao vivo a partir de DATA.leads[].statusReativacao + temperatura.
 const reativacaoCard = document.getElementById('reativacaoCard');
+const leadsReativarAgora = DATA.leads.filter(l => l.statusReativacao === '🔴 Reativar agora');
+const reativacaoCalc = {
+  quente: leadsReativarAgora.filter(l => l.temperatura === 'Quente').length,
+  morno: leadsReativarAgora.filter(l => l.temperatura === 'Morno').length,
+  frio: leadsReativarAgora.filter(l => l.temperatura === 'Frio').length,
+  total: leadsReativarAgora.length
+};
 const rTemps = [
-  { label: '🔥 Quente', valor: DATA.reativacao.quente },
-  { label: '🟠 Morno', valor: DATA.reativacao.morno },
-  { label: '❄️ Frio', valor: DATA.reativacao.frio }
+  { label: '🔥 Quente', valor: reativacaoCalc.quente },
+  { label: '🟠 Morno', valor: reativacaoCalc.morno },
+  { label: '❄️ Frio', valor: reativacaoCalc.frio }
 ];
 reativacaoCard.innerHTML = rTemps.map(t => `
   <div class="reativa-row">
@@ -984,7 +983,7 @@ reativacaoCard.innerHTML = rTemps.map(t => `
   </div>`).join('') + `
   <div class="reativa-row">
     <span><b>🔔 Total para reativar agora</b></span>
-    <span class="reativa-count ${DATA.reativacao.total === 0 ? 'zero' : ''}">${DATA.reativacao.total}</span>
+    <span class="reativa-count ${reativacaoCalc.total === 0 ? 'zero' : ''}">${reativacaoCalc.total}</span>
   </div>`;
 
 const alertCard = document.getElementById('alertCard');
@@ -1462,8 +1461,16 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
     <span class="followup-chip">Cadência máxima: 30 dias sem falar com o proprietário</span>`;
 
   const captacaoEl = document.getElementById('captacaoFunilResumo');
-  if (captacaoEl && DATA.captacaoStatus) {
-    const cs = DATA.captacaoStatus;
+  if (captacaoEl) {
+    // Calculado ao vivo a partir de DATA.imoveis[].status — nunca fica dessincronizado.
+    const cs = {
+      emCaptacao: DATA.imoveis.filter(im => im.status === 'Em Captação').length,
+      disponivel: DATA.imoveis.filter(im => im.status === 'Disponível').length,
+      reservado: DATA.imoveis.filter(im => im.status === 'Reservado').length,
+      vendido: DATA.imoveis.filter(im => im.status === 'Vendido').length,
+      suspenso: DATA.imoveis.filter(im => im.status === 'Suspenso').length,
+      total: DATA.imoveis.length
+    };
     captacaoEl.innerHTML = `
       <span class="followup-chip">🟠 ${cs.emCaptacao} em captação</span>
       <span class="followup-chip">🟢 ${cs.disponivel} disponível(is)</span>
@@ -1583,11 +1590,18 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
 // ---- Conecta TR ----
 (function renderConectaTR() {
   const ctr = DATA.conectaTR || {};
-  document.getElementById('ctrIndicadores').textContent = ctr.indicadoresAtivos ?? 0;
-  document.getElementById('ctrRegistradas').textContent = ctr.registradas ?? 0;
-  document.getElementById('ctrCaptadas').textContent = ctr.captadas ?? 0;
-  document.getElementById('ctrVendidas').textContent = ctr.vendidas ?? 0;
-  document.getElementById('ctrValorDevido').textContent = brl(ctr.valorDevidoAberto || 0);
+  // Contadores calculados ao vivo a partir de indicadoresLista/lista — nunca ficam dessincronizados.
+  const ctrIndicadoresAtivos = (ctr.indicadoresLista || []).filter(i => i.status === 'Ativo').length;
+  const ctrItens = ctr.lista || [];
+  const ctrRegistradas = ctrItens.filter(it => it.status === 'Registrada').length;
+  const ctrCaptadas = ctrItens.filter(it => it.status === 'Captada').length;
+  const ctrVendidas = ctrItens.filter(it => it.status === 'Vendida').length;
+  const ctrValorDevido = ctrItens.filter(it => it.status !== 'Encerrada').reduce((s, it) => s + (it.valorDevido || 0), 0);
+  document.getElementById('ctrIndicadores').textContent = ctrIndicadoresAtivos;
+  document.getElementById('ctrRegistradas').textContent = ctrRegistradas;
+  document.getElementById('ctrCaptadas').textContent = ctrCaptadas;
+  document.getElementById('ctrVendidas').textContent = ctrVendidas;
+  document.getElementById('ctrValorDevido').textContent = brl(ctrValorDevido);
 
   const list = document.getElementById('conectaTRList');
   const indicadoresCard = document.getElementById('ctrIndicadoresCard');
