@@ -263,14 +263,16 @@
     display:flex; align-items:center; gap:8px; letter-spacing:.2px;
   }
   .imovel-cidade-title:first-child { margin-top:0; }
-  .imovel-tipo-title { font-size:var(--fs-md); font-weight:800; color: var(--brand-dark2); margin:18px 0 8px; display:flex; align-items:center; gap:6px; }
-  .imovel-tipo-title:first-child { margin-top:0; }
   .imovel-bairro-title {
-    font-size:var(--fs-sm); font-weight:800; color: var(--brand-gold-deep); text-transform:uppercase; letter-spacing:.4px;
-    margin:14px 0 8px; padding:5px 12px; background:#FBF6EC; border:1px solid var(--brand-gold-light);
-    border-radius:20px; display:inline-flex; align-items:center; gap:6px; width:fit-content;
+    font-size:16px; font-weight:800; color: var(--brand-dark2); margin:20px 2px 8px; padding-left:10px;
+    border-left:4px solid var(--brand-gold); display:flex; align-items:center; gap:6px;
   }
-  .imovel-bairro-title:first-of-type { margin-top:4px; }
+  .imovel-bairro-title:first-of-type { margin-top:6px; }
+  .imovel-tipo-title {
+    font-size:var(--fs-xs); font-weight:700; color: var(--brand-gold-deep); text-transform:uppercase; letter-spacing:.4px;
+    margin:8px 0 6px 8px; padding:4px 10px; background:#FBF6EC; border:1px solid var(--brand-gold-light);
+    border-radius:16px; display:inline-flex; align-items:center; gap:5px; width:fit-content;
+  }
   .followup-resumo { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
   .followup-chip { font-size:var(--fs-xs); font-weight:700; padding:6px 12px; border-radius:20px; background:#F1F2ED; color:#5C6157; }
   .followup-chip.atrasado { background:#FBE4E4; color:#B3261E; }
@@ -560,7 +562,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-19T22:36:00-03:00",
+  ultimaAtualizacao: "2026-07-19T22:41:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -1416,6 +1418,7 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
   const statusClass = { "Em Captação": "em-captacao", "Disponível": "disponivel", "Reservado": "reservado", "Vendido": "vendido", "Suspenso": "suspenso" };
   const tipoOrdem = ["Casa", "Casa em Condomínio", "Casa Comercial", "Apartamento", "Terreno/Lote", "Comercial", "Outro"];
   const tipoIcone = { "Casa": "🏠", "Casa em Condomínio": "🏡", "Casa Comercial": "🏪", "Apartamento": "🏢", "Terreno/Lote": "📐", "Comercial": "🏬", "Outro": "🔑" };
+  const tipoPlural = { "Casa Comercial": "Casas Comerciais", "Terreno/Lote": "Terrenos/Lotes" };
 
   function followupStatus(im) {
     if (!im.ultimaInteracaoProprietario) return null;
@@ -1506,33 +1509,36 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
     tituloCidade.textContent = `🏙️ ${cidade} (${listaCidade.length})`;
     imoveisCard.appendChild(tituloCidade);
 
-    const porTipo = {};
+    const porBairro = {};
     listaCidade.forEach(im => {
-      const t = tipoOrdem.includes(im.tipo) ? im.tipo : "Outro";
-      (porTipo[t] = porTipo[t] || []).push(im);
+      const b = im.bairro || 'Bairro a definir';
+      (porBairro[b] = porBairro[b] || []).push(im);
     });
+    const bairros = Object.keys(porBairro).sort((a, b) => porBairro[b].length - porBairro[a].length || a.localeCompare(b, 'pt-BR'));
 
-    tipoOrdem.forEach(tipo => {
-      const lista = porTipo[tipo];
-      if (!lista || lista.length === 0) return;
+    bairros.forEach(bairro => {
+      const listaBairro = porBairro[bairro];
+      const tituloBairro = document.createElement('div');
+      tituloBairro.className = 'imovel-bairro-title';
+      tituloBairro.textContent = `📍 ${bairro} (${listaBairro.length})`;
+      imoveisCard.appendChild(tituloBairro);
 
-      const tituloTipo = document.createElement('div');
-      tituloTipo.className = 'imovel-tipo-title';
-      tituloTipo.textContent = `${tipoIcone[tipo] || '🔑'} ${tipo}s (${lista.length})`;
-      imoveisCard.appendChild(tituloTipo);
-
-      const porBairro = {};
-      lista.forEach(im => {
-        const b = im.bairro || 'Bairro a definir';
-        (porBairro[b] = porBairro[b] || []).push(im);
+      const porTipo = {};
+      listaBairro.forEach(im => {
+        const t = tipoOrdem.includes(im.tipo) ? im.tipo : "Outro";
+        (porTipo[t] = porTipo[t] || []).push(im);
       });
-      const bairros = Object.keys(porBairro).sort((a, b) => a.localeCompare(b, 'pt-BR'));
-      bairros.forEach(bairro => {
-        const tituloBairro = document.createElement('div');
-        tituloBairro.className = 'imovel-bairro-title';
-        tituloBairro.textContent = `📍 ${bairro} (${porBairro[bairro].length})`;
-        imoveisCard.appendChild(tituloBairro);
-        porBairro[bairro]
+
+      tipoOrdem.forEach(tipo => {
+        const lista = porTipo[tipo];
+        if (!lista || lista.length === 0) return;
+
+        const tituloTipo = document.createElement('div');
+        tituloTipo.className = 'imovel-tipo-title';
+        tituloTipo.textContent = `${tipoIcone[tipo] || '🔑'} ${tipoPlural[tipo] || (tipo + 's')} (${lista.length})`;
+        imoveisCard.appendChild(tituloTipo);
+
+        lista
           .slice()
           .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
           .forEach(im => imoveisCard.appendChild(renderCard(im)));
