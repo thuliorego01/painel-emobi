@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Painel Emobi Thulio",
+  "schemaVersion": 1,
+  "description": "Painel visual do corretor: agenda de hoje (Google Calendar), meta 2026, comissões pagas/aguardando/previstas, negociações do ano e pipeline de leads reais do CRM."
+}
+</script>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -562,7 +569,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-19T22:41:00-03:00",
+  ultimaAtualizacao: "2026-07-20T07:40:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -623,6 +630,7 @@ const DATA = {
     { nome: "Apartamento 1 Quarto Ponta Negra 56m² (Cód. 5463)", tipo: "Apartamento", bairro: "Ponta Negra", cidade: "Natal", endereco: "Rua Desportista Fabrício Gomes Pedroza, Ponta Negra - Natal/RN", valor: 579990, detalhes: "1 quarto (1 suíte), 1 banheiro, 1 vaga, 56m² privativos, totalmente mobiliado", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/5463/apartamento-1-quarto-ponta-negra-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-13", ultimaInteracaoProprietario: "2026-07-13", obs: "Condomínio Malbec, pronto para morar, vista para o mar. Perfil residencial (baixa rotatividade). Condomínio R$ 830,00 (água, gás, internet e TV inclusos). IPTU R$ 2.425,00." },
     { nome: "Apartamento 3 Quartos Nova Parnamirim 71m² (Cód. 10627)", tipo: "Apartamento", bairro: "Nova Parnamirim", cidade: "Parnamirim", endereco: "Avenida Ayrton Senna, Nova Parnamirim - Parnamirim/RN", valor: 324990, detalhes: "3 quartos (1 suíte), 2 banheiros, 1 vaga, 71m² privativos", proprietario: "Michelle", telefone: "(84) 9800-2220", link: "https://emobiimobiliaria.com.br/imovel/10627/apartamento-3-quartos-nova-parnamirim-parnamirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-13", ultimaInteracaoProprietario: "2026-07-13", obs: "Condomínio California Gardens. Potencial de reforma/modernização. Condomínio R$ 530,00 + IPTU R$ 1.100,00/ano. Vinculado à indicação Conecta TR IND-TR-2026-0004." },
     { nome: "Portamaris", tipo: null, bairro: null, cidade: null, endereco: null, valor: null, detalhes: null, proprietario: "Kris Suenir Meira de Araújo", telefone: "(84) 99981-0266", link: null, status: "Em Captação", pctComissao: null, dataCaptacao: "2026-07-18", ultimaInteracaoProprietario: null, obs: "Originado de indicação do Conecta TR (protocolo IND-TR-2026-0005, indicador Klevisson Ranniere Meira de Araújo). Faltam dados completos (tipo, bairro, valor, metragem) — confirmar com Thúlio." },
+    { nome: "João Mendonça 601", tipo: null, bairro: null, cidade: null, endereco: null, valor: null, detalhes: null, proprietario: "Thulio Jose", telefone: "(84) 98746-0678", link: null, status: "Em Captação", pctComissao: null, dataCaptacao: "2026-07-19", ultimaInteracaoProprietario: null, obs: "Originado de indicação do Conecta TR (protocolo IND-TR-2026-0003, indicador Maria Lila O Rego). Possível relação com venda já registrada em Negociações 2026 ('JOÃO MENDONÇA', Victor e Monaira, R$380.000) — confirmar com Thúlio. Faltam dados completos do imóvel (tipo, bairro, valor, metragem)." },
     { nome: "Casa Comercial 3 Quartos Lagoa Nova 256m² (Cód. 7731)", tipo: "Casa Comercial", bairro: "Lagoa Nova", cidade: "Natal", endereco: "Rua Dos Potiguares, 2592, Lagoa Nova - Natal/RN", valor: 524990, detalhes: "3 quartos (1 suíte), 4 banheiros, 4 vagas, 256m² privativos (416m² totais)", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7731/casa-comercial-3-quartos-lagoa-nova-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-19", ultimaInteracaoProprietario: "2026-07-19", obs: "Terreno de 416m² (450m² segundo o anúncio), potencial para uso comercial (clínicas, escritórios, comércio, alimentação) — vizinho à CEASA, próximo a Av. Capitão-Mor Gouveia, Av. Salgado Filho e BR-101. Documentação em fase de inventário extrajudicial. Pet friendly." }
   ],
   historico: {
@@ -645,19 +653,17 @@ const DATA = {
     notaDivergencia: "✅ Comissão de vendas de 2021 revisada e confirmada com Thúlio: R$ 95.746,83 (a planilha original tinha R$ 83.746,83, que não incluía a venda do Edifício Ubatuba)."
   },
   agendaHoje: [
-    { hora: "10:00", titulo: "Visita Diana Rêgo — Porto Arena, unidade 607", local: "Cód. 5485 — Porto Arena, Candelária" }
-  ],
-  agendaAmanha: [
     { hora: "15:00", titulo: "Captação Locação — Estrela do Atlântico (2402-A)", local: "Cliente Natasha" },
     { hora: "16:00", titulo: "Visita Madson (cliente Iara e Denis)", local: "Cód. 10627 — Califórnia Gardens, Nova Parnamirim" }
   ],
+  agendaAmanha: [],
   agendaProximos: [],
   lembretes: [
     { texto: "Falar com Cláudia Montenegro (Natal Brisa)", dataFmt: "06/07", hora: "", relacionado: "Cláudia Montenegro", quando: "Atrasado" },
     { texto: "Falar com Taciana (Smile Village - Indicação Anísio)", dataFmt: "13/07", hora: "", relacionado: "Taciana", quando: "Atrasado" },
     { texto: "Ativar clientes vendedores antigos", dataFmt: "13/07", hora: "", relacionado: "Clientes vendedores antigos", quando: "Atrasado" },
-    { texto: "Falar com Amarildo sobre feedback do imóvel (opção enviada por Antônio Alves Pereira)", dataFmt: "20/07", hora: "", relacionado: "Amarildo Jorge de Morais Costa", quando: "Futuro" },
-    { texto: "Contatar Diana Rêgo para saber se ela combinou a nova visita com a arquiteta (Porto Arena, Cód. 5485)", dataFmt: "20/07", hora: "11:00", relacionado: "Diana Rêgo", quando: "Futuro" },
+    { texto: "Falar com Amarildo sobre feedback do imóvel (opção enviada por Antônio Alves Pereira)", dataFmt: "20/07", hora: "", relacionado: "Amarildo Jorge de Morais Costa", quando: "Hoje" },
+    { texto: "Contatar Diana Rêgo para saber se ela combinou a nova visita com a arquiteta (Porto Arena, Cód. 5485)", dataFmt: "20/07", hora: "11:00", relacionado: "Diana Rêgo", quando: "Hoje" },
     { texto: "Retomar contato com Daianne — cliente estava de viagem, ver Candelária/Lagoa Nova até R$630 mil", dataFmt: "01/08", hora: "", relacionado: "Daianne", quando: "Futuro" },
     { texto: "Ligação de retomada: apartamento no Bosque Tirol — tel. (84) 98820-2035", dataFmt: "28/08", hora: "", relacionado: "Amarildo Jorge de Morais Costa", quando: "Futuro" },
     { texto: "Falar com Filipe Ideli sobre chegada da irmã e procura de apartamento em Tirol ou Petrópolis", dataFmt: "30/09", hora: "", relacionado: "Filipe Ideli", quando: "Futuro" }
@@ -666,12 +672,14 @@ const DATA = {
     lista: [
       { protocolo: "IND-TR-2026-0002", imovel: "Estrela do Atlântico", indicador: "Jozimar Alves de Lima Júnior", proprietario: "Natasha Ferreira", status: "Registrada", valorDevido: 0 },
       { protocolo: "IND-TR-2026-0004", imovel: "Califórnia Gardens (Cód. 10627)", indicador: "Nisia Raquel Gadelha de Lima", proprietario: "Michelle", status: "Captada", valorDevido: 0, vinculadoId: 18 },
-      { protocolo: "IND-TR-2026-0005", imovel: "Portamaris", indicador: "Klevisson Ranniere Meira de Araújo", proprietario: "Kris Suenir Meira de Araújo", status: "Registrada", valorDevido: 0, vinculadoId: 19 }
+      { protocolo: "IND-TR-2026-0005", imovel: "Portamaris", indicador: "Klevisson Ranniere Meira de Araújo", proprietario: "Kris Suenir Meira de Araújo", status: "Registrada", valorDevido: 0, vinculadoId: 19 },
+      { protocolo: "IND-TR-2026-0003", imovel: "João Mendonça 601", indicador: "Maria Lila O Rego", proprietario: "Thulio Jose", status: "Registrada", valorDevido: 0, vinculadoId: 20 }
     ],
     indicadoresLista: [
       { nome: "Jozimar Alves de Lima Júnior", telefone: "84987531523", status: "Ativo" },
       { nome: "Nisia Raquel Gadelha de Lima", telefone: "84998918516", status: "Ativo" },
-      { nome: "Klevisson Ranniere Meira de Araújo", telefone: "84996204433", status: "Ativo" }
+      { nome: "Klevisson Ranniere Meira de Araújo", telefone: "84996204433", status: "Ativo" },
+      { nome: "Maria Lila O Rego", telefone: "84988914333", status: "Ativo" }
     ]
   },
   logAtividades: [
@@ -700,6 +708,7 @@ const DATA = {
     { data: "18/07/2026", lead: "Natasha (Estrela do Atlântico - 2402 A)", tipo: "Outro", resumo: "Captação de locação agendada para segunda-feira, 20/07 às 15h, no Edifício Estrela do Atlântico, unidade 2402-A. Cliente: Natasha." },
     { data: "18/07/2026", lead: "Diana Rêgo", tipo: "Novo Lead", resumo: "Novo lead cadastrado (Relacionamento): busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. Temperatura quente." },
     { data: "18/07/2026", lead: "Cód. 10627 (Califórnia Gardens)", tipo: "Outro", resumo: "Visita agendada para segunda-feira, 20/07 às 16h, no Condomínio Califórnia Gardens (Cód. 10627, Nova Parnamirim/Parnamirim), em parceria com o corretor Madson Oliveira. Clientes do Madson: Iara e Denis." },
+    { data: "18/07/2026", lead: "João Mendonça 601", tipo: "Outro", resumo: "Indicação Conecta TR (protocolo IND-TR-2026-0003, indicador Maria Lila O Rego) vinculada a novo imóvel rascunho (ID 20) em Imóveis — captação ainda não confirmada. Atenção: nome bate com venda já paga 'JOÃO MENDONÇA' (Victor e Monaira, R$380.000) na Tabela de Negociações — confirmar com Thúlio se é o mesmo imóvel antes de considerar bônus ao indicador." },
     { data: "18/07/2026", lead: "Kamylla Gadelha", tipo: "Outro", resumo: "Cliente pediu que Thúlio entre em contato diretamente com a mãe dela (em vez da 2ª visita conjunta antes combinada)." },
     { data: "18/07/2026", lead: "Amarildo Jorge de Morais Costa", tipo: "Outro", resumo: "Foi enviada ao cliente uma opção de imóvel do proprietário/parceiro Antônio Alves Pereira. Aguardando feedback do cliente sobre o imóvel." },
     { data: "19/07/2026", lead: "Diana Rêgo", tipo: "Visita Agendada", resumo: "Visita agendada para hoje (19/07) às 10h, no Porto Arena (Cód. 5485, Candelária), unidade 607." },
