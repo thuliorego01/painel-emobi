@@ -167,6 +167,10 @@
   .lead-card-clickable:hover { box-shadow: 0 3px 12px rgba(18,22,14,0.10); border-color: var(--brand-gold); }
   .lead-card-clickable:focus-visible { outline: 2px solid var(--brand-gold); outline-offset: 2px; }
   .lead-card-hint { font-size: var(--fs-2xs); color: #B9BEB2; margin-top: 6px; }
+  .lead-line3 { font-size: var(--fs-2xs); color: var(--muted); margin-top: 6px; padding-top: 6px; border-top: 1px dashed #E9EBE4; }
+  .lead-line3 b { color: var(--brand-dark2); }
+  .lead-line3 .sep { margin: 0 6px; color: #C7CBC0; }
+  .lead-actions { display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin-top: 8px; }
 
   .inativos-toggle {
     display:flex; align-items:center; gap:8px; cursor:pointer; user-select:none;
@@ -436,11 +440,11 @@
 
   <div class="tabs-nav" id="tabsNav" role="tablist" aria-label="Seções do painel">
     <button class="tab-btn" data-tab="pipeline" role="tab" aria-controls="panel-pipeline">🧭 Pipeline</button>
+    <button class="tab-btn" data-tab="bicomercial" role="tab" aria-controls="panel-bicomercial">📊 BI Comercial</button>
     <button class="tab-btn" data-tab="imoveis" role="tab" aria-controls="panel-imoveis">🏠 Imóveis</button>
     <button class="tab-btn" data-tab="agenda" role="tab" aria-controls="panel-agenda">📅 Agenda</button>
     <button class="tab-btn" data-tab="conectatr" role="tab" aria-controls="panel-conectatr">🤝 Conecta TR</button>
     <button class="tab-btn" data-tab="faturamento" role="tab" aria-controls="panel-faturamento">💰 Faturamento</button>
-    <button class="tab-btn" data-tab="historico" role="tab" aria-controls="panel-historico">📚 Histórico</button>
     <button class="tab-btn" data-tab="lembretes" role="tab" aria-controls="panel-lembretes">🔔 Lembretes</button>
   </div>
 
@@ -570,34 +574,15 @@
   <div class="tab-panel" data-tab="pipeline" id="panel-pipeline" role="tabpanel">
     <div class="grid2">
       <div>
-        <div class="section-title"><span class="dot" aria-hidden="true"></span>Pipeline de Leads (CRM)</div>
-        <div class="card">
-          <h3>🔻 Funil por Fase</h3>
-          <div id="funilList"></div>
-        </div>
-        <div class="card" style="margin-top:18px;">
-          <h3>🧭 Leads por Origem</h3>
-          <div id="origemList"></div>
-        </div>
-        <div class="card" style="margin-top:18px;">
-          <h3>📊 Conversão entre Fases</h3>
-          <div id="amostraNota" class="amostra-nota"></div>
-          <div class="table-scroll">
-          <table class="conv-table">
-            <thead><tr><th>Fase</th><th>Chegaram</th><th>Conversão p/ próxima</th></tr></thead>
-            <tbody id="conversaoTabela"></tbody>
-          </table>
-          </div>
-        </div>
-      </div>
-      <div>
         <div class="section-title"><span class="dot" aria-hidden="true"></span>Atenção Hoje</div>
         <div class="card" id="alertCard"></div>
         <div class="card" style="margin-top:18px;">
           <h3>🔥 Cadência por Temperatura — Reativação</h3>
           <div id="reativacaoCard"></div>
         </div>
-        <div class="section-title" style="margin-top:18px;"><span class="dot" aria-hidden="true"></span>Leads Ativos</div>
+      </div>
+      <div>
+        <div class="section-title"><span class="dot" aria-hidden="true"></span>Leads Ativos</div>
         <div class="card" id="leadsCard"></div>
         <div class="inativos-toggle" id="inativosToggle" role="button" tabindex="0" aria-expanded="false">
           <span class="chev" aria-hidden="true">▶</span> <span id="inativosToggleLabel">Leads Inativos</span>
@@ -609,13 +594,37 @@
     </div>
   </div>
 
-  <div class="tab-panel" data-tab="lembretes" id="panel-lembretes" role="tabpanel">
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>🔔 Lembretes</div>
-    <div class="card" id="lembretesCard"></div>
-  </div>
-
-  <div class="tab-panel" data-tab="historico" id="panel-historico" role="tabpanel">
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>📚 Histórico de Negociações (2020-2026)</div>
+  <div class="tab-panel" data-tab="bicomercial" id="panel-bicomercial" role="tabpanel">
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>📊 BI Comercial — Pipeline &amp; Captação</div>
+    <div class="grid2">
+      <div>
+        <div class="card">
+          <h3>🔻 Funil por Fase</h3>
+          <div id="funilList"></div>
+        </div>
+        <div class="card" style="margin-top:18px;">
+          <h3>🧭 Leads por Origem</h3>
+          <div id="origemList"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>📊 Conversão entre Fases</h3>
+          <div id="amostraNota" class="amostra-nota"></div>
+          <div class="table-scroll">
+          <table class="conv-table">
+            <thead><tr><th>Fase</th><th>Chegaram</th><th>Conversão p/ próxima</th></tr></thead>
+            <tbody id="conversaoTabela"></tbody>
+          </table>
+          </div>
+        </div>
+        <div class="card" style="margin-top:18px;">
+          <h3>🏠 Funil de Captação por Status</h3>
+          <div id="captacaoFunilResumo" class="followup-resumo"></div>
+        </div>
+      </div>
+    </div>
+    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>📚 Histórico de Negociações (2020-2026)</div>
     <div id="historicoNotas"></div>
     <div class="grid2" style="margin-top:10px;">
       <div class="card">
@@ -638,13 +647,14 @@
     </div>
   </div>
 
+  <div class="tab-panel" data-tab="lembretes" id="panel-lembretes" role="tabpanel">
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>🔔 Lembretes</div>
+    <div class="card" id="lembretesCard"></div>
+  </div>
+
   <div class="tab-panel" data-tab="imoveis" id="panel-imoveis" role="tabpanel">
     <div class="section-title"><span class="dot" aria-hidden="true"></span>🏠 Imóveis Captados</div>
     <div id="followupResumo" class="followup-resumo"></div>
-    <div class="card" style="margin-bottom:18px;">
-      <h3>📊 Funil de Captação por Status</h3>
-      <div id="captacaoFunilResumo" class="followup-resumo"></div>
-    </div>
     <div class="card" id="imoveisCard"></div>
   </div>
 
@@ -711,7 +721,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-21T07:13:00-03:00",
+  ultimaAtualizacao: "2026-07-21T07:32:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -1493,10 +1503,13 @@ function renderLeadCard(l, container) {
         l.imoveisCompativeis.map(c => `<span class="match-chip zero">${c}</span>`).join('') + `</div>`;
     }
   }
+  function truncar(txt, max) {
+    if (!txt) return '';
+    return txt.length > max ? txt.slice(0, max).trim() + '…' : txt;
+  }
   const ultimaAtiv = getUltimaAtividade(l.nome);
-  const ultimaAtivHtml = ultimaAtiv
-    ? `<b>Última atividade (${ultimaAtiv.data}):</b> ${ultimaAtiv.resumo}`
-    : (l.obs || '');
+  const ultimaAtivTxt = ultimaAtiv ? `${ultimaAtiv.data} — ${truncar(ultimaAtiv.resumo, 70)}` : truncar(l.obs, 70) || '—';
+  const proximaAcaoTxt = truncar(l.proximaAcao, 60) || '—';
   const card = document.createElement('div');
   card.className = 'lead-card lead-card-clickable';
   card.dataset.leadNome = l.nome;
@@ -1505,19 +1518,17 @@ function renderLeadCard(l, container) {
   card.innerHTML = `
     <div class="lead-top">
       <span class="lead-name">${l.nome}</span>
-      <span class="badge ${badgeClass}">${l.status}</span>
+      <span><span class="temp ${tempClass}">${l.temperatura}</span> <span class="badge ${badgeClass}">${l.status}</span></span>
     </div>
     <div class="lead-meta">
       <span>${l.fase}</span>
-      <span class="temp ${tempClass}">${l.temperatura}</span>
       <span>Valor: <b>${valorTxt}</b></span>
       <span>Comissão prevista: <b>${comissaoTxt}</b></span>
       ${l.origem ? '<span>Origem: <b>' + l.origem + '</b></span>' : ''}
     </div>
-    <div class="lead-meta" style="margin-top:4px;">${ultimaAtivHtml}</div>
+    <div class="lead-line3"><b>Última:</b> ${ultimaAtivTxt}<span class="sep">·</span><b>Próxima ação:</b> ${proximaAcaoTxt}</div>
     ${matchHtml}
-    <div>${waHtml}${confirmHtml}${reativarHtml}</div>
-    <div class="lead-card-hint">👆 Clique para ver o histórico completo</div>`;
+    <div class="lead-actions">${waHtml}${confirmHtml}${reativarHtml}<button type="button" class="btn-abrir-cliente lead-open-btn" data-lead="${l.nome}">👤 Abrir Lead</button></div>`;
   container.appendChild(card);
 }
 
@@ -1593,12 +1604,18 @@ if (leadsInativosArr.length === 0) {
 
   document.querySelectorAll('.lead-card-clickable').forEach(card => {
     card.addEventListener('click', (e) => {
-      if (e.target.closest('a')) return; // não abre modal se clicou num link de ação
+      if (e.target.closest('a') || e.target.closest('button')) return; // não abre modal se clicou num link/botão de ação
       abrirHistorico(card.dataset.leadNome);
     });
     card.addEventListener('keydown', (e) => {
-      if (e.target.closest('a')) return;
+      if (e.target.closest('a') || e.target.closest('button')) return;
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirHistorico(card.dataset.leadNome); }
+    });
+  });
+  document.querySelectorAll('.lead-open-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      abrirHistorico(btn.dataset.lead);
     });
   });
   closeBtn.addEventListener('click', fecharModal);
