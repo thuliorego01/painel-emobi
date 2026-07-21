@@ -440,12 +440,12 @@
 
   <div class="tabs-nav" id="tabsNav" role="tablist" aria-label="Seções do painel">
     <button class="tab-btn" data-tab="pipeline" role="tab" aria-controls="panel-pipeline">🧭 Pipeline</button>
-    <button class="tab-btn" data-tab="bicomercial" role="tab" aria-controls="panel-bicomercial">📊 BI Comercial</button>
-    <button class="tab-btn" data-tab="imoveis" role="tab" aria-controls="panel-imoveis">🏠 Imóveis</button>
     <button class="tab-btn" data-tab="agenda" role="tab" aria-controls="panel-agenda">📅 Agenda</button>
-    <button class="tab-btn" data-tab="conectatr" role="tab" aria-controls="panel-conectatr">🤝 Conecta TR</button>
-    <button class="tab-btn" data-tab="faturamento" role="tab" aria-controls="panel-faturamento">💰 Faturamento</button>
+    <button class="tab-btn" data-tab="imoveis" role="tab" aria-controls="panel-imoveis">🏠 Imóveis</button>
     <button class="tab-btn" data-tab="lembretes" role="tab" aria-controls="panel-lembretes">🔔 Lembretes</button>
+    <button class="tab-btn" data-tab="bicomercial" role="tab" aria-controls="panel-bicomercial">📊 BI Comercial</button>
+    <button class="tab-btn" data-tab="faturamento" role="tab" aria-controls="panel-faturamento">💰 Faturamento</button>
+    <button class="tab-btn" data-tab="conectatr" role="tab" aria-controls="panel-conectatr">🤝 Conecta TR</button>
   </div>
 
   <div class="tab-panel" data-tab="agenda" id="panel-agenda" role="tabpanel">
@@ -721,7 +721,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-21T07:32:00-03:00",
+  ultimaAtualizacao: "2026-07-21T07:41:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -1528,7 +1528,8 @@ function renderLeadCard(l, container) {
     </div>
     <div class="lead-line3"><b>Última:</b> ${ultimaAtivTxt}<span class="sep">·</span><b>Próxima ação:</b> ${proximaAcaoTxt}</div>
     ${matchHtml}
-    <div class="lead-actions">${waHtml}${confirmHtml}${reativarHtml}<button type="button" class="btn-abrir-cliente lead-open-btn" data-lead="${l.nome}">👤 Abrir Lead</button></div>`;
+    <div class="lead-actions">${waHtml}${confirmHtml}${reativarHtml}</div>
+    <div class="lead-card-hint">👆 Clique para ver o histórico completo</div>`;
   container.appendChild(card);
 }
 
@@ -1604,18 +1605,12 @@ if (leadsInativosArr.length === 0) {
 
   document.querySelectorAll('.lead-card-clickable').forEach(card => {
     card.addEventListener('click', (e) => {
-      if (e.target.closest('a') || e.target.closest('button')) return; // não abre modal se clicou num link/botão de ação
+      if (e.target.closest('a')) return; // não abre modal se clicou num link de ação
       abrirHistorico(card.dataset.leadNome);
     });
     card.addEventListener('keydown', (e) => {
-      if (e.target.closest('a') || e.target.closest('button')) return;
+      if (e.target.closest('a')) return;
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirHistorico(card.dataset.leadNome); }
-    });
-  });
-  document.querySelectorAll('.lead-open-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      abrirHistorico(btn.dataset.lead);
     });
   });
   closeBtn.addEventListener('click', fecharModal);
