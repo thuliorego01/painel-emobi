@@ -597,7 +597,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-20T21:26:00-03:00",
+  ultimaAtualizacao: "2026-07-20T21:50:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -1100,6 +1100,12 @@ const leadsCard = document.getElementById('leadsCard');
 const leadsInativosCard = document.getElementById('leadsInativosCard');
 const FASES_INATIVAS = ['Inativo', 'Fechado Ganho', 'Fechado Perdido'];
 
+function getUltimaAtividade(nome) {
+  const itens = (DATA.logAtividades || []).filter(a => a.lead === nome);
+  if (itens.length === 0) return null;
+  return itens[itens.length - 1];
+}
+
 function renderLeadCard(l, container) {
   const badgeClass = l.status === 'Atrasado' ? 'atrasado' : (l.status === 'Em dia' ? 'emdia' : 'novo');
   const tempClass = l.temperatura === 'Quente' ? 'quente' : (l.temperatura === 'Morno' ? 'morno' : 'frio');
@@ -1135,6 +1141,10 @@ function renderLeadCard(l, container) {
         l.imoveisCompativeis.map(c => `<span class="match-chip zero">${c}</span>`).join('') + `</div>`;
     }
   }
+  const ultimaAtiv = getUltimaAtividade(l.nome);
+  const ultimaAtivHtml = ultimaAtiv
+    ? `<b>Última atividade (${ultimaAtiv.data}):</b> ${ultimaAtiv.resumo}`
+    : (l.obs || '');
   const card = document.createElement('div');
   card.className = 'lead-card lead-card-clickable';
   card.dataset.leadNome = l.nome;
@@ -1152,7 +1162,7 @@ function renderLeadCard(l, container) {
       <span>Comissão prevista: <b>${comissaoTxt}</b></span>
       ${l.origem ? '<span>Origem: <b>' + l.origem + '</b></span>' : ''}
     </div>
-    <div class="lead-meta" style="margin-top:4px;">${l.obs || ''}</div>
+    <div class="lead-meta" style="margin-top:4px;">${ultimaAtivHtml}</div>
     ${matchHtml}
     <div>${waHtml}${confirmHtml}${reativarHtml}</div>
     <div class="lead-card-hint">👆 Clique para ver o histórico completo</div>`;
