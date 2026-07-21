@@ -711,7 +711,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-21T07:06:00-03:00",
+  ultimaAtualizacao: "2026-07-21T07:13:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -1009,14 +1009,14 @@ function computeAcoesUrgentes() {
     grupo([
       { icon: '🏠', label: 'Imóveis Ativos', value: imoveisAtivos },
       { icon: '🤝', label: 'Leads Ativos', value: leadsAtivosCount },
+      { icon: '📋', label: 'Captações em Andamento', value: captacoesAndamento },
+      { icon: '🏆', label: 'Fechamentos no Mês', value: fechamentosMes },
     ]) +
     grupo([
       { icon: '💰', label: 'Pipeline (Provável)', value: brl(valorPipeline), hint: 'Soma do valor dos leads ativos' },
       { icon: '🏘️', label: 'V.G.V.', value: brl(valorVGV), hint: 'Imóveis disponíveis na carteira' },
       { icon: '💵', label: 'V.G.C.', value: brl(vgcDireto), hint: 'Direto (70%) · Parceiro (35%): ' + brl(vgcParceria) },
-    ]) +
-    simples({ icon: '🏆', label: 'Fechamentos no Mês', value: fechamentosMes }) +
-    simples({ icon: '📋', label: 'Captações em Andamento', value: captacoesAndamento });
+    ]);
 })();
 
 // ---- Próxima Ação sugerida (Home) ----
