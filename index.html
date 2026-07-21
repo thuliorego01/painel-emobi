@@ -390,6 +390,18 @@
   }
   .quick-copy-btn:hover { background: var(--brand-gold-light); }
   .quick-copy-msg { font-size:var(--fs-xs); color:#1F7A4D; font-weight:700; margin-top:6px; height:16px; }
+
+  .kpi-group {
+    background: #fff; border-radius: 16px; padding: 14px 16px; box-shadow: 0 2px 10px rgba(18,22,14,0.06);
+    border: 1px solid #E9EBE4; display:flex; flex-direction:column; gap:0;
+  }
+  .kpi-group-item { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:7px 0; }
+  .kpi-group-item:not(:last-child) { border-bottom:1px dashed #EEF1EA; }
+  .kpi-group-label { font-size:var(--fs-xs); color:var(--muted); font-weight:600; display:flex; align-items:center; gap:6px; }
+  .kpi-group-label .icon { font-size:15px; }
+  .kpi-group-vals { text-align:right; }
+  .kpi-group-value { font-size:15px; font-weight:800; color: var(--brand-dark2); }
+  .kpi-group-hint { font-size:var(--fs-2xs); color:#8A9186; margin-top:1px; }
 </style>
 </head>
 <body>
@@ -699,7 +711,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-21T07:03:00-03:00",
+  ultimaAtualizacao: "2026-07-21T07:06:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -974,22 +986,37 @@ function computeAcoesUrgentes() {
   }).length;
   const captacoesAndamento = (DATA.imoveis || []).filter(im => im.status === 'Em Captação').length;
 
-  const kpis = [
-    { icon: '🏠', label: 'Imóveis Ativos', value: imoveisAtivos },
-    { icon: '🤝', label: 'Leads Ativos', value: leadsAtivosCount },
-    { icon: '💰', label: 'Pipeline (Provável)', value: brl(valorPipeline), hint: 'Soma do valor dos leads ativos' },
-    { icon: '🏘️', label: 'V.G.V.', value: brl(valorVGV), hint: 'Imóveis disponíveis na carteira' },
-    { icon: '💵', label: 'V.G.C.', value: brl(vgcDireto), hint: 'Direto (70%). Via parceiro (35%): ' + brl(vgcParceria) },
-    { icon: '🏆', label: 'Fechamentos no Mês', value: fechamentosMes },
-    { icon: '📋', label: 'Captações em Andamento', value: captacoesAndamento },
-  ];
-  el.innerHTML = kpis.map(k => `
-    <div class="kpi">
+  function grupo(itens) {
+    return `<div class="kpi-group">${itens.map(it => `
+      <div class="kpi-group-item">
+        <div class="kpi-group-label"><span class="icon">${it.icon}</span> ${it.label}</div>
+        <div class="kpi-group-vals">
+          <div class="kpi-group-value">${it.value}</div>
+          ${it.hint ? `<div class="kpi-group-hint">${it.hint}</div>` : ''}
+        </div>
+      </div>`).join('')}</div>`;
+  }
+  function simples(k) {
+    return `<div class="kpi">
       <div class="icon">${k.icon}</div>
       <div class="label">${k.label}</div>
       <div class="value">${k.value}</div>
       ${k.hint ? `<div class="hint">${k.hint}</div>` : ''}
-    </div>`).join('');
+    </div>`;
+  }
+
+  el.innerHTML =
+    grupo([
+      { icon: '🏠', label: 'Imóveis Ativos', value: imoveisAtivos },
+      { icon: '🤝', label: 'Leads Ativos', value: leadsAtivosCount },
+    ]) +
+    grupo([
+      { icon: '💰', label: 'Pipeline (Provável)', value: brl(valorPipeline), hint: 'Soma do valor dos leads ativos' },
+      { icon: '🏘️', label: 'V.G.V.', value: brl(valorVGV), hint: 'Imóveis disponíveis na carteira' },
+      { icon: '💵', label: 'V.G.C.', value: brl(vgcDireto), hint: 'Direto (70%) · Parceiro (35%): ' + brl(vgcParceria) },
+    ]) +
+    simples({ icon: '🏆', label: 'Fechamentos no Mês', value: fechamentosMes }) +
+    simples({ icon: '📋', label: 'Captações em Andamento', value: captacoesAndamento });
 })();
 
 // ---- Próxima Ação sugerida (Home) ----
