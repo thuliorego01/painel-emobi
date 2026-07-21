@@ -328,14 +328,6 @@
   .wa-link.reativar:hover { background:#F6D0D0; }
 
   /* ---- Dashboard Executivo (Home) ---- */
-  .quick-action-btn {
-    background: var(--brand-gold); color: var(--brand-dark2); font-weight:800; font-size:var(--fs-sm);
-    border:none; border-radius:12px; padding:10px 18px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2); transition: background .15s ease, transform .1s ease; white-space:nowrap;
-  }
-  .quick-action-btn:hover { background: var(--brand-gold-light); transform: translateY(-1px); }
-  .quick-action-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
-
   .greeting-block { margin: 0 0 16px; padding: 2px 2px 0; }
   .greeting-block .greet-title { font-size: 18px; font-weight: 800; color: var(--brand-dark2); }
   .greeting-block .greet-list { margin-top: 6px; font-size: var(--fs-sm); color: #5C6157; display:flex; flex-wrap:wrap; gap: 6px 16px; }
@@ -344,17 +336,6 @@
   .foco-resumo { display:flex; flex-direction:column; gap:6px; margin-top:8px; }
   .foco-resumo-item { font-size:var(--fs-sm); display:flex; align-items:center; gap:6px; opacity:.95; }
   .foco-resumo-item b { font-weight:800; }
-
-  .proxima-acao-card {
-    background: #fff; border: 1px solid var(--brand-gold-light); border-left: 5px solid var(--brand-gold);
-    border-radius: 16px; padding: 16px 20px; margin-bottom: 18px; display:flex; align-items:center; gap:16px;
-    box-shadow: 0 2px 10px rgba(18,22,14,0.06);
-  }
-  .proxima-acao-card .pa-icon { font-size: 26px; flex-shrink:0; }
-  .proxima-acao-card .pa-label { font-size: var(--fs-2xs); text-transform:uppercase; letter-spacing:1.2px; color: var(--brand-gold-deep); font-weight:800; }
-  .proxima-acao-card .pa-title { font-size: 15px; font-weight:800; color: var(--brand-dark2); margin-top:2px; }
-  .proxima-acao-card .pa-sub { font-size: var(--fs-sm); color: #5C6157; margin-top:2px; }
-  .proxima-acao-card .pa-action { margin-left:auto; flex-shrink:0; }
 
   .compromisso-card {
     display:flex; align-items:center; gap:14px; padding:14px 4px; border-bottom:1px solid #F1F2ED;
@@ -376,24 +357,6 @@
     padding:5px 12px; border-radius:20px; cursor:pointer; white-space:nowrap;
   }
   .btn-abrir-cliente:hover { background:#D2ECDD; }
-
-  .quick-modal-content { max-width: 480px; }
-  .quick-modal-opt {
-    display:block; width:100%; text-align:left; background:#F6F7F2; border:1px solid #E9EBE4; border-radius:12px;
-    padding:14px 16px; margin-bottom:10px; cursor:pointer; font-size:14px; font-weight:700; color: var(--brand-dark2);
-    transition: background .15s ease, border-color .15s ease;
-  }
-  .quick-modal-opt:hover { background:#EFF1E9; border-color: var(--brand-gold); }
-  .quick-template-box {
-    background:#1D2717; color:#E8EBE3; border-radius:12px; padding:14px 16px; font-size:13px; line-height:1.6;
-    white-space:pre-wrap; margin-top:10px; font-family: ui-monospace, monospace;
-  }
-  .quick-copy-btn {
-    margin-top:10px; background: var(--brand-gold); color: var(--brand-dark2); font-weight:800; font-size:13px;
-    border:none; border-radius:10px; padding:9px 16px; cursor:pointer;
-  }
-  .quick-copy-btn:hover { background: var(--brand-gold-light); }
-  .quick-copy-msg { font-size:var(--fs-xs); color:#1F7A4D; font-weight:700; margin-top:6px; height:16px; }
 
   .kpi-group {
     background: #fff; border-radius: 16px; padding: 14px 16px; box-shadow: 0 2px 10px rgba(18,22,14,0.06);
@@ -421,7 +384,6 @@
         <b id="todayDate"></b>
         <div class="sync-info">Dados sincronizados: <b id="syncTimestamp">—</b></div>
       </div>
-      <button class="quick-action-btn" id="quickActionBtn" type="button">➕ Ação Rápida</button>
     </div>
   </div>
 
@@ -430,8 +392,6 @@
   <div class="kpis" id="homeKpis" style="margin-bottom:18px;"></div>
 
   <div class="urgent-banner" id="urgentBanner"></div>
-
-  <div id="proximaAcaoBlock"></div>
 
   <div class="section-title"><span class="dot" aria-hidden="true"></span>🌟 Compromissos de Destaque</div>
   <div class="card" style="margin-bottom:18px;">
@@ -460,25 +420,6 @@
     <div class="section-title"><span class="dot" aria-hidden="true"></span>🗓️ Próximos Compromissos</div>
     <div class="card">
       <div id="agendaProximosList"></div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="quickActionOverlay" role="dialog" aria-modal="true" aria-labelledby="quickActionTitle" tabindex="-1">
-    <div class="modal-content quick-modal-content">
-      <button class="modal-close" id="quickActionClose" aria-label="Fechar">✕</button>
-      <div class="modal-header">
-        <div class="lead-name" id="quickActionTitle" style="font-size:17px;">Ação Rápida</div>
-        <div style="font-size:var(--fs-sm); color:#5C6157; margin-top:4px;">O painel é só leitura — escolha um modelo, copie e cole aqui no chat com o Claude pra eu cadastrar na hora.</div>
-      </div>
-      <div id="quickActionOptions" style="margin-top:14px;">
-        <button class="quick-modal-opt" data-tpl="lead" type="button">🤝 Novo Lead</button>
-        <button class="quick-modal-opt" data-tpl="captacao" type="button">🏠 Nova Captação</button>
-      </div>
-      <div id="quickActionTemplateWrap" style="display:none;">
-        <div class="quick-template-box" id="quickActionTemplateText"></div>
-        <button class="quick-copy-btn" id="quickActionCopyBtn" type="button">📋 Copiar modelo</button>
-        <div class="quick-copy-msg" id="quickActionCopyMsg"></div>
-      </div>
     </div>
   </div>
 
@@ -721,7 +662,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-21T07:52:00-03:00",
+  ultimaAtualizacao: "2026-07-21T08:05:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -1030,68 +971,6 @@ function computeAcoesUrgentes() {
     ]);
 })();
 
-// ---- Próxima Ação sugerida (Home) ----
-(function renderProximaAcao() {
-  const el = document.getElementById('proximaAcaoBlock');
-  if (!el) return;
-  function diasSemContato(dataStr) {
-    const [y, m, d] = dataStr.split('-').map(Number);
-    const dt = new Date(y, m - 1, d);
-    return Math.floor((new Date() - dt) / (1000 * 60 * 60 * 24));
-  }
-  function waHref(telefone, msg) {
-    const digits = String(telefone).replace(/\D/g, '');
-    const withCountry = digits.startsWith('55') ? digits : '55' + digits;
-    return 'https://wa.me/' + withCountry + (msg ? ('?text=' + encodeURIComponent(msg)) : '');
-  }
-  const { leadsReativar, leadsAtrasados } = computeAcoesUrgentes();
-  let alvo = null;
-  if (leadsReativar.length > 0) {
-    alvo = leadsReativar[0];
-  } else if (leadsAtrasados.length > 0) {
-    alvo = leadsAtrasados[0];
-  }
-  if (!alvo) {
-    const hoje = (DATA.agendaHoje || [])[0];
-    const amanha = (DATA.agendaAmanha || [])[0];
-    const compromisso = hoje || amanha;
-    if (compromisso) {
-      el.innerHTML = `
-        <div class="proxima-acao-card">
-          <div class="pa-icon">🏠</div>
-          <div>
-            <div class="pa-label">Próxima Ação</div>
-            <div class="pa-title">${compromisso.titulo}</div>
-            <div class="pa-sub">${hoje ? 'Hoje' : 'Amanhã'} às ${compromisso.hora} — ${compromisso.local || ''}</div>
-          </div>
-        </div>`;
-    } else {
-      el.innerHTML = `
-        <div class="proxima-acao-card">
-          <div class="pa-icon">✅</div>
-          <div>
-            <div class="pa-label">Próxima Ação</div>
-            <div class="pa-title">Tudo em dia</div>
-            <div class="pa-sub">Nenhuma pendência ou compromisso nos próximos dias — bom momento pra prospectar.</div>
-          </div>
-        </div>`;
-    }
-    return;
-  }
-  const diasTxt = alvo.dataProximaAcao ? diasSemContato(alvo.dataProximaAcao) : null;
-  const wa = alvo.telefone ? `<a class="quick-action-btn" style="padding:8px 14px;font-size:13px;" href="${waHref(alvo.telefone)}" target="_blank" rel="noopener">📞 Ligar agora</a>` : '';
-  el.innerHTML = `
-    <div class="proxima-acao-card">
-      <div class="pa-icon">📞</div>
-      <div>
-        <div class="pa-label">Próxima Ação</div>
-        <div class="pa-title">Falar com ${alvo.nome}</div>
-        <div class="pa-sub">${diasTxt !== null && diasTxt > 0 ? 'Cliente aguardando retorno há ' + diasTxt + ' dia' + (diasTxt === 1 ? '' : 's') : (alvo.proximaAcao || 'Follow-up pendente')}</div>
-      </div>
-      <div class="pa-action">${wa}</div>
-    </div>`;
-})();
-
 // ---- Compromissos de Destaque (Home) ----
 (function renderCompromissosDestaque() {
   const el = document.getElementById('compromissosDestaqueList');
@@ -1123,60 +1002,6 @@ function computeAcoesUrgentes() {
       const nome = btn.dataset.lead;
       if (window.abrirHistoricoLead) window.abrirHistoricoLead(nome);
     });
-  });
-})();
-
-// ---- Ação Rápida (modal com templates copiáveis) ----
-(function () {
-  const btn = document.getElementById('quickActionBtn');
-  const overlay = document.getElementById('quickActionOverlay');
-  const closeBtn = document.getElementById('quickActionClose');
-  const optsWrap = document.getElementById('quickActionOptions');
-  const tplWrap = document.getElementById('quickActionTemplateWrap');
-  const tplText = document.getElementById('quickActionTemplateText');
-  const copyBtn = document.getElementById('quickActionCopyBtn');
-  const copyMsg = document.getElementById('quickActionCopyMsg');
-  if (!btn || !overlay) return;
-
-  const templates = {
-    lead: 'Novo lead:\nNome:\nTelefone:\nOrigem (CRM Emobi / Relacionamento / Indicação):\nInteresse (tipo de imóvel, bairro, valor):\nTemperatura (Quente/Morno/Frio):',
-    captacao: 'Adicionar imóvel:\nLink do site (se houver):\nProprietário:\nTelefone:\nValor:\nDetalhes (quartos/m²):',
-  };
-
-  function abrir() {
-    optsWrap.style.display = '';
-    tplWrap.style.display = 'none';
-    copyMsg.textContent = '';
-    overlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    closeBtn.focus();
-  }
-  function fechar() {
-    overlay.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  btn.addEventListener('click', abrir);
-  closeBtn.addEventListener('click', fechar);
-  overlay.addEventListener('click', (e) => { if (e.target === overlay) fechar(); });
-
-  optsWrap.querySelectorAll('.quick-modal-opt').forEach(opt => {
-    opt.addEventListener('click', () => {
-      tplText.textContent = templates[opt.dataset.tpl] || '';
-      optsWrap.style.display = 'none';
-      tplWrap.style.display = '';
-      copyMsg.textContent = '';
-    });
-  });
-
-  copyBtn.addEventListener('click', () => {
-    const texto = tplText.textContent;
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(texto).then(() => {
-        copyMsg.textContent = '✅ Copiado! Cole no chat com o Claude.';
-      }).catch(() => { copyMsg.textContent = 'Não foi possível copiar automaticamente — selecione o texto acima.'; });
-    } else {
-      copyMsg.textContent = 'Selecione o texto acima e copie manualmente.';
-    }
   });
 })();
 
