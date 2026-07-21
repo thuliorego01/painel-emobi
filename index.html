@@ -699,7 +699,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-20T22:35:00-03:00",
+  ultimaAtualizacao: "2026-07-21T07:03:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -961,6 +961,10 @@ function computeAcoesUrgentes() {
   const imoveisAtivos = (DATA.imoveis || []).filter(im => im.status === 'Disponível' || im.status === 'Reservado').length;
   const leadsAtivosCount = (DATA.leads || []).filter(l => !fasesInativasLocal.includes(l.fase)).length;
   const valorPipeline = (DATA.leads || []).filter(l => !fasesInativasLocal.includes(l.fase)).reduce((acc, l) => acc + (l.valor || 0), 0);
+  const valorVGV = (DATA.imoveis || []).filter(im => im.status === 'Disponível').reduce((acc, im) => acc + (im.valor || 0), 0);
+  const comissaoTotalPct = 0.05; // comissão padrão paga pelo vendedor
+  const vgcDireto = valorVGV * comissaoTotalPct * 0.70; // venda direta (comprador + vendedor próprios): fica com 70% dos 5%
+  const vgcParceria = valorVGV * comissaoTotalPct * 0.35; // venda com corretor parceiro: fica com 35% dos 5%
   const hojeD = new Date();
   const fechamentosMes = (DATA.leads || []).filter(l => {
     if (l.fase !== 'Fechado Ganho') return false;
@@ -973,7 +977,9 @@ function computeAcoesUrgentes() {
   const kpis = [
     { icon: '🏠', label: 'Imóveis Ativos', value: imoveisAtivos },
     { icon: '🤝', label: 'Leads Ativos', value: leadsAtivosCount },
-    { icon: '💰', label: 'Valor do Pipeline', value: brl(valorPipeline) },
+    { icon: '💰', label: 'Pipeline (Provável)', value: brl(valorPipeline), hint: 'Soma do valor dos leads ativos' },
+    { icon: '🏘️', label: 'V.G.V.', value: brl(valorVGV), hint: 'Imóveis disponíveis na carteira' },
+    { icon: '💵', label: 'V.G.C.', value: brl(vgcDireto), hint: 'Direto (70%). Via parceiro (35%): ' + brl(vgcParceria) },
     { icon: '🏆', label: 'Fechamentos no Mês', value: fechamentosMes },
     { icon: '📋', label: 'Captações em Andamento', value: captacoesAndamento },
   ];
@@ -982,6 +988,7 @@ function computeAcoesUrgentes() {
       <div class="icon">${k.icon}</div>
       <div class="label">${k.label}</div>
       <div class="value">${k.value}</div>
+      ${k.hint ? `<div class="hint">${k.hint}</div>` : ''}
     </div>`).join('');
 })();
 
