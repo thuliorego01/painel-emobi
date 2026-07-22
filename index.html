@@ -662,7 +662,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-21T08:38:00-03:00",
+  ultimaAtualizacao: "2026-07-21T09:05:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -701,7 +701,7 @@ const DATA = {
     { nome: "Maria Eduarda Revorêdo", telefone: "84981761829", origem: "CRM Emobi", fase: "Qualificado", maiorFaseIndex: 3, temperatura: "Morno", valor: 380000, comissaoPrevista: null, proximaAcao: "Agendar visita para a casa em condomínio (referência Cód. 9723)", dataProximaAcao: "2026-07-23", status: "Em dia", obs: "Referência de estilo: Cód. 9723 — casa em condomínio 3 quartos (1 suíte), 119m², Nova Parnamirim, R$380.000. Follow-up feito em 06/07. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada.", imoveisCompativeis: ["Cód. 10594"] /* Casa em Condomínio, Extremoz */, statusReativacao: "🟢 Em dia", interesse: "casa em condomínio em Nova Parnamirim" },
     { nome: "Kamylla Gadelha", telefone: "84999020411", origem: "CRM Emobi", fase: "Visita Agendada", maiorFaseIndex: 5, temperatura: "Morno", valor: 500000, comissaoPrevista: null, proximaAcao: "Entrar em contato com a mãe da cliente", dataProximaAcao: "2026-07-21", status: "Em dia", obs: "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente pediu que Thúlio entre em contato diretamente com a mãe dela, em vez da 2ª visita conjunta antes combinada. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada.", imoveisCompativeis: [], visitaResumo: null, visitaDetalhe: "pra você trazer sua mãe dessa vez", statusReativacao: "🟢 Em dia", interesse: "casa em Capim Macio" },
     { nome: "Daianne", telefone: "84988351048", origem: "CRM Emobi", fase: "Qualificado", maiorFaseIndex: 3, temperatura: "Frio", valor: 630000, comissaoPrevista: null, proximaAcao: "Retomar contato após viagem (fim do mês)", dataProximaAcao: "2026-08-01", status: "Em dia", obs: "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08.", imoveisCompativeis: ["Cód. 9272", "Cód. 8024", "Cód. 5485", "Cód. 7560", "Cód. 10567", "Cód. 7454"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária ou Lagoa Nova" },
-    { nome: "Diana Rêgo", telefone: "84987706107", origem: "Relacionamento", fase: "Visita Realizada", maiorFaseIndex: 5, temperatura: "Quente", valor: 600000, comissaoPrevista: null, proximaAcao: "2ª visita agendada — apartamento 607, Porto Arena (parceria com corretor externo)", dataProximaAcao: "2026-07-21", status: "Em dia", obs: "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Cód. 5485 do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607).", imoveisCompativeis: ["Cód. 5485"], visitaResumo: null, visitaDetalhe: null, statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária, Lagoa Nova ou Tirol" },
+    { nome: "Diana Rêgo", telefone: "84987706107", origem: "Relacionamento", fase: "Visita Realizada", maiorFaseIndex: 5, temperatura: "Quente", valor: 600000, comissaoPrevista: null, proximaAcao: "Conferir se ela vai puxar a proposta — apartamento 607, Porto Arena", dataProximaAcao: "2026-07-22", status: "Em dia", obs: "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Cód. 5485 do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta.", imoveisCompativeis: ["Cód. 5485"], visitaResumo: null, visitaDetalhe: null, statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária, Lagoa Nova ou Tirol" },
     { nome: "Heber Lima", telefone: "84981319709", origem: "Instagram", fase: "Novo Lead", maiorFaseIndex: 1, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Buscar apartamento em Tirol/Barro Vermelho (elevador, área de serviço, garagem livre) e retomar contato", dataProximaAcao: "2026-07-23", status: "Em dia", obs: "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre.", imoveisCompativeis: ["Cód. 9995"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Tirol ou Barro Vermelho, mín. 80m²" }
   ],
   imoveis: [
@@ -748,15 +748,13 @@ const DATA = {
     notaDivergencia: "✅ Comissão de vendas de 2021 revisada e confirmada com Thúlio: R$ 95.746,83 (a planilha original tinha R$ 83.746,83, que não incluía a venda do Edifício Ubatuba)."
   },
   agendaHoje: [],
-  agendaAmanha: [
-    { hora: "17:00", titulo: "2ª Visita — Diana Rêgo — Porto Arena (607)", local: "Porto Arena, Candelária - Unidade 607" }
-  ],
+  agendaAmanha: [],
   agendaProximos: [],
   lembretes: [
     { texto: "Falar com Taciana (Smile Village - Indicação Anísio)", dataFmt: "13/07", hora: "", relacionado: "Taciana", quando: "Atrasado" },
     { texto: "Ativar clientes vendedores antigos", dataFmt: "13/07", hora: "", relacionado: "Clientes vendedores antigos", quando: "Atrasado" },
     { texto: "Falar com Amarildo sobre feedback do imóvel (opção enviada por Antônio Alves Pereira)", dataFmt: "20/07", hora: "", relacionado: "Amarildo Jorge de Morais Costa", quando: "Futuro" },
-    { texto: "2ª visita agendada — Diana Rêgo, apartamento 607 do Porto Arena (unidade de corretor parceiro, distinta do Cód. 5485)", dataFmt: "21/07", hora: "17:00", relacionado: "Diana Rêgo", quando: "Futuro" },
+    { texto: "Conferir se Diana Rêgo vai puxar a proposta — apartamento 607, Porto Arena", dataFmt: "22/07", hora: "", relacionado: "Diana Rêgo", quando: "Futuro" },
     { texto: "Retomar contato com Cláudia Montenegro (Natal Brisa)", dataFmt: "27/07", hora: "", relacionado: "Cláudia Montenegro", quando: "Futuro" },
     { texto: "Retomar contato com Daianne — cliente estava de viagem, ver Candelária/Lagoa Nova até R$630 mil", dataFmt: "01/08", hora: "", relacionado: "Daianne", quando: "Futuro" },
     { texto: "Ligação de retomada: apartamento no Bosque Tirol — tel. (84) 98820-2035", dataFmt: "28/08", hora: "", relacionado: "Amarildo Jorge de Morais Costa", quando: "Futuro" },
@@ -815,7 +813,8 @@ const DATA = {
     { data: "20/07/2026", lead: "Cód. 5485 (Porto Arena, Candelária)", tipo: "Outro", resumo: "Correção: Cód. 5485 é sim uma captação própria de Thúlio, restaurado na aba Imóveis. O esclarecimento correto é que a unidade 607 do Porto Arena visitada pela cliente Diana Rêgo é OUTRA unidade, de um corretor parceiro — não é o Cód. 5485 do nosso inventário. Ficha de Diana Rêgo corrigida." },
     { data: "21/07/2026", lead: "Cláudia Montenegro", tipo: "Ligação", resumo: "Contato feito (Natal Brisa). Lembrete pendente concluído — retomar contato agendado para segunda-feira, 27/07." },
     { data: "21/07/2026", lead: "Heber Lima", tipo: "Outro", resumo: "Novo lead cadastrado (Instagram): busca apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. Sem pressa para comprar, mas pediu cadência de contato personalizada de 2 em 2 dias." },
-    { data: "21/07/2026", lead: "Cód. 10645 (Estrela do Atlântico, Ponta Negra)", tipo: "Outro", resumo: "Captação de locação concluída com dados completos do site (aluguel R$3.700/mês, 55m², mobiliado). Indicação do Conecta TR (Jozimar, protocolo IND-TR-2026-0002). Criado o campo 'Tipo de Operação' (Venda/Locação) na aba Imóveis para separar locações do cálculo de V.G.V./V.G.C. do painel. Bonificação combinada com Jozimar: R$200,00 fixos quando o contrato for concretizado (fora do programa padrão do Conecta TR, que não se aplica a locação)." }
+    { data: "21/07/2026", lead: "Cód. 10645 (Estrela do Atlântico, Ponta Negra)", tipo: "Outro", resumo: "Captação de locação concluída com dados completos do site (aluguel R$3.700/mês, 55m², mobiliado). Indicação do Conecta TR (Jozimar, protocolo IND-TR-2026-0002). Criado o campo 'Tipo de Operação' (Venda/Locação) na aba Imóveis para separar locações do cálculo de V.G.V./V.G.C. do painel. Bonificação combinada com Jozimar: R$200,00 fixos quando o contrato for concretizado (fora do programa padrão do Conecta TR, que não se aplica a locação)." },
+    { data: "21/07/2026", lead: "Diana Rêgo", tipo: "Visita", resumo: "2ª visita realizada no apartamento 607 do Porto Arena, acompanhada da arquiteta dela. Cliente provavelmente vai fazer proposta — conferir amanhã (22/07) à tarde." }
   ]
 };
 const isDemo = false;
