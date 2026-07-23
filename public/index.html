@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Painel Emobi Thulio",
+  "schemaVersion": 1,
+  "description": "Painel visual do corretor: agenda de hoje (Google Calendar), meta 2026, comissões pagas/aguardando/previstas, negociações do ano e pipeline de leads reais do CRM."
+}
+</script>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -678,7 +685,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-22T22:29:00-03:00",
+  ultimaAtualizacao: "2026-07-23T07:05:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -744,7 +751,10 @@ const DATA = {
     { nome: "Casa Comercial 3 Quartos Lagoa Nova 256m² (Cód. 7731)", tipo: "Casa Comercial", bairro: "Lagoa Nova", cidade: "Natal", endereco: "Rua Dos Potiguares, 2592, Lagoa Nova - Natal/RN", valor: 524990, detalhes: "3 quartos (1 suíte), 4 banheiros, 4 vagas, 256m² privativos (416m² totais)", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7731/casa-comercial-3-quartos-lagoa-nova-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-19", ultimaInteracaoProprietario: "2026-07-19", obs: "Terreno de 416m² (450m² segundo o anúncio), potencial para uso comercial (clínicas, escritórios, comércio, alimentação) — vizinho à CEASA, próximo a Av. Capitão-Mor Gouveia, Av. Salgado Filho e BR-101. Documentação em fase de inventário extrajudicial. Pet friendly." },
     { nome: "Apartamento 2 Quartos Candelária 50m² (Cód. 10638)", tipo: "Apartamento", bairro: "Candelária", cidade: "Natal", endereco: "Rua Antomar De Brito Freitas, Candelária - Natal/RN", valor: 269990, detalhes: "2 quartos (1 suíte), 2 banheiros, 1 vaga, 50m² privativos", proprietario: "Renato Cássio", telefone: "(84) 99988-5255", link: "https://emobiimobiliaria.com.br/imovel/10638/apartamento-2-quartos-candelaria-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-20", ultimaInteracaoProprietario: "2026-07-20", obs: "Condomínio Mirante dos Eucaliptos. Reformado, parcialmente mobiliado, pronto para morar. Pet friendly. Condomínio R$ 400,00 (água e gás inclusos). IPTU R$ 1.000,00/ano. Próximo à UFRN, Natal Shopping, BR-101 e Av. Prudente de Morais." },
     { nome: "Apartamento 1 Quarto Ponta Negra 55m² (Cód. 10645)", tipo: "Apartamento", tipoOperacao: "Locação", bairro: "Ponta Negra", cidade: "Natal", endereco: "Avenida Deputado Antônio Florêncio De Queiroz, Ponta Negra - Natal/RN", valor: 3700, detalhes: "1 quarto (1 suíte), 2 banheiros, 2 vagas, 55m² privativos, mobiliado, andar alto (acima do 20º), vista mar. Aluguel inclui condomínio, IPTU, água e gás. Condomínio Estrela do Atlântico.", proprietario: "Natasha Ferreira", telefone: "(84) 98871-4374", link: "https://emobiimobiliaria.com.br/imovel/10645/apartamento-1-quarto-ponta-negra-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-20", ultimaInteracaoProprietario: "2026-07-21", obs: "Captação de locação concluída — indicação do Conecta TR (protocolo IND-TR-2026-0002, indicador Jozimar Alves de Lima Júnior). Imóvel de locação NÃO se qualifica para o programa padrão de comissão do Conecta TR — Thúlio vai bonificar o Jozimar com R$200,00 fixos quando o contrato for concretizado." },
-    { nome: "Apartamento 4 Quartos Tirol 240m² (Cód. 10650)", tipo: "Apartamento", tipoOperacao: "Venda", bairro: "Tirol", cidade: "Natal", endereco: "Rua Dom José Tomaz, Tirol - Natal/RN", valor: 749990, detalhes: "4 quartos (3 suítes + escritório reversível p/ 4ª suíte), 5 banheiros, 3 vagas, 240m² privativos", proprietario: "Duarte", telefone: "(84) 99988-0345", link: "https://emobiimobiliaria.com.br/imovel/10650/apartamento-4-quartos-tirol-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-22", ultimaInteracaoProprietario: "2026-07-22", obs: "Residencial Ariane. 1 apartamento por andar, depósito privativo na garagem, área de serviço independente, dependência completa. Condomínio R$ 2.500,00 (água inclusa). IPTU R$ 6.440,08/ano. Captação concluída e publicada hoje (22/07) — proprietário Duarte." }
+    { nome: "Apartamento 4 Quartos Tirol 240m² (Cód. 10650)", tipo: "Apartamento", tipoOperacao: "Venda", bairro: "Tirol", cidade: "Natal", endereco: "Rua Dom José Tomaz, Tirol - Natal/RN", valor: 749990, detalhes: "4 quartos (3 suítes + escritório reversível p/ 4ª suíte), 5 banheiros, 3 vagas, 240m² privativos", proprietario: "Duarte", telefone: "(84) 99988-0345", link: "https://emobiimobiliaria.com.br/imovel/10650/apartamento-4-quartos-tirol-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-22", ultimaInteracaoProprietario: "2026-07-22", obs: "Residencial Ariane. 1 apartamento por andar, depósito privativo na garagem, área de serviço independente, dependência completa. Condomínio R$ 2.500,00 (água inclusa). IPTU R$ 6.440,08/ano. Captação concluída e publicada hoje (22/07) — proprietário Duarte." },
+    { nome: "Condomínio Villaggio Di Roma", tipo: null, bairro: null, cidade: null, endereco: null, valor: null, detalhes: null, proprietario: "Januncio", telefone: "(84) 9983-9625", link: null, status: "Em Captação", pctComissao: null, dataCaptacao: "2026-07-22", ultimaInteracaoProprietario: "2026-07-22", obs: "Originado de indicação do Conecta TR (protocolo IND-TR-2026-0006) — captação ainda em andamento, não confirmada. Indicador (Hudson Bezerra de Brito) pediu sigilo: o proprietário não pode saber que a indicação partiu dele, pode dizer que veio da administradora." },
+    { nome: "Condomínio Bosque dos Pássaros", tipo: null, bairro: null, cidade: null, endereco: null, valor: null, detalhes: null, proprietario: "Jairson", telefone: "(84) 98182-2264", link: null, status: "Em Captação", pctComissao: null, dataCaptacao: "2026-07-23", ultimaInteracaoProprietario: "2026-07-23", obs: "Originado de indicação do Conecta TR (protocolo IND-TR-2026-0007, indicadora Flávia) — captação ainda em andamento, não confirmada. Proprietário está mudando de cidade e se desfazendo do imóvel." },
+    { nome: "Bosque dos Pássaros, casa 09", tipo: null, bairro: null, cidade: null, endereco: null, valor: null, detalhes: null, proprietario: "Emerson", telefone: "(84) 99604-4000", link: null, status: "Em Captação", pctComissao: null, dataCaptacao: "2026-07-23", ultimaInteracaoProprietario: "2026-07-23", obs: "Originado de indicação do Conecta TR (protocolo IND-TR-2026-0008, indicadora Flávia) — captação ainda em andamento, não confirmada." }
   ],
   historico: {
     anos: [
@@ -766,9 +776,14 @@ const DATA = {
     notaDivergencia: "✅ Comissão de vendas de 2021 revisada e confirmada com Thúlio: R$ 95.746,83 (a planilha original tinha R$ 83.746,83, que não incluía a venda do Edifício Ubatuba)."
   },
   agendaHoje: [
+    { hora: "08:30", titulo: "Ligar Jairson", local: "" },
+    { hora: "08:30", titulo: "Ligação Jairson (Indicação Flávia — Bosque dos Pássaros)", local: "Proprietário Jairson, tel. (84) 98182-2264" },
+    { hora: "09:00", titulo: "Ligação Januncio (Indicação Hudson — Villaggio Di Roma)", local: "Proprietário Januncio, tel. (84) 9983-9625" }
   ],
   agendaAmanha: [],
-  agendaProximos: [],
+  agendaProximos: [
+    { data: "2026-07-30", hora: "19:00", titulo: "Parcelamento Mais", local: "" }
+  ],
   lembretes: [
     { texto: "Ativar clientes vendedores antigos", dataFmt: "13/07", hora: "", relacionado: "Clientes vendedores antigos", quando: "Atrasado" },
     { texto: "Conferir se Diana Rêgo vai puxar a proposta — apartamento 607, Porto Arena", dataFmt: "22/07", hora: "", relacionado: "Diana Rêgo", quando: "Hoje" },
@@ -787,8 +802,8 @@ const DATA = {
       { protocolo: "IND-TR-2026-0004", imovel: "Califórnia Gardens (Cód. 10627)", indicador: "Nisia Raquel Gadelha de Lima", proprietario: "Michelle", status: "Captada", valorDevido: 0, vinculadoId: 17 },
       { protocolo: "IND-TR-2026-0005", imovel: "Portamaris (Cód. 10641)", indicador: "Klevisson Ranniere Meira de Araújo", proprietario: "Kris Suenir Meira de Araújo", status: "Captada", valorDevido: 0, vinculadoId: 18 },
       { protocolo: "IND-TR-2026-0006", imovel: "Condomínio Villaggio Di Roma", indicador: "Hudson Bezerra de Brito", proprietario: "Januncio", status: "Registrada", valorDevido: null, vinculadoId: 23 },
-      { protocolo: "IND-TR-2026-0007", imovel: "Condomínio Bosque dos Pássaros", indicador: "Flávia", proprietario: "Jairson", status: "Registrada", valorDevido: null, vinculadoId: null },
-      { protocolo: "IND-TR-2026-0008", imovel: "Bosque dos Pássaros, casa 09", indicador: "Flávia", proprietario: "Emerson", status: "Registrada", valorDevido: null, vinculadoId: null }
+      { protocolo: "IND-TR-2026-0007", imovel: "Condomínio Bosque dos Pássaros", indicador: "Flávia", proprietario: "Jairson", status: "Registrada", valorDevido: null, vinculadoId: 25 },
+      { protocolo: "IND-TR-2026-0008", imovel: "Bosque dos Pássaros, casa 09", indicador: "Flávia", proprietario: "Emerson", status: "Registrada", valorDevido: null, vinculadoId: 26 }
     ],
     indicadoresLista: [
       { nome: "Jozimar Alves de Lima Júnior", telefone: "84987531523", status: "Ativo" },
@@ -851,7 +866,9 @@ const DATA = {
     { data: "22/07/2026", lead: "Cód. 10567 (Condomínio Luiz Marques, Lagoa Nova)", tipo: "Visita Realizada", resumo: "Visita realizada hoje (22/07) às 13h30, em parceria com o corretor Pedro Palitot." },
     { data: "22/07/2026", lead: "Mateus de Brito Oliveira", tipo: "Outro", resumo: "Cadastro identificado como teste do próprio Thúlio (usuário fictício) e removido do Conecta TR." },
     { data: "22/07/2026", lead: "Flávia", tipo: "Outro", resumo: "2 indicações recebidas hoje (Condomínio Bosque dos Pássaros — Jairson; e Bosque dos Pássaros casa 09 — Emerson), encontradas na planilha conecta-tr-central (aba Indicações Forms, linhas 8-9) — protocolos IND-TR-2026-0007 e 0008 criados. Indicadora ainda não completou o Cadastro/Termo de Adesão." },
-    { data: "22/07/2026", lead: "Amarildo Jorge de Morais Costa", tipo: "Ligação", resumo: "Feedback dado sobre a opção enviada (indicação de Antônio Alves Pereira): cliente não teve interesse, só quer mesmo unidade no Edifício Bosque do Tirol." }
+    { data: "22/07/2026", lead: "Amarildo Jorge de Morais Costa", tipo: "Ligação", resumo: "Feedback dado sobre a opção enviada (indicação de Antônio Alves Pereira): cliente não teve interesse, só quer mesmo unidade no Edifício Bosque do Tirol." },
+    { data: "23/07/2026", lead: "Condomínio Bosque dos Pássaros", tipo: "Outro", resumo: "Rascunho de captação criado no inventário (ID 25), a partir da indicação do Conecta TR (protocolo IND-TR-2026-0007, indicadora Flávia, proprietário Jairson) — captação ainda em andamento, não confirmada." },
+    { data: "23/07/2026", lead: "Bosque dos Pássaros, casa 09", tipo: "Outro", resumo: "Rascunho de captação criado no inventário (ID 26), a partir da indicação do Conecta TR (protocolo IND-TR-2026-0008, indicadora Flávia, proprietário Emerson) — captação ainda em andamento, não confirmada." }
   ]
 };
 const isDemo = false;
