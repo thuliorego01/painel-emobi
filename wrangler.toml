@@ -1,5 +1,12 @@
 name = "painel-emobi"
 compatibility_date = "2026-01-01"
+main = "worker.js"
 
 [assets]
-directory = "./"
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
+
+[[kv_namespaces]]
+binding = "LEMBRETES_KV"
+id = "c475b9da93d5407fb5eda5dedb4b61df"

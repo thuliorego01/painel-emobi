@@ -1543,9 +1543,28 @@ if (leadsInativosArr.length === 0) {
 })();
 
 const lembretesCard = document.getElementById('lembretesCard');
-if (!DATA.lembretes || DATA.lembretes.length === 0) {
-  lembretesCard.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum lembrete registrado ainda. Fala comigo por voz — "me lembra de ligar pro fulano quinta às 14h" — que eu já registro aqui e te aviso na hora certa.</div>';
-} else {
+function lembreteId(l) {
+  const s = `${l.texto}|${l.dataFmt}|${l.hora || ''}`;
+  let h = 0;
+  for (let i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) | 0; }
+  return 'lb' + Math.abs(h).toString(36);
+}
+(async () => {
+  let concluidos = [];
+  try {
+    const r = await fetch('/api/lembretes/concluidos');
+    if (r.ok) {
+      const j = await r.json();
+      if (Array.isArray(j)) concluidos = j;
+    }
+  } catch (e) { /* offline ou API indisponível — segue mostrando tudo */ }
+
+  const pendentes = (DATA.lembretes || []).filter(l => !concluidos.includes(lembreteId(l)));
+
+  if (pendentes.length === 0) {
+    lembretesCard.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum lembrete pendente. Fala comigo por voz — "me lembra de ligar pro fulano quinta às 14h" — que eu já registro aqui e te aviso na hora certa.</div>';
+    return;
+  }
   const ordemPeso = { "Atrasado": 0, "Hoje": 1, "Futuro": 2 };
   // Dentro de cada grupo (Atrasado/Hoje/Futuro), ordena por data de ação (dataFmt "DD/MM") e depois por hora —
   // sem isso, ficava por ordem de inserção no array, o que não reflete a ordem real dos compromissos.
@@ -1563,7 +1582,7 @@ if (!DATA.lembretes || DATA.lembretes.length === 0) {
     else minutos = 23 * 60 + 59; // sem hora definida — depois dos com hora marcada no mesmo dia
     return mes * 1000000 + dia * 10000 + minutos;
   }
-  const ordenados = [...DATA.lembretes].sort((a, b) => {
+  const ordenados = [...pendentes].sort((a, b) => {
     const pesoA = ordemPeso[a.quando] ?? 3;
     const pesoB = ordemPeso[b.quando] ?? 3;
     if (pesoA !== pesoB) return pesoA - pesoB;
@@ -1571,25 +1590,39 @@ if (!DATA.lembretes || DATA.lembretes.length === 0) {
   });
   const avisoConcluir = document.createElement('div');
   avisoConcluir.style.cssText = 'font-size:var(--fs-2xs);color:#8A9186;margin-bottom:10px;';
-  avisoConcluir.textContent = '☑️ Marcar aqui só risca na tela por enquanto (não salva). Pra sumir de vez da lista, me avise por chat/voz que eu atualizo a planilha.';
+  avisoConcluir.textContent = '☑️ Marcar aqui salva de vez — o lembrete some da lista, inclusive depois de recarregar a página.';
   lembretesCard.appendChild(avisoConcluir);
   ordenados.forEach(l => {
+    const id = lembreteId(l);
     const whenClass = l.quando === 'Atrasado' ? 'atrasado' : (l.quando === 'Hoje' ? 'hoje' : 'futuro');
     const row = document.createElement('div');
     row.className = 'lembrete-row';
     row.innerHTML = `
-      <input type="checkbox" class="lembrete-check" aria-label="Marcar como concluído (só nesta tela)">
+      <input type="checkbox" class="lembrete-check" aria-label="Marcar como concluído">
       <div class="lembrete-when ${whenClass}">${l.quando}</div>
       <div class="lembrete-info">
         <div class="txt">${l.texto}</div>
         <div class="meta">${l.dataFmt}${l.hora ? ' às ' + l.hora : ''}${l.relacionado ? ' · ' + l.relacionado : ''}</div>
       </div>`;
-    row.querySelector('.lembrete-check').addEventListener('change', (e) => {
-      row.classList.toggle('concluido', e.target.checked);
+    const cb = row.querySelector('.lembrete-check');
+    cb.addEventListener('change', (e) => {
+      if (!e.target.checked) return;
+      cb.disabled = true;
+      row.classList.add('concluido');
+      fetch('/api/lembretes/concluir', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      }).catch(() => {});
+      setTimeout(() => {
+        row.style.transition = 'opacity .3s';
+        row.style.opacity = '0';
+        setTimeout(() => row.remove(), 300);
+      }, 350);
     });
     lembretesCard.appendChild(row);
   });
-}
+})();
 
 // ---- Gráficos de linha (evolução mensal 2026) ----
 const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
