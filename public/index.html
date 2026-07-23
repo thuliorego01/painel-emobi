@@ -1543,23 +1543,44 @@ if (leadsInativosArr.length === 0) {
 })();
 
 const lembretesCard = document.getElementById('lembretesCard');
+const LEMBRETES_LOCAL_KEY = 'painelEmobiLembretesConcluidos';
 function lembreteId(l) {
   const s = `${l.texto}|${l.dataFmt}|${l.hora || ''}`;
   let h = 0;
   for (let i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) | 0; }
   return 'lb' + Math.abs(h).toString(36);
 }
-(async () => {
-  let concluidos = [];
+function getLocalConcluidos() {
   try {
-    const r = await fetch('/api/lembretes/concluidos');
+    const raw = localStorage.getItem(LEMBRETES_LOCAL_KEY);
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr : [];
+  } catch (e) { return []; }
+}
+function addLocalConcluido(id) {
+  try {
+    const arr = getLocalConcluidos();
+    if (!arr.includes(id)) arr.push(id);
+    localStorage.setItem(LEMBRETES_LOCAL_KEY, JSON.stringify(arr));
+  } catch (e) { /* localStorage indisponível — segue só com o servidor */ }
+}
+(async () => {
+  // O servidor (Cloudflare KV) pode levar alguns segundos para propagar uma gravação recente
+  // entre localizações diferentes — por isso guardamos também uma cópia local (localStorage),
+  // que é instantânea e garante que o item some já na primeira atualização, mesmo neste device.
+  let remotos = [];
+  try {
+    const r = await fetch('/api/lembretes/concluidos', { cache: 'no-store' });
     if (r.ok) {
       const j = await r.json();
-      if (Array.isArray(j)) concluidos = j;
+      if (Array.isArray(j)) remotos = j;
     }
-  } catch (e) { /* offline ou API indisponível — segue mostrando tudo */ }
+  } catch (e) { /* offline ou API indisponível — segue com o que tiver local */ }
 
-  const pendentes = (DATA.lembretes || []).filter(l => !concluidos.includes(lembreteId(l)));
+  const locais = getLocalConcluidos();
+  const concluidosSet = new Set([...remotos, ...locais]);
+
+  const pendentes = (DATA.lembretes || []).filter(l => !concluidosSet.has(lembreteId(l)));
 
   if (pendentes.length === 0) {
     lembretesCard.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum lembrete pendente. Fala comigo por voz — "me lembra de ligar pro fulano quinta às 14h" — que eu já registro aqui e te aviso na hora certa.</div>';
@@ -1609,6 +1630,7 @@ function lembreteId(l) {
       if (!e.target.checked) return;
       cb.disabled = true;
       row.classList.add('concluido');
+      addLocalConcluido(id);
       fetch('/api/lembretes/concluir', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

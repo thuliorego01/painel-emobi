@@ -18,7 +18,7 @@ export default {
     if (url.pathname === '/api/lembretes/concluidos' && request.method === 'GET') {
       const ids = await getConcluidos(env);
       return new Response(JSON.stringify(ids), {
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
       });
     }
 
@@ -29,14 +29,14 @@ export default {
       if (!id || typeof id !== 'string') {
         return new Response(JSON.stringify({ error: 'id inválido' }), {
           status: 400,
-          headers: { 'Content-Type': 'application/json' }
+          headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
         });
       }
       const ids = await getConcluidos(env);
       if (!ids.includes(id)) ids.push(id);
       await env.LEMBRETES_KV.put(KEY, JSON.stringify(ids));
       return new Response(JSON.stringify({ ok: true, total: ids.length }), {
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
       });
     }
 
@@ -48,7 +48,7 @@ export default {
       const filtered = id ? ids.filter(x => x !== id) : ids;
       await env.LEMBRETES_KV.put(KEY, JSON.stringify(filtered));
       return new Response(JSON.stringify({ ok: true }), {
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
       });
     }
 
