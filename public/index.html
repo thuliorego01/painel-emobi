@@ -684,7 +684,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-23T22:32:05-03:00",
+  ultimaAtualizacao: "2026-07-24T10:09:25-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -777,12 +777,9 @@ const DATA = {
     notaDivergencia: "✅ Comissão de vendas de 2021 revisada e confirmada com Thúlio: R$ 95.746,83 (a planilha original tinha R$ 83.746,83, que não incluía a venda do Edifício Ubatuba)."
   },
   agendaHoje: [
-    { hora: "09:00", titulo: "Ligação Januncio (Indicação Hudson — Villaggio Di Roma)", local: "Proprietário Januncio, tel. (84) 9983-9625" },
-    { hora: "16:00", titulo: "Ligação Jairson (Indicação Flávia — Bosque dos Pássaros) — reagendada", local: "Proprietário Jairson, tel. (84) 98182-2264" }
-  ],
-  agendaAmanha: [
     { hora: "14:00", titulo: "Visita Califórnia Gardens (Cód. 10627) — corretora parceira Katyanne Layse", local: "Avenida Ayrton Senna, Nova Parnamirim - Parnamirim/RN" }
   ],
+  agendaAmanha: [],
   agendaProximos: [
     { data: "2026-07-30", hora: "19:00", titulo: "Parcelamento Mais", local: "" }
   ],
@@ -795,7 +792,9 @@ const DATA = {
     { texto: "Falar com Filipe Ideli sobre chegada da irmã e procura de apartamento em Tirol ou Petrópolis", dataFmt: "30/09", hora: "", relacionado: "Filipe Ideli", quando: "Futuro" },
     { texto: "Tentar novo contato com Taciana (Smile Village - Indicação Anísio) — não respondeu às últimas tentativas", dataFmt: "24/07", hora: "", relacionado: "Taciana", quando: "Futuro" },
     { texto: "Pedir para Flávia completar o Cadastro/Termo de Adesão do Conecta TR (já indicou 2 imóveis — Bosque dos Pássaros — mas não pode receber bonificação sem o cadastro)", dataFmt: "23/07", hora: "", relacionado: "Flávia", quando: "Futuro" },
-    { texto: "Ligação Januncio (Indicação Hudson — Villaggio Di Roma)", dataFmt: "23/07", hora: "09:00", relacionado: "Hudson Bezerra de Brito", quando: "Futuro" }
+    { texto: "Ligação Januncio (Indicação Hudson — Villaggio Di Roma)", dataFmt: "23/07", hora: "09:00", relacionado: "Hudson Bezerra de Brito", quando: "Atrasado" },
+    { texto: "Estudo de mercado — Roberto (Paradise Village)", dataFmt: "24/07", hora: "", relacionado: "Roberto", quando: "Hoje" },
+    { texto: "Ligação Jairson (Indicação Flávia — Bosque dos Pássaros), reagendada p/ 16h ontem — confirmar se foi feita", dataFmt: "23/07", hora: "16:00", relacionado: "Flávia", quando: "Atrasado" }
   ],
   conectaTR: {
     lista: [
@@ -873,7 +872,8 @@ const DATA = {
     { data: "23/07/2026", lead: "Jairson (Indicação Flávia — Bosque dos Pássaros)", tipo: "Ligação", resumo: "Ligação das 08h30 concluída — reagendada para hoje às 16h." },
     { data: "23/07/2026", lead: "Casa em Condomínio Muriú (Cód. 10652)", tipo: "Outro", resumo: "Novo imóvel adicionado ao inventário — casa de praia em condomínio exclusivo em Muriú/Ceará-Mirim, 200m², R$ 589.990,00. Proprietário ainda \"A definir\"." },
     { data: "23/07/2026", lead: "Natasha Ferreira (Cód. 10645 — Estrela do Atlântico)", tipo: "Outro", resumo: "Proprietária informou que alugou o imóvel diretamente para outra pessoa, sem passar pela Emobi. Captação perdida — status alterado para \"Perdido\" em Imóveis e \"Perdida\" em Conecta TR (protocolo IND-TR-2026-0002). Bonificação de R$200,00 ao indicador Jozimar cancelada, já que o contrato não foi concretizado via Thúlio." },
-    { data: "23/07/2026", lead: "Cód. 10627 (Califórnia Gardens, Nova Parnamirim)", tipo: "Outro", resumo: "Visita agendada para amanhã (24/07) às 14h, com a corretora parceira Katyanne Layse." }
+    { data: "23/07/2026", lead: "Cód. 10627 (Califórnia Gardens, Nova Parnamirim)", tipo: "Outro", resumo: "Visita agendada para amanhã (24/07) às 14h, com a corretora parceira Katyanne Layse." },
+    { data: "24/07/2026", lead: "Roberto (Paradise Village)", tipo: "Outro", resumo: "Lembrete registrado: fazer estudo de mercado de Paradise Village para o Roberto." }
   ]
 };
 const isDemo = false;
