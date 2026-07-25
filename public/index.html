@@ -911,7 +911,13 @@ function computeAcoesUrgentes() {
   const imoveisAtrasados = (DATA.imoveis || []).filter(im =>
     im.status === 'Disponível' && im.ultimaInteracaoProprietario && diasSemContato(im.ultimaInteracaoProprietario) > 30
   );
-  const lembretesUrgentes = (DATA.lembretes || []).filter(x => x.quando === 'Atrasado' || x.quando === 'Hoje');
+  // Exclui lembretes já marcados como concluídos (checkbox da aba Lembretes, salvo em localStorage) —
+  // sem isso, "Seu Foco Hoje" continuava mostrando itens que já tinham sumido da aba Lembretes.
+  const concluidosLocal = new Set(typeof getLocalConcluidos === 'function' ? getLocalConcluidos() : []);
+  const lembretesUrgentes = (DATA.lembretes || []).filter(x =>
+    (x.quando === 'Atrasado' || x.quando === 'Hoje') &&
+    !(typeof lembreteId === 'function' && concluidosLocal.has(lembreteId(x)))
+  );
   const total = leadsAtrasados.length + leadsReativar.length + imoveisAtrasados.length + lembretesUrgentes.length;
   return { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes, total };
 }
@@ -1583,8 +1589,12 @@ function lembreteId(l) {
   return 'lb' + Math.abs(h).toString(36);
 }
 function getLocalConcluidos() {
+  // Usa o literal direto (não a const LEMBRETES_LOCAL_KEY) porque esta função pode ser chamada
+  // por computeAcoesUrgentes() antes daquela const ser inicializada no script — daria erro de
+  // "acesso antes da inicialização", capturado pelo catch abaixo, retornando [] silenciosamente
+  // e fazendo o "Seu Foco Hoje" continuar mostrando lembretes já concluídos.
   try {
-    const raw = localStorage.getItem(LEMBRETES_LOCAL_KEY);
+    const raw = localStorage.getItem('painelEmobiLembretesConcluidos');
     const arr = raw ? JSON.parse(raw) : [];
     return Array.isArray(arr) ? arr : [];
   } catch (e) { return []; }
@@ -1593,7 +1603,7 @@ function addLocalConcluido(id) {
   try {
     const arr = getLocalConcluidos();
     if (!arr.includes(id)) arr.push(id);
-    localStorage.setItem(LEMBRETES_LOCAL_KEY, JSON.stringify(arr));
+    localStorage.setItem('painelEmobiLembretesConcluidos', JSON.stringify(arr));
   } catch (e) { /* localStorage indisponível — segue só com o servidor */ }
 }
 (async () => {
