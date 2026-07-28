@@ -295,6 +295,7 @@
   .imovel-badge.reservado { background:#FFF3D6; color:#9A6B00; }
   .imovel-badge.vendido { background:#E9EBE4; color:#5C6157; }
   .imovel-badge.suspenso { background:#FBE4E4; color:#B3261E; }
+  .imovel-badge.perdido { background:#ECECEC; color:#7A7A7A; }
   .imovel-meta { font-size:var(--fs-sm); color:#5C6157; margin-top:6px; line-height:1.6; }
   .imovel-link { display:inline-flex; align-items:center; gap:4px; font-size:var(--fs-xs); font-weight:700; color: var(--brand-dark2); text-decoration:none; background:#F1F2ED; padding:4px 10px; border-radius:20px; margin-top:8px; }
   .imovel-link:hover { background:#E6E8E0; }
@@ -694,7 +695,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-28T10:07:01-03:00",
+  ultimaAtualizacao: "2026-07-28T14:40:56-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -742,7 +743,7 @@ const DATA = {
     { nome: "Apartamento 3 Quartos Nova Parnamirim 79m² (Cód. 7762)", tipo: "Apartamento", bairro: "Nova Parnamirim", cidade: "Parnamirim", endereco: "Rua Pantanal, Nova Parnamirim - Parnamirim/RN", valor: 399000, detalhes: "3 quartos (1 suíte), 2 banheiros, 2 vagas, 79m²", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7762/apartamento-3-quartos-nova-parnamirim-parnamirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Vila Verde. Condomínio R$ 540,00 + IPTU R$ 120,00." },
     { nome: "Apartamento 3 Quartos Lagoa Nova 140m² (Cód. 9272)", tipo: "Apartamento", bairro: "Lagoa Nova", cidade: "Natal", endereco: "Rua Desembargador Carlos Augusto, Lagoa Nova - Natal/RN", valor: 1299990, detalhes: "3 quartos (3 suítes), 5 banheiros, 3 vagas, 140m², mobiliado", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/9272/apartamento-3-quartos-lagoa-nova-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Andar alto, vaga com carregador de carro elétrico. Condomínio R$ 1.611,27." },
     { nome: "Apartamento 2 Quartos Lagoa Nova 94m² (Cód. 8024)", tipo: "Apartamento", bairro: "Lagoa Nova", cidade: "Natal", endereco: "Rua Dos Tororós, Lagoa Nova - Natal/RN", valor: 449990, detalhes: "2 quartos (1 suíte), 2 vagas, 94m² (92m² privativos)", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/8024/apartamento-2-quartos-lagoa-nova-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Therra Mater. Em processo de escrituração. Condomínio R$ 850,00 + IPTU R$ 210,00." },
-    { nome: "Apartamento 3 Quartos Cidade da Esperança 90m² (Cód. 5520)", tipo: "Apartamento", bairro: "Cidade da Esperança", cidade: "Natal", endereco: "Avenida Capitãomor Gouveia, Cidade Da Esperança - Natal/RN", valor: 569900, detalhes: "3 quartos (1 suíte), 2 banheiros, 2 vagas, 90m² privativos (107m² totais)", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/5520/apartamento-3-quartos-cidade-da-esperan%C3%A7a-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Smile Village, reformado e mobiliado. Condomínio R$ 589,00 + IPTU R$ 2.860,00/ano. Visita agendada para 09/07 às 14h, em parceria com o corretor Mauro Gusmão. Visita em parceria (Mauro Gusmão) concluída em 09/07." },
+    { nome: "Apartamento 3 Quartos Cidade da Esperança 90m² (Cód. 5520)", tipo: "Apartamento", bairro: "Cidade da Esperança", cidade: "Natal", endereco: "Avenida Capitãomor Gouveia, Cidade Da Esperança - Natal/RN", valor: 569900, detalhes: "3 quartos (1 suíte), 2 banheiros, 2 vagas, 90m² privativos (107m² totais)", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/5520/apartamento-3-quartos-cidade-da-esperan%C3%A7a-natal/", status: "Perdido", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-28", obs: "Condomínio Smile Village, reformado e mobiliado. Condomínio R$ 589,00 + IPTU R$ 2.860,00/ano. Visita agendada para 09/07 às 14h, em parceria com o corretor Mauro Gusmão. Visita em parceria (Mauro Gusmão) concluída em 09/07. [28/07] Vendido pela concorrência — fora do mercado." },
     { nome: "Apartamento 3 Quartos Tirol 115m² (Cód. 9995)", tipo: "Apartamento", bairro: "Tirol", cidade: "Natal", endereco: "Avenida Governador Juvenal Lamartine, Tirol - Natal/RN", valor: 329990, detalhes: "3 quartos (1 suíte), 3 banheiros, 1 vaga, 115m²", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/9995/apartamento-3-quartos-tirol-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Potencial de reforma/valorização. Condomínio R$ 650,00 + IPTU R$ 223,00." },
     { nome: "Apartamento 3 Quartos Candelária 96m² (Cód. 5485)", tipo: "Apartamento", bairro: "Candelária", cidade: "Natal", endereco: "Alameda Das Mansões, Candelária - Natal/RN", valor: 669990, detalhes: "3 quartos (1 suíte), 3 banheiros, 2 vagas, 96m²", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/5485/apartamento-3-quartos-candelaria-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Porto Arena, exclusividade. Condomínio R$ 945,00 + IPTU R$ 299,00." },
     { nome: "Casa 4 Quartos Lagoa Nova 300m² (Cód. 7570)", tipo: "Casa", bairro: "Lagoa Nova", cidade: "Natal", endereco: "Rua Dos Tororós, Lagoa Nova - Natal/RN", valor: 689990, detalhes: "4 quartos (3 suítes), 5 banheiros, 4 vagas, 300m² privativos (390m² de terreno)", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7570/casa-4-quartos-lagoa-nova-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Escritório, lavabo, despensa, quintal. Sem condomínio (casa)." },
@@ -904,7 +905,8 @@ const DATA = {
     { data: "25/07/2026", lead: "Heber Lima", tipo: "Outro", resumo: "Rodada de busca: Cód. 9995 (Tirol, 115m², R$329.990) confirmado como melhor opção." },
     { data: "25/07/2026", lead: "Hélio Dourado", tipo: "Outro", resumo: "Rodada de busca: Cód. 7726 dentro do orçamento; Cód. 7560 levemente acima do teto de R$400 mil." },
     { data: "25/07/2026", lead: "Maria Matos", tipo: "Outro", resumo: "Rodada de busca: nenhum imóvel em Capim Macio no inventário atual." },
-    { data: "28/07/2026", lead: "Cód. 10567 e Cód. 10638", tipo: "Outro", resumo: "Ambos em negociação, fase de leitura de contrato — provavelmente assinam até o final da semana. Status alterado para \"Reservado\"." }
+    { data: "28/07/2026", lead: "Cód. 10567 e Cód. 10638", tipo: "Outro", resumo: "Ambos em negociação, fase de leitura de contrato — provavelmente assinam até o final da semana. Status alterado para \"Reservado\"." },
+    { data: "28/07/2026", lead: "Cód. 5520 (Cidade da Esperança)", tipo: "Outro", resumo: "Vendido pela concorrência. Status alterado para \"Perdido\" — mantido no inventário como histórico, fora da busca ativa." }
   ]
 };
 const isDemo = false;
@@ -1844,7 +1846,7 @@ const imoveisCard = document.getElementById('imoveisCard');
 if (!DATA.imoveis || DATA.imoveis.length === 0) {
   imoveisCard.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum imóvel captado cadastrado ainda.</div>';
 } else {
-  const statusClass = { "Em Captação": "em-captacao", "Disponível": "disponivel", "Reservado": "reservado", "Vendido": "vendido", "Suspenso": "suspenso" };
+  const statusClass = { "Em Captação": "em-captacao", "Disponível": "disponivel", "Reservado": "reservado", "Vendido": "vendido", "Suspenso": "suspenso", "Perdido": "perdido" };
   const tipoOrdem = ["Casa", "Casa em Condomínio", "Casa Comercial", "Apartamento", "Terreno/Lote", "Comercial", "Outro"];
   const tipoIcone = { "Casa": "🏠", "Casa em Condomínio": "🏡", "Casa Comercial": "🏪", "Apartamento": "🏢", "Terreno/Lote": "📐", "Comercial": "🏬", "Outro": "🔑" };
   const tipoPlural = { "Casa Comercial": "Casas Comerciais", "Terreno/Lote": "Terrenos/Lotes" };
