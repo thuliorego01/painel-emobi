@@ -159,6 +159,7 @@
   .badge.atrasado { background:#FBE4E4; color:#B3261E; }
   .badge.emdia { background:#E8F0E1; color:#4C7A3A; }
   .badge.novo { background:#F3EBD2; color:#8C6D1F; }
+  .badge.descartado { background:#ECECEC; color:#7A7A7A; }
   .lead-meta { font-size:var(--fs-xs); color: var(--muted); display:flex; gap:12px; flex-wrap:wrap; }
   .lead-meta b { color: var(--brand-dark2); }
   .temp { font-size: var(--fs-xs); font-weight:700; padding:2px 7px; border-radius:20px; }
@@ -420,6 +421,7 @@
     <button class="tab-btn" data-tab="bicomercial" role="tab" aria-controls="panel-bicomercial">📊 BI Comercial</button>
     <button class="tab-btn" data-tab="faturamento" role="tab" aria-controls="panel-faturamento">💰 Faturamento</button>
     <button class="tab-btn" data-tab="conectatr" role="tab" aria-controls="panel-conectatr">🤝 Conecta TR</button>
+    <button class="tab-btn" data-tab="prospeccao" role="tab" aria-controls="panel-prospeccao">🏗️ Prospecção</button>
   </div>
 
   <div class="tab-panel" data-tab="agenda" id="panel-agenda" role="tabpanel">
@@ -662,6 +664,14 @@
     <div class="amostra-nota" style="margin-top:14px;">💡 Programa novo — as indicações chegam pela planilha "conecta-tr-central" no Google Drive (via Google Forms) e são espelhadas aqui. Quando uma indicação vira captação de verdade, ela é linkada automaticamente na aba Imóveis.</div>
   </div>
 
+  <div class="tab-panel" data-tab="prospeccao" id="panel-prospeccao" role="tabpanel">
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>🏗️ Prospecção de Captação</div>
+    <div style="font-size:var(--fs-xs);color:#8A9186;margin-bottom:14px;">Proprietários sendo prospectados pra virar captação — antes de terem um imóvel formal na aba Imóveis. Diferente da aba Leads, que é focada em compradores.</div>
+    <div class="card">
+      <div id="prospeccaoList"></div>
+    </div>
+  </div>
+
 <div class="footer-note">
     Fonte dos dados: "OK - Tabela Negociações 2026.xlsx" (vendas, locações, cartório e meta) + CRM_Emobi_Thulio.xlsx (pipeline de leads). Este painel é uma fotografia dos dados no momento em que foi gerado — peça ao Claude para atualizá-lo sempre que registrar novidades por voz ou quiser ver os números mais recentes.
   </div>
@@ -725,8 +735,7 @@ const DATA = {
     { nome: "Daianne", telefone: "84988351048", origem: "CRM Emobi", fase: "Qualificado", maiorFaseIndex: 3, temperatura: "Frio", valor: 630000, comissaoPrevista: null, proximaAcao: "Retomar contato após viagem (fim do mês)", dataProximaAcao: "2026-08-01", status: "Em dia", obs: "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08.", imoveisCompativeis: ["Cód. 9272", "Cód. 8024", "Cód. 5485", "Cód. 7560", "Cód. 10567", "Cód. 7454"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária ou Lagoa Nova" },
     { nome: "Diana Rêgo", telefone: "84987706107", origem: "Relacionamento", fase: "Visita Realizada", maiorFaseIndex: 5, temperatura: "Quente", valor: 600000, comissaoPrevista: null, proximaAcao: "Conferir se ela vai puxar a proposta — apartamento 607, Porto Arena", dataProximaAcao: "2026-07-22", status: "Em dia", obs: "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Cód. 5485 do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta.", imoveisCompativeis: ["Cód. 5485"], visitaResumo: null, visitaDetalhe: null, statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária, Lagoa Nova ou Tirol" },
     { nome: "Heber Lima", telefone: "84981319709", origem: "Instagram", fase: "Novo Lead", maiorFaseIndex: 1, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Enviar opção encontrada: Cód. 9995 (Tirol, 115m², R$329.990) e retomar contato", dataProximaAcao: "2026-07-28", status: "Em dia", obs: "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [25/07] Rodada de busca: Cód. 9995 confirmado como melhor opção; sem alternativas em Barro Vermelho no inventário atual.", imoveisCompativeis: ["Cód. 9995"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Tirol ou Barro Vermelho, mín. 80m²" },
-    { nome: "Taciana", telefone: null, origem: "Indicação (Anísio)", fase: "Improvável", maiorFaseIndex: 2, temperatura: "Frio", valor: null, comissaoPrevista: null, proximaAcao: "Tentar 1 último contato (ligação/WhatsApp), sem muita expectativa", dataProximaAcao: "2026-07-24", status: "Sem 1o contato", obs: "Contato original em 13/07 sobre o Smile Village (indicação de captação de Anísio — não é lead comprador ativo). Cliente não respondeu às últimas tentativas. ⚠️ ATUALIZAÇÃO (24/07): Thúlio percebe que não deve vingar.", imoveisCompativeis: null, statusReativacao: null, interesse: "Smile Village (indicação de captação de Anísio, não é lead comprador ativo)" },
-    { nome: "Maria Matos", telefone: "84987349007", origem: "Instagram", fase: "Visita Agendada", maiorFaseIndex: 5, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Avisar cliente: sem opções em Capim Macio no momento; monitorar novos lançamentos", dataProximaAcao: "2026-07-28", status: "Em dia", obs: "Visita agendada para 25/07 às 10h ao Cód. 10650 (Apartamento 4 Quartos, Residencial Ariane, Tirol) — fora do perfil ideal (Tirol, não Capim Macio), mas cliente confirmou a visita. [25/07] Rodada de busca: nenhum imóvel em Capim Macio no inventário atual.", imoveisCompativeis: [], statusReativacao: null, interesse: "Apartamento acima de 150m², Capim Macio, condomínio até ~R$2.000" },
+        { nome: "Maria Matos", telefone: "84987349007", origem: "Instagram", fase: "Visita Agendada", maiorFaseIndex: 5, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Avisar cliente: sem opções em Capim Macio no momento; monitorar novos lançamentos", dataProximaAcao: "2026-07-28", status: "Em dia", obs: "Visita agendada para 25/07 às 10h ao Cód. 10650 (Apartamento 4 Quartos, Residencial Ariane, Tirol) — fora do perfil ideal (Tirol, não Capim Macio), mas cliente confirmou a visita. [25/07] Rodada de busca: nenhum imóvel em Capim Macio no inventário atual.", imoveisCompativeis: [], statusReativacao: null, interesse: "Apartamento acima de 150m², Capim Macio, condomínio até ~R$2.000" },
     { nome: "Hélio Dourado", telefone: "84994312223", origem: "A definir", fase: "Novo Lead", maiorFaseIndex: 1, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Enviar opções encontradas: Cód. 7726 e Cód. 7560, e retomar contato", dataProximaAcao: "2026-07-28", status: "Em dia", obs: "Busca apartamento em Candelária, 3 dormitórios (1 suíte), até R$400 mil. Ainda alinhando com o cliente se outro bairro encaixa na rotina dele. [25/07] Rodada de busca: Cód. 7726 (Candelária, 74m², R$269.990, 3 dorm./2 suítes) dentro do orçamento; Cód. 7560 (Candelária, 133m², R$419.990, 3 dorm./1 suíte) levemente acima do teto de R$400 mil.", imoveisCompativeis: ["Cód. 7726", "Cód. 7560"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária, 3 dormitórios (1 suíte), até R$400 mil" }
   ],
   imoveis: [
@@ -796,6 +805,10 @@ const DATA = {
     { texto: "Ligação Jairson (Indicação Flávia — Bosque dos Pássaros), reagendada p/ 16h — confirmar se foi feita", dataFmt: "23/07", hora: "16:00", relacionado: "Flávia", quando: "Atrasado" },
     { texto: "Captação Jairson — Casa 02, Bosque dos Pássaros — confirmar se foi feita", dataFmt: "24/07", hora: "15:00", relacionado: "Jairson", quando: "Atrasado" },
     { texto: "Visita Maria Matos — Residencial Ariane (Cód. 10650) — confirmar se foi feita", dataFmt: "25/07", hora: "10:00", relacionado: "Maria Matos", quando: "Atrasado" }
+  ],
+  prospeccaoCaptacao: [
+    { nome: "Taciana", telefone: null, imovelBairro: "Smile Village", indicacao: "Indicação (Anísio)", status: "Aguardando Retorno", proximaAcao: "Tentar 1 último contato (ligação/WhatsApp), sem muita expectativa", dataProximaAcao: "2026-07-24", obs: "Contato original em 13/07 sobre o Smile Village (indicação de Anísio). Cliente não respondeu às últimas tentativas. [25/07] Thúlio percebe que não deve vingar." },
+    { nome: "Cláudia Montenegro", telefone: null, imovelBairro: "Natal Brisa", indicacao: "A definir", status: "Contato Inicial", proximaAcao: "Retomar contato", dataProximaAcao: "2026-07-27", obs: "" }
   ],
   conectaTR: {
     lista: [
@@ -2151,6 +2164,31 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
 
   renderIndicadores();
   renderIndicacoes();
+})();
+
+(function renderProspeccao() {
+  const list = document.getElementById('prospeccaoList');
+  if (!list) return;
+  const itens = DATA.prospeccaoCaptacao || [];
+  if (itens.length === 0) {
+    list.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum proprietário em prospecção no momento.</div>';
+    return;
+  }
+  const statusClass = { "Contato Inicial": "novo", "Aguardando Retorno": "atrasado", "Convertido em Captação": "emdia", "Descartado": "descartado" };
+  list.innerHTML = itens.map(it => `
+    <div class="lead-card">
+      <div class="lead-top">
+        <span class="lead-name">${it.nome || '—'}</span>
+        <span class="badge ${statusClass[it.status] || 'novo'}">${it.status || '—'}</span>
+      </div>
+      <div class="lead-meta">
+        <span>Imóvel/Bairro: <b>${it.imovelBairro || '—'}</b></span>
+        <span>Indicação: <b>${it.indicacao || '—'}</b></span>
+        ${it.telefone ? `<span>Tel: <b>${it.telefone}</b></span>` : ''}
+      </div>
+      ${it.proximaAcao ? `<div class="lead-meta" style="margin-top:4px;"><span>Próxima ação: <b>${it.proximaAcao}</b>${it.dataProximaAcao ? ' — ' + it.dataProximaAcao.split('-').reverse().join('/') : ''}</span></div>` : ''}
+      ${it.obs ? `<div style="font-size:var(--fs-2xs);color:#8A9186;margin-top:6px;">${it.obs}</div>` : ''}
+    </div>`).join('');
 })();
 </script>
 </body>
