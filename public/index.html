@@ -832,7 +832,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-30T16:50:00-03:00",
+  ultimaAtualizacao: "2026-07-30T17:15:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -958,8 +958,8 @@ const DATA = {
     { texto: "Se Maria Eduarda Revorêdo não responder, enviar mensagem de encerramento (\"demissão do cliente\")", dataFmt: "05/08", hora: "", relacionado: "Maria Eduarda Revorêdo", quando: "Futuro" }
   ],
   prospeccaoCaptacao: [
-    { nome: "Taciana", telefone: null, imovelBairro: "Smile Village", indicacao: "Indicação (Anísio)", status: "Aguardando Retorno", proximaAcao: "Tentar 1 último contato (ligação/WhatsApp), sem muita expectativa", dataProximaAcao: "2026-07-24", obs: "Contato original em 13/07 sobre o Smile Village (indicação de Anísio). Cliente não respondeu às últimas tentativas. [25/07] Thúlio percebe que não deve vingar." },
-    { nome: "Cláudia Montenegro", telefone: null, imovelBairro: "Natal Brisa", indicacao: "A definir", status: "Contato Inicial", proximaAcao: "Retomar contato", dataProximaAcao: "2026-07-27", obs: "" }
+    { nome: "Taciana", telefone: null, imovelBairro: "Smile Village", indicacao: "Indicação (Anísio)", status: "Aguardando Retorno", proximaAcao: "Tentar 1 último contato (ligação/WhatsApp), sem muita expectativa", dataProximaAcao: "2026-07-24", statusPrazo: "🔴 Atrasado", obs: "Contato original em 13/07 sobre o Smile Village (indicação de Anísio). Cliente não respondeu às últimas tentativas. [25/07] Thúlio percebe que não deve vingar." },
+    { nome: "Cláudia Montenegro", telefone: null, imovelBairro: "Natal Brisa", indicacao: "A definir", status: "Contato Inicial", proximaAcao: "Retomar contato", dataProximaAcao: "2026-07-27", statusPrazo: "🔴 Atrasado", obs: "" }
   ],
   conectaTR: {
     lista: [
@@ -1108,13 +1108,21 @@ function computeAcoesUrgentes() {
     (x.quando === 'Atrasado' || x.quando === 'Hoje') &&
     !(typeof lembreteId === 'function' && concluidosLocal.has(lembreteId(x)))
   );
-  const total = leadsAtrasados.length + leadsReativar.length + imoveisAtrasados.length + lembretesUrgentes.length;
-  return { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes, total };
+  // Prospecção de captação atrasada — é onde nasce o estoque, e até 30/07/2026
+  // não tinha alerta nenhum: um proprietário podia ficar semanas sem cobrança.
+  const prospeccoesAtrasadas = (DATA.prospeccaoCaptacao || []).filter(pr => {
+    if (pr.status === 'Convertido em Captação' || pr.status === 'Descartado') return false;
+    if (pr.statusPrazo) return pr.statusPrazo.indexOf('Atrasado') !== -1;
+    if (!pr.dataProximaAcao) return false;
+    return diasSemContato(pr.dataProximaAcao) > 0;
+  });
+  const total = leadsAtrasados.length + leadsReativar.length + imoveisAtrasados.length + lembretesUrgentes.length + prospeccoesAtrasadas.length;
+  return { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes, prospeccoesAtrasadas, total };
 }
 
 (function renderUrgentBanner() {
   const banner = document.getElementById('urgentBanner');
-  const { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes, total } = computeAcoesUrgentes();
+  const { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes, prospeccoesAtrasadas, total } = computeAcoesUrgentes();
   const compromissoHoje = (DATA.agendaHoje && DATA.agendaHoje[0]) || null;
   const compromissoAmanha = (DATA.agendaAmanha && DATA.agendaAmanha[0]) || null;
   const visitasHoje = (DATA.agendaHoje || []).length;
@@ -1134,6 +1142,10 @@ function computeAcoesUrgentes() {
   if (clientesAguardandoRetorno > 0) linhas.push(`<span>📞 <b>${clientesAguardandoRetorno}</b> cliente${clientesAguardandoRetorno === 1 ? '' : 's'} aguardando retorno</span>`);
   if (propostasEmNegociacao > 0) linhas.push(`<span>📄 <b>${propostasEmNegociacao}</b> proposta${propostasEmNegociacao === 1 ? '' : 's'} em negociação</span>`);
   if (lembretesUrgentes.length > 0) linhas.push(`<span>🔔 <b>${lembretesUrgentes.length}</b> lembrete${lembretesUrgentes.length === 1 ? '' : 's'} de hoje/atrasado${lembretesUrgentes.length === 1 ? '' : 's'}</span>`);
+  if (prospeccoesAtrasadas.length > 0) {
+    const n = prospeccoesAtrasadas.length;
+    linhas.push(`<span>🏗️ <b>${n}</b> ${n === 1 ? 'prospecção de captação atrasada' : 'prospecções de captação atrasadas'}</span>`);
+  }
 
   let title, breakdownHtml;
   if (linhas.length > 0) {
@@ -1871,7 +1883,7 @@ if (leadsInativosArr.length === 0) {
     return Math.floor((new Date() - dt) / (1000 * 60 * 60 * 24));
   }
 
-  const { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes, total } = computeAcoesUrgentes();
+  const { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes, prospeccoesAtrasadas, total } = computeAcoesUrgentes();
 
   if (total === 0) {
     list.innerHTML = '<div class="acao-all-clear">✅ Tudo em dia — nenhuma ação urgente agora.</div>';
@@ -1908,6 +1920,16 @@ if (leadsInativosArr.length === 0) {
   if (lembretesUrgentes.length > 0) {
     html += `<div class="acao-group"><div class="acao-group-title">🔔 Lembretes de hoje/atrasados (${lembretesUrgentes.length})</div>` +
       lembretesUrgentes.map(x => `<div class="acao-item"><span>${x.texto}</span></div>`).join('') + `</div>`;
+  }
+
+  if (prospeccoesAtrasadas.length > 0) {
+    html += `<div class="acao-group"><div class="acao-group-title">🏗️ Prospecção de captação atrasada (${prospeccoesAtrasadas.length})</div>` +
+      prospeccoesAtrasadas.map(pr => {
+        const atraso = pr.dataProximaAcao ? diasSemContato(pr.dataProximaAcao) : null;
+        const quanto = (atraso !== null && atraso > 0) ? ` — ${atraso}d de atraso` : '';
+        const wa = pr.telefone ? `<a class="wa-link" href="${waHref(pr.telefone)}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+        return `<div class="acao-item"><span>${pr.nome} (${pr.imovelBairro || 'imóvel a definir'})${quanto}</span>${wa}</div>`;
+      }).join('') + `</div>`;
   }
 
   list.innerHTML = html;
@@ -2574,6 +2596,7 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
       <div class="lead-top">
         <span class="lead-name">${it.nome || '—'}</span>
         <span class="badge ${statusClass[it.status] || 'novo'}">${it.status || '—'}</span>
+        ${it.statusPrazo ? `<span class="badge ${it.statusPrazo.indexOf('Atrasado') !== -1 ? 'atrasado' : 'emdia'}">${it.statusPrazo}</span>` : ''}
       </div>
       <div class="lead-meta">
         <span>Imóvel/Bairro: <b>${it.imovelBairro || '—'}</b></span>
