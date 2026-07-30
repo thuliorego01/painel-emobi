@@ -153,6 +153,36 @@
   .alert-box .a-sub { font-size:var(--fs-xs); color:#8A7644; }
 
   .lead-card { border:1px solid #E9EBE4; border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
+  /* Urgência real = temperatura + tempo parado. Um lead Quente parado há dias
+     custa muito mais caro que um Frio em dia — a cor precisa refletir isso. */
+  .lead-card { border-left-width: 4px; border-left-color: #E9EBE4; }
+  .lead-card.urg-critica { border-left-color: #C62828; background: linear-gradient(90deg, #FFF5F5 0%, #fff 60%); }
+  .lead-card.urg-alta    { border-left-color: #E8892B; }
+  .lead-card.urg-media   { border-left-color: #E5C35C; }
+  .lead-card.urg-ok      { border-left-color: #7BA05B; }
+  .lead-idade { display:inline-flex; align-items:center; gap:4px; font-size: var(--fs-2xs); color:#8A9186; }
+  .lead-idade b { color: var(--brand-dark2); font-weight:600; }
+  .lead-idade.alerta b { color:#C62828; }
+  .termo-row { display:flex; align-items:center; gap:10px; margin-bottom:7px; }
+  .termo-label { flex:0 0 132px; font-size: var(--fs-2xs); color: var(--brand-dark2); }
+  .termo-bar-wrap { flex:1; background:#F1F3EE; border-radius:6px; height:20px; position:relative; overflow:hidden; }
+  .termo-bar { height:100%; background: linear-gradient(90deg, var(--brand-dark2), #5C6B4A); border-radius:6px; transition:width .4s; }
+  .termo-bar.gargalo { background: linear-gradient(90deg, #C62828, #E8892B); }
+  .termo-val { flex:0 0 70px; text-align:right; font-size: var(--fs-2xs); color:#8A9186; }
+  .termo-val b { color: var(--brand-dark2); font-size: var(--fs-xs); }
+  .termo-nota { font-size: var(--fs-2xs); color:#8A9186; margin-top:10px; line-height:1.5; }
+  .termo-nota b { color:#C62828; }
+  .semana-grid { display:grid; grid-template-columns: repeat(7, 1fr); gap:6px; }
+  .semana-dia { border:1px solid #E9EBE4; border-radius:10px; padding:8px 6px; min-height:74px; background:#FCFCFA; }
+  .semana-dia.hoje { border-color: var(--brand-gold); background:#FFFDF5; box-shadow:0 0 0 1px var(--brand-gold) inset; }
+  .semana-dia.vazio { opacity:.55; }
+  .semana-dow { font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:#8A9186; }
+  .semana-num { font-size: var(--fs-sm); font-weight:700; color: var(--brand-dark2); line-height:1.2; }
+  .semana-ev { font-size:10px; background:var(--brand-dark2); color:#fff; border-radius:5px; padding:2px 4px; margin-top:4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .semana-vazia-msg { font-size:10px; color:#B6BBB0; margin-top:6px; }
+  @media (max-width: 700px) {
+    .semana-grid { grid-template-columns: repeat(4, 1fr); }
+  }
   .lead-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
   .lead-name { font-size: 13px; font-weight:700; color: var(--ink); }
   .badge { font-size: var(--fs-2xs); font-weight:700; padding: 3px 8px; border-radius: 20px; text-transform:uppercase; letter-spacing:.3px; }
@@ -537,6 +567,10 @@
       <div class="greeting-block" id="greetingBlock"></div>
       <div class="kpis" id="homeKpis" style="margin-bottom:18px;"></div>
       <div class="urgent-banner" id="urgentBanner"></div>
+      <div class="section-title"><span class="dot" aria-hidden="true"></span>🌡️ Termômetro do Funil</div>
+      <div class="card" style="margin-bottom:18px;">
+        <div id="termometroFunil"></div>
+      </div>
       <div class="section-title"><span class="dot" aria-hidden="true"></span>🌟 Compromissos de Destaque</div>
       <div class="card" style="margin-bottom:18px;">
         <div id="compromissosDestaqueList"></div>
@@ -545,6 +579,10 @@
 
 
   <div class="tab-panel" data-tab="agenda" id="panel-agenda" role="tabpanel">
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>📆 Sua Semana</div>
+    <div class="card" style="margin-bottom:18px;">
+      <div id="semanaStrip"></div>
+    </div>
     <div class="section-title"><span class="dot" aria-hidden="true"></span>🎯 Seu Foco Hoje</div>
     <div class="card" style="margin-bottom:18px;">
       <div id="acoesAgoraList"></div>
@@ -832,7 +870,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-30T17:15:00-03:00",
+  ultimaAtualizacao: "2026-07-30T17:45:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -867,18 +905,18 @@ const DATA = {
     { imovel: "Apartamento Cód. 10638 (Mirante dos Eucaliptos, Candelária)", cliente: "Comprador (parceria Ricardo Pantoja)", valor: 265000, comissao: 4637.50, mes: "Julho", status: "aguardando", tipo: "Venda" }
   ],
   leads: [
-    { nome: "Tácito Barreto", telefone: "84987371817", origem: "Relacionamento", fase: "Inativo", maiorFaseIndex: 5, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Busca ativa a cada 15 dias — apartamento ~150m² em Lagoa Nova, até R$1,3M", dataProximaAcao: "2026-07-28", status: "Inativo", obs: "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso, mas prefere condomínios mais novos — sugerido o Vivant. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M.", imoveisCompativeis: null, visitaResumo: null, visitaDetalhe: null, statusReativacao: null, interesse: "apartamento ~150m² em Lagoa Nova, até R$1,3M" },
-    { nome: "Amarildo Jorge de Morais Costa", telefone: "84988202035", origem: "CRM Emobi", fase: "Inativo", maiorFaseIndex: 1, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Ligação de retomada sobre unidade no Bosque do Tirol", dataProximaAcao: "2026-08-28", status: "Inativo", obs: "Quer apê no Edifício Bosque do Tirol (Av. Alm. Alexandrino de Alencar 1362-1366, Tirol), ~100m². Retomada agendada 28/08. Monitoramento automático de portais a cada ~10 dias. ⚠️ ATENÇÃO (22/07): cliente reforçou que NÃO quer opções de outros condomínios — só unidades no próprio Edifício Bosque do Tirol.", imoveisCompativeis: null, statusReativacao: null, interesse: "apartamento no Edifício Bosque do Tirol" },
-    { nome: "Maria Eduarda Revorêdo", telefone: "84981761829", origem: "CRM Emobi", fase: "Qualificado", maiorFaseIndex: 3, temperatura: "Morno", valor: 380000, comissaoPrevista: null, proximaAcao: "Sem resposta — se não responder até o fim da cadência (7 dias), enviar mensagem de encerramento (estilo \"demissão do cliente\")", dataProximaAcao: "2026-08-05", status: "Em dia", obs: "Referência de estilo: Cód. 9723 — casa em condomínio 3 quartos (1 suíte), 119m², Nova Parnamirim, R$380.000. Follow-up feito em 06/07. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada. [29/07] Sem resposta às últimas tentativas — cadência de 7 dias reiniciada. Mensagem de encerramento preparada para envio em 05/08 caso continue sem retorno.", imoveisCompativeis: ["Cód. 10594"] /* Casa em Condomínio, Extremoz */, statusReativacao: "🟢 Em dia", interesse: "casa em condomínio em Nova Parnamirim" },
-    { nome: "Kamylla Gadelha", telefone: "84999020411", origem: "CRM Emobi", fase: "Inativo", maiorFaseIndex: 5, temperatura: "Morno", valor: 500000, comissaoPrevista: null, proximaAcao: "Retomar contato (cadência de 7 em 7 dias) — verificar se a mãe já deu retorno", dataProximaAcao: "2026-08-01", status: "Inativo", obs: "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente pediu que Thúlio entre em contato diretamente com a mãe dela, em vez da 2ª visita conjunta antes combinada. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada. [25/07] Mãe não retorna contato — busca inativada, retomada com cadência de 7 em 7 dias.", imoveisCompativeis: [], visitaResumo: null, visitaDetalhe: "pra você trazer sua mãe dessa vez", statusReativacao: null, interesse: "casa em Capim Macio" },
-    { nome: "Daianne", telefone: "84988351048", origem: "CRM Emobi", fase: "Qualificado", maiorFaseIndex: 3, temperatura: "Frio", valor: 630000, comissaoPrevista: null, proximaAcao: "Retomar contato após viagem (fim do mês)", dataProximaAcao: "2026-08-01", status: "Em dia", obs: "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08.", imoveisCompativeis: ["Cód. 9272", "Cód. 8024", "Cód. 5485", "Cód. 7560", "Cód. 10567", "Cód. 7454"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária ou Lagoa Nova" },
-    { nome: "Diana Rêgo", telefone: "84987706107", origem: "Relacionamento", fase: "Visita Realizada", maiorFaseIndex: 5, temperatura: "Quente", valor: 600000, comissaoPrevista: null, proximaAcao: "Conferir se ela vai puxar a proposta — apartamento 607, Porto Arena", dataProximaAcao: "2026-07-22", status: "Em dia", obs: "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Cód. 5485 do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta.", imoveisCompativeis: ["Cód. 5485"], visitaResumo: null, visitaDetalhe: null, statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária, Lagoa Nova ou Tirol" },
-    { nome: "Heber Lima", telefone: "84981319709", origem: "Instagram", fase: "Novo Lead", maiorFaseIndex: 1, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Enviar opção encontrada: Cód. 9995 (Tirol, 115m², R$329.990) e retomar contato", dataProximaAcao: "2026-07-28", status: "Em dia", obs: "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [25/07] Rodada de busca: Cód. 9995 confirmado como melhor opção; sem alternativas em Barro Vermelho no inventário atual.", imoveisCompativeis: ["Cód. 9995"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Tirol ou Barro Vermelho, mín. 80m²" },
-        { nome: "Maria Matos", telefone: "84987349007", origem: "Instagram", fase: "Visita Agendada", maiorFaseIndex: 5, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Avisar cliente: sem opções em Capim Macio no momento; monitorar novos lançamentos", dataProximaAcao: "2026-07-28", status: "Em dia", obs: "Visita agendada para 25/07 às 10h ao Cód. 10650 (Apartamento 4 Quartos, Residencial Ariane, Tirol) — fora do perfil ideal (Tirol, não Capim Macio), mas cliente confirmou a visita. [25/07] Rodada de busca: nenhum imóvel em Capim Macio no inventário atual.", imoveisCompativeis: [], statusReativacao: null, interesse: "Apartamento acima de 150m², Capim Macio, condomínio até ~R$2.000" },
-    { nome: "Hélio Dourado", telefone: "84994312223", origem: "A definir", fase: "Inativo", maiorFaseIndex: 1, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Retomar contato em ~30 dias — verificar se já organizou/vendeu a casa de praia com as irmãs", dataProximaAcao: "2026-08-28", status: "Inativo", obs: "Busca apartamento em Candelária, 3 dormitórios (1 suíte), até R$400 mil. [25/07] Rodada de busca: Cód. 7726 (Candelária, 74m², R$269.990, 3 dorm./2 suítes) dentro do orçamento; Cód. 7560 (Candelária, 133m², R$419.990, 3 dorm./1 suíte) levemente acima do teto de R$400 mil. [29/07] Cliente suspendeu a busca — cadência de 30 dias. Motivo (nas palavras dele): \"Vou organizar a casa de praia que tenho com minhas irmãs e depois vendê-la. Só então voltarei a procurar apartamento. Aí comprarei algo melhor sem financiamento.\"", imoveisCompativeis: ["Cód. 7726", "Cód. 7560"], statusReativacao: null, interesse: "apartamento em Candelária, 3 dormitórios (1 suíte), até R$400 mil" },
-    { nome: "João Paulo de Paula", telefone: "84994815995", origem: "Relacionamento", fase: "Proposta Enviada", maiorFaseIndex: 6, temperatura: "Quente", valor: 390000, comissaoPrevista: null, proximaAcao: "Acompanhar retorno da proposta — Cód. 7560, R$390.000,00 (20% recursos próprios + financiamento)", dataProximaAcao: "2026-07-31", status: "Em dia", obs: "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 — Corais de Ponta Negra, R$525.000; Cód. 10572 — Corais Enseada de Ponta Negra, R$420.000; Cód. 6830 — Corais da Enseada, R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra — descartou todas. [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento.", imoveisCompativeis: ["Cód. 9266", "Cód. 10572", "Cód. 6830", "Cód. 7726", "Cód. 7560"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária — proposta no Cód. 7560" },
-    { nome: "Renato Cássio", telefone: "84999885255", origem: "Relacionamento", fase: "Visita Agendada", maiorFaseIndex: 4, temperatura: "Quente", valor: null, comissaoPrevista: null, proximaAcao: "Visita amanhã (31/07) às 16h — Corais Alto da Candelária, unidade 103", dataProximaAcao: "2026-07-31", status: "Em dia", obs: "Ex-proprietário do Cód. 10638 (Candelária), vendido recentemente com sinal pago. Agora em atendimento como comprador. Visita em 30/07 às 18h ao Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h.", imoveisCompativeis: [], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária — Corais Alto, unidade 103" },
-    { nome: "Camilla Natasha", telefone: "84994771313", origem: "Relacionamento", fase: "Proposta Enviada", maiorFaseIndex: 6, temperatura: "Quente", valor: 120000, comissaoPrevista: null, proximaAcao: "Acompanhar retorno da proposta — R$120.000,00 à vista, apto 404 bloco 11, Cond. Jardim Satélite", dataProximaAcao: "2026-08-02", status: "Em dia", obs: "Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista.", imoveisCompativeis: [], statusReativacao: "🟢 Em dia", interesse: "apartamento 404, bloco 11, Condomínio Jardim Satélite" }
+    { nome: "Tácito Barreto", telefone: "84987371817", origem: "Relacionamento", dataEntrada: "2026-07-01", fase: "Inativo", maiorFaseIndex: 5, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Busca ativa a cada 15 dias — apartamento ~150m² em Lagoa Nova, até R$1,3M", dataProximaAcao: "2026-07-28", status: "Inativo", obs: "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso, mas prefere condomínios mais novos — sugerido o Vivant. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M.", imoveisCompativeis: null, visitaResumo: null, visitaDetalhe: null, statusReativacao: null, interesse: "apartamento ~150m² em Lagoa Nova, até R$1,3M" },
+    { nome: "Amarildo Jorge de Morais Costa", telefone: "84988202035", origem: "CRM Emobi", dataEntrada: "2026-07-01", fase: "Inativo", maiorFaseIndex: 1, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Ligação de retomada sobre unidade no Bosque do Tirol", dataProximaAcao: "2026-08-28", status: "Inativo", obs: "Quer apê no Edifício Bosque do Tirol (Av. Alm. Alexandrino de Alencar 1362-1366, Tirol), ~100m². Retomada agendada 28/08. Monitoramento automático de portais a cada ~10 dias. ⚠️ ATENÇÃO (22/07): cliente reforçou que NÃO quer opções de outros condomínios — só unidades no próprio Edifício Bosque do Tirol.", imoveisCompativeis: null, statusReativacao: null, interesse: "apartamento no Edifício Bosque do Tirol" },
+    { nome: "Maria Eduarda Revorêdo", telefone: "84981761829", origem: "CRM Emobi", dataEntrada: "2026-07-01", fase: "Qualificado", maiorFaseIndex: 3, temperatura: "Morno", valor: 380000, comissaoPrevista: null, proximaAcao: "Sem resposta — se não responder até o fim da cadência (7 dias), enviar mensagem de encerramento (estilo \"demissão do cliente\")", dataProximaAcao: "2026-08-05", status: "Em dia", obs: "Referência de estilo: Cód. 9723 — casa em condomínio 3 quartos (1 suíte), 119m², Nova Parnamirim, R$380.000. Follow-up feito em 06/07. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada. [29/07] Sem resposta às últimas tentativas — cadência de 7 dias reiniciada. Mensagem de encerramento preparada para envio em 05/08 caso continue sem retorno.", imoveisCompativeis: ["Cód. 10594"] /* Casa em Condomínio, Extremoz */, statusReativacao: "🟢 Em dia", interesse: "casa em condomínio em Nova Parnamirim" },
+    { nome: "Kamylla Gadelha", telefone: "84999020411", origem: "CRM Emobi", dataEntrada: "2026-07-01", fase: "Inativo", maiorFaseIndex: 5, temperatura: "Morno", valor: 500000, comissaoPrevista: null, proximaAcao: "Retomar contato (cadência de 7 em 7 dias) — verificar se a mãe já deu retorno", dataProximaAcao: "2026-08-01", status: "Inativo", obs: "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente pediu que Thúlio entre em contato diretamente com a mãe dela, em vez da 2ª visita conjunta antes combinada. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada. [25/07] Mãe não retorna contato — busca inativada, retomada com cadência de 7 em 7 dias.", imoveisCompativeis: [], visitaResumo: null, visitaDetalhe: "pra você trazer sua mãe dessa vez", statusReativacao: null, interesse: "casa em Capim Macio" },
+    { nome: "Daianne", telefone: "84988351048", origem: "CRM Emobi", dataEntrada: "2026-07-06", fase: "Qualificado", maiorFaseIndex: 3, temperatura: "Frio", valor: 630000, comissaoPrevista: null, proximaAcao: "Retomar contato após viagem (fim do mês)", dataProximaAcao: "2026-08-01", status: "Em dia", obs: "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08.", imoveisCompativeis: ["Cód. 9272", "Cód. 8024", "Cód. 5485", "Cód. 7560", "Cód. 10567", "Cód. 7454"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária ou Lagoa Nova" },
+    { nome: "Diana Rêgo", telefone: "84987706107", origem: "Relacionamento", dataEntrada: "2026-07-18", fase: "Visita Realizada", maiorFaseIndex: 5, temperatura: "Quente", valor: 600000, comissaoPrevista: null, proximaAcao: "Conferir se ela vai puxar a proposta — apartamento 607, Porto Arena", dataProximaAcao: "2026-07-22", status: "Em dia", obs: "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Cód. 5485 do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta.", imoveisCompativeis: ["Cód. 5485"], visitaResumo: null, visitaDetalhe: null, statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária, Lagoa Nova ou Tirol" },
+    { nome: "Heber Lima", telefone: "84981319709", origem: "Instagram", dataEntrada: "2026-07-21", fase: "Novo Lead", maiorFaseIndex: 1, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Enviar opção encontrada: Cód. 9995 (Tirol, 115m², R$329.990) e retomar contato", dataProximaAcao: "2026-07-28", status: "Em dia", obs: "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [25/07] Rodada de busca: Cód. 9995 confirmado como melhor opção; sem alternativas em Barro Vermelho no inventário atual.", imoveisCompativeis: ["Cód. 9995"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Tirol ou Barro Vermelho, mín. 80m²" },
+        { nome: "Maria Matos", telefone: "84987349007", origem: "Instagram", dataEntrada: "2026-07-24", fase: "Visita Agendada", maiorFaseIndex: 5, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Avisar cliente: sem opções em Capim Macio no momento; monitorar novos lançamentos", dataProximaAcao: "2026-07-28", status: "Em dia", obs: "Visita agendada para 25/07 às 10h ao Cód. 10650 (Apartamento 4 Quartos, Residencial Ariane, Tirol) — fora do perfil ideal (Tirol, não Capim Macio), mas cliente confirmou a visita. [25/07] Rodada de busca: nenhum imóvel em Capim Macio no inventário atual.", imoveisCompativeis: [], statusReativacao: null, interesse: "Apartamento acima de 150m², Capim Macio, condomínio até ~R$2.000" },
+    { nome: "Hélio Dourado", telefone: "84994312223", origem: "A definir", dataEntrada: "2026-07-25", fase: "Inativo", maiorFaseIndex: 1, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Retomar contato em ~30 dias — verificar se já organizou/vendeu a casa de praia com as irmãs", dataProximaAcao: "2026-08-28", status: "Inativo", obs: "Busca apartamento em Candelária, 3 dormitórios (1 suíte), até R$400 mil. [25/07] Rodada de busca: Cód. 7726 (Candelária, 74m², R$269.990, 3 dorm./2 suítes) dentro do orçamento; Cód. 7560 (Candelária, 133m², R$419.990, 3 dorm./1 suíte) levemente acima do teto de R$400 mil. [29/07] Cliente suspendeu a busca — cadência de 30 dias. Motivo (nas palavras dele): \"Vou organizar a casa de praia que tenho com minhas irmãs e depois vendê-la. Só então voltarei a procurar apartamento. Aí comprarei algo melhor sem financiamento.\"", imoveisCompativeis: ["Cód. 7726", "Cód. 7560"], statusReativacao: null, interesse: "apartamento em Candelária, 3 dormitórios (1 suíte), até R$400 mil" },
+    { nome: "João Paulo de Paula", telefone: "84994815995", origem: "Relacionamento", dataEntrada: "2026-07-29", fase: "Proposta Enviada", maiorFaseIndex: 6, temperatura: "Quente", valor: 390000, comissaoPrevista: null, proximaAcao: "Acompanhar retorno da proposta — Cód. 7560, R$390.000,00 (20% recursos próprios + financiamento)", dataProximaAcao: "2026-07-31", status: "Em dia", obs: "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 — Corais de Ponta Negra, R$525.000; Cód. 10572 — Corais Enseada de Ponta Negra, R$420.000; Cód. 6830 — Corais da Enseada, R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra — descartou todas. [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento.", imoveisCompativeis: ["Cód. 9266", "Cód. 10572", "Cód. 6830", "Cód. 7726", "Cód. 7560"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária — proposta no Cód. 7560" },
+    { nome: "Renato Cássio", telefone: "84999885255", origem: "Relacionamento", dataEntrada: "2026-07-30", fase: "Visita Agendada", maiorFaseIndex: 4, temperatura: "Quente", valor: null, comissaoPrevista: null, proximaAcao: "Visita amanhã (31/07) às 16h — Corais Alto da Candelária, unidade 103", dataProximaAcao: "2026-07-31", status: "Em dia", obs: "Ex-proprietário do Cód. 10638 (Candelária), vendido recentemente com sinal pago. Agora em atendimento como comprador. Visita em 30/07 às 18h ao Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h.", imoveisCompativeis: [], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária — Corais Alto, unidade 103" },
+    { nome: "Camilla Natasha", telefone: "84994771313", origem: "Relacionamento", dataEntrada: "2026-07-30", fase: "Proposta Enviada", maiorFaseIndex: 6, temperatura: "Quente", valor: 120000, comissaoPrevista: null, proximaAcao: "Acompanhar retorno da proposta — R$120.000,00 à vista, apto 404 bloco 11, Cond. Jardim Satélite", dataProximaAcao: "2026-08-02", status: "Em dia", obs: "Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista.", imoveisCompativeis: [], statusReativacao: "🟢 Em dia", interesse: "apartamento 404, bloco 11, Condomínio Jardim Satélite" }
   ],
   imoveis: [
     { nome: "Apartamento 3 Quartos Nova Parnamirim 79m² (Cód. 7762)", tipo: "Apartamento", bairro: "Nova Parnamirim", cidade: "Parnamirim", endereco: "Rua Pantanal, Nova Parnamirim - Parnamirim/RN", valor: 399000, detalhes: "3 quartos (1 suíte), 2 banheiros, 2 vagas, 79m²", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7762/apartamento-3-quartos-nova-parnamirim-parnamirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Vila Verde. Condomínio R$ 540,00 + IPTU R$ 120,00." },
@@ -1581,6 +1619,49 @@ function getUltimaAtividade(nome) {
   return itens[itens.length - 1];
 }
 
+// Dias corridos entre uma data ISO (AAAA-MM-DD) e hoje.
+function diasDesde(dataISO) {
+  if (!dataISO) return null;
+  const m = String(dataISO).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!m) return null;
+  const dt = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  const hoje = new Date();
+  return Math.floor((new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()) - dt) / 86400000);
+}
+
+// Há quantos dias esse lead não registra nenhuma movimentação no histórico.
+function diasSemMovimento(nome) {
+  const itens = (DATA.logAtividades || []).filter(a => a.lead === nome);
+  if (itens.length === 0) return null;
+  let maisRecente = null;
+  itens.forEach(a => {
+    const m = String(a.data || '').match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+    if (!m) return;
+    const dt = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
+    if (!maisRecente || dt > maisRecente) maisRecente = dt;
+  });
+  if (!maisRecente) return null;
+  const hoje = new Date();
+  return Math.floor((new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()) - maisRecente) / 86400000);
+}
+
+// Quanto tempo parado já é demais, por temperatura (mesma régua da cadência).
+const LIMITE_PARADO = { 'Quente': 3, 'Morno': 7, 'Frio': 30 };
+
+function calcularUrgencia(l) {
+  if (FASES_INATIVAS.includes(l.fase)) return { classe: '', nivel: 'inativo', parado: null };
+  const parado = diasSemMovimento(l.nome);
+  const limite = LIMITE_PARADO[l.temperatura] || 7;
+  if (parado === null) return { classe: 'urg-ok', nivel: 'ok', parado: null };
+  const razao = parado / limite;
+  let classe, nivel;
+  if (razao >= 2)        { classe = 'urg-critica'; nivel = 'critica'; }
+  else if (razao >= 1)   { classe = 'urg-alta';    nivel = 'alta'; }
+  else if (razao >= 0.7) { classe = 'urg-media';   nivel = 'media'; }
+  else                   { classe = 'urg-ok';      nivel = 'ok'; }
+  return { classe, nivel, parado, limite };
+}
+
 function renderLeadCard(l, container) {
   const badgeClass = l.status === 'Atrasado' ? 'atrasado' : (l.status === 'Em dia' ? 'emdia' : 'novo');
   const tempClass = l.temperatura === 'Quente' ? 'quente' : (l.temperatura === 'Morno' ? 'morno' : 'frio');
@@ -1623,8 +1704,20 @@ function renderLeadCard(l, container) {
   const ultimaAtiv = getUltimaAtividade(l.nome);
   const ultimaAtivTxt = ultimaAtiv ? `${ultimaAtiv.data} — ${truncar(ultimaAtiv.resumo, 70)}` : truncar(l.obs, 70) || '—';
   const proximaAcaoTxt = truncar(l.proximaAcao, 60) || '—';
+  const urg = calcularUrgencia(l);
+  const idadeDias = diasDesde(l.dataEntrada);
+  const partesIdade = [];
+  if (idadeDias !== null) partesIdade.push(`no funil há <b>${idadeDias}d</b>`);
+  if (urg.parado !== null) {
+    const alerta = (urg.nivel === 'critica' || urg.nivel === 'alta') ? ' alerta' : '';
+    partesIdade.push(`<span class="lead-idade${alerta}">parado há <b>${urg.parado}d</b></span>`);
+  }
+  const idadeHtml = partesIdade.length
+    ? `<div class="lead-idade" style="margin-top:6px;">⏱️ ${partesIdade.join(' <span class="sep">·</span> ')}</div>`
+    : '';
+
   const card = document.createElement('div');
-  card.className = 'lead-card lead-card-clickable';
+  card.className = 'lead-card lead-card-clickable' + (urg.classe ? ' ' + urg.classe : '');
   card.dataset.leadNome = l.nome;
   card.setAttribute('role', 'button');
   card.setAttribute('tabindex', '0');
@@ -1640,6 +1733,7 @@ function renderLeadCard(l, container) {
       ${l.origem ? '<span>Origem: <b>' + l.origem + '</b></span>' : ''}
     </div>
     <div class="lead-line3"><b>Última:</b> ${ultimaAtivTxt}<span class="sep">·</span><b>Próxima ação:</b> ${proximaAcaoTxt}</div>
+    ${idadeHtml}
     ${matchHtml}
     <div class="lead-actions">${waHtml}${confirmHtml}${reativarHtml}</div>
     <div class="lead-card-hint">👆 Clique para ver o histórico completo</div>`;
@@ -2580,6 +2674,92 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
 
   renderIndicadores();
   renderIndicacoes();
+})();
+
+(function renderSemana() {
+  const el = document.getElementById('semanaStrip');
+  if (!el) return;
+
+  // Junta tudo que o painel conhece de agenda numa lista só, por data.
+  const eventos = [];
+  function pushAll(arr, dataFallback) {
+    (arr || []).forEach(ev => {
+      const data = ev.data || dataFallback;
+      if (data) eventos.push({ data: String(data).slice(0, 10), hora: ev.hora || '', titulo: ev.titulo || '' });
+    });
+  }
+  const hoje = new Date();
+  const isoDe = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const amanha = new Date(hoje); amanha.setDate(amanha.getDate() + 1);
+  pushAll(DATA.agendaHoje, isoDe(hoje));
+  pushAll(DATA.agendaAmanha, isoDe(amanha));
+  pushAll(DATA.agendaProximos, null);
+
+  const porData = {};
+  eventos.forEach(ev => { (porData[ev.data] = porData[ev.data] || []).push(ev); });
+
+  const DOW = ['dom','seg','ter','qua','qui','sex','sáb'];
+  let html = '<div class="semana-grid">';
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(hoje); d.setDate(d.getDate() + i);
+    const iso = isoDe(d);
+    const doDia = (porData[iso] || []).sort((a,b) => (a.hora || '').localeCompare(b.hora || ''));
+    const classes = ['semana-dia'];
+    if (i === 0) classes.push('hoje');
+    if (doDia.length === 0) classes.push('vazio');
+    html += `<div class="${classes.join(' ')}">
+      <div class="semana-dow">${DOW[d.getDay()]}${i === 0 ? ' · hoje' : ''}</div>
+      <div class="semana-num">${d.getDate()}</div>` +
+      (doDia.length
+        ? doDia.map(ev => `<div class="semana-ev" title="${(ev.hora ? ev.hora + ' ' : '') + ev.titulo.replace(/"/g,'&quot;')}">${ev.hora ? ev.hora + ' ' : ''}${ev.titulo}</div>`).join('')
+        : '<div class="semana-vazia-msg">livre</div>') +
+    `</div>`;
+  }
+  html += '</div>';
+  const totalSemana = eventos.filter(ev => {
+    const diff = Math.floor((new Date(ev.data.slice(0,4), Number(ev.data.slice(5,7))-1, ev.data.slice(8,10)) - new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate())) / 86400000);
+    return diff >= 0 && diff < 7;
+  }).length;
+  html += `<div class="termo-nota">${totalSemana === 0 ? 'Nenhum compromisso nos próximos 7 dias.' : totalSemana + (totalSemana === 1 ? ' compromisso' : ' compromissos') + ' nos próximos 7 dias.'}</div>`;
+  el.innerHTML = html;
+})();
+
+(function renderTermometroFunil() {
+  const el = document.getElementById('termometroFunil');
+  if (!el) return;
+  const leads = DATA.leads || [];
+  if (leads.length === 0) {
+    el.innerHTML = '<div style="font-size:13px;color:#8A9186;">Sem leads cadastrados ainda.</div>';
+    return;
+  }
+  // Quantos leads já ALCANÇARAM cada fase (não quantos estão nela agora) —
+  // é isso que mostra onde o funil aperta.
+  const alcancaram = FUNIL_CONVERSAO_FASES.map((_, i) =>
+    leads.filter(l => (l.maiorFaseIndex || 0) >= (i + 1)).length
+  );
+  const base = alcancaram[0] || 1;
+
+  // Gargalo = maior queda percentual entre duas fases consecutivas que ainda têm gente.
+  let gargaloIdx = -1, piorQueda = 0;
+  for (let i = 1; i < alcancaram.length; i++) {
+    if (alcancaram[i - 1] === 0) continue;
+    const queda = (alcancaram[i - 1] - alcancaram[i]) / alcancaram[i - 1];
+    if (queda > piorQueda) { piorQueda = queda; gargaloIdx = i; }
+  }
+
+  el.innerHTML = FUNIL_CONVERSAO_FASES.map((fase, i) => {
+    const n = alcancaram[i];
+    const pct = Math.round((n / base) * 100);
+    const larg = base > 0 ? Math.max(n / base * 100, n > 0 ? 3 : 0) : 0;
+    const isGargalo = i === gargaloIdx;
+    return `<div class="termo-row">
+      <span class="termo-label">${fase}</span>
+      <span class="termo-bar-wrap"><span class="termo-bar${isGargalo ? ' gargalo' : ''}" style="width:${larg}%"></span></span>
+      <span class="termo-val"><b>${n}</b> · ${pct}%</span>
+    </div>`;
+  }).join('') + (gargaloIdx > 0
+    ? `<div class="termo-nota">Maior perda entre <b>${FUNIL_CONVERSAO_FASES[gargaloIdx - 1]}</b> e <b>${FUNIL_CONVERSAO_FASES[gargaloIdx]}</b> — de ${alcancaram[gargaloIdx - 1]} para ${alcancaram[gargaloIdx]} (${Math.round(piorQueda * 100)}% de queda). É onde vale atacar primeiro.</div>`
+    : '');
 })();
 
 (function renderProspeccao() {
