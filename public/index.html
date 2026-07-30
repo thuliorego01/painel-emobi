@@ -873,7 +873,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-30T18:00:00-03:00",
+  ultimaAtualizacao: "2026-07-30T18:20:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -1743,8 +1743,28 @@ function renderLeadCard(l, container) {
   container.appendChild(card);
 }
 
-const leadsAtivosArr = DATA.leads.filter(l => !FASES_INATIVAS.includes(l.fase));
-const leadsInativosArr = DATA.leads.filter(l => FASES_INATIVAS.includes(l.fase));
+// Ordena os cards por temperatura (Quente > Morno > Frio) para que os clientes
+// mais próximos de fechar fiquem sempre no topo, sem depender de rolagem.
+// Dentro da mesma temperatura, quem está parado há mais tempo vem primeiro —
+// dois leads Quentes não são iguais se um está parado há 1 dia e o outro há 9.
+const ORDEM_TEMPERATURA = { 'Quente': 0, 'Morno': 1, 'Frio': 2 };
+
+function ordenarPorTemperatura(arr) {
+  return arr.slice().sort((a, b) => {
+    const ta = ORDEM_TEMPERATURA[a.temperatura] ?? 3;
+    const tb = ORDEM_TEMPERATURA[b.temperatura] ?? 3;
+    if (ta !== tb) return ta - tb;
+    const pa = diasSemMovimento(a.nome);
+    const pb = diasSemMovimento(b.nome);
+    if (pa === null && pb === null) return 0;
+    if (pa === null) return 1;
+    if (pb === null) return -1;
+    return pb - pa;
+  });
+}
+
+const leadsAtivosArr = ordenarPorTemperatura(DATA.leads.filter(l => !FASES_INATIVAS.includes(l.fase)));
+const leadsInativosArr = ordenarPorTemperatura(DATA.leads.filter(l => FASES_INATIVAS.includes(l.fase)));
 
 if (leadsAtivosArr.length === 0) {
   leadsCard.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum lead ativo cadastrado ainda.</div>';
