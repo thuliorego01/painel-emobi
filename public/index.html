@@ -171,6 +171,13 @@
   .urg-legenda-cor { width:10px; height:10px; border-radius:3px; display:inline-block; }
   .lead-motivo { font-size: var(--fs-2xs); color:#8A6A2E; background:#FFFBEF; border:1px solid #F0E2B0; border-radius:7px; padding:5px 8px; margin-top:6px; }
   .lead-motivo b { color:#6B5D2E; }
+  .sync-box { display:flex; align-items:center; gap:12px; flex-wrap:wrap; background:#F4F7F0; border:1px solid #DFE6D6; border-radius:12px; padding:10px 14px; margin-bottom:12px; }
+  .sync-btn { background: var(--brand-dark2); color:#fff; border:none; border-radius:9px; padding:9px 16px; font-size: var(--fs-xs); font-weight:600; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .sync-btn:hover:not(:disabled) { background: var(--brand-dark); }
+  .sync-btn:disabled { opacity:.55; cursor:default; }
+  .sync-status { font-size: var(--fs-2xs); color:#5C6B4A; flex:1; min-width:180px; }
+  .sync-status.ok { color:#2E7D32; font-weight:600; }
+  .sync-status.erro { color:#C62828; font-weight:600; }
   .termo-row { display:flex; align-items:center; gap:10px; margin-bottom:7px; }
   .termo-label { flex:0 0 132px; font-size: var(--fs-2xs); color: var(--brand-dark2); }
   .termo-bar-wrap { flex:1; background:#F1F3EE; border-radius:6px; height:20px; position:relative; overflow:hidden; }
@@ -717,6 +724,10 @@
       </div>
       <div>
         <div class="section-title"><span class="dot" aria-hidden="true"></span>Leads Ativos</div>
+        <div class="sync-box" id="syncBox" style="display:none;">
+          <button type="button" class="sync-btn" id="btnCarregarNotas">🔄 Carregar minhas anotações</button>
+          <span class="sync-status" id="syncStatus" role="status" aria-live="polite">Incorpora as notas que você escreveu nos clientes ao histórico do CRM.</span>
+        </div>
         <div class="card" id="leadsCard"></div>
         <div class="inativos-toggle" id="inativosToggle" role="button" tabindex="0" aria-expanded="false">
           <span class="chev" aria-hidden="true">▶</span> <span id="inativosToggleLabel">Leads Inativos</span>
@@ -897,7 +908,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-30T19:00:00-03:00",
+  ultimaAtualizacao: "2026-07-30T19:30:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -2757,6 +2768,38 @@ function resumirEvento(titulo) {
   if (t.length > 42) t = t.slice(0, 42).trim() + '…';
   return t || String(titulo).slice(0, 42);
 }
+
+(function botaoCarregarNotas() {
+  const box = document.getElementById('syncBox');
+  const btn = document.getElementById('btnCarregarNotas');
+  const status = document.getElementById('syncStatus');
+  if (!box || !btn || !status) return;
+
+  // window.cowork só existe quando o painel é aberto como artifact dentro do
+  // app do Claude. Na cópia do Cloudflare ou no arquivo local esse botão não
+  // teria como acionar nada — então nem aparece, em vez de dar erro ao clicar.
+  const disponivel = typeof window.cowork === 'object'
+    && window.cowork !== null
+    && typeof window.cowork.runScheduledTask === 'function';
+  if (!disponivel) return;
+
+  box.style.display = 'flex';
+
+  btn.addEventListener('click', async () => {
+    btn.disabled = true;
+    status.className = 'sync-status';
+    status.textContent = 'Chamando… vou ler suas anotações e incorporar ao histórico.';
+    try {
+      await window.cowork.runScheduledTask('carregar-notas-crm');
+      status.className = 'sync-status ok';
+      status.textContent = '✓ Pedido enviado. Acompanhe a resposta no chat — o painel atualiza quando eu terminar.';
+    } catch (e) {
+      status.className = 'sync-status erro';
+      status.textContent = 'Não consegui chamar a tarefa. Me peça no chat: "carrega as notas".';
+      btn.disabled = false;
+    }
+  });
+})();
 
 (function renderOrigemResultado() {
   const el = document.getElementById('origemResultado');
