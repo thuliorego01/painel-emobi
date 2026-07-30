@@ -712,6 +712,10 @@
     <div class="section-title"><span class="dot" aria-hidden="true"></span>🏠 Imóveis Captados</div>
     <div id="followupResumo" class="followup-resumo"></div>
     <div class="card" id="imoveisCard"></div>
+
+    <div class="section-title" id="vendidosTitle" style="display:none;"><span class="dot" aria-hidden="true"></span>💰 Vendidos — aguardando confirmação de comissão</div>
+    <div style="font-size:var(--fs-xs);color:#8A9186;margin-bottom:10px;display:none;" id="vendidosHint">Saem daqui automaticamente assim que você confirmar o pagamento da comissão — a partir daí ficam só em registro (Log de Atividades e Faturamento).</div>
+    <div class="card" id="imoveisVendidosCard" style="display:none;"></div>
   </div>
 
   <div class="tab-panel" data-tab="conectatr" id="panel-conectatr" role="tabpanel">
@@ -795,7 +799,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-30T08:55:38-03:00",
+  ultimaAtualizacao: "2026-07-30T10:09:21-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -811,9 +815,9 @@ const DATA = {
       { mes: "Dezembro", ano: 2026, mesNum: 12, recebido: 0 }
     ]
   },
-  comissao: { paga: 66462.5, aguardando: 0, totalRecebimentos: 66462.5, prevista: 0 },
+  comissao: { paga: 66462.5, aguardando: 4637.50, totalRecebimentos: 66462.5, prevista: 0 },
   negociacoes: {
-    vendas: { qtd: 7, valor: 2355000, comissao: 64412.5 },
+    vendas: { qtd: 8, valor: 2620000, comissao: 64412.5 },
     locacoes: { qtd: 1, valor: 4100, comissao: 2050 },
     cartorio: { qtd: 0, valor: 0 },
     diversos: { qtd: 0, valor: 0 }
@@ -826,7 +830,8 @@ const DATA = {
     { imovel: "Central Park (3-803)", cliente: "João Marcos e Carla", valor: 470000, comissao: 7637.5, mes: "Abril", status: "pago", tipo: "Venda" },
     { imovel: "Prédio Alecrim", cliente: "Ramon Diniz", valor: 20000, comissao: 13000, mes: "Abril", status: "pago", tipo: "Venda" },
     { imovel: "João Mendonça", cliente: "Victor e Monaira", valor: 380000, comissao: 6650, mes: "Maio", status: "pago", tipo: "Venda" },
-    { imovel: "Bacara 1102", cliente: "Cor. Camila Araújo", valor: 4100, comissao: 2050, mes: "Fevereiro", status: "pago", tipo: "Locação" }
+    { imovel: "Bacara 1102", cliente: "Cor. Camila Araújo", valor: 4100, comissao: 2050, mes: "Fevereiro", status: "pago", tipo: "Locação" },
+    { imovel: "Apartamento Cód. 10638 (Mirante dos Eucaliptos, Candelária)", cliente: "Comprador (parceria Ricardo Pantoja)", valor: 265000, comissao: 4637.50, mes: "Julho", status: "aguardando", tipo: "Venda" }
   ],
   leads: [
     { nome: "Tácito Barreto", telefone: "84987371817", origem: "Relacionamento", fase: "Inativo", maiorFaseIndex: 5, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Busca ativa a cada 15 dias — apartamento ~150m² em Lagoa Nova, até R$1,3M", dataProximaAcao: "2026-07-28", status: "Inativo", obs: "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso, mas prefere condomínios mais novos — sugerido o Vivant. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M.", imoveisCompativeis: null, visitaResumo: null, visitaDetalhe: null, statusReativacao: null, interesse: "apartamento ~150m² em Lagoa Nova, até R$1,3M" },
@@ -860,7 +865,7 @@ const DATA = {
     { nome: "Apartamento 3 Quartos Nova Parnamirim 71m² (Cód. 10627)", tipo: "Apartamento", bairro: "Nova Parnamirim", cidade: "Parnamirim", endereco: "Avenida Ayrton Senna, Nova Parnamirim - Parnamirim/RN", valor: 324990, detalhes: "3 quartos (1 suíte), 2 banheiros, 1 vaga, 71m² privativos", proprietario: "Michelle", telefone: "(84) 9800-2220", link: "https://emobiimobiliaria.com.br/imovel/10627/apartamento-3-quartos-nova-parnamirim-parnamirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-13", ultimaInteracaoProprietario: "2026-07-24", obs: "Condomínio California Gardens. Potencial de reforma/modernização. Condomínio R$ 530,00 + IPTU R$ 1.100,00/ano. Visita realizada hoje (22/07) às 9h, com corretor parceiro Ranniere Araújo (levando cliente próprio). Nova visita em 24/07 às 14h com a corretora parceira Katyanne Layse — clientes gostaram, cogitam uma segunda visita." },
     { nome: "Apartamento 3 Quartos Ponta Negra 101m² (Cód. 10641 — Portamaris)", tipo: "Apartamento", bairro: "Ponta Negra", cidade: "Natal", endereco: "Avenida Deputado Antônio Florêncio De Queiroz, Ponta Negra - Natal/RN", valor: 849990, detalhes: "3 quartos (1 suíte), 3 banheiros, 2 vagas, 101m² privativos, totalmente mobiliado", proprietario: "Kris Suenir Meira de Araújo", telefone: "(84) 99981-0266", link: "https://emobiimobiliaria.com.br/imovel/10641/apartamento-3-quartos-ponta-negra-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-18", ultimaInteracaoProprietario: "2026-07-20", obs: "Condomínio Portamaris Club Condominium. Porteira fechada, totalmente mobiliado e reformado, pronto para morar, vista panorâmica para Ponta Negra. Pet friendly. Condomínio R$ 900,00. IPTU R$ 3.900,00. Estrutura completa de lazer (piscinas, academia, quadra, salão de festas). Originado de indicação do Conecta TR (protocolo IND-TR-2026-0005). Indicador: Klevisson Ranniere Meira de Araújo." },
     { nome: "Casa Comercial 3 Quartos Lagoa Nova 256m² (Cód. 7731)", tipo: "Casa Comercial", bairro: "Lagoa Nova", cidade: "Natal", endereco: "Rua Dos Potiguares, 2592, Lagoa Nova - Natal/RN", valor: 524990, detalhes: "3 quartos (1 suíte), 4 banheiros, 4 vagas, 256m² privativos (416m² totais)", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7731/casa-comercial-3-quartos-lagoa-nova-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-19", ultimaInteracaoProprietario: "2026-07-19", obs: "Terreno de 416m² (450m² segundo o anúncio), potencial para uso comercial (clínicas, escritórios, comércio, alimentação) — vizinho à CEASA, próximo a Av. Capitão-Mor Gouveia, Av. Salgado Filho e BR-101. Documentação em fase de inventário extrajudicial. Pet friendly." },
-    { nome: "Apartamento 2 Quartos Candelária 50m² (Cód. 10638)", tipo: "Apartamento", bairro: "Candelária", cidade: "Natal", endereco: "Rua Antomar De Brito Freitas, Candelária - Natal/RN", valor: 265000, valorTabela: 269990, detalhes: "2 quartos (1 suíte), 2 banheiros, 1 vaga, 50m² privativos", proprietario: "Renato Cássio", telefone: "(84) 99988-5255", link: "https://emobiimobiliaria.com.br/imovel/10638/apartamento-2-quartos-candelaria-natal/", status: "Vendido", pctComissao: 35, corretorParceiro: "Ricardo Pantoja (Emobi)", dataCaptacao: "2026-07-20", ultimaInteracaoProprietario: "2026-07-29", obs: "Condomínio Mirante dos Eucaliptos. Reformado, parcialmente mobiliado, pronto para morar. Pet friendly. Condomínio R$ 400,00 (água e gás inclusos). IPTU R$ 1.000,00/ano. Próximo à UFRN, Natal Shopping, BR-101 e Av. Prudente de Morais. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [29/07] Entrou em processo de assinatura de contrato — negociado por R$265.000,00 (tabela R$269.990,00). Venda em parceria com o corretor Ricardo Pantoja, da própria Emobi. [29/07] Contrato assinado e sinal pago — venda concluída. Agora em processo de financiamento; comissão de Thúlio (35%) será paga quando o vendedor receber o valor do financiamento." },
+    { nome: "Apartamento 2 Quartos Candelária 50m² (Cód. 10638)", tipo: "Apartamento", bairro: "Candelária", cidade: "Natal", endereco: "Rua Antomar De Brito Freitas, Candelária - Natal/RN", valor: 265000, valorTabela: 269990, detalhes: "2 quartos (1 suíte), 2 banheiros, 1 vaga, 50m² privativos", proprietario: "Renato Cássio", telefone: "(84) 99988-5255", link: "https://emobiimobiliaria.com.br/imovel/10638/apartamento-2-quartos-candelaria-natal/", status: "Vendido", pctComissao: null, corretorParceiro: "Ricardo Pantoja (Emobi)", comissaoTotalVenda: 13250, comissaoThulioVenda: 4637.50, comissaoConfirmada: false, dataCaptacao: "2026-07-20", ultimaInteracaoProprietario: "2026-07-29", obs: "Condomínio Mirante dos Eucaliptos. Reformado, parcialmente mobiliado, pronto para morar. Pet friendly. Condomínio R$ 400,00 (água e gás inclusos). IPTU R$ 1.000,00/ano. Próximo à UFRN, Natal Shopping, BR-101 e Av. Prudente de Morais. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [29/07] Entrou em processo de assinatura de contrato — negociado por R$265.000,00 (tabela R$269.990,00). Venda em parceria com o corretor Ricardo Pantoja, da própria Emobi. [29/07] Contrato assinado e sinal pago — venda concluída. Agora em processo de financiamento. Comissão total: R$13.250,00; parte de Thúlio: R$4.637,50 — paga quando o vendedor receber o valor do financiamento." },
     { nome: "Apartamento 4 Quartos Tirol 240m² (Cód. 10650)", tipo: "Apartamento", tipoOperacao: "Venda", bairro: "Tirol", cidade: "Natal", endereco: "Rua Dom José Tomaz, Tirol - Natal/RN", valor: 749990, detalhes: "4 quartos (3 suítes + escritório reversível p/ 4ª suíte), 5 banheiros, 3 vagas, 240m² privativos", proprietario: "Duarte", telefone: "(84) 99988-0345", link: "https://emobiimobiliaria.com.br/imovel/10650/apartamento-4-quartos-tirol-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-22", ultimaInteracaoProprietario: "2026-07-22", obs: "Residencial Ariane. 1 apartamento por andar, depósito privativo na garagem, área de serviço independente, dependência completa. Condomínio R$ 2.500,00 (água inclusa). IPTU R$ 6.440,08/ano. Captação concluída e publicada hoje (22/07) — proprietário Duarte." },
     { nome: "Apartamento 3 Quartos Candelária 74m² (Cód. 7726)", tipo: "Apartamento", tipoOperacao: "Venda", bairro: "Candelária", cidade: "Natal", endereco: "Rua Prefeito Sandoval Cavalcante De Albuquerque, Candelária - Natal/RN", valor: 269990, detalhes: "3 quartos (2 suítes), 2 banheiros, 2 vagas (1 fixa + 1 rotativa), 74m² privativos", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7726/apartamento-3-quartos-candelaria-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-23", ultimaInteracaoProprietario: "2026-07-23", obs: "Residencial Polinésia. Condomínio R$ 680,00 + IPTU R$ 158,00. Preço baixou de R$ 279.990,00 para R$ 269.990,00. Pet friendly. Sol da manhã. Lazer: churrasqueira, salão de festas, playground, quadra poliesportiva, portaria com controle de acesso." },
     { nome: "Casa em Condomínio 4 Quartos Muriú 200m² (Cód. 10652)", tipo: "Casa em Condomínio", tipoOperacao: "Venda", bairro: "Muriú", cidade: "Ceará-Mirim", endereco: "Rua Nova Segunda, Muriú - Ceará-Mirim/RN", valor: 589990, detalhes: "4 quartos (4 suítes), 5 banheiros, terreno 540m², 200m² construídos, mobiliada, piscina privativa", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/10652/casa-em-condominio-4-quartos-muriu-ceara-mirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-23", ultimaInteracaoProprietario: "2026-07-23", obs: "Casa de praia beira-mar em condomínio exclusivo em Muriú (Ceará-Mirim, ~35min de Natal). Espaço gourmet, cozinha integrada à varanda, área verde com vista pro mar. Condomínio com piscina, churrasqueira, área verde e terraço para festas. Condomínio R$ 1.000,00 + IPTU R$ 700,00/ano. Pet friendly, mobiliado." },
@@ -1017,7 +1022,8 @@ const DATA = {
     { data: "29/07/2026", lead: "João Paulo de Paula", tipo: "Outro", resumo: "Novo lead: (84) 99481-5995, temperatura morno, crédito aprovado. Visita hoje a 3 opções em Ponta Negra (Cód. 9266, 10572, 6830) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes." },
     { data: "29/07/2026", lead: "Cód. 9266, 10572, 6830 (Ponta Negra)", tipo: "Outro", resumo: "Novas captações adicionadas ao site da Emobi (Ponta Negra), para visita do cliente João Paulo de Paula." },
     { data: "29/07/2026", lead: "Hélio Dourado", tipo: "Outro", resumo: "Cliente suspendeu a busca — vai organizar e vender casa de praia com as irmãs antes de retomar (à vista, sem financiamento). Fase alterada para \"Inativo\", cadência de 30 dias (retomar em 28/08)." },
-    { data: "29/07/2026", lead: "Cód. 10638 (Candelária)", tipo: "Outro", resumo: "Contrato assinado e sinal pago — venda concluída. Status alterado para \"Vendido\". Agora em processo de financiamento; comissão de Thúlio (35%) será paga quando o vendedor receber o valor do financiamento." }
+    { data: "29/07/2026", lead: "Cód. 10638 (Candelária)", tipo: "Outro", resumo: "Contrato assinado e sinal pago — venda concluída. Status alterado para \"Vendido\". Agora em processo de financiamento; comissão de Thúlio (35%) será paga quando o vendedor receber o valor do financiamento." },
+    { data: "30/07/2026", lead: "Cód. 10638 (Candelária)", tipo: "Outro", resumo: "Comissão detalhada: total R$13.250,00, parte de Thúlio R$4.637,50 (parceria Ricardo Pantoja). Lançada como \"Aguardando Pagamento\" na Tabela de Negociações 2026 e na aba Faturamento do painel. Aba Imóveis ganhou seção \"Vendidos\" — imóveis vendidos por Thúlio ficam lá até confirmação do pagamento da comissão; depois disso, saem e ficam só em registro (Log + Faturamento), diferente de \"Perdido\" (venda da concorrência), que já sai direto." }
   ]
 };
 const isDemo = false;
@@ -2067,7 +2073,7 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
 
   const resumoEl = document.getElementById('followupResumo');
   let atrasados = 0, aproximando = 0, emDia = 0;
-  DATA.imoveis.forEach(im => {
+  DATA.imoveis.filter(im => im.status !== 'Vendido').forEach(im => {
     const fu = followupStatus(im);
     if (fu) { if (fu.cls === 'atrasado') atrasados++; else if (fu.cls === 'aproximando') aproximando++; else emDia++; }
   });
@@ -2098,7 +2104,7 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
   }
 
   const porCidade = {};
-  DATA.imoveis.forEach(im => {
+  DATA.imoveis.filter(im => im.status !== 'Vendido').forEach(im => {
     const c = im.cidade || 'Cidade a definir';
     (porCidade[c] = porCidade[c] || []).push(im);
   });
@@ -2167,6 +2173,26 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
       });
     });
   });
+
+  // ---- Vendidos por Thulio: ficam visiveis ate a comissao ser confirmada como paga ----
+  const vendidos = DATA.imoveis.filter(im => im.status === 'Vendido' && !im.comissaoConfirmada);
+  const vendidosCard = document.getElementById('imoveisVendidosCard');
+  if (vendidos.length > 0 && vendidosCard) {
+    document.getElementById('vendidosTitle').style.display = '';
+    document.getElementById('vendidosHint').style.display = '';
+    vendidosCard.style.display = '';
+    vendidos.forEach(im => {
+      const card = renderCard(im);
+      if (im.comissaoTotalVenda || im.comissaoThulioVenda) {
+        const comissaoInfo = document.createElement('div');
+        comissaoInfo.className = 'imovel-meta';
+        comissaoInfo.style.marginTop = '4px';
+        comissaoInfo.innerHTML = `💰 Comissão total: ${im.comissaoTotalVenda ? brl(im.comissaoTotalVenda) : '—'} · Parte de Thúlio: <b>${im.comissaoThulioVenda ? brl(im.comissaoThulioVenda) : '—'}</b>${im.corretorParceiro ? ' · Parceria: ' + im.corretorParceiro : ''}`;
+        card.appendChild(comissaoInfo);
+      }
+      vendidosCard.appendChild(card);
+    });
+  }
 }
 
 // ---- Historico de Negociacoes ----
