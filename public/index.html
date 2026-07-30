@@ -178,6 +178,7 @@
   .sync-status { font-size: var(--fs-2xs); color:#5C6B4A; flex:1; min-width:180px; }
   .sync-status.ok { color:#2E7D32; font-weight:600; }
   .sync-status.erro { color:#C62828; font-weight:600; }
+  .sync-textarea { width:100%; min-height:110px; margin-top:8px; font-family:inherit; font-size: var(--fs-2xs); color: var(--brand-dark2); padding:9px; border:1px solid #D7DBD2; border-radius:8px; background:#fff; resize:vertical; }
   .termo-row { display:flex; align-items:center; gap:10px; margin-bottom:7px; }
   .termo-label { flex:0 0 132px; font-size: var(--fs-2xs); color: var(--brand-dark2); }
   .termo-bar-wrap { flex:1; background:#F1F3EE; border-radius:6px; height:20px; position:relative; overflow:hidden; }
@@ -727,6 +728,7 @@
         <div class="sync-box" id="syncBox" style="display:none;">
           <button type="button" class="sync-btn" id="btnCarregarNotas">🔄 Carregar minhas anotações</button>
           <span class="sync-status" id="syncStatus" role="status" aria-live="polite">Incorpora as notas que você escreveu nos clientes ao histórico do CRM.</span>
+          <textarea id="syncTexto" class="sync-textarea" readonly style="display:none;" aria-label="Anotações pendentes para copiar"></textarea>
         </div>
         <div class="card" id="leadsCard"></div>
         <div class="inativos-toggle" id="inativosToggle" role="button" tabindex="0" aria-expanded="false">
@@ -908,7 +910,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-30T19:30:00-03:00",
+  ultimaAtualizacao: "2026-07-30T19:50:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -2778,26 +2780,100 @@ function resumirEvento(titulo) {
   // window.cowork só existe quando o painel é aberto como artifact dentro do
   // app do Claude. Na cópia do Cloudflare ou no arquivo local esse botão não
   // teria como acionar nada — então nem aparece, em vez de dar erro ao clicar.
-  const disponivel = typeof window.cowork === 'object'
+  const dentroDoCowork = typeof window.cowork === 'object'
     && window.cowork !== null
     && typeof window.cowork.runScheduledTask === 'function';
-  if (!disponivel) return;
 
   box.style.display = 'flex';
+
+  if (dentroDoCowork) {
+    // Caminho ideal: o painel consegue disparar a rotina direto.
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      status.className = 'sync-status';
+      status.textContent = 'Chamando… vou ler suas anotações e incorporar ao histórico.';
+      try {
+        await window.cowork.runScheduledTask('carregar-notas-crm');
+        status.className = 'sync-status ok';
+        status.textContent = '✓ Pedido enviado. Acompanhe a resposta no chat — o painel atualiza quando eu terminar.';
+      } catch (e) {
+        status.className = 'sync-status erro';
+        status.textContent = 'Não consegui chamar a tarefa. Me peça no chat: "carrega as notas".';
+        btn.disabled = false;
+      }
+    });
+    return;
+  }
+
+  // Fora do Cowork (Cloudflare ou arquivo local) uma página web não tem como
+  // iniciar uma conversa no chat. Então o botão faz a próxima melhor coisa:
+  // junta as anotações pendentes num texto pronto para colar.
+  const textarea = document.getElementById('syncTexto');
+  btn.textContent = '📋 Copiar anotações pendentes';
+  status.textContent = 'Copia suas anotações num texto pronto — cole no chat do Claude e eu incorporo ao histórico.';
+
+  async function coletarNotas() {
+    let remotas = [];
+    try {
+      const r = await fetch('/api/notas', { cache: 'no-store' });
+      if (r.ok) {
+        const j = await r.json();
+        if (Array.isArray(j)) remotas = j;
+      }
+    } catch (e) { /* sem backend aqui */ }
+    let locais = [];
+    try {
+      const raw = localStorage.getItem('painelEmobiNotasLocais');
+      const arr = raw ? JSON.parse(raw) : [];
+      if (Array.isArray(arr)) locais = arr;
+    } catch (e) { /* localStorage indisponível */ }
+    return remotas.concat(locais);
+  }
 
   btn.addEventListener('click', async () => {
     btn.disabled = true;
     status.className = 'sync-status';
-    status.textContent = 'Chamando… vou ler suas anotações e incorporar ao histórico.';
-    try {
-      await window.cowork.runScheduledTask('carregar-notas-crm');
-      status.className = 'sync-status ok';
-      status.textContent = '✓ Pedido enviado. Acompanhe a resposta no chat — o painel atualiza quando eu terminar.';
-    } catch (e) {
-      status.className = 'sync-status erro';
-      status.textContent = 'Não consegui chamar a tarefa. Me peça no chat: "carrega as notas".';
+    status.textContent = 'Juntando…';
+    const notas = await coletarNotas();
+
+    if (notas.length === 0) {
+      status.className = 'sync-status';
+      status.textContent = 'Nenhuma anotação pendente no momento.';
       btn.disabled = false;
+      return;
     }
+
+    const linhas = notas.map(n => {
+      let quando = '';
+      if (n.criadaEm) {
+        const d = new Date(n.criadaEm);
+        if (!isNaN(d)) quando = ' (' + d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) + ')';
+      }
+      return `- ${n.lead}${quando}: ${n.texto}`;
+    });
+    const texto = 'Carrega essas anotações no CRM:\n\n' + linhas.join('\n');
+
+    let copiou = false;
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(texto);
+        copiou = true;
+      }
+    } catch (e) { /* cai no plano B */ }
+
+    if (copiou) {
+      status.className = 'sync-status ok';
+      status.textContent = `✓ ${notas.length} ${notas.length === 1 ? 'anotação copiada' : 'anotações copiadas'}. Cole no chat do Claude.`;
+    } else {
+      // file:// e navegadores sem clipboard: mostra o texto já selecionado.
+      textarea.style.display = 'block';
+      textarea.value = texto;
+      textarea.focus();
+      textarea.select();
+      status.className = 'sync-status ok';
+      status.textContent = `${notas.length} ${notas.length === 1 ? 'anotação pronta' : 'anotações prontas'} — o texto já está selecionado abaixo, é só copiar (Cmd+C) e colar no chat.`;
+    }
+    btn.disabled = false;
   });
 })();
 
