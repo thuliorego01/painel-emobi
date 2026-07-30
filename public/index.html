@@ -172,13 +172,16 @@
   .termo-val b { color: var(--brand-dark2); font-size: var(--fs-xs); }
   .termo-nota { font-size: var(--fs-2xs); color:#8A9186; margin-top:10px; line-height:1.5; }
   .termo-nota b { color:#C62828; }
-  .semana-grid { display:grid; grid-template-columns: repeat(7, 1fr); gap:6px; }
-  .semana-dia { border:1px solid #E9EBE4; border-radius:10px; padding:8px 6px; min-height:74px; background:#FCFCFA; }
+  /* minmax(0,1fr) + min-width:0 são obrigatórios: com 1fr puro o conteúdo
+     comprido força a coluna a crescer e as 7 colunas ficam desiguais. */
+  .semana-grid { display:grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap:6px; align-items:start; }
+  .semana-dia { border:1px solid #E9EBE4; border-radius:10px; padding:8px 6px; min-height:74px; background:#FCFCFA; min-width:0; overflow:hidden; }
   .semana-dia.hoje { border-color: var(--brand-gold); background:#FFFDF5; box-shadow:0 0 0 1px var(--brand-gold) inset; }
   .semana-dia.vazio { opacity:.55; }
   .semana-dow { font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:#8A9186; }
   .semana-num { font-size: var(--fs-sm); font-weight:700; color: var(--brand-dark2); line-height:1.2; }
-  .semana-ev { font-size:10px; background:var(--brand-dark2); color:#fff; border-radius:5px; padding:2px 4px; margin-top:4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .semana-ev { font-size:10px; background:var(--brand-dark2); color:#fff; border-radius:5px; padding:3px 5px; margin-top:4px; line-height:1.35; white-space:normal; overflow-wrap:anywhere; }
+  .semana-ev .semana-hora { display:block; font-weight:700; opacity:.85; }
   .semana-vazia-msg { font-size:10px; color:#B6BBB0; margin-top:6px; }
   @media (max-width: 700px) {
     .semana-grid { grid-template-columns: repeat(4, 1fr); }
@@ -870,7 +873,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-30T17:45:00-03:00",
+  ultimaAtualizacao: "2026-07-30T18:00:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -2676,6 +2679,20 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
   renderIndicacoes();
 })();
 
+// Títulos de evento vindos do Calendar são longos demais para uma coluna de 1/7
+// da tela ("Visita – Califórnia Gardens (Cód. 10627) — clientes Monique e Caio,
+// corretor Madson Oliveira (CRECI/RN 3385)"). Aqui fica só a parte essencial;
+// o título completo continua disponível no title/tooltip.
+function resumirEvento(titulo) {
+  if (!titulo) return '';
+  let t = String(titulo);
+  t = t.replace(/^\s*Visita\s*[–—-]\s*/i, '');   // "Visita – X" -> "X"
+  t = t.split(/\s+[–—]\s+/)[0];                  // corta em " — clientes ..."
+  t = t.replace(/\s*\(CRECI[^)]*\)/i, '').trim();
+  if (t.length > 42) t = t.slice(0, 42).trim() + '…';
+  return t || String(titulo).slice(0, 42);
+}
+
 (function renderSemana() {
   const el = document.getElementById('semanaStrip');
   if (!el) return;
@@ -2711,7 +2728,10 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
       <div class="semana-dow">${DOW[d.getDay()]}${i === 0 ? ' · hoje' : ''}</div>
       <div class="semana-num">${d.getDate()}</div>` +
       (doDia.length
-        ? doDia.map(ev => `<div class="semana-ev" title="${(ev.hora ? ev.hora + ' ' : '') + ev.titulo.replace(/"/g,'&quot;')}">${ev.hora ? ev.hora + ' ' : ''}${ev.titulo}</div>`).join('')
+        ? doDia.map(ev => {
+            const completo = ((ev.hora ? ev.hora + ' ' : '') + ev.titulo).replace(/"/g, '&quot;');
+            return `<div class="semana-ev" title="${completo}">${ev.hora ? `<span class="semana-hora">${ev.hora}</span>` : ''}${resumirEvento(ev.titulo)}</div>`;
+          }).join('')
         : '<div class="semana-vazia-msg">livre</div>') +
     `</div>`;
   }
