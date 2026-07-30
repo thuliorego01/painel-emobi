@@ -205,6 +205,27 @@
   .modal-close:hover { background:#E9EBE4; }
   .modal-header { padding-right: 34px; }
   .modal-timeline-title { font-size: var(--fs-sm); font-weight:700; color: var(--brand-dark2); margin: 18px 0 10px; }
+  .nota-box { margin-top: 18px; padding-top: 16px; border-top: 1px solid #E9EBE4; }
+  .nota-box textarea {
+    width: 100%; min-height: 76px; resize: vertical; box-sizing: border-box;
+    font-family: inherit; font-size: var(--fs-xs); color: var(--brand-dark2);
+    padding: 10px; border: 1px solid #D7DBD2; border-radius: 8px; background: #FCFCFA;
+  }
+  .nota-box textarea:focus { outline: 2px solid var(--brand-gold); outline-offset: 1px; border-color: var(--brand-gold); }
+  .nota-actions { display:flex; align-items:center; gap:10px; margin-top: 8px; flex-wrap: wrap; }
+  .nota-btn {
+    background: var(--brand-dark2); color: #fff; border: none; border-radius: 8px;
+    padding: 8px 16px; font-size: var(--fs-xs); font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+  .nota-btn:hover:not(:disabled) { background: var(--brand-dark); }
+  .nota-btn:disabled { opacity: .5; cursor: default; }
+  .nota-status { font-size: var(--fs-2xs); color: #8A9186; }
+  .nota-status.ok { color: #2E7D32; font-weight: 600; }
+  .nota-status.erro { color: #C62828; font-weight: 600; }
+  .nota-pendente {
+    background: #FFF9E6; border: 1px solid #F0E2B0; border-radius: 8px;
+    padding: 8px 10px; margin-top: 8px; font-size: var(--fs-2xs); color: #6B5D2E;
+  }
   .timeline-item { border-left: 2px solid #E9EBE4; padding: 2px 0 14px 14px; margin-left: 4px; position: relative; }
   .timeline-item:last-child { padding-bottom: 2px; }
   .timeline-item::before { content:''; position:absolute; left:-5px; top:4px; width:8px; height:8px; border-radius:50%; background: var(--brand-gold); }
@@ -794,12 +815,24 @@
     <div class="lead-meta" id="leadModalObs" style="margin-top:6px;"></div>
     <div class="modal-timeline-title">📜 Histórico</div>
     <div id="leadModalTimeline"></div>
+    <div class="nota-box">
+      <label for="leadNotaTexto" class="modal-timeline-title" style="display:block;margin:0 0 8px;">📝 Anotar atualização</label>
+      <div style="font-size:var(--fs-2xs);color:#8A9186;margin-bottom:8px;">
+        Escreva aqui qualquer novidade deste cliente. Fica salvo na nuvem e some depois que eu incorporar ao histórico no briefing das 7h.
+      </div>
+      <textarea id="leadNotaTexto" placeholder="Ex: visitou o apartamento hoje e gostou, vai conversar com a esposa antes de decidir."></textarea>
+      <div class="nota-actions">
+        <button type="button" class="nota-btn" id="leadNotaSalvar">Salvar nota</button>
+        <span class="nota-status" id="leadNotaStatus" role="status" aria-live="polite"></span>
+      </div>
+      <div id="leadNotasPendentes"></div>
+    </div>
   </div>
 </div>
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-30T15:05:00-03:00",
+  ultimaAtualizacao: "2026-07-30T16:15:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -1659,9 +1692,97 @@ if (leadsInativosArr.length === 0) {
         </div>`).join('');
     }
 
+    prepararNotas(nome);
+
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
     closeBtn.focus();
+  }
+
+  // ---- Notas rápidas por cliente (salvas na nuvem via /api/notas) ----
+  const notaTexto = document.getElementById('leadNotaTexto');
+  const notaSalvar = document.getElementById('leadNotaSalvar');
+  const notaStatus = document.getElementById('leadNotaStatus');
+  const notaPendentes = document.getElementById('leadNotasPendentes');
+  let leadAtual = null;
+  let notasCache = null;
+
+  function setNotaStatus(msg, tipo) {
+    if (!notaStatus) return;
+    notaStatus.textContent = msg || '';
+    notaStatus.className = 'nota-status' + (tipo ? ' ' + tipo : '');
+  }
+
+  async function carregarNotas(force) {
+    if (notasCache && !force) return notasCache;
+    try {
+      const r = await fetch('/api/notas', { cache: 'no-store' });
+      if (!r.ok) throw new Error('resposta ' + r.status);
+      const j = await r.json();
+      notasCache = Array.isArray(j) ? j : [];
+    } catch (e) {
+      notasCache = null;
+    }
+    return notasCache;
+  }
+
+  function renderNotasPendentes(nome) {
+    if (!notaPendentes) return;
+    notaPendentes.innerHTML = '';
+    if (!notasCache) return;
+    const minhas = notasCache.filter(n => n && n.lead === nome);
+    minhas.forEach(n => {
+      const div = document.createElement('div');
+      div.className = 'nota-pendente';
+      let quando = '';
+      if (n.criadaEm) {
+        const d = new Date(n.criadaEm);
+        if (!isNaN(d)) {
+          quando = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) +
+                   ' às ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        }
+      }
+      div.textContent = '⏳ Aguardando incorporação' + (quando ? ' (salva em ' + quando + ')' : '') + ': ' + (n.texto || '');
+      notaPendentes.appendChild(div);
+    });
+  }
+
+  async function prepararNotas(nome) {
+    leadAtual = nome;
+    if (notaTexto) { notaTexto.value = ''; notaTexto.disabled = false; }
+    if (notaSalvar) notaSalvar.disabled = false;
+    setNotaStatus('');
+    if (notaPendentes) notaPendentes.innerHTML = '';
+    await carregarNotas(false);
+    if (leadAtual !== nome) return; // trocou de card enquanto carregava
+    renderNotasPendentes(nome);
+  }
+
+  if (notaSalvar) {
+    notaSalvar.addEventListener('click', async () => {
+      const texto = (notaTexto && notaTexto.value || '').trim();
+      if (!texto) { setNotaStatus('Escreva algo antes de salvar.', 'erro'); return; }
+      if (!leadAtual) return;
+      notaSalvar.disabled = true;
+      setNotaStatus('Salvando…');
+      try {
+        const r = await fetch('/api/notas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lead: leadAtual, texto })
+        });
+        if (!r.ok) throw new Error('resposta ' + r.status);
+        const j = await r.json();
+        if (notasCache && j && j.nota) notasCache.push(j.nota);
+        if (notaTexto) notaTexto.value = '';
+        setNotaStatus('✓ Nota salva — entra no histórico no próximo briefing.', 'ok');
+        renderNotasPendentes(leadAtual);
+      } catch (e) {
+        setNotaStatus('Não consegui salvar. Confira a conexão e tente de novo.', 'erro');
+      } finally {
+        notaSalvar.disabled = false;
+      }
+    });
   }
 
   function fecharModal() {
