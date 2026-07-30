@@ -832,7 +832,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-30T16:15:00-03:00",
+  ultimaAtualizacao: "2026-07-30T16:40:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -1713,16 +1713,39 @@ if (leadsInativosArr.length === 0) {
     notaStatus.className = 'nota-status' + (tipo ? ' ' + tipo : '');
   }
 
+  // O backend (/api/notas) só existe quando o painel é servido pelo Worker da
+  // Cloudflare. Aberto como arquivo local ou dentro do Cowork, não há API —
+  // nesse caso a nota é guardada no próprio navegador para não se perder.
+  const NOTAS_LOCAL_KEY = 'painelEmobiNotasLocais';
+
+  function getNotasLocais() {
+    try {
+      const raw = localStorage.getItem(NOTAS_LOCAL_KEY);
+      const arr = raw ? JSON.parse(raw) : [];
+      return Array.isArray(arr) ? arr : [];
+    } catch (e) { return []; }
+  }
+
+  function addNotaLocal(nota) {
+    try {
+      const arr = getNotasLocais();
+      arr.push(nota);
+      localStorage.setItem(NOTAS_LOCAL_KEY, JSON.stringify(arr));
+      return true;
+    } catch (e) { return false; }
+  }
+
   async function carregarNotas(force) {
     if (notasCache && !force) return notasCache;
+    let remotas = [];
     try {
       const r = await fetch('/api/notas', { cache: 'no-store' });
-      if (!r.ok) throw new Error('resposta ' + r.status);
-      const j = await r.json();
-      notasCache = Array.isArray(j) ? j : [];
-    } catch (e) {
-      notasCache = null;
-    }
+      if (r.ok) {
+        const j = await r.json();
+        if (Array.isArray(j)) remotas = j;
+      }
+    } catch (e) { /* sem backend aqui — segue só com as locais */ }
+    notasCache = remotas.concat(getNotasLocais());
     return notasCache;
   }
 
@@ -1742,7 +1765,8 @@ if (leadsInativosArr.length === 0) {
                    ' às ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
         }
       }
-      div.textContent = '⏳ Aguardando incorporação' + (quando ? ' (salva em ' + quando + ')' : '') + ': ' + (n.texto || '');
+      const ondeSalvou = n.local ? ' · salva só neste navegador' : '';
+      div.textContent = '⏳ Aguardando incorporação' + (quando ? ' (em ' + quando + ')' : '') + ondeSalvou + ': ' + (n.texto || '');
       notaPendentes.appendChild(div);
     });
   }
@@ -1765,23 +1789,46 @@ if (leadsInativosArr.length === 0) {
       if (!leadAtual) return;
       notaSalvar.disabled = true;
       setNotaStatus('Salvando…');
+      let salvouNaNuvem = false;
+      let nota = null;
       try {
         const r = await fetch('/api/notas', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ lead: leadAtual, texto })
         });
-        if (!r.ok) throw new Error('resposta ' + r.status);
-        const j = await r.json();
-        if (notasCache && j && j.nota) notasCache.push(j.nota);
-        if (notaTexto) notaTexto.value = '';
-        setNotaStatus('✓ Nota salva — entra no histórico no próximo briefing.', 'ok');
-        renderNotasPendentes(leadAtual);
-      } catch (e) {
-        setNotaStatus('Não consegui salvar. Confira a conexão e tente de novo.', 'erro');
-      } finally {
-        notaSalvar.disabled = false;
+        if (r.ok) {
+          const j = await r.json();
+          if (j && j.nota) { nota = j.nota; salvouNaNuvem = true; }
+        }
+      } catch (e) { /* sem backend nesta cópia — cai no plano B abaixo */ }
+
+      if (!salvouNaNuvem) {
+        // Plano B: guarda no navegador para a nota nunca se perder.
+        nota = {
+          id: 'nota-local-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
+          lead: leadAtual,
+          texto: texto,
+          criadaEm: new Date().toISOString(),
+          local: true
+        };
+        if (!addNotaLocal(nota)) {
+          setNotaStatus('Não consegui salvar aqui. Copie o texto antes de fechar.', 'erro');
+          notaSalvar.disabled = false;
+          return;
+        }
       }
+
+      if (notasCache && nota) notasCache.push(nota);
+      if (notaTexto) notaTexto.value = '';
+      setNotaStatus(
+        salvouNaNuvem
+          ? '✓ Nota salva na nuvem — entra no histórico no próximo briefing.'
+          : '✓ Nota salva neste navegador. Esta cópia do painel não tem conexão com a nuvem — me peça para carregar as notas quando quiser.',
+        'ok'
+      );
+      renderNotasPendentes(leadAtual);
+      notaSalvar.disabled = false;
     });
   }
 
