@@ -163,6 +163,12 @@
   .lead-idade { display:inline-flex; align-items:center; gap:4px; font-size: var(--fs-2xs); color:#8A9186; }
   .lead-idade b { color: var(--brand-dark2); font-weight:600; }
   .lead-idade.alerta b { color:#C62828; }
+  .lead-alerta-chip { display:inline-block; font-size:10px; font-weight:700; border-radius:5px; padding:2px 7px; margin-left:6px; vertical-align:middle; }
+  .lead-alerta-chip.critica { background:#FDECEC; color:#C62828; }
+  .lead-alerta-chip.alta { background:#FDF1E3; color:#B4650F; }
+  .urg-legenda { display:flex; flex-wrap:wrap; gap:12px; align-items:center; font-size: var(--fs-2xs); color:#8A9186; margin-bottom:12px; padding-bottom:10px; border-bottom:1px dashed #E9EBE4; }
+  .urg-legenda-item { display:inline-flex; align-items:center; gap:5px; }
+  .urg-legenda-cor { width:10px; height:10px; border-radius:3px; display:inline-block; }
   .termo-row { display:flex; align-items:center; gap:10px; margin-bottom:7px; }
   .termo-label { flex:0 0 132px; font-size: var(--fs-2xs); color: var(--brand-dark2); }
   .termo-bar-wrap { flex:1; background:#F1F3EE; border-radius:6px; height:20px; position:relative; overflow:hidden; }
@@ -873,7 +879,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-30T18:20:00-03:00",
+  ultimaAtualizacao: "2026-07-30T18:35:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -1715,6 +1721,11 @@ function renderLeadCard(l, container) {
     const alerta = (urg.nivel === 'critica' || urg.nivel === 'alta') ? ' alerta' : '';
     partesIdade.push(`<span class="lead-idade${alerta}">parado há <b>${urg.parado}d</b></span>`);
   }
+  let chipHtml = '';
+  if (urg.nivel === 'critica' || urg.nivel === 'alta') {
+    const rotulo = urg.nivel === 'critica' ? 'Muito atrasado' : 'Passou da cadência';
+    chipHtml = `<span class="lead-alerta-chip ${urg.nivel}" title="${l.temperatura} deve ser tocado a cada ${urg.limite} dia(s) — está parado há ${urg.parado}.">⚠️ ${rotulo}</span>`;
+  }
   const idadeHtml = partesIdade.length
     ? `<div class="lead-idade" style="margin-top:6px;">⏱️ ${partesIdade.join(' <span class="sep">·</span> ')}</div>`
     : '';
@@ -1726,7 +1737,7 @@ function renderLeadCard(l, container) {
   card.setAttribute('tabindex', '0');
   card.innerHTML = `
     <div class="lead-top">
-      <span class="lead-name">${l.nome}</span>
+      <span class="lead-name">${l.nome}${chipHtml}</span>
       <span><span class="temp ${tempClass}">${l.temperatura}</span> <span class="badge ${badgeClass}">${l.status}</span></span>
     </div>
     <div class="lead-meta">
@@ -1769,6 +1780,18 @@ const leadsInativosArr = ordenarPorTemperatura(DATA.leads.filter(l => FASES_INAT
 if (leadsAtivosArr.length === 0) {
   leadsCard.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum lead ativo cadastrado ainda.</div>';
 } else {
+  // Legenda: a faixa colorida à esquerda NÃO é a temperatura (essa já está no
+  // selo do card) — é o cruzamento de temperatura com tempo parado. Sem esta
+  // legenda, dois leads Quentes com faixas diferentes parecem contradição.
+  const legenda = document.createElement('div');
+  legenda.className = 'urg-legenda';
+  legenda.innerHTML = '<span><b>Faixa colorida à esquerda</b> = urgência (temperatura + tempo parado):</span>' +
+    '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#7BA05B"></span>em dia</span>' +
+    '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#E5C35C"></span>chegando no limite</span>' +
+    '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#E8892B"></span>passou da cadência</span>' +
+    '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#C62828"></span>muito atrasado</span>' +
+    '<span style="opacity:.85;">Limite por temperatura: Quente 3d · Morno 7d · Frio 30d</span>';
+  leadsCard.appendChild(legenda);
   leadsAtivosArr.forEach(l => renderLeadCard(l, leadsCard));
 }
 
