@@ -191,6 +191,10 @@
   .lembrete-row.envelhecido { opacity:.55; }
   .lembrete-row.envelhecido:hover { opacity:1; }
   .idade-atraso { color:#C62828; }
+  .agenda-feito { font-family:inherit; font-size:10px; font-weight:600; border:1px solid #DCE3D3; background:#EEF2E9;
+    color:#4A5240; border-radius:7px; padding:5px 9px; cursor:pointer; white-space:nowrap; align-self:center; margin-left:auto; }
+  .agenda-feito:hover:not(:disabled) { background:#E2E8DA; }
+  .agenda-feito:disabled { opacity:.5; cursor:default; }
 
   /* ---- Modo escuro (segue a preferência do sistema) ---- */
   @media (prefers-color-scheme: dark) {
@@ -992,7 +996,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-30T22:10:00-03:00",
+  ultimaAtualizacao: "2026-07-30T22:35:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -1091,7 +1095,6 @@ const DATA = {
     notaDivergencia: "✅ Comissão de vendas de 2021 revisada e confirmada com Thúlio: R$ 95.746,83 (a planilha original tinha R$ 83.746,83, que não incluía a venda do Edifício Ubatuba)."
   },
   agendaHoje: [
-    { data: "2026-07-30", hora: "18:00", titulo: "Visita – Residencial Cabugi — cliente Renato Cássio, corretor Victor Bezerra", local: "Residencial Cabugi" }
   ],
   agendaAmanha: [
     { data: "2026-07-31", hora: "14:00", titulo: "Visita – Califórnia Gardens (Cód. 10627) — clientes Monique e Caio, corretor Madson Oliveira (CRECI/RN 3385)", local: "Condomínio Califórnia Gardens, Nova Parnamirim" },
@@ -1259,6 +1262,38 @@ if (DATA.ultimaAtualizacao) {
 // momento da última atualização. Se o painel for aberto depois da meia-noite,
 // esses rótulos estariam errados — então a classificação é refeita aqui,
 // pela data real de cada evento, toda vez que o painel carrega.
+// Compromisso realizado não deve continuar ocupando a agenda. Marcar aqui
+// grava no MESMO armazenamento dos lembretes concluídos (o endpoint guarda
+// uma lista de ids quaisquer) — por isso o prefixo "ag" no id.
+function agendaItemId(ev) {
+  const s = `ag|${ev.data}|${ev.hora || ''}|${ev.titulo || ''}`;
+  let x = 0;
+  for (let i = 0; i < s.length; i++) { x = (x * 31 + s.charCodeAt(i)) | 0; }
+  return 'ag' + Math.abs(x).toString(36);
+}
+
+function getAgendaRealizados() {
+  try {
+    const raw = localStorage.getItem('painelEmobiLembretesConcluidos');
+    const arr = raw ? JSON.parse(raw) : [];
+    return new Set(Array.isArray(arr) ? arr.filter(x => String(x).startsWith('ag')) : []);
+  } catch (e) { return new Set(); }
+}
+
+function marcarAgendaRealizada(id) {
+  try {
+    const raw = localStorage.getItem('painelEmobiLembretesConcluidos');
+    const arr = raw ? JSON.parse(raw) : [];
+    if (!arr.includes(id)) arr.push(id);
+    localStorage.setItem('painelEmobiLembretesConcluidos', JSON.stringify(arr));
+  } catch (e) { /* segue só com o servidor */ }
+  fetch('/api/lembretes/concluir', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id })
+  }).catch(() => {});
+}
+
 function agendaPorDia() {
   const agora = new Date();
   const hojeMeia = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
@@ -1277,11 +1312,14 @@ function agendaPorDia() {
     if (vistos.has(k)) return false;
     vistos.add(k); return true;
   });
+  const realizados = getAgendaRealizados();
+  const pend = unicos.filter(ev => !realizados.has(agendaItemId(ev)));
   return {
-    hoje: unicos.filter(ev => String(ev.data).slice(0,10) === isoHoje),
-    amanha: unicos.filter(ev => String(ev.data).slice(0,10) === isoAmanha),
-    proximos: unicos.filter(ev => String(ev.data).slice(0,10) > isoAmanha),
-    passados: unicos.filter(ev => String(ev.data).slice(0,10) < isoHoje)
+    hoje: pend.filter(ev => String(ev.data).slice(0,10) === isoHoje),
+    amanha: pend.filter(ev => String(ev.data).slice(0,10) === isoAmanha),
+    proximos: pend.filter(ev => String(ev.data).slice(0,10) > isoAmanha),
+    passados: pend.filter(ev => String(ev.data).slice(0,10) < isoHoje),
+    realizadosCount: unicos.length - pend.length
   };
 }
 const AGENDA_DIA = agendaPorDia();
@@ -1511,13 +1549,23 @@ function renderAgenda(list, label) {
   list.forEach(a => {
     const row = document.createElement('div');
     row.className = 'agenda-row';
+    row.dataset.agId = agendaItemId(a);
     row.innerHTML = `
-      <div class="agenda-time">${a.hora}</div>
+      <div class="agenda-time">${esc(a.hora)}</div>
       <div class="agenda-icon">🏠</div>
       <div class="agenda-info">
-        <div class="titulo">${a.titulo}</div>
-        <div class="local">${a.local}</div>
-      </div>`;
+        <div class="titulo">${esc(a.titulo)}</div>
+        <div class="local">${esc(a.local)}</div>
+      </div>
+      <button type="button" class="agenda-feito" title="Marcar como realizado — some da agenda">✓ Realizada</button>`;
+    const btn = row.querySelector('.agenda-feito');
+    btn.addEventListener('click', () => {
+      btn.disabled = true;
+      marcarAgendaRealizada(agendaItemId(a));
+      row.style.transition = 'opacity .3s';
+      row.style.opacity = '0';
+      setTimeout(() => row.remove(), 300);
+    });
     agendaList.appendChild(row);
   });
 }
@@ -1530,6 +1578,33 @@ if (!temHoje && !temAmanha) {
   else agendaList.innerHTML = '<div style="font-size:var(--fs-sm);color:#8A9186;margin-bottom:8px;">Nada marcado para hoje.</div>';
   if (temAmanha) renderAgenda(AGENDA_DIA.amanha, 'Amanhã');
 }
+
+// O filtro inicial da agenda usa só o localStorage (instantâneo). Esta etapa
+// consulta o servidor e tira da tela o que já foi marcado como realizado em
+// OUTRO dispositivo — sem isso, uma visita concluída no celular voltaria a
+// aparecer no computador.
+(async function sincronizarAgendaRealizada() {
+  let remotos = [];
+  try {
+    const r = await fetch('/api/lembretes/concluidos', { cache: 'no-store' });
+    if (!r.ok) return;
+    const j = await r.json();
+    if (Array.isArray(j)) remotos = j;
+  } catch (e) { return; }
+  const agRemotos = remotos.filter(x => String(x).startsWith('ag'));
+  if (agRemotos.length === 0) return;
+  try {
+    const raw = localStorage.getItem('painelEmobiLembretesConcluidos');
+    const arr = raw ? JSON.parse(raw) : [];
+    let mudou = false;
+    agRemotos.forEach(id => { if (!arr.includes(id)) { arr.push(id); mudou = true; } });
+    if (mudou) localStorage.setItem('painelEmobiLembretesConcluidos', JSON.stringify(arr));
+  } catch (e) { /* segue mesmo sem cache local */ }
+  const set = new Set(agRemotos);
+  document.querySelectorAll('.agenda-row[data-ag-id]').forEach(row => {
+    if (set.has(row.dataset.agId)) row.remove();
+  });
+})();
 
 // ---- Próximos Compromissos (além de hoje/amanhã) ----
 (function renderAgendaProximos() {
