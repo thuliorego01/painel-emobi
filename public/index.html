@@ -178,6 +178,12 @@
   .sync-status { font-size: var(--fs-2xs); color:#5C6B4A; flex:1; min-width:180px; }
   .sync-status.ok { color:#2E7D32; font-weight:600; }
   .sync-status.erro { color:#C62828; font-weight:600; }
+  .wa-link.registrar { background:#EEF2E9; color:#4A5240; border:1px solid #DCE3D3; }
+  .wa-link.registrar:hover { background:#E2E8DA; }
+  .filtros-imoveis { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
+  .filtros-imoveis select { font-family:inherit; font-size: var(--fs-2xs); color: var(--brand-dark2); padding:7px 10px; border:1px solid #D7DBD2; border-radius:8px; background:#fff; }
+  .filtro-limpar { font-family:inherit; font-size: var(--fs-2xs); border:none; background:#EEF2E9; color:#4A5240; border-radius:8px; padding:7px 12px; cursor:pointer; }
+  .filtro-resultado { font-size: var(--fs-2xs); color:#8A9186; }
   .sync-textarea { width:100%; min-height:110px; margin-top:8px; font-family:inherit; font-size: var(--fs-2xs); color: var(--brand-dark2); padding:9px; border:1px solid #D7DBD2; border-radius:8px; background:#fff; resize:vertical; }
   .termo-row { display:flex; align-items:center; gap:10px; margin-bottom:7px; }
   .termo-label { flex:0 0 132px; font-size: var(--fs-2xs); color: var(--brand-dark2); }
@@ -196,6 +202,9 @@
   .tbl-mini td.num { text-align:right; font-variant-numeric: tabular-nums; }
   .tbl-mini tr.destaque td { background:#F7FAF3; font-weight:600; }
   .tbl-nota { font-size: var(--fs-2xs); color:#8A9186; margin-top:10px; line-height:1.5; }
+  /* celular: tabela rola na horizontal em vez de cortar */
+  #origemResultado, #motivosPerda { overflow-x:auto; }
+  #origemResultado .tbl-mini, #motivosPerda .tbl-mini { min-width:430px; }
   /* minmax(0,1fr) + min-width:0 são obrigatórios: com 1fr puro o conteúdo
      comprido força a coluna a crescer e as 7 colunas ficam desiguais. */
   .semana-grid { display:grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap:6px; align-items:start; }
@@ -810,6 +819,19 @@
   <div class="tab-panel" data-tab="imoveis" id="panel-imoveis" role="tabpanel">
     <div class="section-title"><span class="dot" aria-hidden="true"></span>🏠 Imóveis Captados</div>
     <div id="followupResumo" class="followup-resumo"></div>
+    <div class="filtros-imoveis" id="filtrosImoveis">
+      <select id="filtroBairro" aria-label="Filtrar por bairro"><option value="">Todos os bairros</option></select>
+      <select id="filtroStatus" aria-label="Filtrar por status"><option value="">Todos os status</option></select>
+      <select id="filtroValor" aria-label="Filtrar por faixa de valor">
+        <option value="">Qualquer valor</option>
+        <option value="0-300000">Até R$300 mil</option>
+        <option value="300000-500000">R$300 a 500 mil</option>
+        <option value="500000-800000">R$500 a 800 mil</option>
+        <option value="800000-99999999">Acima de R$800 mil</option>
+      </select>
+      <button type="button" id="filtroLimpar" class="filtro-limpar" style="display:none;">✕ Limpar</button>
+      <span class="filtro-resultado" id="filtroResultado"></span>
+    </div>
     <div class="card" id="imoveisCard"></div>
 
     <div class="section-title" id="vendidosTitle" style="display:none;"><span class="dot" aria-hidden="true"></span>💰 Vendidos — aguardando confirmação de comissão</div>
@@ -910,7 +932,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-30T20:50:00-03:00",
+  ultimaAtualizacao: "2026-07-30T21:30:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -945,18 +967,18 @@ const DATA = {
     { imovel: "Apartamento Cód. 10638 (Mirante dos Eucaliptos, Candelária)", cliente: "Comprador (parceria Ricardo Pantoja)", valor: 265000, comissao: 4637.50, mes: "Julho", status: "aguardando", tipo: "Venda" }
   ],
   leads: [
-    { nome: "Tácito Barreto", telefone: "84987371817", origem: "Relacionamento", dataEntrada: "2026-07-01", motivoPerda: "Adiou a compra", motivoDetalhe: "Adiou a compra em 07/07 — busca suspensa temporariamente, retomada a cada 15 dias.", fase: "Inativo", maiorFaseIndex: 5, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Busca ativa a cada 15 dias — apartamento ~150m² em Lagoa Nova, até R$1,3M", dataProximaAcao: "2026-07-28", status: "Inativo", obs: "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso, mas prefere condomínios mais novos — sugerido o Vivant. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M.", imoveisCompativeis: null, visitaResumo: null, visitaDetalhe: null, statusReativacao: null, interesse: "apartamento ~150m² em Lagoa Nova, até R$1,3M" },
-    { nome: "Amarildo Jorge de Morais Costa", telefone: "84988202035", origem: "CRM Emobi", dataEntrada: "2026-07-01", motivoPerda: "Imóvel indisponível", motivoDetalhe: "Só aceita unidade no Edifício Bosque do Tirol; nenhuma à venda no momento.", fase: "Inativo", maiorFaseIndex: 1, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Ligação de retomada sobre unidade no Bosque do Tirol", dataProximaAcao: "2026-08-28", status: "Inativo", obs: "Quer apê no Edifício Bosque do Tirol (Av. Alm. Alexandrino de Alencar 1362-1366, Tirol), ~100m². Retomada agendada 28/08. Monitoramento automático de portais a cada ~10 dias. ⚠️ ATENÇÃO (22/07): cliente reforçou que NÃO quer opções de outros condomínios — só unidades no próprio Edifício Bosque do Tirol.", imoveisCompativeis: null, statusReativacao: null, interesse: "apartamento no Edifício Bosque do Tirol" },
-    { nome: "Maria Eduarda Revorêdo", telefone: "84981761829", origem: "CRM Emobi", dataEntrada: "2026-07-01", fase: "Qualificado", maiorFaseIndex: 3, temperatura: "Morno", valor: 380000, comissaoPrevista: null, proximaAcao: "Sem resposta — se não responder até o fim da cadência (7 dias), enviar mensagem de encerramento (estilo \"demissão do cliente\")", dataProximaAcao: "2026-08-05", status: "Em dia", obs: "Referência de estilo: Cód. 9723 — casa em condomínio 3 quartos (1 suíte), 119m², Nova Parnamirim, R$380.000. Follow-up feito em 06/07. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada. [29/07] Sem resposta às últimas tentativas — cadência de 7 dias reiniciada. Mensagem de encerramento preparada para envio em 05/08 caso continue sem retorno.", imoveisCompativeis: ["Cód. 10594"] /* Casa em Condomínio, Extremoz */, statusReativacao: "🟢 Em dia", interesse: "casa em condomínio em Nova Parnamirim" },
-    { nome: "Kamylla Gadelha", telefone: "84999020411", origem: "CRM Emobi", dataEntrada: "2026-07-01", motivoPerda: "Parou de responder", motivoDetalhe: "Pediu para falar com a mãe antes de decidir; a mãe não retorna os contatos.", fase: "Inativo", maiorFaseIndex: 5, temperatura: "Morno", valor: 500000, comissaoPrevista: null, proximaAcao: "Retomar contato (cadência de 7 em 7 dias) — verificar se a mãe já deu retorno", dataProximaAcao: "2026-08-01", status: "Inativo", obs: "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente pediu que Thúlio entre em contato diretamente com a mãe dela, em vez da 2ª visita conjunta antes combinada. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada. [25/07] Mãe não retorna contato — busca inativada, retomada com cadência de 7 em 7 dias.", imoveisCompativeis: [], visitaResumo: null, visitaDetalhe: "pra você trazer sua mãe dessa vez", statusReativacao: null, interesse: "casa em Capim Macio" },
-    { nome: "Daianne", telefone: "84988351048", origem: "CRM Emobi", dataEntrada: "2026-07-06", fase: "Qualificado", maiorFaseIndex: 3, temperatura: "Frio", valor: 630000, comissaoPrevista: null, proximaAcao: "Retomar contato após viagem (fim do mês)", dataProximaAcao: "2026-08-01", status: "Em dia", obs: "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08.", imoveisCompativeis: ["Cód. 9272", "Cód. 8024", "Cód. 5485", "Cód. 7560", "Cód. 10567", "Cód. 7454"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária ou Lagoa Nova" },
-    { nome: "Diana Rêgo", telefone: "84987706107", origem: "Relacionamento", dataEntrada: "2026-07-18", fase: "Proposta Enviada", maiorFaseIndex: 6, temperatura: "Quente", valor: 600000, comissaoPrevista: null, proximaAcao: "Acompanhar validação da proposta do apartamento 607 (Porto Arena)", dataProximaAcao: "2026-08-02", status: "Em dia", obs: "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Cód. 5485 do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607 do Porto Arena — aguardando validação do vendedor.", imoveisCompativeis: ["Cód. 5485"], visitaResumo: null, visitaDetalhe: null, statusReativacao: "🟢 Em dia", interesse: "apartamento 607, Porto Arena — proposta em validação" },
-    { nome: "Heber Lima", telefone: "84981319709", origem: "Instagram", dataEntrada: "2026-07-21", fase: "Novo Lead", maiorFaseIndex: 1, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Enviar opção encontrada: Cód. 9995 (Tirol, 115m², R$329.990) e retomar contato", dataProximaAcao: "2026-07-28", status: "Em dia", obs: "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [25/07] Rodada de busca: Cód. 9995 confirmado como melhor opção; sem alternativas em Barro Vermelho no inventário atual.", imoveisCompativeis: ["Cód. 9995"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Tirol ou Barro Vermelho, mín. 80m²" },
-        { nome: "Maria Matos", telefone: "84987349007", origem: "Instagram", dataEntrada: "2026-07-24", fase: "Visita Agendada", maiorFaseIndex: 5, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Avisar cliente: sem opções em Capim Macio no momento; monitorar novos lançamentos", dataProximaAcao: "2026-07-28", status: "Em dia", obs: "Visita agendada para 25/07 às 10h ao Cód. 10650 (Apartamento 4 Quartos, Residencial Ariane, Tirol) — fora do perfil ideal (Tirol, não Capim Macio), mas cliente confirmou a visita. [25/07] Rodada de busca: nenhum imóvel em Capim Macio no inventário atual.", imoveisCompativeis: [], statusReativacao: null, interesse: "Apartamento acima de 150m², Capim Macio, condomínio até ~R$2.000" },
-    { nome: "Hélio Dourado", telefone: "84994312223", origem: "A definir", dataEntrada: "2026-07-25", motivoPerda: "Adiou a compra", motivoDetalhe: "Vai organizar e vender a casa de praia com as irmãs; só depois volta a procurar, para comprar sem financiamento.", fase: "Inativo", maiorFaseIndex: 1, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Retomar contato em ~30 dias — verificar se já organizou/vendeu a casa de praia com as irmãs", dataProximaAcao: "2026-08-28", status: "Inativo", obs: "Busca apartamento em Candelária, 3 dormitórios (1 suíte), até R$400 mil. [25/07] Rodada de busca: Cód. 7726 (Candelária, 74m², R$269.990, 3 dorm./2 suítes) dentro do orçamento; Cód. 7560 (Candelária, 133m², R$419.990, 3 dorm./1 suíte) levemente acima do teto de R$400 mil. [29/07] Cliente suspendeu a busca — cadência de 30 dias. Motivo (nas palavras dele): \"Vou organizar a casa de praia que tenho com minhas irmãs e depois vendê-la. Só então voltarei a procurar apartamento. Aí comprarei algo melhor sem financiamento.\"", imoveisCompativeis: ["Cód. 7726", "Cód. 7560"], statusReativacao: null, interesse: "apartamento em Candelária, 3 dormitórios (1 suíte), até R$400 mil" },
-    { nome: "João Paulo de Paula", telefone: "84994815995", origem: "Relacionamento", dataEntrada: "2026-07-29", fase: "Em Negociação", maiorFaseIndex: 7, temperatura: "Quente", valor: 390000, comissaoPrevista: null, proximaAcao: "Solicitar contrato do Cód. 7560 — documentação do imóvel e do comprador já prontas", dataProximaAcao: "2026-08-01", status: "Em dia", obs: "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 — Corais de Ponta Negra, R$525.000; Cód. 10572 — Corais Enseada de Ponta Negra, R$420.000; Cód. 6830 — Corais da Enseada, R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra — descartou todas. [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel (Cód. 7560) e do comprador prontas — liberado para solicitação de contrato.", imoveisCompativeis: ["Cód. 9266", "Cód. 10572", "Cód. 6830", "Cód. 7726", "Cód. 7560"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária — proposta no Cód. 7560" },
-    { nome: "Renato Cássio", telefone: "84999885255", origem: "Relacionamento", dataEntrada: "2026-07-30", fase: "Visita Realizada", maiorFaseIndex: 5, temperatura: "Quente", valor: null, comissaoPrevista: null, proximaAcao: "Buscar outras unidades no Residencial Cabugi com posição melhor + visita 31/07 às 16h no Corais Alto (unid. 103)", dataProximaAcao: "2026-08-01", status: "Em dia", obs: "Ex-proprietário do Cód. 10638 (Candelária), vendido recentemente com sinal pago. Agora em atendimento como comprador. Visita em 30/07 às 18h ao Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h. [30/07] Visitou o Residencial Cabugi: gostou da disposição e da metragem, mas NÃO aprovou a posição — apartamento quente. Quer ver outras unidades no mesmo condomínio.", imoveisCompativeis: [], statusReativacao: "🟢 Em dia", interesse: "outras unidades no Residencial Cabugi (posição melhor)" },
-    { nome: "Camilla Natasha", telefone: "84994771313", origem: "Relacionamento", dataEntrada: "2026-07-30", fase: "Proposta Enviada", maiorFaseIndex: 6, temperatura: "Quente", valor: 120000, comissaoPrevista: null, proximaAcao: "Acompanhar retorno da proposta — R$120.000,00 à vista, apto 404 bloco 11, Cond. Jardim Satélite", dataProximaAcao: "2026-08-02", status: "Em dia", obs: "Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista.", imoveisCompativeis: [], statusReativacao: "🟢 Em dia", interesse: "apartamento 404, bloco 11, Condomínio Jardim Satélite" }
+    { id: 1, nome: "Tácito Barreto", telefone: "84987371817", origem: "Relacionamento", dataEntrada: "2026-07-01", motivoPerda: "Adiou a compra", motivoDetalhe: "Adiou a compra em 07/07 — busca suspensa temporariamente, retomada a cada 15 dias.", fase: "Inativo", maiorFaseIndex: 5, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Busca ativa a cada 15 dias — apartamento ~150m² em Lagoa Nova, até R$1,3M", dataProximaAcao: "2026-07-28", status: "Inativo", obs: "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso, mas prefere condomínios mais novos — sugerido o Vivant. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M.", imoveisCompativeis: null, visitaResumo: null, visitaDetalhe: null, statusReativacao: null, interesse: "apartamento ~150m² em Lagoa Nova, até R$1,3M" },
+    { id: 2, nome: "Amarildo Jorge de Morais Costa", telefone: "84988202035", origem: "CRM Emobi", dataEntrada: "2026-07-01", motivoPerda: "Imóvel indisponível", motivoDetalhe: "Só aceita unidade no Edifício Bosque do Tirol; nenhuma à venda no momento.", fase: "Inativo", maiorFaseIndex: 1, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Ligação de retomada sobre unidade no Bosque do Tirol", dataProximaAcao: "2026-08-28", status: "Inativo", obs: "Quer apê no Edifício Bosque do Tirol (Av. Alm. Alexandrino de Alencar 1362-1366, Tirol), ~100m². Retomada agendada 28/08. Monitoramento automático de portais a cada ~10 dias. ⚠️ ATENÇÃO (22/07): cliente reforçou que NÃO quer opções de outros condomínios — só unidades no próprio Edifício Bosque do Tirol.", imoveisCompativeis: null, statusReativacao: null, interesse: "apartamento no Edifício Bosque do Tirol" },
+    { id: 3, nome: "Maria Eduarda Revorêdo", telefone: "84981761829", origem: "CRM Emobi", dataEntrada: "2026-07-01", fase: "Qualificado", maiorFaseIndex: 3, temperatura: "Morno", valor: 380000, comissaoPrevista: null, proximaAcao: "Sem resposta — se não responder até o fim da cadência (7 dias), enviar mensagem de encerramento (estilo \"demissão do cliente\")", dataProximaAcao: "2026-08-05", status: "Em dia", obs: "Referência de estilo: Cód. 9723 — casa em condomínio 3 quartos (1 suíte), 119m², Nova Parnamirim, R$380.000. Follow-up feito em 06/07. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada. [29/07] Sem resposta às últimas tentativas — cadência de 7 dias reiniciada. Mensagem de encerramento preparada para envio em 05/08 caso continue sem retorno.", imoveisCompativeis: ["Cód. 10594"] /* Casa em Condomínio, Extremoz */, statusReativacao: "🟢 Em dia", interesse: "casa em condomínio em Nova Parnamirim" },
+    { id: 4, nome: "Kamylla Gadelha", telefone: "84999020411", origem: "CRM Emobi", dataEntrada: "2026-07-01", motivoPerda: "Parou de responder", motivoDetalhe: "Pediu para falar com a mãe antes de decidir; a mãe não retorna os contatos.", fase: "Inativo", maiorFaseIndex: 5, temperatura: "Morno", valor: 500000, comissaoPrevista: null, proximaAcao: "Retomar contato (cadência de 7 em 7 dias) — verificar se a mãe já deu retorno", dataProximaAcao: "2026-08-01", status: "Inativo", obs: "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente pediu que Thúlio entre em contato diretamente com a mãe dela, em vez da 2ª visita conjunta antes combinada. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada. [25/07] Mãe não retorna contato — busca inativada, retomada com cadência de 7 em 7 dias.", imoveisCompativeis: [], visitaResumo: null, visitaDetalhe: "pra você trazer sua mãe dessa vez", statusReativacao: null, interesse: "casa em Capim Macio" },
+    { id: 5, nome: "Daianne", telefone: "84988351048", origem: "CRM Emobi", dataEntrada: "2026-07-06", fase: "Qualificado", maiorFaseIndex: 3, temperatura: "Frio", valor: 630000, comissaoPrevista: null, proximaAcao: "Retomar contato após viagem (fim do mês)", dataProximaAcao: "2026-08-01", status: "Em dia", obs: "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08.", imoveisCompativeis: ["Cód. 9272", "Cód. 8024", "Cód. 5485", "Cód. 7560", "Cód. 10567", "Cód. 7454"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária ou Lagoa Nova" },
+    { id: 6, nome: "Diana Rêgo", telefone: "84987706107", origem: "Relacionamento", dataEntrada: "2026-07-18", fase: "Proposta Enviada", maiorFaseIndex: 6, temperatura: "Quente", valor: 600000, comissaoPrevista: null, proximaAcao: "Acompanhar validação da proposta do apartamento 607 (Porto Arena)", dataProximaAcao: "2026-08-02", status: "Em dia", obs: "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Cód. 5485 do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607 do Porto Arena — aguardando validação do vendedor.", imoveisCompativeis: ["Cód. 5485"], visitaResumo: null, visitaDetalhe: null, statusReativacao: "🟢 Em dia", interesse: "apartamento 607, Porto Arena — proposta em validação" },
+    { id: 7, nome: "Heber Lima", telefone: "84981319709", origem: "Instagram", dataEntrada: "2026-07-21", fase: "Novo Lead", maiorFaseIndex: 1, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Enviar opção encontrada: Cód. 9995 (Tirol, 115m², R$329.990) e retomar contato", dataProximaAcao: "2026-07-28", status: "Em dia", obs: "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [25/07] Rodada de busca: Cód. 9995 confirmado como melhor opção; sem alternativas em Barro Vermelho no inventário atual.", imoveisCompativeis: ["Cód. 9995"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Tirol ou Barro Vermelho, mín. 80m²" },
+        { id: 9, nome: "Maria Matos", telefone: "84987349007", origem: "Instagram", dataEntrada: "2026-07-24", fase: "Visita Agendada", maiorFaseIndex: 5, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Avisar cliente: sem opções em Capim Macio no momento; monitorar novos lançamentos", dataProximaAcao: "2026-07-28", status: "Em dia", obs: "Visita agendada para 25/07 às 10h ao Cód. 10650 (Apartamento 4 Quartos, Residencial Ariane, Tirol) — fora do perfil ideal (Tirol, não Capim Macio), mas cliente confirmou a visita. [25/07] Rodada de busca: nenhum imóvel em Capim Macio no inventário atual.", imoveisCompativeis: [], statusReativacao: null, interesse: "Apartamento acima de 150m², Capim Macio, condomínio até ~R$2.000" },
+    { id: 10, nome: "Hélio Dourado", telefone: "84994312223", origem: "A definir", dataEntrada: "2026-07-25", motivoPerda: "Adiou a compra", motivoDetalhe: "Vai organizar e vender a casa de praia com as irmãs; só depois volta a procurar, para comprar sem financiamento.", fase: "Inativo", maiorFaseIndex: 1, temperatura: "Morno", valor: null, comissaoPrevista: null, proximaAcao: "Retomar contato em ~30 dias — verificar se já organizou/vendeu a casa de praia com as irmãs", dataProximaAcao: "2026-08-28", status: "Inativo", obs: "Busca apartamento em Candelária, 3 dormitórios (1 suíte), até R$400 mil. [25/07] Rodada de busca: Cód. 7726 (Candelária, 74m², R$269.990, 3 dorm./2 suítes) dentro do orçamento; Cód. 7560 (Candelária, 133m², R$419.990, 3 dorm./1 suíte) levemente acima do teto de R$400 mil. [29/07] Cliente suspendeu a busca — cadência de 30 dias. Motivo (nas palavras dele): \"Vou organizar a casa de praia que tenho com minhas irmãs e depois vendê-la. Só então voltarei a procurar apartamento. Aí comprarei algo melhor sem financiamento.\"", imoveisCompativeis: ["Cód. 7726", "Cód. 7560"], statusReativacao: null, interesse: "apartamento em Candelária, 3 dormitórios (1 suíte), até R$400 mil" },
+    { id: 11, nome: "João Paulo de Paula", telefone: "84994815995", origem: "Relacionamento", dataEntrada: "2026-07-29", fase: "Em Negociação", maiorFaseIndex: 7, temperatura: "Quente", valor: 390000, comissaoPrevista: null, proximaAcao: "Solicitar contrato do Cód. 7560 — documentação do imóvel e do comprador já prontas", dataProximaAcao: "2026-08-01", status: "Em dia", obs: "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 — Corais de Ponta Negra, R$525.000; Cód. 10572 — Corais Enseada de Ponta Negra, R$420.000; Cód. 6830 — Corais da Enseada, R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra — descartou todas. [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel (Cód. 7560) e do comprador prontas — liberado para solicitação de contrato.", imoveisCompativeis: ["Cód. 9266", "Cód. 10572", "Cód. 6830", "Cód. 7726", "Cód. 7560"], statusReativacao: "🟢 Em dia", interesse: "apartamento em Candelária — proposta no Cód. 7560" },
+    { id: 12, nome: "Renato Cássio", telefone: "84999885255", origem: "Relacionamento", dataEntrada: "2026-07-30", fase: "Visita Realizada", maiorFaseIndex: 5, temperatura: "Quente", valor: null, comissaoPrevista: null, proximaAcao: "Buscar outras unidades no Residencial Cabugi com posição melhor + visita 31/07 às 16h no Corais Alto (unid. 103)", dataProximaAcao: "2026-08-01", status: "Em dia", obs: "Ex-proprietário do Cód. 10638 (Candelária), vendido recentemente com sinal pago. Agora em atendimento como comprador. Visita em 30/07 às 18h ao Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h. [30/07] Visitou o Residencial Cabugi: gostou da disposição e da metragem, mas NÃO aprovou a posição — apartamento quente. Quer ver outras unidades no mesmo condomínio.", imoveisCompativeis: [], statusReativacao: "🟢 Em dia", interesse: "outras unidades no Residencial Cabugi (posição melhor)" },
+    { id: 13, nome: "Camilla Natasha", telefone: "84994771313", origem: "Relacionamento", dataEntrada: "2026-07-30", fase: "Proposta Enviada", maiorFaseIndex: 6, temperatura: "Quente", valor: 120000, comissaoPrevista: null, proximaAcao: "Acompanhar retorno da proposta — R$120.000,00 à vista, apto 404 bloco 11, Cond. Jardim Satélite", dataProximaAcao: "2026-08-02", status: "Em dia", obs: "Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista.", imoveisCompativeis: [], statusReativacao: "🟢 Em dia", interesse: "apartamento 404, bloco 11, Condomínio Jardim Satélite" }
   ],
   imoveis: [
     { nome: "Apartamento 3 Quartos Nova Parnamirim 79m² (Cód. 7762)", tipo: "Apartamento", bairro: "Nova Parnamirim", cidade: "Parnamirim", endereco: "Rua Pantanal, Nova Parnamirim - Parnamirim/RN", valor: 399000, detalhes: "3 quartos (1 suíte), 2 banheiros, 2 vagas, 79m²", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7762/apartamento-3-quartos-nova-parnamirim-parnamirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-02", ultimaInteracaoProprietario: "2026-07-02", obs: "Condomínio Vila Verde. Condomínio R$ 540,00 + IPTU R$ 120,00." },
@@ -975,19 +997,19 @@ const DATA = {
     { nome: "Lote em Condomínio Parque das Nações 390m² (Cód. 7442)", tipo: "Terreno/Lote", bairro: "Parque Das Nações", cidade: "Parnamirim", endereco: "Avenida Ásia, Parque Das Nações - Parnamirim/RN", valor: 289990, detalhes: "Lote 13x30m, 390m² (privativos e totais)", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7442/lote-em-condominio-parque-das-nacoes-parnamirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-13", ultimaInteracaoProprietario: "2026-07-13", obs: "Condomínio Reserva YBY Natureza — 1º condomínio reserva do RN, fiação subterrânea, club house completo. Aceita negociação à vista. Condomínio R$ 470,00 + IPTU R$ 190,00." },
     { nome: "Apartamento 3 Quartos Nova Parnamirim 140m² (Cód. 5519)", tipo: "Apartamento", bairro: "Nova Parnamirim", cidade: "Parnamirim", endereco: "Rua Perpétua Silveira Cândido, Nova Parnamirim - Parnamirim/RN", valor: 469990, detalhes: "3 quartos (1 suíte), 3 banheiros, 2 vagas, 140m² privativos (235m² totais), cobertura, mobiliado", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/5519/apartamento-3-quartos-nova-parnamirim-parnamirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-13", ultimaInteracaoProprietario: "2026-07-13", obs: "Condomínio Natal River. Preço baixou de R$519.990 para R$469.990. Pet friendly. Condomínio R$ 465,00." },
     { nome: "Apartamento 1 Quarto Ponta Negra 56m² (Cód. 5463)", tipo: "Apartamento", bairro: "Ponta Negra", cidade: "Natal", endereco: "Rua Desportista Fabrício Gomes Pedroza, Ponta Negra - Natal/RN", valor: 579990, detalhes: "1 quarto (1 suíte), 1 banheiro, 1 vaga, 56m² privativos, totalmente mobiliado", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/5463/apartamento-1-quarto-ponta-negra-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-13", ultimaInteracaoProprietario: "2026-07-13", obs: "Condomínio Malbec, pronto para morar, vista para o mar. Perfil residencial (baixa rotatividade). Condomínio R$ 830,00 (água, gás, internet e TV inclusos). IPTU R$ 2.425,00." },
-    { nome: "Apartamento 3 Quartos Nova Parnamirim 71m² (Cód. 10627)", tipo: "Apartamento", bairro: "Nova Parnamirim", cidade: "Parnamirim", endereco: "Avenida Ayrton Senna, Nova Parnamirim - Parnamirim/RN", valor: 324990, detalhes: "3 quartos (1 suíte), 2 banheiros, 1 vaga, 71m² privativos", proprietario: "Michelle", telefone: "(84) 9800-2220", link: "https://emobiimobiliaria.com.br/imovel/10627/apartamento-3-quartos-nova-parnamirim-parnamirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-13", ultimaInteracaoProprietario: "2026-07-24", obs: "Condomínio California Gardens. Potencial de reforma/modernização. Condomínio R$ 530,00 + IPTU R$ 1.100,00/ano. Visita realizada hoje (22/07) às 9h, com corretor parceiro Ranniere Araújo (levando cliente próprio). Nova visita em 24/07 às 14h com a corretora parceira Katyanne Layse — clientes gostaram, cogitam uma segunda visita. Nova visita agendada para sexta-feira (31/07) às 14h — clientes Monique e Caio, com o corretor Madson Oliveira (CRECI/RN 3385)." },
-    { nome: "Apartamento 3 Quartos Ponta Negra 101m² (Cód. 10641 — Portamaris)", tipo: "Apartamento", bairro: "Ponta Negra", cidade: "Natal", endereco: "Avenida Deputado Antônio Florêncio De Queiroz, Ponta Negra - Natal/RN", valor: 849990, detalhes: "3 quartos (1 suíte), 3 banheiros, 2 vagas, 101m² privativos, totalmente mobiliado", proprietario: "Kris Suenir Meira de Araújo", telefone: "(84) 99981-0266", link: "https://emobiimobiliaria.com.br/imovel/10641/apartamento-3-quartos-ponta-negra-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-18", ultimaInteracaoProprietario: "2026-07-20", obs: "Condomínio Portamaris Club Condominium. Porteira fechada, totalmente mobiliado e reformado, pronto para morar, vista panorâmica para Ponta Negra. Pet friendly. Condomínio R$ 900,00. IPTU R$ 3.900,00. Estrutura completa de lazer (piscinas, academia, quadra, salão de festas). Originado de indicação do Conecta TR (protocolo IND-TR-2026-0005). Indicador: Klevisson Ranniere Meira de Araújo." },
+    { nome: "Apartamento 3 Quartos Nova Parnamirim 71m² (Cód. 10627)", tipo: "Apartamento", bairro: "Nova Parnamirim", cidade: "Parnamirim", endereco: "Avenida Ayrton Senna, Nova Parnamirim - Parnamirim/RN", valor: 324990, detalhes: "3 quartos (1 suíte), 2 banheiros, 1 vaga, 71m² privativos", proprietario: "Michelle", telefone: "8498002220", link: "https://emobiimobiliaria.com.br/imovel/10627/apartamento-3-quartos-nova-parnamirim-parnamirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-13", ultimaInteracaoProprietario: "2026-07-24", obs: "Condomínio California Gardens. Potencial de reforma/modernização. Condomínio R$ 530,00 + IPTU R$ 1.100,00/ano. Visita realizada hoje (22/07) às 9h, com corretor parceiro Ranniere Araújo (levando cliente próprio). Nova visita em 24/07 às 14h com a corretora parceira Katyanne Layse — clientes gostaram, cogitam uma segunda visita. Nova visita agendada para sexta-feira (31/07) às 14h — clientes Monique e Caio, com o corretor Madson Oliveira (CRECI/RN 3385)." },
+    { nome: "Apartamento 3 Quartos Ponta Negra 101m² (Cód. 10641 — Portamaris)", tipo: "Apartamento", bairro: "Ponta Negra", cidade: "Natal", endereco: "Avenida Deputado Antônio Florêncio De Queiroz, Ponta Negra - Natal/RN", valor: 849990, detalhes: "3 quartos (1 suíte), 3 banheiros, 2 vagas, 101m² privativos, totalmente mobiliado", proprietario: "Kris Suenir Meira de Araújo", telefone: "84999810266", link: "https://emobiimobiliaria.com.br/imovel/10641/apartamento-3-quartos-ponta-negra-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-18", ultimaInteracaoProprietario: "2026-07-20", obs: "Condomínio Portamaris Club Condominium. Porteira fechada, totalmente mobiliado e reformado, pronto para morar, vista panorâmica para Ponta Negra. Pet friendly. Condomínio R$ 900,00. IPTU R$ 3.900,00. Estrutura completa de lazer (piscinas, academia, quadra, salão de festas). Originado de indicação do Conecta TR (protocolo IND-TR-2026-0005). Indicador: Klevisson Ranniere Meira de Araújo." },
     { nome: "Casa Comercial 3 Quartos Lagoa Nova 256m² (Cód. 7731)", tipo: "Casa Comercial", bairro: "Lagoa Nova", cidade: "Natal", endereco: "Rua Dos Potiguares, 2592, Lagoa Nova - Natal/RN", valor: 524990, detalhes: "3 quartos (1 suíte), 4 banheiros, 4 vagas, 256m² privativos (416m² totais)", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7731/casa-comercial-3-quartos-lagoa-nova-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-19", ultimaInteracaoProprietario: "2026-07-19", obs: "Terreno de 416m² (450m² segundo o anúncio), potencial para uso comercial (clínicas, escritórios, comércio, alimentação) — vizinho à CEASA, próximo a Av. Capitão-Mor Gouveia, Av. Salgado Filho e BR-101. Documentação em fase de inventário extrajudicial. Pet friendly." },
-    { nome: "Apartamento 2 Quartos Candelária 50m² (Cód. 10638)", tipo: "Apartamento", bairro: "Candelária", cidade: "Natal", endereco: "Rua Antomar De Brito Freitas, Candelária - Natal/RN", valor: 265000, valorTabela: 269990, detalhes: "2 quartos (1 suíte), 2 banheiros, 1 vaga, 50m² privativos", proprietario: "Renato Cássio", telefone: "(84) 99988-5255", link: "https://emobiimobiliaria.com.br/imovel/10638/apartamento-2-quartos-candelaria-natal/", status: "Vendido", pctComissao: null, corretorParceiro: "Ricardo Pantoja (Emobi)", comissaoTotalVenda: 13250, comissaoThulioVenda: 4637.50, comissaoConfirmada: false, dataVenda: "2026-07-29", dataCaptacao: "2026-07-20", ultimaInteracaoProprietario: "2026-07-29", obs: "Condomínio Mirante dos Eucaliptos. Reformado, parcialmente mobiliado, pronto para morar. Pet friendly. Condomínio R$ 400,00 (água e gás inclusos). IPTU R$ 1.000,00/ano. Próximo à UFRN, Natal Shopping, BR-101 e Av. Prudente de Morais. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [29/07] Entrou em processo de assinatura de contrato — negociado por R$265.000,00 (tabela R$269.990,00). Venda em parceria com o corretor Ricardo Pantoja, da própria Emobi. [29/07] Contrato assinado e sinal pago — venda concluída. Agora em processo de financiamento. Comissão total: R$13.250,00; parte de Thúlio: R$4.637,50 — paga quando o vendedor receber o valor do financiamento." },
-    { nome: "Apartamento 4 Quartos Tirol 240m² (Cód. 10650)", tipo: "Apartamento", tipoOperacao: "Venda", bairro: "Tirol", cidade: "Natal", endereco: "Rua Dom José Tomaz, Tirol - Natal/RN", valor: 749990, detalhes: "4 quartos (3 suítes + escritório reversível p/ 4ª suíte), 5 banheiros, 3 vagas, 240m² privativos", proprietario: "Duarte", telefone: "(84) 99988-0345", link: "https://emobiimobiliaria.com.br/imovel/10650/apartamento-4-quartos-tirol-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-22", ultimaInteracaoProprietario: "2026-07-22", obs: "Residencial Ariane. 1 apartamento por andar, depósito privativo na garagem, área de serviço independente, dependência completa. Condomínio R$ 2.500,00 (água inclusa). IPTU R$ 6.440,08/ano. Captação concluída e publicada hoje (22/07) — proprietário Duarte." },
+    { nome: "Apartamento 2 Quartos Candelária 50m² (Cód. 10638)", tipo: "Apartamento", bairro: "Candelária", cidade: "Natal", endereco: "Rua Antomar De Brito Freitas, Candelária - Natal/RN", valor: 265000, valorTabela: 269990, detalhes: "2 quartos (1 suíte), 2 banheiros, 1 vaga, 50m² privativos", proprietario: "Renato Cássio", telefone: "84999885255", link: "https://emobiimobiliaria.com.br/imovel/10638/apartamento-2-quartos-candelaria-natal/", status: "Vendido", pctComissao: null, corretorParceiro: "Ricardo Pantoja (Emobi)", comissaoTotalVenda: 13250, comissaoThulioVenda: 4637.50, comissaoConfirmada: false, dataVenda: "2026-07-29", dataCaptacao: "2026-07-20", ultimaInteracaoProprietario: "2026-07-29", obs: "Condomínio Mirante dos Eucaliptos. Reformado, parcialmente mobiliado, pronto para morar. Pet friendly. Condomínio R$ 400,00 (água e gás inclusos). IPTU R$ 1.000,00/ano. Próximo à UFRN, Natal Shopping, BR-101 e Av. Prudente de Morais. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [29/07] Entrou em processo de assinatura de contrato — negociado por R$265.000,00 (tabela R$269.990,00). Venda em parceria com o corretor Ricardo Pantoja, da própria Emobi. [29/07] Contrato assinado e sinal pago — venda concluída. Agora em processo de financiamento. Comissão total: R$13.250,00; parte de Thúlio: R$4.637,50 — paga quando o vendedor receber o valor do financiamento." },
+    { nome: "Apartamento 4 Quartos Tirol 240m² (Cód. 10650)", tipo: "Apartamento", tipoOperacao: "Venda", bairro: "Tirol", cidade: "Natal", endereco: "Rua Dom José Tomaz, Tirol - Natal/RN", valor: 749990, detalhes: "4 quartos (3 suítes + escritório reversível p/ 4ª suíte), 5 banheiros, 3 vagas, 240m² privativos", proprietario: "Duarte", telefone: "84999880345", link: "https://emobiimobiliaria.com.br/imovel/10650/apartamento-4-quartos-tirol-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-22", ultimaInteracaoProprietario: "2026-07-22", obs: "Residencial Ariane. 1 apartamento por andar, depósito privativo na garagem, área de serviço independente, dependência completa. Condomínio R$ 2.500,00 (água inclusa). IPTU R$ 6.440,08/ano. Captação concluída e publicada hoje (22/07) — proprietário Duarte." },
     { nome: "Apartamento 3 Quartos Candelária 74m² (Cód. 7726)", tipo: "Apartamento", tipoOperacao: "Venda", bairro: "Candelária", cidade: "Natal", endereco: "Rua Prefeito Sandoval Cavalcante De Albuquerque, Candelária - Natal/RN", valor: 269990, detalhes: "3 quartos (2 suítes), 2 banheiros, 2 vagas (1 fixa + 1 rotativa), 74m² privativos", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/7726/apartamento-3-quartos-candelaria-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-23", ultimaInteracaoProprietario: "2026-07-23", obs: "Residencial Polinésia. Condomínio R$ 680,00 + IPTU R$ 158,00. Preço baixou de R$ 279.990,00 para R$ 269.990,00. Pet friendly. Sol da manhã. Lazer: churrasqueira, salão de festas, playground, quadra poliesportiva, portaria com controle de acesso." },
     { nome: "Casa em Condomínio 4 Quartos Muriú 200m² (Cód. 10652)", tipo: "Casa em Condomínio", tipoOperacao: "Venda", bairro: "Muriú", cidade: "Ceará-Mirim", endereco: "Rua Nova Segunda, Muriú - Ceará-Mirim/RN", valor: 589990, detalhes: "4 quartos (4 suítes), 5 banheiros, terreno 540m², 200m² construídos, mobiliada, piscina privativa", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/10652/casa-em-condominio-4-quartos-muriu-ceara-mirim/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-23", ultimaInteracaoProprietario: "2026-07-23", obs: "Casa de praia beira-mar em condomínio exclusivo em Muriú (Ceará-Mirim, ~35min de Natal). Espaço gourmet, cozinha integrada à varanda, área verde com vista pro mar. Condomínio com piscina, churrasqueira, área verde e terraço para festas. Condomínio R$ 1.000,00 + IPTU R$ 700,00/ano. Pet friendly, mobiliado." },
     { nome: "Apartamento 3 Quartos Ponta Negra 98m² (Cód. 9266)", tipo: "Apartamento", tipoOperacao: "Venda", bairro: "Ponta Negra", cidade: "Natal", endereco: "Rua Da Lagosta, Ponta Negra - Natal/RN", valor: 525000, detalhes: "3 quartos (1 suíte), 3 banheiros, 2 vagas, 98m² privativos, closet", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/9266/apartamento-3-quartos-ponta-negra-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-29", ultimaInteracaoProprietario: null, obs: "Condomínio Corais de Ponta Negra, 5º andar, sala ampliada, boa ventilação. Aceita permuta. Condomínio R$ 1.032,57. Lazer: academia, piscina, sauna, churrasqueira, playground, salão de festas, salão de jogos, quadra esportiva, quadra de tênis, espaço gourmet. Cliente João Paulo de Paula visitando em 29/07." },
     { nome: "Apartamento 3 Quartos Ponta Negra 94m² (Cód. 10572)", tipo: "Apartamento", tipoOperacao: "Venda", bairro: "Ponta Negra", cidade: "Natal", endereco: "Rua Francisco Simplício, Ponta Negra - Natal/RN", valor: 420000, detalhes: "3 quartos (1 suíte), sala 2 ambientes, varanda, cozinha americana, 2 vagas, 94m² privativos", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/10572/apartamento-3-quartos-ponta-negra-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-29", ultimaInteracaoProprietario: null, obs: "Residencial Corais Enseada de Ponta Negra. Condomínio R$ 750,00, IPTU R$ 2.750,00/ano. Lazer: 2 piscinas adultos, 2 piscinas infantis, 2 salões de festas, 2 quadras esportivas, academia, churrasqueira, playground, portaria 24h, espaço gourmet. Cliente João Paulo de Paula visitando em 29/07." },
     { nome: "Apartamento 3 Quartos Ponta Negra 95m² (Cód. 6830)", tipo: "Apartamento", tipoOperacao: "Venda", bairro: "Ponta Negra", cidade: "Natal", endereco: "Rua Francisco Simplício, Ponta Negra - Natal/RN", valor: 500000, detalhes: "3 quartos (1 suíte com banheira), 3 banheiros, 2 vagas (1 presa), 95m² privativos, varanda integrada, móveis projetados e eletros fixos inclusos", proprietario: "A definir", telefone: null, link: "https://emobiimobiliaria.com.br/imovel/6830/apartamento-3-quartos-ponta-negra-natal/", status: "Disponível", pctComissao: null, dataCaptacao: "2026-07-29", ultimaInteracaoProprietario: null, obs: "Condomínio Corais da Enseada. Pet friendly, sol da manhã, financiável. Condomínio R$ 800,00. Lazer: piscina, academia, salão de festas, espaço pet, quadra poliesportiva, salão de jogos, portaria 24h. Cliente João Paulo de Paula visitando em 29/07." },
-    { nome: "Condomínio Villaggio Di Roma", tipo: null, bairro: null, cidade: null, endereco: null, valor: null, detalhes: null, proprietario: "Januncio", telefone: "(84) 9983-9625", link: null, status: "Em Captação", pctComissao: null, dataCaptacao: "2026-07-22", ultimaInteracaoProprietario: "2026-07-22", obs: "Originado de indicação do Conecta TR — captação ainda em andamento, não confirmada. Indicador (Hudson Bezerra de Brito) pediu sigilo: o proprietário não pode saber que a indicação partiu dele, pode dizer que veio da administradora." },
-    { nome: "Casa 02, Bosque dos Pássaros", tipo: null, bairro: null, cidade: null, endereco: null, valor: null, detalhes: null, proprietario: "Jairson", telefone: "(84) 98182-2264", link: null, status: "Em Captação", pctComissao: null, dataCaptacao: "2026-07-23", ultimaInteracaoProprietario: "2026-07-23", obs: "Originado de indicação do Conecta TR — captação ainda em andamento, não confirmada." },
-    { nome: "Bosque dos Pássaros, casa 09", tipo: null, bairro: null, cidade: null, endereco: null, valor: null, detalhes: null, proprietario: "Emerson", telefone: "(84) 99604-4000", link: null, status: "Em Captação", pctComissao: null, dataCaptacao: "2026-07-23", ultimaInteracaoProprietario: "2026-07-23", obs: "Originado de indicação do Conecta TR — captação ainda em andamento, não confirmada." }
+    { nome: "Condomínio Villaggio Di Roma", tipo: null, bairro: null, cidade: null, endereco: null, valor: null, detalhes: null, proprietario: "Januncio", telefone: "8499839625", link: null, status: "Em Captação", pctComissao: null, dataCaptacao: "2026-07-22", ultimaInteracaoProprietario: "2026-07-22", obs: "Originado de indicação do Conecta TR — captação ainda em andamento, não confirmada. Indicador (Hudson Bezerra de Brito) pediu sigilo: o proprietário não pode saber que a indicação partiu dele, pode dizer que veio da administradora." },
+    { nome: "Casa 02, Bosque dos Pássaros", tipo: null, bairro: null, cidade: null, endereco: null, valor: null, detalhes: null, proprietario: "Jairson", telefone: "84981822264", link: null, status: "Em Captação", pctComissao: null, dataCaptacao: "2026-07-23", ultimaInteracaoProprietario: "2026-07-23", obs: "Originado de indicação do Conecta TR — captação ainda em andamento, não confirmada." },
+    { nome: "Bosque dos Pássaros, casa 09", tipo: null, bairro: null, cidade: null, endereco: null, valor: null, detalhes: null, proprietario: "Emerson", telefone: "84996044000", link: null, status: "Em Captação", pctComissao: null, dataCaptacao: "2026-07-23", ultimaInteracaoProprietario: "2026-07-23", obs: "Originado de indicação do Conecta TR — captação ainda em andamento, não confirmada." }
   ],
   historico: {
     anos: [
@@ -1173,6 +1195,37 @@ if (DATA.ultimaAtualizacao) {
 }
 
 // ---- Banner: proxima acao mais urgente ----
+// A agenda gravada em DATA rotula os compromissos como "hoje"/"amanhã" no
+// momento da última atualização. Se o painel for aberto depois da meia-noite,
+// esses rótulos estariam errados — então a classificação é refeita aqui,
+// pela data real de cada evento, toda vez que o painel carrega.
+function agendaPorDia() {
+  const agora = new Date();
+  const hojeMeia = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
+  function isoDe(d) { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+  const isoHoje = isoDe(hojeMeia);
+  const amanhaD = new Date(hojeMeia); amanhaD.setDate(amanhaD.getDate() + 1);
+  const isoAmanha = isoDe(amanhaD);
+
+  const pool = [];
+  [DATA.agendaHoje, DATA.agendaAmanha, DATA.agendaProximos].forEach(arr => {
+    (arr || []).forEach(ev => { if (ev && ev.data) pool.push(ev); });
+  });
+  const vistos = new Set();
+  const unicos = pool.filter(ev => {
+    const k = ev.data + '|' + (ev.hora || '') + '|' + (ev.titulo || '');
+    if (vistos.has(k)) return false;
+    vistos.add(k); return true;
+  });
+  return {
+    hoje: unicos.filter(ev => String(ev.data).slice(0,10) === isoHoje),
+    amanha: unicos.filter(ev => String(ev.data).slice(0,10) === isoAmanha),
+    proximos: unicos.filter(ev => String(ev.data).slice(0,10) > isoAmanha),
+    passados: unicos.filter(ev => String(ev.data).slice(0,10) < isoHoje)
+  };
+}
+const AGENDA_DIA = agendaPorDia();
+
 function computeAcoesUrgentes() {
   function diasSemContato(dataStr) {
     const [y, m, d] = dataStr.split('-').map(Number);
@@ -1206,9 +1259,9 @@ function computeAcoesUrgentes() {
 (function renderUrgentBanner() {
   const banner = document.getElementById('urgentBanner');
   const { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes, prospeccoesAtrasadas, total } = computeAcoesUrgentes();
-  const compromissoHoje = (DATA.agendaHoje && DATA.agendaHoje[0]) || null;
-  const compromissoAmanha = (DATA.agendaAmanha && DATA.agendaAmanha[0]) || null;
-  const visitasHoje = (DATA.agendaHoje || []).length;
+  const compromissoHoje = AGENDA_DIA.hoje[0] || null;
+  const compromissoAmanha = AGENDA_DIA.amanha[0] || null;
+  const visitasHoje = AGENDA_DIA.hoje.length;
   const propostasEmNegociacao = (DATA.leads || []).filter(l => l.fase === 'Proposta Enviada' || l.fase === 'Em Negociação').length;
   const clientesAguardandoRetorno = leadsAtrasados.length + leadsReativar.length;
 
@@ -1266,7 +1319,7 @@ function computeAcoesUrgentes() {
   const saudacao = hora < 12 ? 'Bom dia' : (hora < 18 ? 'Boa tarde' : 'Boa noite');
   const { leadsAtrasados, leadsReativar, total } = computeAcoesUrgentes();
   const contatosPendentes = leadsAtrasados.length + leadsReativar.length;
-  const visitasHoje = (DATA.agendaHoje || []).length;
+  const visitasHoje = AGENDA_DIA.hoje.length;
   const propostasVencidas = (DATA.leads || []).filter(l => l.fase === 'Proposta Enviada' && l.status === 'Atrasado').length;
 
   const itens = [];
@@ -1345,7 +1398,7 @@ function computeAcoesUrgentes() {
 (function renderCompromissosDestaque() {
   const el = document.getElementById('compromissosDestaqueList');
   if (!el) return;
-  const itens = [...(DATA.agendaHoje || []).map(a => ({ ...a, quando: 'Hoje' })), ...(DATA.agendaAmanha || []).map(a => ({ ...a, quando: 'Amanhã' }))];
+  const itens = [...AGENDA_DIA.hoje.map(a => ({ ...a, quando: 'Hoje' })), ...AGENDA_DIA.amanha.map(a => ({ ...a, quando: 'Amanhã' }))];
   if (itens.length === 0) {
     el.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum compromisso em destaque no momento.</div>';
     return;
@@ -1394,20 +1447,20 @@ function renderAgenda(list, label) {
     agendaList.appendChild(row);
   });
 }
-const temHoje = DATA.agendaHoje && DATA.agendaHoje.length > 0;
-const temAmanha = DATA.agendaAmanha && DATA.agendaAmanha.length > 0;
+const temHoje = AGENDA_DIA.hoje.length > 0;
+const temAmanha = AGENDA_DIA.amanha.length > 0;
 if (!temHoje && !temAmanha) {
   agendaList.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum compromisso encontrado na agenda.</div>';
 } else {
-  if (temHoje) renderAgenda(DATA.agendaHoje, 'Hoje');
+  if (temHoje) renderAgenda(AGENDA_DIA.hoje, 'Hoje');
   else agendaList.innerHTML = '<div style="font-size:var(--fs-sm);color:#8A9186;margin-bottom:8px;">Nada marcado para hoje.</div>';
-  if (temAmanha) renderAgenda(DATA.agendaAmanha, 'Amanhã');
+  if (temAmanha) renderAgenda(AGENDA_DIA.amanha, 'Amanhã');
 }
 
 // ---- Próximos Compromissos (além de hoje/amanhã) ----
 (function renderAgendaProximos() {
   const container = document.getElementById('agendaProximosList');
-  const itens = DATA.agendaProximos || [];
+  const itens = AGENDA_DIA.proximos;
   if (itens.length === 0) {
     container.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nada marcado além de hoje e amanhã, por enquanto.</div>';
     return;
@@ -1480,6 +1533,26 @@ DATA.metaMensal.tabela.forEach(m => {
 
 document.getElementById('comissaoPaga').textContent = brl(DATA.comissao.paga);
 document.getElementById('comissaoAguardando').textContent = brl(DATA.comissao.aguardando);
+
+// Sentinela de divergência: os valores de DATA.comissao são declarados à mão,
+// mas listaNegociacoes tem os mesmos números negócio a negócio. Se as somas
+// não baterem, alguém atualizou um lado e esqueceu o outro — o painel avisa
+// em vez de exibir número financeiro errado em silêncio.
+(function sentinelaFinanceira() {
+  const somaPaga = (DATA.listaNegociacoes || []).filter(n => n.status === 'pago').reduce((s, n) => s + (n.comissao || 0), 0);
+  const somaAguardando = (DATA.listaNegociacoes || []).filter(n => n.status === 'aguardando').reduce((s, n) => s + (n.comissao || 0), 0);
+  const drift = Math.abs(somaPaga - (DATA.comissao.paga || 0)) > 0.01 ||
+                Math.abs(somaAguardando - (DATA.comissao.aguardando || 0)) > 0.01;
+  if (!drift) return;
+  const painelFat = document.getElementById('panel-faturamento');
+  if (!painelFat) return;
+  const aviso = document.createElement('div');
+  aviso.style.cssText = 'background:#FDECEC;border:1px solid #F0B9B9;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#8E2626;';
+  aviso.innerHTML = '⚠️ <b>Números fora de sincronia:</b> a soma das negociações (' +
+    brl(somaPaga) + ' pagas / ' + brl(somaAguardando) + ' aguardando) não bate com os totais declarados (' +
+    brl(DATA.comissao.paga) + ' / ' + brl(DATA.comissao.aguardando) + '). Peça ao Claude para conferir a Tabela de Negociações.';
+  painelFat.insertBefore(aviso, painelFat.firstChild);
+})();
 document.getElementById('comissaoPrevista').textContent = brl(DATA.comissao.prevista);
 const totalNeg = DATA.negociacoes.vendas.valor + DATA.negociacoes.locacoes.valor;
 document.getElementById('totalNegociado').textContent = brl(totalNeg);
@@ -1659,7 +1732,7 @@ const leadsInativosCard = document.getElementById('leadsInativosCard');
 const FASES_INATIVAS = ['Inativo', 'Fechado Ganho', 'Fechado Perdido'];
 
 function getUltimaAtividade(nome) {
-  const itens = (DATA.logAtividades || []).filter(a => a.lead === nome);
+  const itens = logDoLead(leadPorRef(nome));
   if (itens.length === 0) return null;
   return itens[itens.length - 1];
 }
@@ -1675,8 +1748,35 @@ function diasDesde(dataISO) {
 }
 
 // Há quantos dias esse lead não registra nenhuma movimentação no histórico.
+// Vínculo lead ↔ histórico. A chave primária é o ID (mesmo da coluna A da
+// planilha); o nome segue aceito como fallback para registros antigos do log.
+// Antes disso o vínculo era só por nome — corrigir uma grafia desconectava
+// todo o histórico do cliente em silêncio.
+// Telefones ficam SÓ com dígitos no dado; máscara é coisa de exibição.
+function formatarTel(t) {
+  const d = String(t || '').replace(/\D/g, '');
+  if (d.length === 11) return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
+  if (d.length === 10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;
+  return t || '';
+}
+
+function logDoLead(l) {
+  if (!l) return [];
+  return (DATA.logAtividades || []).filter(a =>
+    (a.leadId !== undefined && l.id !== undefined && String(a.leadId) === String(l.id)) ||
+    a.lead === l.nome
+  );
+}
+
+function leadPorRef(ref) {
+  return (DATA.leads || []).find(x =>
+    (x.id !== undefined && String(x.id) === String(ref)) || x.nome === ref
+  ) || null;
+}
+
 function diasSemMovimento(nome) {
-  const itens = (DATA.logAtividades || []).filter(a => a.lead === nome);
+  const l = leadPorRef(nome);
+  const itens = logDoLead(l);
   if (itens.length === 0) return null;
   let maisRecente = null;
   itens.forEach(a => {
@@ -1772,8 +1872,13 @@ function renderLeadCard(l, container) {
   const card = document.createElement('div');
   card.className = 'lead-card lead-card-clickable' + (urg.classe ? ' ' + urg.classe : '');
   card.dataset.leadNome = l.nome;
+  card.dataset.leadRef = (l.id !== undefined ? String(l.id) : l.nome);
   card.setAttribute('role', 'button');
   card.setAttribute('tabindex', '0');
+  const refLead = (l.id !== undefined ? String(l.id) : l.nome);
+  const registrarHtml = l.telefone
+    ? `<a class="wa-link registrar" href="#" data-registrar="${refLead}">✔ Registrei contato</a>`
+    : '';
   card.innerHTML = `
     <div class="lead-top">
       <span class="lead-name">${l.nome}${chipHtml}</span>
@@ -1789,7 +1894,7 @@ function renderLeadCard(l, container) {
     ${idadeHtml}
     ${motivoHtml}
     ${matchHtml}
-    <div class="lead-actions">${waHtml}${confirmHtml}${reativarHtml}</div>
+    <div class="lead-actions">${waHtml}${confirmHtml}${reativarHtml}${registrarHtml}</div>
     <div class="lead-card-hint">👆 Clique para ver o histórico completo</div>`;
   container.appendChild(card);
 }
@@ -1864,9 +1969,10 @@ if (leadsInativosArr.length === 0) {
   const elObs = document.getElementById('leadModalObs');
   const elTimeline = document.getElementById('leadModalTimeline');
 
-  function abrirHistorico(nome) {
-    const l = DATA.leads.find(x => x.nome === nome);
+  function abrirHistorico(ref) {
+    const l = leadPorRef(ref);
     if (!l) return;
+    const nome = l.nome;
     const tempClass = l.temperatura === 'Quente' ? 'quente' : (l.temperatura === 'Morno' ? 'morno' : 'frio');
     const badgeClass = l.status === 'Atrasado' ? 'atrasado' : (l.status === 'Em dia' ? 'emdia' : 'novo');
     elNome.textContent = l.nome;
@@ -1875,7 +1981,7 @@ if (leadsInativosArr.length === 0) {
     elInfo.innerHTML = `<span>Valor: <b>${valorTxt}</b></span><span>Origem: <b>${l.origem || '—'}</b></span><span>Próxima ação: <b>${l.proximaAcao || '—'}</b></span>`;
     elObs.textContent = l.obs || '';
 
-    const itens = (DATA.logAtividades || []).filter(a => a.lead === nome);
+    const itens = logDoLead(leadPorRef(nome));
     if (itens.length === 0) {
       elTimeline.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum registro de histórico ainda para este cliente.</div>';
     } else {
@@ -2031,20 +2137,63 @@ if (leadsInativosArr.length === 0) {
     document.body.style.overflow = '';
   }
 
+  document.addEventListener('click', async (e) => {
+    const a = e.target.closest('a[data-registrar]');
+    if (!a) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (a.dataset.feito) return;
+    a.textContent = 'Registrando…';
+    const ok = await (window.registrarContatoLead ? window.registrarContatoLead(a.dataset.registrar) : false);
+    a.textContent = ok ? '✓ Contato registrado — entra no histórico no próximo briefing' : 'Não consegui — anote pelo card do cliente';
+    a.dataset.feito = '1';
+    a.style.pointerEvents = 'none';
+  });
+
   document.querySelectorAll('.lead-card-clickable').forEach(card => {
     card.addEventListener('click', (e) => {
       if (e.target.closest('a')) return; // não abre modal se clicou num link de ação
-      abrirHistorico(card.dataset.leadNome);
+      abrirHistorico(card.dataset.leadRef || card.dataset.leadNome);
     });
     card.addEventListener('keydown', (e) => {
       if (e.target.closest('a')) return;
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirHistorico(card.dataset.leadNome); }
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirHistorico(card.dataset.leadRef || card.dataset.leadNome); }
     });
   });
   closeBtn.addEventListener('click', fecharModal);
   overlay.addEventListener('click', (e) => { if (e.target === overlay) fecharModal(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay.classList.contains('open')) fecharModal(); });
   window.abrirHistoricoLead = abrirHistorico;
+
+  // "Registrei o contato" em 1 clique: grava uma nota rápida padrão para o
+  // lead, no mesmo fluxo das notas manuais (nuvem → navegador). Fecha o ciclo
+  // que os botões de WhatsApp deixavam aberto: o contato acontecia fora do
+  // painel e o sistema nunca ficava sabendo.
+  window.registrarContatoLead = async function (ref) {
+    const l = leadPorRef(ref);
+    if (!l) return false;
+    const hoje = new Date();
+    const dd = String(hoje.getDate()).padStart(2, '0');
+    const mm = String(hoje.getMonth() + 1).padStart(2, '0');
+    const texto = `[${dd}/${mm}] Contato feito via WhatsApp (registrado em 1 clique no painel).`;
+    let ok = false;
+    try {
+      const r = await fetch('/api/notas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lead: l.nome, texto })
+      });
+      if (r.ok) ok = true;
+    } catch (e) { /* sem backend — plano B */ }
+    if (!ok) {
+      ok = addNotaLocal({
+        id: 'nota-local-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
+        lead: l.nome, texto, criadaEm: hoje.toISOString(), local: true
+      });
+    }
+    if (ok && notasCache) notasCache.push({ lead: l.nome, texto, criadaEm: hoje.toISOString() });
+    return ok;
+  };
 })();
 
 // ---- O Que Fazer Agora: consolida leads atrasados, reativação, follow-up de proprietários e lembretes ----
@@ -2498,8 +2647,51 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
       <span class="followup-chip"><b>Total: ${cs.total}</b></span>`;
   }
 
+  // Filtros da lista (bairro/status/valor) — re-renderiza a lista sem tocar
+  // no resto da aba. Filtro ativo abre os bairros automaticamente.
+  const filtroBairroEl = document.getElementById('filtroBairro');
+  const filtroStatusEl = document.getElementById('filtroStatus');
+  const filtroValorEl = document.getElementById('filtroValor');
+  const filtroLimparEl = document.getElementById('filtroLimpar');
+  const filtroResultadoEl = document.getElementById('filtroResultado');
+
+  const naoVendidos = DATA.imoveis.filter(im => im.status !== 'Vendido');
+  if (filtroBairroEl) {
+    [...new Set(naoVendidos.map(im => im.bairro).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'))
+      .forEach(b => { const o=document.createElement('option'); o.value=b; o.textContent=b; filtroBairroEl.appendChild(o); });
+    [...new Set(naoVendidos.map(im => im.status).filter(Boolean))].sort()
+      .forEach(s => { const o=document.createElement('option'); o.value=s; o.textContent=s; filtroStatusEl.appendChild(o); });
+  }
+
+  function filtroAtivo() {
+    return !!(filtroBairroEl && (filtroBairroEl.value || filtroStatusEl.value || filtroValorEl.value));
+  }
+
+  function passaFiltro(im) {
+    if (!filtroBairroEl) return true;
+    if (filtroBairroEl.value && im.bairro !== filtroBairroEl.value) return false;
+    if (filtroStatusEl.value && im.status !== filtroStatusEl.value) return false;
+    if (filtroValorEl.value) {
+      const [min, max] = filtroValorEl.value.split('-').map(Number);
+      if (im.valor === null || im.valor === undefined) return false;
+      if (im.valor < min || im.valor > max) return false;
+    }
+    return true;
+  }
+
+  function renderListaImoveis() {
+  imoveisCard.innerHTML = '';
+  const filtrados = naoVendidos.filter(passaFiltro);
+  if (filtroResultadoEl) {
+    filtroResultadoEl.textContent = filtroAtivo() ? `${filtrados.length} de ${naoVendidos.length} imóveis` : '';
+    if (filtroLimparEl) filtroLimparEl.style.display = filtroAtivo() ? '' : 'none';
+  }
+  if (filtrados.length === 0) {
+    imoveisCard.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum imóvel bate com esse filtro.</div>';
+    return;
+  }
   const porCidade = {};
-  DATA.imoveis.filter(im => im.status !== 'Vendido').forEach(im => {
+  filtrados.forEach(im => {
     const c = im.cidade || 'Cidade a definir';
     (porCidade[c] = porCidade[c] || []).push(im);
   });
@@ -2568,6 +2760,24 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
       });
     });
   });
+  }
+
+  renderListaImoveis();
+  if (filtroBairroEl) {
+    [filtroBairroEl, filtroStatusEl, filtroValorEl].forEach(el => el.addEventListener('change', () => {
+      renderListaImoveis();
+      // filtro ativo: abre todos os bairros pra mostrar o resultado direto
+      if (filtroAtivo()) imoveisCard.querySelectorAll('.bairro-content').forEach(bc => {
+        bc.classList.add('open');
+        const t = bc.previousElementSibling;
+        if (t) { t.classList.add('open'); t.setAttribute('aria-expanded','true'); }
+      });
+    }));
+    filtroLimparEl.addEventListener('click', () => {
+      filtroBairroEl.value = ''; filtroStatusEl.value = ''; filtroValorEl.value = '';
+      renderListaImoveis();
+    });
+  }
 
   // ---- Vendidos por Thulio: ficam visiveis ate a comissao ser confirmada como paga ----
   const vendidos = DATA.imoveis.filter(im => im.status === 'Vendido' && !im.comissaoConfirmada);
@@ -2967,10 +3177,9 @@ function resumirEvento(titulo) {
   }
   const hoje = new Date();
   const isoDe = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-  const amanha = new Date(hoje); amanha.setDate(amanha.getDate() + 1);
-  pushAll(DATA.agendaHoje, isoDe(hoje));
-  pushAll(DATA.agendaAmanha, isoDe(amanha));
-  pushAll(DATA.agendaProximos, null);
+  pushAll(AGENDA_DIA.hoje, null);
+  pushAll(AGENDA_DIA.amanha, null);
+  pushAll(AGENDA_DIA.proximos, null);
 
   const porData = {};
   eventos.forEach(ev => { (porData[ev.data] = porData[ev.data] || []).push(ev); });
@@ -3072,7 +3281,7 @@ function resumirEvento(titulo) {
       <div class="lead-meta">
         <span>Imóvel/Bairro: <b>${it.imovelBairro || '—'}</b></span>
         <span>Indicação: <b>${it.indicacao || '—'}</b></span>
-        ${it.telefone ? `<span>Tel: <b>${it.telefone}</b></span>` : ''}
+        ${it.telefone ? `<span>Tel: <b>${formatarTel(it.telefone)}</b></span>` : ''}
       </div>
       ${it.proximaAcao ? `<div class="lead-meta" style="margin-top:4px;"><span>Próxima ação: <b>${it.proximaAcao}</b>${it.dataProximaAcao ? ' — ' + it.dataProximaAcao.split('-').reverse().join('/') : ''}</span></div>` : ''}
       ${it.obs ? `<div style="font-size:var(--fs-2xs);color:#8A9186;margin-top:6px;">${it.obs}</div>` : ''}
