@@ -13,6 +13,10 @@
 <style>
   :root {
     color-scheme: light;
+    --text-strong: #1D2717;   /* texto forte — NO MODO ESCURO vira claro; a cor de marca (--brand-dark2) segue escura porque também é usada como FUNDO */
+    --surface: #ffffff;
+    --surface-2: #FCFCFA;
+    --border-soft: #E9EBE4;
     --brand-dark: #10150F;
     --brand-dark2: #1D2717;
     --brand-gold: #BF9D53;
@@ -53,7 +57,7 @@
   .acao-all-clear { text-align: center; padding: 14px 10px; color: #1F7A4D; font-weight: 700; font-size: var(--fs-md); }
 
   .section-title {
-    font-size: 15px; font-weight: 700; color: var(--brand-dark2); margin: 20px 2px 10px;
+    font-size: 15px; font-weight: 700; color: var(--text-strong); margin: 20px 2px 10px;
     display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px;
   }
   .section-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand-gold); display:inline-block; }
@@ -65,7 +69,7 @@
   }
   .kpi .icon { font-size: 20px; }
   .kpi .label { font-size: var(--fs-xs); color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .3px; }
-  .kpi .value { font-size: 21px; font-weight: 800; color: var(--brand-dark2); }
+  .kpi .value { font-size: 21px; font-weight: 800; color: var(--text-strong); }
   .kpi .hint { font-size: var(--fs-xs); color: #8A9186; }
   .kpi-clickable { cursor: pointer; transition: box-shadow .15s ease, border-color .15s ease, background .15s ease; }
   .kpi-clickable:hover { box-shadow: 0 4px 14px rgba(18,22,14,0.12); border-color: var(--brand-gold); }
@@ -105,7 +109,7 @@
       padding: 16px 10px; font-size: 15px; font-weight: 700; margin-bottom: 0;
       box-shadow: 0 1px 5px rgba(18,22,14,0.05);
     }
-    .tab-btn.active { background: var(--brand-dark2); color: #fff; border-color: var(--brand-dark2); }
+    .tab-btn.active { background: var(--brand-dark2); color: #fff; border-color: var(--text-strong); }
 
     .urgent-banner { flex-direction: column; align-items: flex-start; gap: 8px; padding: 14px 16px; }
     .meta-highlight { flex-direction: column; align-items: flex-start; gap: 10px; }
@@ -123,7 +127,7 @@
   }
 
   .card { background: #fff; border-radius: 16px; padding: 14px 18px 6px; box-shadow: 0 2px 10px rgba(18,22,14,0.06); border: 1px solid #E9EBE4; }
-  .card h3 { margin: 0 0 12px; font-size: var(--fs-md); color: var(--brand-dark2); display:flex; align-items:center; gap:8px; }
+  .card h3 { margin: 0 0 12px; font-size: var(--fs-md); color: var(--text-strong); display:flex; align-items:center; gap:8px; }
 
   .neg-row { display: flex; align-items: center; gap: 10px; padding: 10px 4px; border-bottom: 1px solid #F1F2ED; }
   .neg-row:last-child { border-bottom: none; }
@@ -134,7 +138,7 @@
   .neg-info .imovel { font-size: 13px; font-weight: 700; color: var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .neg-info .cliente { font-size: var(--fs-xs); color: #8A9186; }
   .neg-vals { text-align: right; font-size: var(--fs-sm); }
-  .neg-vals .valor { font-weight: 700; color: var(--brand-dark2); }
+  .neg-vals .valor { font-weight: 700; color: var(--text-strong); }
   .neg-vals .comissao { color: #4C7A3A; font-size: var(--fs-xs); }
   .neg-vals .mes { color: #8A9186; font-size: var(--fs-2xs); text-transform:uppercase; }
   .legend { display:flex; gap:16px; font-size: var(--fs-xs); color: var(--muted); margin: 6px 4px 14px; }
@@ -145,7 +149,7 @@
   .funil-track { flex:1; height: 20px; background:#EEF1EA; border-radius: 6px; overflow:hidden; }
   .funil-fill { height:100%; background: linear-gradient(90deg,var(--brand-dark2),var(--brand-gold-deep)); border-radius:6px; display:flex; align-items:center; justify-content:flex-end; padding-right:6px; }
   .funil-fill span { color:#fff; font-size:var(--fs-2xs); font-weight:700; }
-  .funil-count { width: 24px; text-align:right; font-size:var(--fs-sm); font-weight:700; color: var(--brand-dark2); }
+  .funil-count { width: 24px; text-align:right; font-size:var(--fs-sm); font-weight:700; color: var(--text-strong); }
 
   .alert-box { background:#FBF4E4; border:1px solid #EBD9A8; border-radius:12px; padding:12px 14px; margin-bottom:10px; display:flex; gap:10px; align-items:flex-start; }
   .alert-box .a-icon { font-size:16px; }
@@ -161,7 +165,7 @@
   .lead-card.urg-media   { border-left-color: #E5C35C; }
   .lead-card.urg-ok      { border-left-color: #7BA05B; }
   .lead-idade { display:inline-flex; align-items:center; gap:4px; font-size: var(--fs-2xs); color:#8A9186; }
-  .lead-idade b { color: var(--brand-dark2); font-weight:600; }
+  .lead-idade b { color: var(--text-strong); font-weight:600; }
   .lead-idade.alerta b { color:#C62828; }
   .lead-alerta-chip { display:inline-block; font-size:10px; font-weight:700; border-radius:5px; padding:2px 7px; margin-left:6px; vertical-align:middle; }
   .lead-alerta-chip.critica { background:#FDECEC; color:#C62828; }
@@ -181,24 +185,74 @@
   .wa-link.registrar { background:#EEF2E9; color:#4A5240; border:1px solid #DCE3D3; }
   .wa-link.registrar:hover { background:#E2E8DA; }
   .filtros-imoveis { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
-  .filtros-imoveis select { font-family:inherit; font-size: var(--fs-2xs); color: var(--brand-dark2); padding:7px 10px; border:1px solid #D7DBD2; border-radius:8px; background:#fff; }
+  .filtros-imoveis select { font-family:inherit; font-size: var(--fs-2xs); color: var(--text-strong); padding:7px 10px; border:1px solid #D7DBD2; border-radius:8px; background:#fff; }
   .filtro-limpar { font-family:inherit; font-size: var(--fs-2xs); border:none; background:#EEF2E9; color:#4A5240; border-radius:8px; padding:7px 12px; cursor:pointer; }
   .filtro-resultado { font-size: var(--fs-2xs); color:#8A9186; }
-  .sync-textarea { width:100%; min-height:110px; margin-top:8px; font-family:inherit; font-size: var(--fs-2xs); color: var(--brand-dark2); padding:9px; border:1px solid #D7DBD2; border-radius:8px; background:#fff; resize:vertical; }
+  .lembrete-row.envelhecido { opacity:.55; }
+  .lembrete-row.envelhecido:hover { opacity:1; }
+  .idade-atraso { color:#C62828; }
+
+  /* ---- Modo escuro (segue a preferência do sistema) ---- */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --ink: #DFE4D8;
+      --text-strong: #E8ECE0;
+      --muted: #9AA394;
+      --surface: #1B211A;
+      --surface-2: #232B21;
+      --border-soft: #2C342A;
+    }
+    body { background: #111510; }
+    .card, .modal-content, .kpi, .busca-resultados { background: var(--surface); border-color: var(--border-soft); box-shadow: 0 2px 10px rgba(0,0,0,.35); }
+    .lead-card { background: #20261E; border-color: var(--border-soft); }
+    .lead-card.urg-critica { background: linear-gradient(90deg, #2A1A18 0%, #20261E 60%); }
+    .semana-dia, .busca-wrap input, .filtros-imoveis select, .nota-box textarea, .sync-textarea { background: var(--surface-2); border-color: #39423577; color: var(--ink); }
+    .semana-dia.hoje { background: #2A2818; }
+    .sync-box, .termo-extra { background: var(--surface-2); border-color: var(--border-soft); }
+    .termo-bar-wrap { background: #2A3126; }
+    .tbl-mini td { border-bottom-color: var(--border-soft); }
+    .tbl-mini th { border-bottom-color: #39423577; }
+    .urg-legenda { border-bottom-color: var(--border-soft); }
+    .nota-pendente { background: #2A2818; border-color: #4A4326; color: #D9C98A; }
+    .lead-motivo { background: #2A2818; border-color: #4A4326; color: #D9C98A; }
+    .lead-motivo b { color: #E5D6A0; }
+    .busca-item:hover, .busca-item:focus { background: #262E24; }
+    .wa-link.registrar { background: #232B21; color: #B9C2B0; border-color: #39423577; }
+    .filtro-limpar { background: #232B21; color: #B9C2B0; }
+  }
+  .busca-wrap { position:relative; flex:0 1 340px; margin-left:auto; }
+  .busca-wrap input {
+    width:100%; font-family:inherit; font-size: var(--fs-xs); color: var(--text-strong);
+    padding:8px 12px; border:1px solid #D7DBD2; border-radius:9px; background:#FCFCFA; box-sizing:border-box;
+  }
+  .busca-wrap input:focus { outline:2px solid var(--brand-gold); outline-offset:1px; border-color:var(--brand-gold); }
+  .busca-resultados {
+    position:absolute; top:calc(100% + 6px); right:0; width:min(430px, 92vw); max-height:380px; overflow-y:auto;
+    background:#fff; border:1px solid #E9EBE4; border-radius:12px; box-shadow:0 10px 30px rgba(18,22,14,.14); z-index:60; padding:6px;
+  }
+  .busca-grupo { font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:#8A9186; padding:8px 10px 4px; }
+  .busca-item { display:block; width:100%; text-align:left; background:none; border:none; font-family:inherit; cursor:pointer;
+    padding:8px 10px; border-radius:8px; font-size: var(--fs-xs); color: var(--text-strong); }
+  .busca-item:hover, .busca-item:focus { background:#F1F4EC; }
+  .busca-item small { display:block; color:#8A9186; font-size: var(--fs-2xs); margin-top:2px; }
+  .busca-vazio { padding:12px; font-size: var(--fs-2xs); color:#8A9186; }
+  @media (max-width: 700px) { .busca-wrap { flex-basis: 100%; } .topbar { flex-wrap: wrap; gap:8px; } }
+  .sync-textarea { width:100%; min-height:110px; margin-top:8px; font-family:inherit; font-size: var(--fs-2xs); color: var(--text-strong); padding:9px; border:1px solid #D7DBD2; border-radius:8px; background:#fff; resize:vertical; }
   .termo-row { display:flex; align-items:center; gap:10px; margin-bottom:7px; }
-  .termo-label { flex:0 0 132px; font-size: var(--fs-2xs); color: var(--brand-dark2); }
+  .termo-label { flex:0 0 132px; font-size: var(--fs-2xs); color: var(--text-strong); }
   .termo-bar-wrap { flex:1; background:#F1F3EE; border-radius:6px; height:20px; position:relative; overflow:hidden; }
   .termo-bar { height:100%; background: linear-gradient(90deg, var(--brand-dark2), #5C6B4A); border-radius:6px; transition:width .4s; }
   .termo-bar.gargalo { background: linear-gradient(90deg, #C62828, #E8892B); }
   .termo-val { flex:0 0 70px; text-align:right; font-size: var(--fs-2xs); color:#8A9186; }
-  .termo-val b { color: var(--brand-dark2); font-size: var(--fs-xs); }
+  .termo-val b { color: var(--text-strong); font-size: var(--fs-xs); }
   .termo-nota { font-size: var(--fs-2xs); color:#8A9186; margin-top:10px; line-height:1.5; }
   .termo-nota b { color:#C62828; }
   .termo-extra { font-size: var(--fs-2xs); color:#4A5240; background:#F4F7F0; border:1px solid #DFE6D6; border-radius:8px; padding:8px 10px; margin-top:10px; line-height:1.5; }
-  .termo-extra b { color: var(--brand-dark2); }
+  .termo-extra b { color: var(--text-strong); }
   .tbl-mini { width:100%; border-collapse:collapse; font-size: var(--fs-2xs); }
   .tbl-mini th { text-align:left; font-weight:600; color:#8A9186; padding:4px 6px; border-bottom:1px solid #E9EBE4; font-size:10px; text-transform:uppercase; letter-spacing:.4px; }
-  .tbl-mini td { padding:6px; border-bottom:1px solid #F3F5F0; color: var(--brand-dark2); }
+  .tbl-mini td { padding:6px; border-bottom:1px solid #F3F5F0; color: var(--text-strong); }
   .tbl-mini td.num { text-align:right; font-variant-numeric: tabular-nums; }
   .tbl-mini tr.destaque td { background:#F7FAF3; font-weight:600; }
   .tbl-nota { font-size: var(--fs-2xs); color:#8A9186; margin-top:10px; line-height:1.5; }
@@ -212,7 +266,7 @@
   .semana-dia.hoje { border-color: var(--brand-gold); background:#FFFDF5; box-shadow:0 0 0 1px var(--brand-gold) inset; }
   .semana-dia.vazio { opacity:.55; }
   .semana-dow { font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:#8A9186; }
-  .semana-num { font-size: var(--fs-sm); font-weight:700; color: var(--brand-dark2); line-height:1.2; }
+  .semana-num { font-size: var(--fs-sm); font-weight:700; color: var(--text-strong); line-height:1.2; }
   .semana-ev { font-size:10px; background:var(--brand-dark2); color:#fff; border-radius:5px; padding:3px 5px; margin-top:4px; line-height:1.35; white-space:normal; overflow-wrap:anywhere; }
   .semana-ev .semana-hora { display:block; font-weight:700; opacity:.85; }
   .semana-vazia-msg { font-size:10px; color:#B6BBB0; margin-top:6px; }
@@ -227,7 +281,7 @@
   .badge.novo { background:#F3EBD2; color:#8C6D1F; }
   .badge.descartado { background:#ECECEC; color:#7A7A7A; }
   .lead-meta { font-size:var(--fs-xs); color: var(--muted); display:flex; gap:12px; flex-wrap:wrap; }
-  .lead-meta b { color: var(--brand-dark2); }
+  .lead-meta b { color: var(--text-strong); }
   .temp { font-size: var(--fs-xs); font-weight:700; padding:2px 7px; border-radius:20px; }
   .temp.quente { background:#FBE4E4; color:#C0392B; }
   .temp.morno { background:#FDF0D5; color:#B7791F; }
@@ -241,13 +295,13 @@
   .lead-card-clickable:focus-visible { outline: 2px solid var(--brand-gold); outline-offset: 2px; }
   .lead-card-hint { font-size: var(--fs-2xs); color: #B9BEB2; margin-top: 6px; }
   .lead-line3 { font-size: var(--fs-2xs); color: var(--muted); margin-top: 6px; padding-top: 6px; border-top: 1px dashed #E9EBE4; }
-  .lead-line3 b { color: var(--brand-dark2); }
+  .lead-line3 b { color: var(--text-strong); }
   .lead-line3 .sep { margin: 0 6px; color: #C7CBC0; }
   .lead-actions { display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin-top: 8px; }
 
   .inativos-toggle {
     display:flex; align-items:center; gap:8px; cursor:pointer; user-select:none;
-    font-size: var(--fs-sm); font-weight:700; color: var(--brand-dark2);
+    font-size: var(--fs-sm); font-weight:700; color: var(--text-strong);
     padding: 10px 2px; border-top: 1px dashed #E9EBE4; margin-top: 14px;
   }
   .inativos-toggle .chev { transition: transform .15s ease; display:inline-block; }
@@ -270,11 +324,11 @@
   }
   .modal-close:hover { background:#E9EBE4; }
   .modal-header { padding-right: 34px; }
-  .modal-timeline-title { font-size: var(--fs-sm); font-weight:700; color: var(--brand-dark2); margin: 18px 0 10px; }
+  .modal-timeline-title { font-size: var(--fs-sm); font-weight:700; color: var(--text-strong); margin: 18px 0 10px; }
   .nota-box { margin-top: 18px; padding-top: 16px; border-top: 1px solid #E9EBE4; }
   .nota-box textarea {
     width: 100%; min-height: 76px; resize: vertical; box-sizing: border-box;
-    font-family: inherit; font-size: var(--fs-xs); color: var(--brand-dark2);
+    font-family: inherit; font-size: var(--fs-xs); color: var(--text-strong);
     padding: 10px; border: 1px solid #D7DBD2; border-radius: 8px; background: #FCFCFA;
   }
   .nota-box textarea:focus { outline: 2px solid var(--brand-gold); outline-offset: 1px; border-color: var(--brand-gold); }
@@ -319,7 +373,7 @@
   .origem-label { width: 140px; font-size: var(--fs-sm); color:#334037; font-weight:600; flex-shrink:0; }
   .origem-track { flex:1; height: 16px; background:#EEF1EA; border-radius: 6px; overflow:hidden; }
   .origem-fill { height:100%; background: linear-gradient(90deg,var(--brand-gold-deep),var(--brand-gold)); border-radius:6px; }
-  .origem-count { width: 24px; text-align:right; font-size:var(--fs-sm); font-weight:700; color: var(--brand-dark2); }
+  .origem-count { width: 24px; text-align:right; font-size:var(--fs-sm); font-weight:700; color: var(--text-strong); }
 
   .agenda-row { display:flex; gap:12px; align-items:center; padding:12px 4px; border-bottom:1px solid #F1F2ED; }
   .agenda-row:last-child { border-bottom:none; }
@@ -345,13 +399,13 @@
     font-family: inherit; font-size:13px; font-weight:700; color: var(--muted); background:none; border:none;
     padding:10px 16px; cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px; transition:.15s;
   }
-  .tab-btn:hover { color: var(--brand-dark2); }
-  .tab-btn.active { color: var(--brand-dark2); border-bottom-color: var(--brand-gold); }
+  .tab-btn:hover { color: var(--text-strong); }
+  .tab-btn.active { color: var(--text-strong); border-bottom-color: var(--brand-gold); }
   .tab-panel { display:none; }
   .tab-panel.active { display:block; }
 
   .meta-highlight { display:flex; align-items:center; gap:18px; background:#FBF6EA; border:1px solid #EBD9A8; border-radius:14px; padding:16px 20px; margin-bottom:16px; }
-  .meta-highlight .mh-value { font-size:26px; font-weight:800; color: var(--brand-dark2); }
+  .meta-highlight .mh-value { font-size:26px; font-weight:800; color: var(--text-strong); }
   .meta-highlight .mh-label { font-size:var(--fs-xs); color:#8C6D1F; font-weight:700; text-transform:uppercase; letter-spacing:.4px; }
   .meta-highlight .mh-sub { font-size:var(--fs-xs); color:#8A7644; margin-top:2px; }
 
@@ -369,13 +423,13 @@
   .amostra-nota { font-size:var(--fs-xs); color:#8A7644; background:#FBF6EA; border:1px solid #EBD9A8; border-radius:8px; padding:8px 10px; margin-bottom:10px; }
   .reativa-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid #F1F2ED; font-size:var(--fs-sm); }
   .reativa-row:last-child { border-bottom:none; }
-  .reativa-count { font-weight:800; font-size:var(--fs-md); color: var(--brand-dark2); }
+  .reativa-count { font-weight:800; font-size:var(--fs-md); color: var(--text-strong); }
   .reativa-count.zero { color:#8A9186; font-weight:600; }
   .hist-nota { font-size:var(--fs-xs); color:#8A7644; background:#FBF6EA; border:1px solid #EBD9A8; border-radius:8px; padding:8px 10px; margin-bottom:8px; }
 
   .imovel-card { border:1px solid #E9EBE4; border-radius:12px; padding:14px 16px; margin-bottom:12px; }
   .imovel-top { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
-  .imovel-nome { font-weight:800; font-size:var(--fs-md); color: var(--brand-dark2); }
+  .imovel-nome { font-weight:800; font-size:var(--fs-md); color: var(--text-strong); }
   .imovel-badge { font-size:var(--fs-2xs); font-weight:700; padding:3px 10px; border-radius:20px; text-transform:uppercase; letter-spacing:.3px; white-space:nowrap; }
   .imovel-badge.em-captacao { background:#FBF6EA; color:#8C6D1F; }
   .imovel-badge.disponivel { background:#E4F3EA; color:#1F7A4D; }
@@ -384,7 +438,7 @@
   .imovel-badge.suspenso { background:#FBE4E4; color:#B3261E; }
   .imovel-badge.perdido { background:#ECECEC; color:#7A7A7A; }
   .imovel-meta { font-size:var(--fs-sm); color:#5C6157; margin-top:6px; line-height:1.6; }
-  .imovel-link { display:inline-flex; align-items:center; gap:4px; font-size:var(--fs-xs); font-weight:700; color: var(--brand-dark2); text-decoration:none; background:#F1F2ED; padding:4px 10px; border-radius:20px; margin-top:8px; }
+  .imovel-link { display:inline-flex; align-items:center; gap:4px; font-size:var(--fs-xs); font-weight:700; color: var(--text-strong); text-decoration:none; background:#F1F2ED; padding:4px 10px; border-radius:20px; margin-top:8px; }
   .imovel-link:hover { background:#E6E8E0; }
   .imovel-cidade-title {
     font-size:20px; font-weight:800; color:#fff; margin:26px 0 14px; padding:10px 16px;
@@ -394,7 +448,7 @@
   }
   .imovel-cidade-title:first-child { margin-top:0; }
   .imovel-bairro-title {
-    font-size:16px; font-weight:800; color: var(--brand-dark2); margin:20px 2px 8px; padding:8px 10px 8px 10px;
+    font-size:16px; font-weight:800; color: var(--text-strong); margin:20px 2px 8px; padding:8px 10px 8px 10px;
     border-left:4px solid var(--brand-gold); display:flex; align-items:center; gap:6px;
     cursor:pointer; user-select:none; border-radius:0 8px 8px 0; transition: background .15s ease;
   }
@@ -427,7 +481,7 @@
 
   /* ---- Dashboard Executivo (Home) ---- */
   .greeting-block { margin: 0 0 16px; padding: 2px 2px 0; }
-  .greeting-block .greet-title { font-size: 18px; font-weight: 800; color: var(--brand-dark2); }
+  .greeting-block .greet-title { font-size: 18px; font-weight: 800; color: var(--text-strong); }
   .greeting-block .greet-list { margin-top: 6px; font-size: var(--fs-sm); color: #5C6157; display:flex; flex-wrap:wrap; gap: 6px 16px; }
   .greeting-block .greet-list span { white-space: nowrap; }
 
@@ -465,7 +519,7 @@
   .kpi-group-label { font-size:var(--fs-xs); color:var(--muted); font-weight:600; display:flex; align-items:center; gap:6px; }
   .kpi-group-label .icon { font-size:15px; }
   .kpi-group-vals { text-align:right; }
-  .kpi-group-value { font-size:15px; font-weight:800; color: var(--brand-dark2); }
+  .kpi-group-value { font-size:15px; font-weight:800; color: var(--text-strong); }
   .kpi-group-hint { font-size:var(--fs-2xs); color:#8A9186; margin-top:1px; }
   .kpi-group-item.kpi-clickable { cursor:pointer; border-radius:8px; padding-left:6px; padding-right:6px; margin:0 -6px; transition: background .15s ease; }
   .kpi-group-item.kpi-clickable:hover { background:#FBF6EC; }
@@ -571,7 +625,6 @@
 
       <div class="nav-group-label">Operação do dia</div>
       <button class="tab-btn" data-tab="agenda" role="tab" aria-controls="panel-agenda"><span class="tab-icon">📅</span><span class="tab-label">Agenda</span></button>
-      <button class="tab-btn" data-tab="lembretes" role="tab" aria-controls="panel-lembretes"><span class="tab-icon">🔔</span><span class="tab-label">Lembretes</span></button>
 
       <div class="nav-group-label">Negócios</div>
       <button class="tab-btn" data-tab="pipeline" role="tab" aria-controls="panel-pipeline"><span class="tab-icon">🧭</span><span class="tab-label">Pipeline</span></button>
@@ -596,7 +649,10 @@
     <div class="topbar">
       <button class="hamburger-btn" id="hamburgerBtn" aria-label="Abrir menu">☰</button>
       <div class="topbar-title" id="topbarTitle">Início</div>
-      <div style="width:36px;"></div>
+      <div class="busca-wrap">
+        <input type="search" id="buscaGlobal" placeholder="Buscar cliente, imóvel, indicação…  ( / )" autocomplete="off" aria-label="Busca global">
+        <div class="busca-resultados" id="buscaResultados" role="listbox" style="display:none;"></div>
+      </div>
     </div>
 
     <div class="tab-panel active" data-tab="inicio" id="panel-inicio" role="tabpanel">
@@ -623,6 +679,8 @@
     <div class="card" style="margin-bottom:18px;">
       <div id="acoesAgoraList"></div>
     </div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>🔔 Lembretes</div>
+    <div class="card" id="lembretesCard" style="margin-bottom:18px;"></div>
     <div class="section-title"><span class="dot" aria-hidden="true"></span>📅 Agenda completa (Google Calendar)</div>
     <div class="card" style="margin-bottom:18px;">
       <div id="agendaList"></div>
@@ -751,20 +809,27 @@
   </div>
 
   <div class="tab-panel" data-tab="bicomercial" id="panel-bicomercial" role="tabpanel">
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>📊 BI Comercial — Pipeline &amp; Captação</div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>💡 De onde vem resultado?</div>
+    <div class="grid2">
+      <div>
+        <div class="card">
+          <h3>🧭 Leads por Origem</h3>
+          <div id="origemList"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>🏆 Origem por Resultado</h3>
+          <div id="origemResultado"></div>
+        </div>
+      </div>
+    </div>
+    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>🕳️ Onde estou perdendo?</div>
     <div class="grid2">
       <div>
         <div class="card">
           <h3>🔻 Funil por Fase</h3>
           <div id="funilList"></div>
-        </div>
-        <div class="card" style="margin-top:18px;">
-          <h3>🧭 Leads por Origem</h3>
-          <div id="origemList"></div>
-        </div>
-        <div class="card" style="margin-top:18px;">
-          <h3>🏆 Origem por Resultado</h3>
-          <div id="origemResultado"></div>
         </div>
         <div class="card" style="margin-top:18px;">
           <h3>🚫 Motivos de Perda e Pausa</h3>
@@ -809,11 +874,6 @@
       </table>
       </div>
     </div>
-  </div>
-
-  <div class="tab-panel" data-tab="lembretes" id="panel-lembretes" role="tabpanel">
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>🔔 Lembretes</div>
-    <div class="card" id="lembretesCard"></div>
   </div>
 
   <div class="tab-panel" data-tab="imoveis" id="panel-imoveis" role="tabpanel">
@@ -932,7 +992,7 @@
 
 <script>
 const DATA = {
-  ultimaAtualizacao: "2026-07-30T21:30:00-03:00",
+  ultimaAtualizacao: "2026-07-30T22:10:00-03:00",
   meta2026: { meta: 10000000, realizado: 2359100, saldo: 7640900 },
   metaComissao2026: { meta: 240000 },
   metaMensal: {
@@ -1227,11 +1287,7 @@ function agendaPorDia() {
 const AGENDA_DIA = agendaPorDia();
 
 function computeAcoesUrgentes() {
-  function diasSemContato(dataStr) {
-    const [y, m, d] = dataStr.split('-').map(Number);
-    const dt = new Date(y, m - 1, d);
-    return Math.floor((new Date() - dt) / (1000 * 60 * 60 * 24));
-  }
+  const diasSemContato = diasDesdeISO;
   const leadsAtrasados = (DATA.leads || []).filter(l => l.status === 'Atrasado');
   const leadsReativar = (DATA.leads || []).filter(l => l.statusReativacao === '🔴 Reativar agora');
   const imoveisAtrasados = (DATA.imoveis || []).filter(im =>
@@ -1265,6 +1321,24 @@ function computeAcoesUrgentes() {
   const propostasEmNegociacao = (DATA.leads || []).filter(l => l.fase === 'Proposta Enviada' || l.fase === 'Em Negociação').length;
   const clientesAguardandoRetorno = leadsAtrasados.length + leadsReativar.length;
 
+  // O que é NOVO desde a última vez que o painel foi aberto: um banner que
+  // sempre mostra o acumulado ensina o olho a ignorá-lo. O conjunto de
+  // pendências visto fica no navegador; o delta é o que merece destaque.
+  let novasDesdeUltimaVisita = 0;
+  try {
+    const chaveAtual = [
+      ...leadsAtrasados.map(l => 'la:' + (l.id ?? l.nome)),
+      ...leadsReativar.map(l => 'lr:' + (l.id ?? l.nome)),
+      ...imoveisAtrasados.map(im => 'im:' + im.nome),
+      ...lembretesUrgentes.map(x => 'lb:' + (typeof lembreteId === 'function' ? lembreteId(x) : x.texto)),
+      ...prospeccoesAtrasadas.map(pr => 'pr:' + pr.nome)
+    ];
+    const vistasRaw = localStorage.getItem('painelEmobiPendenciasVistas');
+    const vistas = vistasRaw ? new Set(JSON.parse(vistasRaw)) : null;
+    if (vistas) novasDesdeUltimaVisita = chaveAtual.filter(k => !vistas.has(k)).length;
+    localStorage.setItem('painelEmobiPendenciasVistas', JSON.stringify(chaveAtual));
+  } catch (e) { /* localStorage indisponível — segue sem delta */ }
+
   const icon = total > 0 ? '⚡' : '✅';
   const label = total > 0 ? 'Ações pendentes hoje' : 'Tudo em dia';
 
@@ -1273,7 +1347,7 @@ function computeAcoesUrgentes() {
   banner.setAttribute('tabindex', '0');
 
   const linhas = [];
-  if (total > 0) linhas.push(`<span>🔴 <b>${total}</b> pendência${total === 1 ? '' : 's'}</span>`);
+  if (total > 0) linhas.push(`<span>🔴 <b>${total}</b> pendência${total === 1 ? '' : 's'}${novasDesdeUltimaVisita > 0 ? ' <b style="color:#E8892B;">(+' + novasDesdeUltimaVisita + ' nova' + (novasDesdeUltimaVisita === 1 ? '' : 's') + ')</b>' : ''}</span>`);
   if (visitasHoje > 0) linhas.push(`<span>🏠 <b>${visitasHoje}</b> visita${visitasHoje === 1 ? '' : 's'} agendada${visitasHoje === 1 ? '' : 's'}</span>`);
   if (clientesAguardandoRetorno > 0) linhas.push(`<span>📞 <b>${clientesAguardandoRetorno}</b> cliente${clientesAguardandoRetorno === 1 ? '' : 's'} aguardando retorno</span>`);
   if (propostasEmNegociacao > 0) linhas.push(`<span>📄 <b>${propostasEmNegociacao}</b> proposta${propostasEmNegociacao === 1 ? '' : 's'} em negociação</span>`);
@@ -1738,20 +1812,32 @@ function getUltimaAtividade(nome) {
 }
 
 // Dias corridos entre uma data ISO (AAAA-MM-DD) e hoje.
-function diasDesde(dataISO) {
-  if (!dataISO) return null;
-  const m = String(dataISO).match(/^(\d{4})-(\d{2})-(\d{2})/);
-  if (!m) return null;
-  const dt = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
-  const hoje = new Date();
-  return Math.floor((new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()) - dt) / 86400000);
-}
+const diasDesde = diasDesdeISO;
 
 // Há quantos dias esse lead não registra nenhuma movimentação no histórico.
 // Vínculo lead ↔ histórico. A chave primária é o ID (mesmo da coluna A da
 // planilha); o nome segue aceito como fallback para registros antigos do log.
 // Antes disso o vínculo era só por nome — corrigir uma grafia desconectava
 // todo o histórico do cliente em silêncio.
+// Módulo único de datas: TODA conta de "dias desde" passa por aqui.
+// Antes havia duas cópias idênticas de diasSemContato em módulos diferentes —
+// funcionava, mas um ajuste em uma e não na outra criaria alertas divergentes.
+function diasDesdeISO(dataStr) {
+  if (!dataStr) return null;
+  const m = String(dataStr).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!m) return null;
+  const dt = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  const agora = new Date();
+  return Math.floor((new Date(agora.getFullYear(), agora.getMonth(), agora.getDate()) - dt) / 86400000);
+}
+
+// Escape de HTML para texto livre interpolado em innerHTML (obs, resumos).
+// Os dados são do próprio Thúlio — o risco não é ataque, é um "<" numa
+// observação quebrando o layout do card em silêncio.
+function esc(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 // Telefones ficam SÓ com dígitos no dado; máscara é coisa de exibição.
 function formatarTel(t) {
   const d = String(t || '').replace(/\D/g, '');
@@ -1847,8 +1933,8 @@ function renderLeadCard(l, container) {
     return txt.length > max ? txt.slice(0, max).trim() + '…' : txt;
   }
   const ultimaAtiv = getUltimaAtividade(l.nome);
-  const ultimaAtivTxt = ultimaAtiv ? `${ultimaAtiv.data} — ${truncar(ultimaAtiv.resumo, 70)}` : truncar(l.obs, 70) || '—';
-  const proximaAcaoTxt = truncar(l.proximaAcao, 60) || '—';
+  const ultimaAtivTxt = esc(ultimaAtiv ? `${ultimaAtiv.data} — ${truncar(ultimaAtiv.resumo, 70)}` : truncar(l.obs, 70) || '—');
+  const proximaAcaoTxt = esc(truncar(l.proximaAcao, 60) || '—');
   const urg = calcularUrgencia(l);
   const idadeDias = diasDesde(l.dataEntrada);
   const partesIdade = [];
@@ -1988,7 +2074,7 @@ if (leadsInativosArr.length === 0) {
       elTimeline.innerHTML = itens.slice().reverse().map(a => `
         <div class="timeline-item">
           <span class="timeline-date">${a.data}</span><span class="timeline-tipo">${a.tipo || 'Outro'}</span>
-          <div class="timeline-resumo">${a.resumo || ''}</div>
+          <div class="timeline-resumo">${esc(a.resumo || '')}</div>
         </div>`).join('');
     }
 
@@ -2206,11 +2292,7 @@ if (leadsInativosArr.length === 0) {
     const withCountry = digits.startsWith('55') ? digits : '55' + digits;
     return 'https://wa.me/' + withCountry + (msg ? ('?text=' + encodeURIComponent(msg)) : '');
   }
-  function diasSemContato(dataStr) {
-    const [y, m, d] = dataStr.split('-').map(Number);
-    const dt = new Date(y, m - 1, d);
-    return Math.floor((new Date() - dt) / (1000 * 60 * 60 * 24));
-  }
+  const diasSemContato = diasDesdeISO;
 
   const { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes, prospeccoesAtrasadas, total } = computeAcoesUrgentes();
 
@@ -2342,14 +2424,25 @@ function addLocalConcluido(id) {
   ordenados.forEach(l => {
     const id = lembreteId(l);
     const whenClass = l.quando === 'Atrasado' ? 'atrasado' : (l.quando === 'Hoje' ? 'hoje' : 'futuro');
+    // Idade do atraso: lembrete parado há mais de 7 dias ganha visual
+    // "envelhecido" — ou ele ainda importa (re-date) ou não importa mais
+    // (conclua). Ficar cinza eternamente na lista só gera cegueira de alerta.
+    let idadeAtraso = null;
+    const mIso = (l.dataFmt || '').match(/^(\d{1,2})\/(\d{1,2})$/);
+    if (l.quando === 'Atrasado' && mIso) {
+      const ano = new Date().getFullYear();
+      idadeAtraso = diasDesdeISO(`${ano}-${String(mIso[2]).padStart(2,'0')}-${String(mIso[1]).padStart(2,'0')}`);
+      if (idadeAtraso !== null && idadeAtraso < 0) idadeAtraso += 365; // virada de ano
+    }
+    const envelhecido = idadeAtraso !== null && idadeAtraso > 7;
     const row = document.createElement('div');
-    row.className = 'lembrete-row';
+    row.className = 'lembrete-row' + (envelhecido ? ' envelhecido' : '');
     row.innerHTML = `
       <input type="checkbox" class="lembrete-check" aria-label="Marcar como concluído">
       <div class="lembrete-when ${whenClass}">${l.quando}</div>
       <div class="lembrete-info">
         <div class="txt">${l.texto}</div>
-        <div class="meta">${l.dataFmt}${l.hora ? ' às ' + l.hora : ''}${l.relacionado ? ' · ' + l.relacionado : ''}</div>
+        <div class="meta">${l.dataFmt}${l.hora ? ' às ' + l.hora : ''}${l.relacionado ? ' · ' + l.relacionado : ''}${idadeAtraso !== null && idadeAtraso > 0 ? ' · <b class="idade-atraso">há ' + idadeAtraso + 'd</b>' : ''}</div>
       </div>`;
     const cb = row.querySelector('.lembrete-check');
     cb.addEventListener('change', (e) => {
@@ -2371,6 +2464,11 @@ function addLocalConcluido(id) {
     lembretesCard.appendChild(row);
   });
 })();
+
+// Gráficos acompanham o tema do sistema
+if (window.Chart && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  try { Chart.defaults.color = '#9AA394'; Chart.defaults.borderColor = 'rgba(154,163,148,.18)'; } catch (e) {}
+}
 
 // ---- Gráficos de linha (evolução mensal 2026) ----
 const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
@@ -2485,7 +2583,7 @@ new Chart(document.getElementById('chartMetaLinha'), {
   const STORAGE_KEY = 'painelEmobiTabAtiva';
   const TITULOS = {
     inicio: 'Início', pipeline: 'Pipeline', agenda: 'Agenda', imoveis: 'Imóveis',
-    lembretes: 'Lembretes', bicomercial: 'BI Comercial', faturamento: 'Faturamento',
+    bicomercial: 'BI Comercial', faturamento: 'Faturamento',
     conectatr: 'Conecta TR', prospeccao: 'Prospecção'
   };
   const tabs = Array.from(document.querySelectorAll('.tab-btn'));
@@ -2994,6 +3092,103 @@ function resumirEvento(titulo) {
   if (t.length > 42) t = t.slice(0, 42).trim() + '…';
   return (prefixo + t).trim();
 }
+
+(function buscaGlobal() {
+  const input = document.getElementById('buscaGlobal');
+  const box = document.getElementById('buscaResultados');
+  if (!input || !box) return;
+
+  function norm(s) {
+    return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function buscar(q) {
+    const n = norm(q);
+    if (n.length < 2) return null;
+    const leads = (DATA.leads || []).filter(l =>
+      norm(l.nome).includes(n) || String(l.telefone || '').includes(n.replace(/\D/g, '') || '␀') ||
+      norm(l.interesse).includes(n) || norm(l.obs).includes(n)
+    ).slice(0, 6);
+    const imoveis = (DATA.imoveis || []).filter(im =>
+      norm(im.nome).includes(n) || norm(im.bairro).includes(n) ||
+      norm(im.proprietario).includes(n) || norm(im.obs).includes(n)
+    ).slice(0, 6);
+    const indicacoes = ((DATA.conectaTR && DATA.conectaTR.lista) || []).filter(x =>
+      norm(x.protocolo).includes(n) || norm(x.imovel).includes(n) ||
+      norm(x.indicador).includes(n) || norm(x.proprietario).includes(n)
+    ).slice(0, 4);
+    return { leads, imoveis, indicacoes };
+  }
+
+  function fechar() { box.style.display = 'none'; box.innerHTML = ''; }
+
+  function render(r) {
+    if (!r) { fechar(); return; }
+    const total = r.leads.length + r.imoveis.length + r.indicacoes.length;
+    if (total === 0) {
+      box.innerHTML = '<div class="busca-vazio">Nada encontrado — tenta outro termo?</div>';
+      box.style.display = 'block';
+      return;
+    }
+    let html = '';
+    if (r.leads.length) {
+      html += '<div class="busca-grupo">Clientes</div>' + r.leads.map(l =>
+        `<button type="button" class="busca-item" data-tipo="lead" data-ref="${l.id ?? esc(l.nome)}">${esc(l.nome)}<small>${esc(l.fase)} · ${esc(l.temperatura)}${l.interesse ? ' · ' + esc(l.interesse) : ''}</small></button>`
+      ).join('');
+    }
+    if (r.imoveis.length) {
+      html += '<div class="busca-grupo">Imóveis</div>' + r.imoveis.map(im =>
+        `<button type="button" class="busca-item" data-tipo="imovel" data-bairro="${esc(im.bairro || '')}">${esc(im.nome)}<small>${esc(im.status)}${im.bairro ? ' · ' + esc(im.bairro) : ''}${im.valor ? ' · ' + brl(im.valor) : ''}</small></button>`
+      ).join('');
+    }
+    if (r.indicacoes.length) {
+      html += '<div class="busca-grupo">Conecta TR</div>' + r.indicacoes.map(x =>
+        `<button type="button" class="busca-item" data-tipo="indicacao">${esc(x.protocolo)}<small>${esc(x.imovel)} · ${esc(x.status)}</small></button>`
+      ).join('');
+    }
+    box.innerHTML = html;
+    box.style.display = 'block';
+  }
+
+  let deb = null;
+  input.addEventListener('input', () => {
+    clearTimeout(deb);
+    deb = setTimeout(() => render(buscar(input.value)), 150);
+  });
+
+  box.addEventListener('click', (e) => {
+    const item = e.target.closest('.busca-item');
+    if (!item) return;
+    const ativar = window.ativarAba || function(){};
+    if (item.dataset.tipo === 'lead') {
+      ativar('pipeline');
+      if (window.abrirHistoricoLead) window.abrirHistoricoLead(item.dataset.ref);
+    } else if (item.dataset.tipo === 'imovel') {
+      ativar('imoveis');
+      const fb = document.getElementById('filtroBairro');
+      if (fb && item.dataset.bairro) {
+        fb.value = item.dataset.bairro;
+        fb.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    } else {
+      ativar('conectatr');
+    }
+    input.value = '';
+    fechar();
+  });
+
+  // "/" foca a busca de qualquer lugar (fora de campos de texto); Esc fecha.
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && !e.target.closest('input, textarea, select')) {
+      e.preventDefault();
+      input.focus();
+    }
+    if (e.key === 'Escape' && box.style.display !== 'none') fechar();
+  });
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.busca-wrap')) fechar();
+  });
+})();
 
 (function botaoCarregarNotas() {
   const box = document.getElementById('syncBox');
