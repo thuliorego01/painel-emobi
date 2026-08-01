@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-01T15:45:00-03:00",
+  "ultimaAtualizacao": "2026-08-01T16:00:00-03:00",
   "meta2026": {
     "meta": 10000000,
     "realizado": 2359100,
@@ -304,15 +304,15 @@
       "telefone": "84981319709",
       "origem": "Instagram",
       "dataEntrada": "2026-07-21",
-      "fase": "Visita Agendada",
+      "fase": "Qualificado",
       "maiorFaseIndex": 4,
       "temperatura": "Morno",
       "valor": null,
       "comissaoPrevista": null,
-      "proximaAcao": "Confirmar se a visita de hoje (01/08, 10h) com o corretor André Brito foi realizada e pegar o feedback",
-      "dataProximaAcao": "2026-08-02",
+      "proximaAcao": "Remarcar a visita com o corretor parceiro André Brito — cliente pediu para reagendar durante a semana",
+      "dataProximaAcao": "2026-08-03",
       "status": "Em dia",
-      "obs": "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [25/07] Rodada de busca: Cód. 9995 confirmado como melhor opção; sem alternativas em Barro Vermelho no inventário atual. [31/07] Contato feito via WhatsApp. [31/07] Visita agendada para 01/08 às 10h, com o corretor parceiro André Brito. [01/08] Contato feito via WhatsApp.",
+      "obs": "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [25/07] Rodada de busca: Cód. 9995 confirmado como melhor opção; sem alternativas em Barro Vermelho no inventário atual. [31/07] Contato feito via WhatsApp. [31/07] Visita agendada para 01/08 às 10h, com o corretor parceiro André Brito. [01/08] Contato feito via WhatsApp. [01/08] A visita das 10h com o corretor André Brito NÃO aconteceu — cliente vai remarcar durante a semana.",
       "imoveisCompativeis": [
         "Cód. 9995"
       ],
@@ -1957,6 +1957,12 @@
       "lead": "Condomínio Polinésia (804, Bloco B) — Isabele Brasil",
       "tipo": "Outro",
       "resumo": "Indicação IND-TR-2026-0009 (Jorge Tomé De Paiva Filho) sem correspondência ativa no inventário — criado rascunho em Imóveis (ID 32, status Em Captação, Tipo Venda) e vinculado. Confirmar com Thúlio se é venda ou locação."
+    },
+    {
+      "data": "01/08/2026",
+      "lead": "Heber Lima",
+      "tipo": "Outro",
+      "resumo": "Visita das 10h com o corretor André Brito não aconteceu — cliente vai remarcar durante a semana."
     }
   ]
 }
