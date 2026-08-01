@@ -1,0 +1,3314 @@
+<!DOCTYPE html><script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Painel Emobi Thulio",
+  "schemaVersion": 1,
+  "description": "Painel visual do corretor: agenda de hoje (Google Calendar), meta 2026, comissões pagas/aguardando/previstas, negociações do ano e pipeline de leads reais do CRM."
+}
+</script>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Painel Emobi — Thúlio Rêgo</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<style>
+  :root {
+    color-scheme: light;
+    --text-strong: #1D2717;   /* texto forte — NO MODO ESCURO vira claro; a cor de marca (--brand-dark2) segue escura porque também é usada como FUNDO */
+    --surface: #ffffff;
+    --surface-2: #FCFCFA;
+    --border-soft: #E9EBE4;
+    --brand-dark: #10150F;
+    --brand-dark2: #1D2717;
+    --brand-gold: #BF9D53;
+    --brand-gold-light: #D9BE8B;
+    --brand-gold-deep: #8C6D1F;
+    --ink: #16232E;
+    --muted: #64748B;
+    --fs-2xs: 10.5px;
+    --fs-xs: 11.5px;
+    --fs-sm: 12.5px;
+    --fs-md: 14px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 24px; background: #F4F6F2; color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+
+  .header {
+    display: flex; justify-content: space-between; align-items: center;
+    background: linear-gradient(135deg, var(--brand-dark), var(--brand-dark2));
+    color: #fff; border-radius: 18px; padding: 20px 30px; margin-bottom: 22px;
+    box-shadow: 0 10px 26px rgba(16,21,15,0.28);
+    border-bottom: 3px solid var(--brand-gold);
+  }
+  .brandmark img { height: 54px; width: auto; display:block; }
+  .header .today { text-align: right; font-size: var(--fs-sm); opacity: 0.85; }
+  .header .today b { font-size: 17px; display:block; color: var(--brand-gold-light); }
+  .header .sync-info { font-size: var(--fs-xs); opacity: 0.75; margin-top: 4px; }
+  .header .sync-info b { color: var(--brand-gold-light); font-weight: 700; }
+
+  .acao-group { margin-bottom: 14px; }
+  .acao-group:last-child { margin-bottom: 0; }
+  .acao-group-title { font-size: var(--fs-xs); font-weight: 800; color: #8C6D1F; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 6px; }
+  .acao-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 4px; border-bottom: 1px solid #F1F2ED; font-size: var(--fs-sm); }
+  .acao-item:last-child { border-bottom: none; }
+  .acao-all-clear { text-align: center; padding: 14px 10px; color: #1F7A4D; font-weight: 700; font-size: var(--fs-md); }
+
+  .section-title {
+    font-size: 15px; font-weight: 700; color: var(--text-strong); margin: 20px 2px 10px;
+    display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .section-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand-gold); display:inline-block; }
+
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; }
+  .kpi {
+    background: #fff; border-radius: 16px; padding: 18px 16px; box-shadow: 0 2px 10px rgba(18,22,14,0.06);
+    border: 1px solid #E9EBE4; display: flex; flex-direction: column; gap: 6px; position: relative; overflow:hidden;
+  }
+  .kpi .icon { font-size: 20px; }
+  .kpi .label { font-size: var(--fs-xs); color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .3px; }
+  .kpi .value { font-size: 21px; font-weight: 800; color: var(--text-strong); }
+  .kpi .hint { font-size: var(--fs-xs); color: #8A9186; }
+  .kpi-clickable { cursor: pointer; transition: box-shadow .15s ease, border-color .15s ease, background .15s ease; }
+  .kpi-clickable:hover { box-shadow: 0 4px 14px rgba(18,22,14,0.12); border-color: var(--brand-gold); }
+  .kpi-clickable:focus-visible { outline: 2px solid var(--brand-gold); outline-offset: 2px; }
+  .kpi-clickable.active { border-color: var(--brand-gold); background: #FBF6EC; }
+  .kpi-clickable.active .value { color: var(--brand-gold-deep); }
+  .bar-track { width: 100%; height: 8px; background: #EEF1EA; border-radius: 6px; overflow: hidden; margin-top: 2px; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg,var(--brand-gold-deep),var(--brand-gold-light)); border-radius: 6px; }
+
+  .grid2 { display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 950px) { .grid2 { grid-template-columns: 1fr; } }
+
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: -2px; padding: 2px; }
+  .table-scroll table { min-width: 460px; }
+
+  @media (max-width: 640px) {
+    :root {
+      /* Fontes maiores no celular: prioriza conforto de leitura sobre densidade. */
+      --fs-2xs: 12px;
+      --fs-xs: 13.5px;
+      --fs-sm: 15px;
+      --fs-md: 16.5px;
+    }
+    body { padding: 14px; }
+    .header { flex-direction: column; align-items: flex-start; gap: 14px; padding: 18px 20px; }
+    .header .today { text-align: left; width: 100%; }
+    .brandmark img { height: 42px; }
+
+    /* Abas em grade 2 colunas, com alvo de toque grande, em vez de rolagem lateral apertada. */
+    .tabs-nav {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+      flex-wrap: unset; overflow-x: visible; border-bottom: none; padding-bottom: 0;
+    }
+    .tab-btn {
+      flex-shrink: unset; white-space: normal; text-align: center;
+      background: #fff; border: 1px solid #E9EBE4; border-radius: 14px;
+      padding: 16px 10px; font-size: 15px; font-weight: 700; margin-bottom: 0;
+      box-shadow: 0 1px 5px rgba(18,22,14,0.05);
+    }
+    .tab-btn.active { background: var(--brand-dark2); color: #fff; border-color: var(--text-strong); }
+
+    .urgent-banner { flex-direction: column; align-items: flex-start; gap: 8px; padding: 14px 16px; }
+    .meta-highlight { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .kpi .value { font-size: 21px; }
+    .section-title { margin: 22px 2px 10px; font-size: 16px; }
+
+    /* Cards com mais respiro — prioriza conforto de leitura mesmo com mais rolagem. */
+    .card { padding: 20px 18px 12px; }
+    .imovel-card { padding: 18px 18px; margin-bottom: 16px; }
+    .imovel-nome { font-size: 17px; }
+    .imovel-meta { line-height: 1.75; }
+    .imovel-link, .wa-link { padding: 8px 14px; font-size: 14px; }
+    .lead-card { padding: 16px 16px; margin-bottom: 14px; }
+    .lead-name { font-size: 15px; }
+  }
+
+  .card { background: #fff; border-radius: 16px; padding: 14px 18px 6px; box-shadow: 0 2px 10px rgba(18,22,14,0.06); border: 1px solid #E9EBE4; }
+  .card h3 { margin: 0 0 12px; font-size: var(--fs-md); color: var(--text-strong); display:flex; align-items:center; gap:8px; }
+
+  .neg-row { display: flex; align-items: center; gap: 10px; padding: 10px 4px; border-bottom: 1px solid #F1F2ED; }
+  .neg-row:last-child { border-bottom: none; }
+  .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .status-dot.pago { background: #4C7A3A; }
+  .status-dot.aguardando { background: var(--brand-gold); }
+  .neg-info { flex: 1; min-width:0; }
+  .neg-info .imovel { font-size: 13px; font-weight: 700; color: var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .neg-info .cliente { font-size: var(--fs-xs); color: #8A9186; }
+  .neg-vals { text-align: right; font-size: var(--fs-sm); }
+  .neg-vals .valor { font-weight: 700; color: var(--text-strong); }
+  .neg-vals .comissao { color: #4C7A3A; font-size: var(--fs-xs); }
+  .neg-vals .mes { color: #8A9186; font-size: var(--fs-2xs); text-transform:uppercase; }
+  .legend { display:flex; gap:16px; font-size: var(--fs-xs); color: var(--muted); margin: 6px 4px 14px; }
+  .legend span { display:flex; align-items:center; gap:5px; }
+
+  .funil-row { display:flex; align-items:center; gap:10px; padding:8px 4px; }
+  .funil-label { width: 150px; font-size: var(--fs-sm); color:#334037; font-weight:600; flex-shrink:0; }
+  .funil-track { flex:1; height: 20px; background:#EEF1EA; border-radius: 6px; overflow:hidden; }
+  .funil-fill { height:100%; background: linear-gradient(90deg,var(--brand-dark2),var(--brand-gold-deep)); border-radius:6px; display:flex; align-items:center; justify-content:flex-end; padding-right:6px; }
+  .funil-fill span { color:#fff; font-size:var(--fs-2xs); font-weight:700; }
+  .funil-count { width: 24px; text-align:right; font-size:var(--fs-sm); font-weight:700; color: var(--text-strong); }
+
+  .alert-box { background:#FBF4E4; border:1px solid #EBD9A8; border-radius:12px; padding:12px 14px; margin-bottom:10px; display:flex; gap:10px; align-items:flex-start; }
+  .alert-box .a-icon { font-size:16px; }
+  .alert-box .a-title { font-size:var(--fs-sm); font-weight:700; color:#7A5B10; }
+  .alert-box .a-sub { font-size:var(--fs-xs); color:#8A7644; }
+
+  .lead-card { border:1px solid #E9EBE4; border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; }
+  /* Urgência real = temperatura + tempo parado. Um lead Quente parado há dias
+     custa muito mais caro que um Frio em dia — a cor precisa refletir isso. */
+  .lead-card { border-left-width: 4px; border-left-color: #E9EBE4; }
+  .lead-card.urg-critica { border-left-color: #C62828; background: linear-gradient(90deg, #FFF5F5 0%, #fff 60%); }
+  .lead-card.urg-alta    { border-left-color: #E8892B; }
+  .lead-card.urg-media   { border-left-color: #E5C35C; }
+  .lead-card.urg-ok      { border-left-color: #7BA05B; }
+  .lead-idade { display:inline-flex; align-items:center; gap:4px; font-size: var(--fs-2xs); color:#8A9186; }
+  .lead-idade b { color: var(--text-strong); font-weight:600; }
+  .lead-idade.alerta b { color:#C62828; }
+  .lead-alerta-chip { display:inline-block; font-size:10px; font-weight:700; border-radius:5px; padding:2px 7px; margin-left:6px; vertical-align:middle; }
+  .lead-alerta-chip.critica { background:#FDECEC; color:#C62828; }
+  .lead-alerta-chip.alta { background:#FDF1E3; color:#B4650F; }
+  .urg-legenda { display:flex; flex-wrap:wrap; gap:12px; align-items:center; font-size: var(--fs-2xs); color:#8A9186; margin-bottom:12px; padding-bottom:10px; border-bottom:1px dashed #E9EBE4; }
+  .urg-legenda-item { display:inline-flex; align-items:center; gap:5px; }
+  .urg-legenda-cor { width:10px; height:10px; border-radius:3px; display:inline-block; }
+  .lead-motivo { font-size: var(--fs-2xs); color:#8A6A2E; background:#FFFBEF; border:1px solid #F0E2B0; border-radius:7px; padding:5px 8px; margin-top:6px; }
+  .lead-motivo b { color:#6B5D2E; }
+  .sync-box { display:flex; align-items:center; gap:12px; flex-wrap:wrap; background:#F4F7F0; border:1px solid #DFE6D6; border-radius:12px; padding:10px 14px; margin-bottom:12px; }
+  .sync-btn { background: var(--brand-dark2); color:#fff; border:none; border-radius:9px; padding:9px 16px; font-size: var(--fs-xs); font-weight:600; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .sync-btn:hover:not(:disabled) { background: var(--brand-dark); }
+  .sync-btn:disabled { opacity:.55; cursor:default; }
+  .sync-status { font-size: var(--fs-2xs); color:#5C6B4A; flex:1; min-width:180px; }
+  .sync-status.ok { color:#2E7D32; font-weight:600; }
+  .sync-status.erro { color:#C62828; font-weight:600; }
+  .wa-link.registrar { background:#EEF2E9; color:#4A5240; border:1px solid #DCE3D3; }
+  .wa-link.registrar:hover { background:#E2E8DA; }
+  .filtros-imoveis { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
+  .filtros-imoveis select { font-family:inherit; font-size: var(--fs-2xs); color: var(--text-strong); padding:7px 10px; border:1px solid #D7DBD2; border-radius:8px; background:#fff; }
+  .filtro-limpar { font-family:inherit; font-size: var(--fs-2xs); border:none; background:#EEF2E9; color:#4A5240; border-radius:8px; padding:7px 12px; cursor:pointer; }
+  .filtro-resultado { font-size: var(--fs-2xs); color:#8A9186; }
+  .lembrete-row.envelhecido { opacity:.55; }
+  .lembrete-row.envelhecido:hover { opacity:1; }
+  .idade-atraso { color:#C62828; }
+  .agenda-feito { font-family:inherit; font-size:10px; font-weight:600; border:1px solid #DCE3D3; background:#EEF2E9;
+    color:#4A5240; border-radius:7px; padding:5px 9px; cursor:pointer; white-space:nowrap; align-self:center; margin-left:auto; }
+  .agenda-feito:hover:not(:disabled) { background:#E2E8DA; }
+  .agenda-feito:disabled { opacity:.5; cursor:default; }
+
+  /* ---- Modo escuro (segue a preferência do sistema) ---- */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --ink: #DFE4D8;
+      --text-strong: #E8ECE0;
+      --muted: #9AA394;
+      --surface: #1B211A;
+      --surface-2: #232B21;
+      --border-soft: #2C342A;
+    }
+    body { background: #111510; }
+    .card, .modal-content, .kpi, .busca-resultados { background: var(--surface); border-color: var(--border-soft); box-shadow: 0 2px 10px rgba(0,0,0,.35); }
+    .lead-card { background: #20261E; border-color: var(--border-soft); }
+    .lead-card.urg-critica { background: linear-gradient(90deg, #2A1A18 0%, #20261E 60%); }
+    .semana-dia, .busca-wrap input, .filtros-imoveis select, .nota-box textarea, .sync-textarea { background: var(--surface-2); border-color: #39423577; color: var(--ink); }
+    .semana-dia.hoje { background: #2A2818; }
+    .sync-box, .termo-extra { background: var(--surface-2); border-color: var(--border-soft); }
+    .termo-bar-wrap { background: #2A3126; }
+    .tbl-mini td { border-bottom-color: var(--border-soft); }
+    .tbl-mini th { border-bottom-color: #39423577; }
+    .urg-legenda { border-bottom-color: var(--border-soft); }
+    .nota-pendente { background: #2A2818; border-color: #4A4326; color: #D9C98A; }
+    .lead-motivo { background: #2A2818; border-color: #4A4326; color: #D9C98A; }
+    .lead-motivo b { color: #E5D6A0; }
+    .busca-item:hover, .busca-item:focus { background: #262E24; }
+    .wa-link.registrar { background: #232B21; color: #B9C2B0; border-color: #39423577; }
+    .filtro-limpar { background: #232B21; color: #B9C2B0; }
+  }
+  .busca-wrap { position:relative; flex:0 1 340px; margin-left:auto; }
+  .busca-wrap input {
+    width:100%; font-family:inherit; font-size: var(--fs-xs); color: var(--text-strong);
+    padding:8px 12px; border:1px solid #D7DBD2; border-radius:9px; background:#FCFCFA; box-sizing:border-box;
+  }
+  .busca-wrap input:focus { outline:2px solid var(--brand-gold); outline-offset:1px; border-color:var(--brand-gold); }
+  .busca-resultados {
+    position:absolute; top:calc(100% + 6px); right:0; width:min(430px, 92vw); max-height:380px; overflow-y:auto;
+    background:#fff; border:1px solid #E9EBE4; border-radius:12px; box-shadow:0 10px 30px rgba(18,22,14,.14); z-index:60; padding:6px;
+  }
+  .busca-grupo { font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:#8A9186; padding:8px 10px 4px; }
+  .busca-item { display:block; width:100%; text-align:left; background:none; border:none; font-family:inherit; cursor:pointer;
+    padding:8px 10px; border-radius:8px; font-size: var(--fs-xs); color: var(--text-strong); }
+  .busca-item:hover, .busca-item:focus { background:#F1F4EC; }
+  .busca-item small { display:block; color:#8A9186; font-size: var(--fs-2xs); margin-top:2px; }
+  .busca-vazio { padding:12px; font-size: var(--fs-2xs); color:#8A9186; }
+  @media (max-width: 700px) { .busca-wrap { flex-basis: 100%; } .topbar { flex-wrap: wrap; gap:8px; } }
+  .sync-textarea { width:100%; min-height:110px; margin-top:8px; font-family:inherit; font-size: var(--fs-2xs); color: var(--text-strong); padding:9px; border:1px solid #D7DBD2; border-radius:8px; background:#fff; resize:vertical; }
+  .termo-row { display:flex; align-items:center; gap:10px; margin-bottom:7px; }
+  .termo-label { flex:0 0 132px; font-size: var(--fs-2xs); color: var(--text-strong); }
+  .termo-bar-wrap { flex:1; background:#F1F3EE; border-radius:6px; height:20px; position:relative; overflow:hidden; }
+  .termo-bar { height:100%; background: linear-gradient(90deg, var(--brand-dark2), #5C6B4A); border-radius:6px; transition:width .4s; }
+  .termo-bar.gargalo { background: linear-gradient(90deg, #C62828, #E8892B); }
+  .termo-val { flex:0 0 70px; text-align:right; font-size: var(--fs-2xs); color:#8A9186; }
+  .termo-val b { color: var(--text-strong); font-size: var(--fs-xs); }
+  .termo-nota { font-size: var(--fs-2xs); color:#8A9186; margin-top:10px; line-height:1.5; }
+  .termo-nota b { color:#C62828; }
+  .termo-extra { font-size: var(--fs-2xs); color:#4A5240; background:#F4F7F0; border:1px solid #DFE6D6; border-radius:8px; padding:8px 10px; margin-top:10px; line-height:1.5; }
+  .termo-extra b { color: var(--text-strong); }
+  .tbl-mini { width:100%; border-collapse:collapse; font-size: var(--fs-2xs); }
+  .tbl-mini th { text-align:left; font-weight:600; color:#8A9186; padding:4px 6px; border-bottom:1px solid #E9EBE4; font-size:10px; text-transform:uppercase; letter-spacing:.4px; }
+  .tbl-mini td { padding:6px; border-bottom:1px solid #F3F5F0; color: var(--text-strong); }
+  .tbl-mini td.num { text-align:right; font-variant-numeric: tabular-nums; }
+  .tbl-mini tr.destaque td { background:#F7FAF3; font-weight:600; }
+  .tbl-nota { font-size: var(--fs-2xs); color:#8A9186; margin-top:10px; line-height:1.5; }
+  /* celular: tabela rola na horizontal em vez de cortar */
+  #origemResultado, #motivosPerda { overflow-x:auto; }
+  #origemResultado .tbl-mini, #motivosPerda .tbl-mini { min-width:430px; }
+  /* minmax(0,1fr) + min-width:0 são obrigatórios: com 1fr puro o conteúdo
+     comprido força a coluna a crescer e as 7 colunas ficam desiguais. */
+  .semana-grid { display:grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap:6px; align-items:start; }
+  .semana-dia { border:1px solid #E9EBE4; border-radius:10px; padding:8px 6px; min-height:74px; background:#FCFCFA; min-width:0; overflow:hidden; }
+  .semana-dia.hoje { border-color: var(--brand-gold); background:#FFFDF5; box-shadow:0 0 0 1px var(--brand-gold) inset; }
+  .semana-dia.vazio { opacity:.55; }
+  .semana-dow { font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:#8A9186; }
+  .semana-num { font-size: var(--fs-sm); font-weight:700; color: var(--text-strong); line-height:1.2; }
+  .semana-ev { font-size:10px; background:var(--brand-dark2); color:#fff; border-radius:5px; padding:3px 5px; margin-top:4px; line-height:1.35; white-space:normal; overflow-wrap:anywhere; }
+  .semana-ev .semana-hora { display:block; font-weight:700; opacity:.85; }
+  .semana-vazia-msg { font-size:10px; color:#B6BBB0; margin-top:6px; }
+  @media (max-width: 700px) {
+    .semana-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  .lead-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+  .lead-name { font-size: 13px; font-weight:700; color: var(--ink); }
+  .badge { font-size: var(--fs-2xs); font-weight:700; padding: 3px 8px; border-radius: 20px; text-transform:uppercase; letter-spacing:.3px; }
+  .badge.atrasado { background:#FBE4E4; color:#B3261E; }
+  .badge.emdia { background:#E8F0E1; color:#4C7A3A; }
+  .badge.novo { background:#F3EBD2; color:#8C6D1F; }
+  .badge.descartado { background:#ECECEC; color:#7A7A7A; }
+  .lead-meta { font-size:var(--fs-xs); color: var(--muted); display:flex; gap:12px; flex-wrap:wrap; }
+  .lead-meta b { color: var(--text-strong); }
+  .temp { font-size: var(--fs-xs); font-weight:700; padding:2px 7px; border-radius:20px; }
+  .temp.quente { background:#FBE4E4; color:#C0392B; }
+  .temp.morno { background:#FDF0D5; color:#B7791F; }
+  .temp.frio { background:#E1EEE4; color:#3F6B4C; }
+
+  .footer-note { margin: 26px 4px 0; font-size: var(--fs-xs); color: #8A9186; line-height:1.6; }
+  .chart-wrap { position: relative; height: 220px; }
+
+  .lead-card-clickable { cursor: pointer; transition: box-shadow .15s ease, border-color .15s ease; }
+  .lead-card-clickable:hover { box-shadow: 0 3px 12px rgba(18,22,14,0.10); border-color: var(--brand-gold); }
+  .lead-card-clickable:focus-visible { outline: 2px solid var(--brand-gold); outline-offset: 2px; }
+  .lead-card-hint { font-size: var(--fs-2xs); color: #B9BEB2; margin-top: 6px; }
+  .lead-line3 { font-size: var(--fs-2xs); color: var(--muted); margin-top: 6px; padding-top: 6px; border-top: 1px dashed #E9EBE4; }
+  .lead-line3 b { color: var(--text-strong); }
+  .lead-line3 .sep { margin: 0 6px; color: #C7CBC0; }
+  .lead-actions { display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin-top: 8px; }
+
+  .inativos-toggle {
+    display:flex; align-items:center; gap:8px; cursor:pointer; user-select:none;
+    font-size: var(--fs-sm); font-weight:700; color: var(--text-strong);
+    padding: 10px 2px; border-top: 1px dashed #E9EBE4; margin-top: 14px;
+  }
+  .inativos-toggle .chev { transition: transform .15s ease; display:inline-block; }
+  .inativos-toggle.open .chev { transform: rotate(90deg); }
+  .inativos-wrap { display:none; }
+  .inativos-wrap.open { display:block; }
+
+  .modal-overlay {
+    display:none; position: fixed; inset: 0; background: rgba(16,21,15,0.55);
+    z-index: 1000; align-items: center; justify-content: center; padding: 16px;
+  }
+  .modal-overlay.open { display:flex; }
+  .modal-content {
+    background:#fff; border-radius: 18px; max-width: 560px; width:100%; max-height: 85vh;
+    overflow-y: auto; padding: 24px; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .modal-close {
+    position:absolute; top:16px; right:16px; border:none; background:#F3F4EF; color:var(--brand-dark2);
+    width:30px; height:30px; border-radius:50%; font-size:14px; cursor:pointer;
+  }
+  .modal-close:hover { background:#E9EBE4; }
+  .modal-header { padding-right: 34px; }
+  .modal-timeline-title { font-size: var(--fs-sm); font-weight:700; color: var(--text-strong); margin: 18px 0 10px; }
+  .nota-box { margin-top: 18px; padding-top: 16px; border-top: 1px solid #E9EBE4; }
+  .nota-box textarea {
+    width: 100%; min-height: 76px; resize: vertical; box-sizing: border-box;
+    font-family: inherit; font-size: var(--fs-xs); color: var(--text-strong);
+    padding: 10px; border: 1px solid #D7DBD2; border-radius: 8px; background: #FCFCFA;
+  }
+  .nota-box textarea:focus { outline: 2px solid var(--brand-gold); outline-offset: 1px; border-color: var(--brand-gold); }
+  .nota-actions { display:flex; align-items:center; gap:10px; margin-top: 8px; flex-wrap: wrap; }
+  .nota-btn {
+    background: var(--brand-dark2); color: #fff; border: none; border-radius: 8px;
+    padding: 8px 16px; font-size: var(--fs-xs); font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+  .nota-btn:hover:not(:disabled) { background: var(--brand-dark); }
+  .nota-btn:disabled { opacity: .5; cursor: default; }
+  .nota-status { font-size: var(--fs-2xs); color: #8A9186; }
+  .nota-status.ok { color: #2E7D32; font-weight: 600; }
+  .nota-status.erro { color: #C62828; font-weight: 600; }
+  .nota-pendente {
+    background: #FFF9E6; border: 1px solid #F0E2B0; border-radius: 8px;
+    padding: 8px 10px; margin-top: 8px; font-size: var(--fs-2xs); color: #6B5D2E;
+  }
+  .timeline-item { border-left: 2px solid #E9EBE4; padding: 2px 0 14px 14px; margin-left: 4px; position: relative; }
+  .timeline-item:last-child { padding-bottom: 2px; }
+  .timeline-item::before { content:''; position:absolute; left:-5px; top:4px; width:8px; height:8px; border-radius:50%; background: var(--brand-gold); }
+  .timeline-date { font-size: var(--fs-2xs); color: #8A9186; font-weight:700; }
+  .timeline-tipo { font-size: var(--fs-2xs); font-weight:700; color: var(--brand-gold-deep); text-transform:uppercase; letter-spacing:.3px; margin-left:6px; }
+  .timeline-resumo { font-size: var(--fs-xs); color: var(--ink); margin-top: 2px; line-height:1.5; }
+
+  .urgent-banner {
+    display:flex; align-items:center; gap:14px; background: linear-gradient(120deg, var(--brand-dark), var(--brand-dark2));
+    color:#fff; border-radius:16px; padding:16px 20px; margin-bottom:22px; border-left:5px solid var(--brand-gold);
+  }
+  .urgent-banner .u-icon { font-size:26px; flex-shrink:0; }
+  .urgent-banner .u-label { font-size:var(--fs-2xs); text-transform:uppercase; letter-spacing:1.5px; color: var(--brand-gold-light); font-weight:700; }
+  .urgent-banner .u-title { font-size:15px; font-weight:700; margin-top:2px; }
+  .urgent-banner .u-sub { font-size:var(--fs-sm); opacity:.8; margin-top:2px; }
+  .urgent-banner.ok { background: linear-gradient(120deg, #234322, #33502F); border-left-color:#8FBF7A; }
+  .urgent-banner.clickable { cursor: pointer; transition: transform .12s, box-shadow .12s; }
+  .urgent-banner.clickable:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(16,21,15,0.35); }
+  .urgent-banner.clickable:focus-visible { outline: 2px solid var(--brand-gold-light); outline-offset: 2px; }
+
+  .wa-link { display:inline-flex; align-items:center; gap:4px; font-size:var(--fs-xs); font-weight:700; color:#1F7A4D; text-decoration:none; background:#E4F3EA; padding:3px 9px; border-radius:20px; margin-top:6px; }
+  .wa-link:hover { background:#D2ECDD; }
+
+  .origem-row { display:flex; align-items:center; gap:10px; padding:7px 4px; }
+  .origem-label { width: 140px; font-size: var(--fs-sm); color:#334037; font-weight:600; flex-shrink:0; }
+  .origem-track { flex:1; height: 16px; background:#EEF1EA; border-radius: 6px; overflow:hidden; }
+  .origem-fill { height:100%; background: linear-gradient(90deg,var(--brand-gold-deep),var(--brand-gold)); border-radius:6px; }
+  .origem-count { width: 24px; text-align:right; font-size:var(--fs-sm); font-weight:700; color: var(--text-strong); }
+
+  .agenda-row { display:flex; gap:12px; align-items:center; padding:12px 4px; border-bottom:1px solid #F1F2ED; }
+  .agenda-row:last-child { border-bottom:none; }
+  .agenda-time { width:74px; flex-shrink:0; text-align:center; background: var(--brand-dark); color: var(--brand-gold-light); border-radius:10px; padding:8px 4px; font-size:var(--fs-sm); font-weight:800; }
+  .agenda-info .titulo { font-size:13px; font-weight:700; color: var(--ink); }
+  .agenda-info .local { font-size:var(--fs-xs); color: var(--muted); }
+  .agenda-icon { font-size:18px; }
+
+  .lembrete-row { display:flex; align-items:flex-start; gap:10px; padding:10px 4px; border-bottom:1px solid #F1F2ED; }
+  .lembrete-row:last-child { border-bottom:none; }
+  .lembrete-when { width:64px; flex-shrink:0; text-align:center; border-radius:8px; padding:5px 4px; font-size:var(--fs-2xs); font-weight:800; text-transform:uppercase; }
+  .lembrete-when.atrasado { background:#FBE4E4; color:#B3261E; }
+  .lembrete-when.hoje { background:#FBF4E4; color:#8C6D1F; }
+  .lembrete-when.futuro { background:#E1EEE4; color:#3F6B4C; }
+  .lembrete-info .txt { font-size:13px; font-weight:600; color: var(--ink); }
+  .lembrete-info .meta { font-size:var(--fs-xs); color: var(--muted); margin-top:2px; }
+  .lembrete-check { margin-top:3px; width:18px; height:18px; accent-color: var(--brand-gold); cursor:pointer; flex-shrink:0; }
+  .lembrete-row.concluido { opacity:.45; }
+  .lembrete-row.concluido .txt { text-decoration: line-through; }
+
+  .tabs-nav { display:flex; gap:8px; margin-bottom:20px; flex-wrap:wrap; border-bottom:2px solid #E9EBE4; padding-bottom:0; }
+  .tab-btn {
+    font-family: inherit; font-size:13px; font-weight:700; color: var(--muted); background:none; border:none;
+    padding:10px 16px; cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px; transition:.15s;
+  }
+  .tab-btn:hover { color: var(--text-strong); }
+  .tab-btn.active { color: var(--text-strong); border-bottom-color: var(--brand-gold); }
+  .tab-panel { display:none; }
+  .tab-panel.active { display:block; }
+
+  .meta-highlight { display:flex; align-items:center; gap:18px; background:#FBF6EA; border:1px solid #EBD9A8; border-radius:14px; padding:16px 20px; margin-bottom:16px; }
+  .meta-highlight .mh-value { font-size:26px; font-weight:800; color: var(--text-strong); }
+  .meta-highlight .mh-label { font-size:var(--fs-xs); color:#8C6D1F; font-weight:700; text-transform:uppercase; letter-spacing:.4px; }
+  .meta-highlight .mh-sub { font-size:var(--fs-xs); color:#8A7644; margin-top:2px; }
+
+  .mensal-table { width:100%; border-collapse:collapse; font-size:var(--fs-sm); }
+  .mensal-table th { text-align:left; background:var(--brand-dark2); color:#fff; padding:8px 10px; font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.3px; }
+  .mensal-table td { padding:8px 10px; border-bottom:1px solid #F1F2ED; }
+  .mensal-table tr:last-child td { border-bottom:none; }
+  .status-bateu { color:#1F7A4D; font-weight:700; }
+  .status-falta { color:#B3261E; font-weight:700; }
+  .status-aguarda { color:#8A9186; }
+  .conv-table { width:100%; border-collapse:collapse; font-size:var(--fs-sm); }
+  .conv-table th { text-align:left; background:var(--brand-dark2); color:#fff; padding:6px 8px; font-size:var(--fs-2xs); text-transform:uppercase; letter-spacing:.3px; }
+  .conv-table td { padding:6px 8px; border-bottom:1px solid #F1F2ED; }
+  .conv-table tr:last-child td { border-bottom:none; }
+  .amostra-nota { font-size:var(--fs-xs); color:#8A7644; background:#FBF6EA; border:1px solid #EBD9A8; border-radius:8px; padding:8px 10px; margin-bottom:10px; }
+  .reativa-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid #F1F2ED; font-size:var(--fs-sm); }
+  .reativa-row:last-child { border-bottom:none; }
+  .reativa-count { font-weight:800; font-size:var(--fs-md); color: var(--text-strong); }
+  .reativa-count.zero { color:#8A9186; font-weight:600; }
+  .hist-nota { font-size:var(--fs-xs); color:#8A7644; background:#FBF6EA; border:1px solid #EBD9A8; border-radius:8px; padding:8px 10px; margin-bottom:8px; }
+
+  .imovel-card { border:1px solid #E9EBE4; border-radius:12px; padding:14px 16px; margin-bottom:12px; }
+  .imovel-top { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+  .imovel-nome { font-weight:800; font-size:var(--fs-md); color: var(--text-strong); }
+  .imovel-badge { font-size:var(--fs-2xs); font-weight:700; padding:3px 10px; border-radius:20px; text-transform:uppercase; letter-spacing:.3px; white-space:nowrap; }
+  .imovel-badge.em-captacao { background:#FBF6EA; color:#8C6D1F; }
+  .imovel-badge.disponivel { background:#E4F3EA; color:#1F7A4D; }
+  .imovel-badge.reservado { background:#FFF3D6; color:#9A6B00; }
+  .imovel-badge.vendido { background:#E9EBE4; color:#5C6157; }
+  .imovel-badge.suspenso { background:#FBE4E4; color:#B3261E; }
+  .imovel-badge.perdido { background:#ECECEC; color:#7A7A7A; }
+  .imovel-meta { font-size:var(--fs-sm); color:#5C6157; margin-top:6px; line-height:1.6; }
+  .imovel-link { display:inline-flex; align-items:center; gap:4px; font-size:var(--fs-xs); font-weight:700; color: var(--text-strong); text-decoration:none; background:#F1F2ED; padding:4px 10px; border-radius:20px; margin-top:8px; }
+  .imovel-link:hover { background:#E6E8E0; }
+  .imovel-cidade-title {
+    font-size:20px; font-weight:800; color:#fff; margin:26px 0 14px; padding:10px 16px;
+    background: linear-gradient(135deg, var(--brand-dark2), var(--brand-dark));
+    border-left:5px solid var(--brand-gold); border-radius:10px;
+    display:flex; align-items:center; gap:8px; letter-spacing:.2px;
+  }
+  .imovel-cidade-title:first-child { margin-top:0; }
+  .imovel-bairro-title {
+    font-size:16px; font-weight:800; color: var(--text-strong); margin:20px 2px 8px; padding:8px 10px 8px 10px;
+    border-left:4px solid var(--brand-gold); display:flex; align-items:center; gap:6px;
+    cursor:pointer; user-select:none; border-radius:0 8px 8px 0; transition: background .15s ease;
+  }
+  .imovel-bairro-title:hover { background:#F6F7F2; }
+  .imovel-bairro-title:focus-visible { outline: 2px solid var(--brand-gold); outline-offset: 2px; }
+  .imovel-bairro-title:first-of-type { margin-top:6px; }
+  .imovel-bairro-title .bairro-chev { display:inline-block; transition: transform .15s ease; font-size: 13px; color: var(--brand-gold-deep); }
+  .imovel-bairro-title.open .bairro-chev { transform: rotate(90deg); }
+  .bairro-content { display:none; }
+  .bairro-content.open { display:block; }
+  .imovel-tipo-title {
+    font-size:var(--fs-xs); font-weight:700; color: var(--brand-gold-deep); text-transform:uppercase; letter-spacing:.4px;
+    margin:8px 0 6px 8px; padding:4px 10px; background:#FBF6EC; border:1px solid var(--brand-gold-light);
+    border-radius:16px; display:inline-flex; align-items:center; gap:5px; width:fit-content;
+  }
+  .followup-resumo { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+  .followup-chip { font-size:var(--fs-xs); font-weight:700; padding:6px 12px; border-radius:20px; background:#F1F2ED; color:#5C6157; }
+  .followup-chip.atrasado { background:#FBE4E4; color:#B3261E; }
+  .followup-tag { font-size:var(--fs-2xs); font-weight:700; padding:2px 8px; border-radius:10px; margin-left:6px; }
+  .followup-tag.atrasado { background:#FBE4E4; color:#B3261E; }
+  .followup-tag.aproximando { background:#FFF3D6; color:#9A6B00; }
+  .followup-tag.em-dia { background:#E4F3EA; color:#1F7A4D; }
+  .match-line { font-size:var(--fs-xs); color:#5C6157; margin-top:6px; display:flex; align-items:flex-start; gap:6px; flex-wrap:wrap; }
+  .match-chip { background:#E4F3EA; color:#1F7A4D; font-weight:700; padding:3px 9px; border-radius:20px; font-size:var(--fs-xs); white-space:nowrap; }
+  .match-chip.zero { background:#F1F2ED; color:#8A9186; }
+  .wa-link.confirm { background:#FBF6EA; color:#8C6D1F; margin-left:6px; }
+  .wa-link.confirm:hover { background:#F3EBD2; }
+  .wa-link.reativar { background:#FBE4E4; color:#B3261E; margin-left:6px; }
+  .wa-link.reativar:hover { background:#F6D0D0; }
+
+  /* ---- Dashboard Executivo (Home) ---- */
+  .greeting-block { margin: 0 0 16px; padding: 2px 2px 0; }
+  .greeting-block .greet-title { font-size: 18px; font-weight: 800; color: var(--text-strong); }
+  .greeting-block .greet-list { margin-top: 6px; font-size: var(--fs-sm); color: #5C6157; display:flex; flex-wrap:wrap; gap: 6px 16px; }
+  .greeting-block .greet-list span { white-space: nowrap; }
+
+  .foco-resumo { display:flex; flex-direction:column; gap:6px; margin-top:8px; }
+  .foco-resumo-item { font-size:var(--fs-sm); display:flex; align-items:center; gap:6px; opacity:.95; }
+  .foco-resumo-item b { font-weight:800; }
+
+  .compromisso-card {
+    display:flex; align-items:center; gap:14px; padding:14px 4px; border-bottom:1px solid #F1F2ED;
+  }
+  .compromisso-card:last-child { border-bottom:none; }
+  .compromisso-card .cc-time {
+    width:78px; flex-shrink:0; text-align:center; background: var(--brand-dark); color: var(--brand-gold-light);
+    border-radius:10px; padding:10px 4px; font-size:var(--fs-sm); font-weight:800;
+  }
+  .compromisso-card .cc-tag {
+    font-size:var(--fs-2xs); font-weight:800; text-transform:uppercase; letter-spacing:.5px; color: var(--brand-gold-deep);
+  }
+  .compromisso-card .cc-titulo { font-size:14px; font-weight:700; color: var(--ink); margin-top:2px; }
+  .compromisso-card .cc-local { font-size:var(--fs-xs); color: var(--muted); margin-top:1px; }
+  .compromisso-card .cc-action { margin-left:auto; flex-shrink:0; }
+  .compromisso-card .cc-action .wa-link { margin-top:0; }
+  .btn-abrir-cliente {
+    font-size:var(--fs-xs); font-weight:700; color:#1F7A4D; background:#E4F3EA; border:1px solid transparent;
+    padding:5px 12px; border-radius:20px; cursor:pointer; white-space:nowrap;
+  }
+  .btn-abrir-cliente:hover { background:#D2ECDD; }
+
+  .kpi-group {
+    background: #fff; border-radius: 16px; padding: 14px 16px; box-shadow: 0 2px 10px rgba(18,22,14,0.06);
+    border: 1px solid #E9EBE4; display:flex; flex-direction:column; gap:0;
+  }
+  .kpi-group-item { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:7px 0; }
+  .kpi-group-item:not(:last-child) { border-bottom:1px dashed #EEF1EA; }
+  .kpi-group-label { font-size:var(--fs-xs); color:var(--muted); font-weight:600; display:flex; align-items:center; gap:6px; }
+  .kpi-group-label .icon { font-size:15px; }
+  .kpi-group-vals { text-align:right; }
+  .kpi-group-value { font-size:15px; font-weight:800; color: var(--text-strong); }
+  .kpi-group-hint { font-size:var(--fs-2xs); color:#8A9186; margin-top:1px; }
+  .kpi-group-item.kpi-clickable { cursor:pointer; border-radius:8px; padding-left:6px; padding-right:6px; margin:0 -6px; transition: background .15s ease; }
+  .kpi-group-item.kpi-clickable:hover { background:#FBF6EC; }
+  .kpi-group-item.kpi-clickable:focus-visible { outline:2px solid var(--brand-gold); outline-offset:2px; }
+  .kpi-group-item.kpi-clickable.active { background:#FBF6EC; }
+  .kpi-group-item.kpi-clickable.active .kpi-group-value { color:var(--brand-gold-deep); }
+
+  /* ===== Prototipo: layout com menu lateral ===== */
+  .app-shell { display:flex; align-items:flex-start; gap:22px; }
+  .sidebar {
+    position: sticky; top: 24px; align-self:flex-start;
+    width: 250px; flex: 0 0 250px; background: linear-gradient(180deg, var(--brand-dark), var(--brand-dark2));
+    border-radius: 18px; padding: 18px 14px; box-shadow: 0 10px 26px rgba(16,21,15,0.28);
+    display:flex; flex-direction:column; gap:14px; max-height: calc(100vh - 48px); overflow-y:auto;
+    transition: width .18s ease, padding .18s ease; z-index: 20;
+  }
+  .sidebar.collapsed { width: 68px; flex-basis:68px; padding:18px 8px; }
+  .sidebar-brand { display:flex; align-items:center; justify-content:center; padding:2px 0 12px; border-bottom:1px solid rgba(255,255,255,0.12); overflow:hidden; }
+  .sidebar-brand img { height:38px; width:auto; max-width:100%; }
+  .sidebar-brand-icon {
+    display:none; width:36px; height:36px; border-radius:50%; background:var(--brand-gold); color:var(--brand-dark);
+    font-weight:800; font-size:12.5px; letter-spacing:0.3px; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .sidebar.collapsed .sidebar-brand img { display:none; }
+  .sidebar.collapsed .sidebar-brand-icon { display:flex; }
+  .sidebar.collapsed .sidebar-brand { padding-bottom:10px; }
+  .sidebar .tabs-nav { display:flex; flex-direction:column; gap:2px; flex:1; border:none; margin:0; padding:0; }
+  .sidebar .tab-btn {
+    display:flex; align-items:center; gap:10px; width:100%; text-align:left;
+    background:transparent; border:none; border-left:3px solid transparent; border-radius:10px;
+    color:rgba(255,255,255,0.72); font-size:var(--fs-sm); font-weight:600; padding:10px 10px; cursor:pointer;
+    transition: background .12s ease, color .12s ease; font-family:inherit;
+  }
+  .sidebar .tab-btn .tab-icon { font-size:16px; width:20px; text-align:center; flex-shrink:0; }
+  .sidebar .tab-btn .tab-label { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .nav-group-label {
+    font-size:9.5px; font-weight:800; text-transform:uppercase; letter-spacing:.6px;
+    color:rgba(255,255,255,0.38); padding:14px 12px 4px; white-space:nowrap; overflow:hidden;
+  }
+  .sidebar .tabs-nav > .nav-group-label:first-child { padding-top:4px; }
+  .sidebar.collapsed .nav-group-label {
+    height:1px; padding:0; margin:10px 8px; background:rgba(255,255,255,0.14); text-indent:-9999px;
+  }
+  .sidebar.collapsed .tab-label, .sidebar.collapsed .sidebar-sync-text, .sidebar.collapsed .nav-badge { display:none; }
+  .sidebar.collapsed .tab-btn { justify-content:center; padding:10px 0; }
+  .sidebar.collapsed .sidebar-brand img { height:26px; }
+  .sidebar .tab-btn:hover { background:rgba(255,255,255,0.08); color:#fff; }
+  .sidebar .tab-btn.active { background:rgba(191,157,83,0.20); color:#fff; border-left-color:var(--brand-gold); }
+  .sidebar .tab-btn:focus-visible { outline:2px solid var(--brand-gold); outline-offset:-2px; }
+  .nav-badge {
+    margin-left:auto; background:#B93434; color:#fff; font-size:10px; font-weight:800; line-height:1;
+    border-radius:20px; padding:3px 6px; min-width:16px; text-align:center; flex-shrink:0;
+  }
+  .sidebar-footer { border-top:1px solid rgba(255,255,255,0.12); padding-top:10px; display:flex; flex-direction:column; gap:8px; }
+  .sidebar-toggle-btn {
+    align-self:flex-end; background:rgba(255,255,255,0.08); border:none; color:#fff; width:26px; height:26px;
+    border-radius:8px; cursor:pointer; font-size:12px; line-height:1;
+  }
+  .sidebar-toggle-btn:hover { background:rgba(255,255,255,0.16); }
+  .sidebar-sync-text { font-size:var(--fs-2xs); color:rgba(255,255,255,0.62); line-height:1.5; }
+  .sidebar-sync-text b { color: var(--brand-gold-light); }
+
+  .main-content { flex:1; min-width:0; }
+  .topbar { display:none; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .topbar-title { font-size:17px; font-weight:800; color:var(--brand-dark2); }
+  .hamburger-btn { display:none; background:var(--brand-dark2); color:#fff; border:none; border-radius:8px; width:36px; height:36px; font-size:16px; cursor:pointer; }
+  .sidebar-scrim { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:19; }
+
+  @media (max-width: 900px) {
+    .app-shell { display:block; }
+    .topbar { display:flex; }
+    .sidebar {
+      position:fixed; top:0; left:0; height:100vh; max-height:100vh; z-index:30; border-radius:0; width:250px; flex-basis:250px;
+      transform:translateX(-100%); transition:transform .2s ease;
+    }
+    .sidebar.mobile-open { transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,0.4); }
+    .sidebar.collapsed { width:250px; flex-basis:250px; padding:18px 14px; }
+    .sidebar.collapsed .tab-label, .sidebar.collapsed .sidebar-sync-text, .sidebar.collapsed .nav-badge { display:inline; }
+    .sidebar.collapsed .nav-group-label { height:auto; padding:14px 12px 4px; margin:0; background:none; text-indent:0; }
+    .sidebar.collapsed .sidebar-brand img { display:block; height:38px; }
+    .sidebar.collapsed .sidebar-brand-icon { display:none; }
+    .sidebar .tab-btn { padding:13px 12px; }
+    .sidebar.collapsed .tab-btn { justify-content:flex-start; padding:13px 12px; }
+    .sidebar-toggle-btn { display:none; }
+    .sidebar-scrim.show { display:block; }
+    .hamburger-btn { display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sidebar, .sidebar.mobile-open, .sidebar.collapsed { transition:none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="app-shell">
+
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><img src="data:image/webp;base64,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" alt="Thúlio Rêgo — Corretor de Imóveis"><div class="sidebar-brand-icon" aria-hidden="true">TR</div></div>
+    <nav class="tabs-nav" id="tabsNav" role="tablist" aria-label="Seções do painel">
+      <button class="tab-btn" data-tab="inicio" role="tab" aria-controls="panel-inicio"><span class="tab-icon">🏠</span><span class="tab-label">Início</span><span class="nav-badge" id="navBadgeInicio" style="display:none;"></span></button>
+
+      <div class="nav-group-label">Operação do dia</div>
+      <button class="tab-btn" data-tab="agenda" role="tab" aria-controls="panel-agenda"><span class="tab-icon">📅</span><span class="tab-label">Agenda</span></button>
+
+      <div class="nav-group-label">Negócios</div>
+      <button class="tab-btn" data-tab="pipeline" role="tab" aria-controls="panel-pipeline"><span class="tab-icon">🧭</span><span class="tab-label">Pipeline</span></button>
+      <button class="tab-btn" data-tab="imoveis" role="tab" aria-controls="panel-imoveis"><span class="tab-icon">🏢</span><span class="tab-label">Imóveis</span></button>
+      <button class="tab-btn" data-tab="prospeccao" role="tab" aria-controls="panel-prospeccao"><span class="tab-icon">🏗️</span><span class="tab-label">Prospecção</span></button>
+      <button class="tab-btn" data-tab="conectatr" role="tab" aria-controls="panel-conectatr"><span class="tab-icon">🤝</span><span class="tab-label">Conecta TR</span></button>
+
+      <div class="nav-group-label">Resultados</div>
+      <button class="tab-btn" data-tab="bicomercial" role="tab" aria-controls="panel-bicomercial"><span class="tab-icon">📊</span><span class="tab-label">BI Comercial</span></button>
+      <button class="tab-btn" data-tab="faturamento" role="tab" aria-controls="panel-faturamento"><span class="tab-icon">💰</span><span class="tab-label">Faturamento</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Recolher menu" title="Recolher/expandir menu">«</button>
+      <div class="sidebar-sync-text">
+        Atualizado em <b id="todayDate"></b><br>
+        Sync: <b id="syncTimestamp">—</b>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <div class="topbar">
+      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Abrir menu">☰</button>
+      <div class="topbar-title" id="topbarTitle">Início</div>
+      <div class="busca-wrap">
+        <input type="search" id="buscaGlobal" placeholder="Buscar cliente, imóvel, indicação…  ( / )" autocomplete="off" aria-label="Busca global">
+        <div class="busca-resultados" id="buscaResultados" role="listbox" style="display:none;"></div>
+      </div>
+    </div>
+
+    <div class="tab-panel active" data-tab="inicio" id="panel-inicio" role="tabpanel">
+      <div class="greeting-block" id="greetingBlock"></div>
+      <div class="kpis" id="homeKpis" style="margin-bottom:18px;"></div>
+      <div class="urgent-banner" id="urgentBanner"></div>
+      <div class="section-title"><span class="dot" aria-hidden="true"></span>🌡️ Termômetro do Funil</div>
+      <div class="card" style="margin-bottom:18px;">
+        <div id="termometroFunil"></div>
+      </div>
+      <div class="section-title"><span class="dot" aria-hidden="true"></span>🌟 Compromissos de Destaque</div>
+      <div class="card" style="margin-bottom:18px;">
+        <div id="compromissosDestaqueList"></div>
+      </div>
+    </div>
+
+
+  <div class="tab-panel" data-tab="agenda" id="panel-agenda" role="tabpanel">
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>📆 Sua Semana</div>
+    <div class="card" style="margin-bottom:18px;">
+      <div id="semanaStrip"></div>
+    </div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>🎯 Seu Foco Hoje</div>
+    <div class="card" style="margin-bottom:18px;">
+      <div id="acoesAgoraList"></div>
+    </div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>🔔 Lembretes</div>
+    <div class="card" id="lembretesCard" style="margin-bottom:18px;"></div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>📅 Agenda completa (Google Calendar)</div>
+    <div class="card" style="margin-bottom:18px;">
+      <div id="agendaList"></div>
+    </div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>🗓️ Próximos Compromissos</div>
+    <div class="card">
+      <div id="agendaProximosList"></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" data-tab="faturamento" id="panel-faturamento" role="tabpanel">
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>Meta &amp; Faturamento 2026</div>
+    <div class="kpis">
+    <div class="kpi meta">
+      <div class="icon">🎯</div>
+      <div class="label">Meta 2026 (vendas)</div>
+      <div class="value" id="metaPct">—</div>
+      <div class="bar-track"><div class="bar-fill" id="metaBar" style="width:0%"></div></div>
+      <div class="hint" id="metaHint">—</div>
+    </div>
+    <div class="kpi meta">
+      <div class="icon">💰</div>
+      <div class="label">Meta de Comissão 2026</div>
+      <div class="value" id="metaComissaoPct">—</div>
+      <div class="bar-track"><div class="bar-fill" id="metaComissaoBar" style="width:0%"></div></div>
+      <div class="hint" id="metaComissaoHint">—</div>
+    </div>
+    <div class="kpi">
+      <div class="icon">✅</div>
+      <div class="label">Comissão Paga</div>
+      <div class="value" id="comissaoPaga">—</div>
+      <div class="hint">recebida e finalizada</div>
+    </div>
+    <div class="kpi">
+      <div class="icon">⏳</div>
+      <div class="label">Aguardando Pagamento</div>
+      <div class="value" id="comissaoAguardando">—</div>
+      <div class="hint">negócio fechado, comissão a receber</div>
+    </div>
+    <div class="kpi">
+      <div class="icon">📈</div>
+      <div class="label">Prevista (Pipeline CRM)</div>
+      <div class="value" id="comissaoPrevista">—</div>
+      <div class="hint">leads em negociação</div>
+    </div>
+    <div class="kpi">
+      <div class="icon">🏠</div>
+      <div class="label">Total Negociado no Ano</div>
+      <div class="value" id="totalNegociado">—</div>
+      <div class="hint" id="totalNegociadoHint">—</div>
+    </div>
+    <div class="kpi">
+      <div class="icon">🚀</div>
+      <div class="label">Projeção Anual (ritmo atual)</div>
+      <div class="value" id="projecaoAnual">—</div>
+      <div class="hint" id="projecaoAnualHint">—</div>
+    </div>
+  </div>
+
+    <div class="grid2" style="margin-top:18px;">
+      <div class="card">
+        <h3>📈 Comissão Acumulada em 2026</h3>
+        <div class="chart-wrap"><canvas id="chartComissaoLinha"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>📈 Valor Negociado x Meta 2026</h3>
+        <div class="chart-wrap"><canvas id="chartMetaLinha"></canvas></div>
+      </div>
+    </div>
+
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>Meta Mensal de Comissão</div>
+    <div class="meta-highlight">
+      <div>🎯</div>
+      <div>
+        <div class="mh-value" id="metaMensalValor">—</div>
+        <div class="mh-label">Meta mensal dinâmica</div>
+        <div class="mh-sub" id="metaMensalSub">—</div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:18px;">
+      <div class="table-scroll">
+      <table class="mensal-table">
+        <thead><tr><th>Mês</th><th>Meta do mês</th><th>Recebido</th><th>Status</th></tr></thead>
+        <tbody id="metaMensalTabela"></tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>Negociações 2026</div>
+    <div class="card">
+      <h3>📋 Vendas &amp; Locações</h3>
+      <div class="legend">
+        <span><span class="status-dot pago"></span>Comissão paga</span>
+        <span><span class="status-dot aguardando"></span>Aguardando pagamento</span>
+      </div>
+      <div id="negList"></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" data-tab="pipeline" id="panel-pipeline" role="tabpanel">
+    <div class="grid2">
+      <div>
+        <div class="section-title"><span class="dot" aria-hidden="true"></span>Atenção Hoje</div>
+        <div class="card" id="alertCard"></div>
+        <div class="card" style="margin-top:18px;">
+          <h3>🔥 Cadência por Temperatura — Reativação</h3>
+          <div id="reativacaoCard"></div>
+        </div>
+      </div>
+      <div>
+        <div class="section-title"><span class="dot" aria-hidden="true"></span>Leads Ativos</div>
+        <div class="sync-box" id="syncBox" style="display:none;">
+          <button type="button" class="sync-btn" id="btnCarregarNotas">🔄 Carregar minhas anotações</button>
+          <span class="sync-status" id="syncStatus" role="status" aria-live="polite">Incorpora as notas que você escreveu nos clientes ao histórico do CRM.</span>
+          <textarea id="syncTexto" class="sync-textarea" readonly style="display:none;" aria-label="Anotações pendentes para copiar"></textarea>
+        </div>
+        <div class="card" id="leadsCard"></div>
+        <div class="inativos-toggle" id="inativosToggle" role="button" tabindex="0" aria-expanded="false">
+          <span class="chev" aria-hidden="true">▶</span> <span id="inativosToggleLabel">Leads Inativos</span>
+        </div>
+        <div class="card inativos-wrap" id="inativosWrap">
+          <div id="leadsInativosCard"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" data-tab="bicomercial" id="panel-bicomercial" role="tabpanel">
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>💡 De onde vem resultado?</div>
+    <div class="grid2">
+      <div>
+        <div class="card">
+          <h3>🧭 Leads por Origem</h3>
+          <div id="origemList"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>🏆 Origem por Resultado</h3>
+          <div id="origemResultado"></div>
+        </div>
+      </div>
+    </div>
+    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>🕳️ Onde estou perdendo?</div>
+    <div class="grid2">
+      <div>
+        <div class="card">
+          <h3>🔻 Funil por Fase</h3>
+          <div id="funilList"></div>
+        </div>
+        <div class="card" style="margin-top:18px;">
+          <h3>🚫 Motivos de Perda e Pausa</h3>
+          <div id="motivosPerda"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>📊 Conversão entre Fases</h3>
+          <div id="amostraNota" class="amostra-nota"></div>
+          <div class="table-scroll">
+          <table class="conv-table">
+            <thead><tr><th>Fase</th><th>Chegaram</th><th>Conversão p/ próxima</th></tr></thead>
+            <tbody id="conversaoTabela"></tbody>
+          </table>
+          </div>
+        </div>
+        <div class="card" style="margin-top:18px;">
+          <h3>🏠 Funil de Captação por Status</h3>
+          <div id="captacaoFunilResumo" class="followup-resumo"></div>
+        </div>
+      </div>
+    </div>
+    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>📚 Histórico de Negociações (2020-2026)</div>
+    <div id="historicoNotas"></div>
+    <div class="grid2" style="margin-top:10px;">
+      <div class="card">
+        <h3>💰 Comissão Total por Ano</h3>
+        <div class="chart-wrap"><canvas id="chartHistoricoAno"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>📅 Sazonalidade — Comissão por Mês (ano vigente)</h3>
+        <div class="chart-wrap"><canvas id="chartHistoricoSazonalidade"></canvas></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:18px;">
+      <h3>📋 Resumo por Ano</h3>
+      <div class="table-scroll">
+      <table class="conv-table">
+        <thead><tr><th>Ano</th><th>Nº Negócios</th><th>Valor Negociado</th><th>Comissão Total</th><th>Meta</th><th>% Atingido</th></tr></thead>
+        <tbody id="historicoTabela"></tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" data-tab="imoveis" id="panel-imoveis" role="tabpanel">
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>🏠 Imóveis Captados</div>
+    <div id="followupResumo" class="followup-resumo"></div>
+    <div class="filtros-imoveis" id="filtrosImoveis">
+      <select id="filtroBairro" aria-label="Filtrar por bairro"><option value="">Todos os bairros</option></select>
+      <select id="filtroStatus" aria-label="Filtrar por status"><option value="">Todos os status</option></select>
+      <select id="filtroValor" aria-label="Filtrar por faixa de valor">
+        <option value="">Qualquer valor</option>
+        <option value="0-300000">Até R$300 mil</option>
+        <option value="300000-500000">R$300 a 500 mil</option>
+        <option value="500000-800000">R$500 a 800 mil</option>
+        <option value="800000-99999999">Acima de R$800 mil</option>
+      </select>
+      <button type="button" id="filtroLimpar" class="filtro-limpar" style="display:none;">✕ Limpar</button>
+      <span class="filtro-resultado" id="filtroResultado"></span>
+    </div>
+    <div class="card" id="imoveisCard"></div>
+
+    <div class="section-title" id="vendidosTitle" style="display:none;"><span class="dot" aria-hidden="true"></span>💰 Vendidos — aguardando confirmação de comissão</div>
+    <div style="font-size:var(--fs-xs);color:#8A9186;margin-bottom:10px;display:none;" id="vendidosHint">Saem daqui automaticamente assim que você confirmar o pagamento da comissão — a partir daí ficam só em registro (Log de Atividades e Faturamento).</div>
+    <div class="card" id="imoveisVendidosCard" style="display:none;"></div>
+  </div>
+
+  <div class="tab-panel" data-tab="conectatr" id="panel-conectatr" role="tabpanel">
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>🤝 Conecta TR — Programa de Indicação</div>
+    <div class="kpis" style="margin-bottom:8px;">
+      <div class="kpi-group">
+        <div class="kpi-group-item kpi-clickable" id="kpiCtrIndicadores" data-ctr-filter="ativos" role="button" tabindex="0" aria-pressed="false">
+          <div class="kpi-group-label"><span class="icon">🧑‍🤝‍🧑</span> Indicadores Ativos</div>
+          <div class="kpi-group-vals"><div class="kpi-group-value" id="ctrIndicadores">—</div></div>
+        </div>
+        <div class="kpi-group-item kpi-clickable" id="kpiCtrRegistradas" data-ctr-filter="Registrada" role="button" tabindex="0" aria-pressed="false">
+          <div class="kpi-group-label"><span class="icon">📋</span> Indicações Registradas</div>
+          <div class="kpi-group-vals"><div class="kpi-group-value" id="ctrRegistradas">—</div></div>
+        </div>
+      </div>
+      <div class="kpi-group">
+        <div class="kpi-group-item kpi-clickable" id="kpiCtrCaptadas" data-ctr-filter="Captada" role="button" tabindex="0" aria-pressed="false">
+          <div class="kpi-group-label"><span class="icon">🏠</span> Indicações Captadas</div>
+          <div class="kpi-group-vals">
+            <div class="kpi-group-value" id="ctrCaptadas">—</div>
+            <div class="kpi-group-hint" id="ctrCaptadasHint">—</div>
+          </div>
+        </div>
+        <div class="kpi-group-item kpi-clickable" id="kpiCtrVendidas" data-ctr-filter="Vendida" role="button" tabindex="0" aria-pressed="false">
+          <div class="kpi-group-label"><span class="icon">✅</span> Indicações Vendidas</div>
+          <div class="kpi-group-vals"><div class="kpi-group-value" id="ctrVendidas">—</div></div>
+        </div>
+      </div>
+      <div class="kpi-group">
+        <div class="kpi-group-item">
+          <div class="kpi-group-label"><span class="icon">💰</span> Valor Devido em Aberto</div>
+          <div class="kpi-group-vals"><div class="kpi-group-value" id="ctrValorDevido">—</div></div>
+        </div>
+        <div class="kpi-group-item">
+          <div class="kpi-group-label"><span class="icon">🏗️</span> V.G.V. Indicado e Captado</div>
+          <div class="kpi-group-vals"><div class="kpi-group-value" id="ctrVgvCaptado">—</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:var(--fs-xs);color:#8A9186;margin-bottom:14px;">💡 Clique num card acima para ver só aquele grupo — clique de novo pra voltar a ver tudo.</div>
+    <div class="card" id="ctrIndicadoresCard" style="display:none;margin-bottom:16px;">
+      <h3>🧑‍🤝‍🧑 Indicadores Cadastrados</h3>
+      <div id="conectaTRIndicadoresList"></div>
+    </div>
+    <div class="card">
+      <h3 id="ctrIndicacoesTitulo">📇 Indicações</h3>
+      <div id="conectaTRList"></div>
+    </div>
+    <div class="amostra-nota" style="margin-top:14px;">💡 Programa novo — as indicações chegam pela planilha "conecta-tr-central" no Google Drive (via Google Forms) e são espelhadas aqui. Quando uma indicação vira captação de verdade, ela é linkada automaticamente na aba Imóveis.</div>
+  </div>
+
+  <div class="tab-panel" data-tab="prospeccao" id="panel-prospeccao" role="tabpanel">
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>🏗️ Prospecção de Captação</div>
+    <div style="font-size:var(--fs-xs);color:#8A9186;margin-bottom:14px;">Proprietários sendo prospectados pra virar captação — antes de terem um imóvel formal na aba Imóveis. Diferente da aba Leads, que é focada em compradores.</div>
+    <div class="card">
+      <div id="prospeccaoList"></div>
+    </div>
+  </div>
+
+<div class="footer-note">
+    Fonte dos dados: "OK - Tabela Negociações 2026.xlsx" (vendas, locações, cartório e meta) + CRM_Emobi_Thulio.xlsx (pipeline de leads). Este painel é uma fotografia dos dados no momento em que foi gerado — peça ao Claude para atualizá-lo sempre que registrar novidades por voz ou quiser ver os números mais recentes.
+  </div>
+  </main>
+
+</div>
+</div>
+
+<div class="modal-overlay" id="leadModalOverlay" role="dialog" aria-modal="true" aria-labelledby="leadModalNome" tabindex="-1">
+  <div class="modal-content">
+    <button class="modal-close" id="leadModalClose" aria-label="Fechar">✕</button>
+    <div class="modal-header">
+      <div class="lead-name" id="leadModalNome" style="font-size:17px;"></div>
+      <div id="leadModalBadges" style="margin-top:6px;"></div>
+    </div>
+    <div class="lead-meta" id="leadModalInfo" style="margin-top:10px;"></div>
+    <div class="lead-meta" id="leadModalObs" style="margin-top:6px;"></div>
+    <div class="modal-timeline-title">📜 Histórico</div>
+    <div id="leadModalTimeline"></div>
+    <div class="nota-box">
+      <label for="leadNotaTexto" class="modal-timeline-title" style="display:block;margin:0 0 8px;">📝 Anotar atualização</label>
+      <div style="font-size:var(--fs-2xs);color:#8A9186;margin-bottom:8px;">
+        Escreva aqui qualquer novidade deste cliente. Fica salvo na nuvem e some depois que eu incorporar ao histórico no briefing das 7h.
+      </div>
+      <textarea id="leadNotaTexto" placeholder="Ex: visitou o apartamento hoje e gostou, vai conversar com a esposa antes de decidir."></textarea>
+      <div class="nota-actions">
+        <button type="button" class="nota-btn" id="leadNotaSalvar">Salvar nota</button>
+        <span class="nota-status" id="leadNotaStatus" role="status" aria-live="polite"></span>
+      </div>
+      <div id="leadNotasPendentes"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA = /*__PAINEL_DATA_PLACEHOLDER__*/{};
+const isDemo = false;
+const BRAND = { dark: '#10150F', dark2:'#1D2717', gold:'#BF9D53', goldLight:'#D9BE8B', goldDeep:'#8C6D1F', green:'#4C7A3A' };
+
+function brl(v) {
+  return (v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+}
+
+document.getElementById('todayDate').textContent = new Date().toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });
+if (DATA.ultimaAtualizacao) {
+  const su = new Date(DATA.ultimaAtualizacao);
+  document.getElementById('syncTimestamp').textContent = su.toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit' }) + ' às ' + su.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+}
+
+// ---- Banner: proxima acao mais urgente ----
+// A agenda gravada em DATA rotula os compromissos como "hoje"/"amanhã" no
+// momento da última atualização. Se o painel for aberto depois da meia-noite,
+// esses rótulos estariam errados — então a classificação é refeita aqui,
+// pela data real de cada evento, toda vez que o painel carrega.
+// Compromisso realizado não deve continuar ocupando a agenda. Marcar aqui
+// grava no MESMO armazenamento dos lembretes concluídos (o endpoint guarda
+// uma lista de ids quaisquer) — por isso o prefixo "ag" no id.
+function agendaItemId(ev) {
+  const s = `ag|${ev.data}|${ev.hora || ''}|${ev.titulo || ''}`;
+  let x = 0;
+  for (let i = 0; i < s.length; i++) { x = (x * 31 + s.charCodeAt(i)) | 0; }
+  return 'ag' + Math.abs(x).toString(36);
+}
+
+function getAgendaRealizados() {
+  try {
+    const raw = localStorage.getItem('painelEmobiLembretesConcluidos');
+    const arr = raw ? JSON.parse(raw) : [];
+    return new Set(Array.isArray(arr) ? arr.filter(x => String(x).startsWith('ag')) : []);
+  } catch (e) { return new Set(); }
+}
+
+function marcarAgendaRealizada(id) {
+  try {
+    const raw = localStorage.getItem('painelEmobiLembretesConcluidos');
+    const arr = raw ? JSON.parse(raw) : [];
+    if (!arr.includes(id)) arr.push(id);
+    localStorage.setItem('painelEmobiLembretesConcluidos', JSON.stringify(arr));
+  } catch (e) { /* segue só com o servidor */ }
+  fetch('/api/lembretes/concluir', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id })
+  }).catch(() => {});
+}
+
+function agendaPorDia() {
+  const agora = new Date();
+  const hojeMeia = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
+  function isoDe(d) { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+  const isoHoje = isoDe(hojeMeia);
+  const amanhaD = new Date(hojeMeia); amanhaD.setDate(amanhaD.getDate() + 1);
+  const isoAmanha = isoDe(amanhaD);
+
+  const pool = [];
+  [DATA.agendaHoje, DATA.agendaAmanha, DATA.agendaProximos].forEach(arr => {
+    (arr || []).forEach(ev => { if (ev && ev.data) pool.push(ev); });
+  });
+  const vistos = new Set();
+  const unicos = pool.filter(ev => {
+    const k = ev.data + '|' + (ev.hora || '') + '|' + (ev.titulo || '');
+    if (vistos.has(k)) return false;
+    vistos.add(k); return true;
+  });
+  const realizados = getAgendaRealizados();
+  const pend = unicos.filter(ev => !realizados.has(agendaItemId(ev)));
+  return {
+    hoje: pend.filter(ev => String(ev.data).slice(0,10) === isoHoje),
+    amanha: pend.filter(ev => String(ev.data).slice(0,10) === isoAmanha),
+    proximos: pend.filter(ev => String(ev.data).slice(0,10) > isoAmanha),
+    passados: pend.filter(ev => String(ev.data).slice(0,10) < isoHoje),
+    realizadosCount: unicos.length - pend.length
+  };
+}
+const AGENDA_DIA = agendaPorDia();
+
+function computeAcoesUrgentes() {
+  const diasSemContato = diasDesdeISO;
+  const leadsAtrasados = (DATA.leads || []).filter(l => l.status === 'Atrasado');
+  const leadsReativar = (DATA.leads || []).filter(l => l.statusReativacao === '🔴 Reativar agora');
+  const imoveisAtrasados = (DATA.imoveis || []).filter(im =>
+    im.status === 'Disponível' && im.ultimaInteracaoProprietario && diasSemContato(im.ultimaInteracaoProprietario) > 30
+  );
+  // Exclui lembretes já marcados como concluídos (checkbox da aba Lembretes, salvo em localStorage) —
+  // sem isso, "Seu Foco Hoje" continuava mostrando itens que já tinham sumido da aba Lembretes.
+  const concluidosLocal = new Set(typeof getLocalConcluidos === 'function' ? getLocalConcluidos() : []);
+  const lembretesUrgentes = (DATA.lembretes || []).filter(x =>
+    (x.quando === 'Atrasado' || x.quando === 'Hoje') &&
+    !(typeof lembreteId === 'function' && concluidosLocal.has(lembreteId(x)))
+  );
+  // Prospecção de captação atrasada — é onde nasce o estoque, e até 30/07/2026
+  // não tinha alerta nenhum: um proprietário podia ficar semanas sem cobrança.
+  const prospeccoesAtrasadas = (DATA.prospeccaoCaptacao || []).filter(pr => {
+    if (pr.status === 'Convertido em Captação' || pr.status === 'Descartado') return false;
+    if (pr.statusPrazo) return pr.statusPrazo.indexOf('Atrasado') !== -1;
+    if (!pr.dataProximaAcao) return false;
+    return diasSemContato(pr.dataProximaAcao) > 0;
+  });
+  const total = leadsAtrasados.length + leadsReativar.length + imoveisAtrasados.length + lembretesUrgentes.length + prospeccoesAtrasadas.length;
+  return { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes, prospeccoesAtrasadas, total };
+}
+
+(function renderUrgentBanner() {
+  const banner = document.getElementById('urgentBanner');
+  const { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes, prospeccoesAtrasadas, total } = computeAcoesUrgentes();
+  const compromissoHoje = AGENDA_DIA.hoje[0] || null;
+  const compromissoAmanha = AGENDA_DIA.amanha[0] || null;
+  const visitasHoje = AGENDA_DIA.hoje.length;
+  const propostasEmNegociacao = (DATA.leads || []).filter(l => l.fase === 'Proposta Enviada' || l.fase === 'Em Negociação').length;
+  const clientesAguardandoRetorno = leadsAtrasados.length + leadsReativar.length;
+
+  // O que é NOVO desde a última vez que o painel foi aberto: um banner que
+  // sempre mostra o acumulado ensina o olho a ignorá-lo. O conjunto de
+  // pendências visto fica no navegador; o delta é o que merece destaque.
+  let novasDesdeUltimaVisita = 0;
+  try {
+    const chaveAtual = [
+      ...leadsAtrasados.map(l => 'la:' + (l.id ?? l.nome)),
+      ...leadsReativar.map(l => 'lr:' + (l.id ?? l.nome)),
+      ...imoveisAtrasados.map(im => 'im:' + im.nome),
+      ...lembretesUrgentes.map(x => 'lb:' + (typeof lembreteId === 'function' ? lembreteId(x) : x.texto)),
+      ...prospeccoesAtrasadas.map(pr => 'pr:' + pr.nome)
+    ];
+    const vistasRaw = localStorage.getItem('painelEmobiPendenciasVistas');
+    const vistas = vistasRaw ? new Set(JSON.parse(vistasRaw)) : null;
+    if (vistas) novasDesdeUltimaVisita = chaveAtual.filter(k => !vistas.has(k)).length;
+    localStorage.setItem('painelEmobiPendenciasVistas', JSON.stringify(chaveAtual));
+  } catch (e) { /* localStorage indisponível — segue sem delta */ }
+
+  const icon = total > 0 ? '⚡' : '✅';
+  const label = total > 0 ? 'Ações pendentes hoje' : 'Tudo em dia';
+
+  banner.className = 'urgent-banner clickable' + (total === 0 ? ' ok' : '');
+  banner.setAttribute('role', 'button');
+  banner.setAttribute('tabindex', '0');
+
+  const linhas = [];
+  if (total > 0) linhas.push(`<span>🔴 <b>${total}</b> pendência${total === 1 ? '' : 's'}${novasDesdeUltimaVisita > 0 ? ' <b style="color:#E8892B;">(+' + novasDesdeUltimaVisita + ' nova' + (novasDesdeUltimaVisita === 1 ? '' : 's') + ')</b>' : ''}</span>`);
+  if (visitasHoje > 0) linhas.push(`<span>🏠 <b>${visitasHoje}</b> visita${visitasHoje === 1 ? '' : 's'} agendada${visitasHoje === 1 ? '' : 's'}</span>`);
+  if (clientesAguardandoRetorno > 0) linhas.push(`<span>📞 <b>${clientesAguardandoRetorno}</b> cliente${clientesAguardandoRetorno === 1 ? '' : 's'} aguardando retorno</span>`);
+  if (propostasEmNegociacao > 0) linhas.push(`<span>📄 <b>${propostasEmNegociacao}</b> proposta${propostasEmNegociacao === 1 ? '' : 's'} em negociação</span>`);
+  if (lembretesUrgentes.length > 0) linhas.push(`<span>🔔 <b>${lembretesUrgentes.length}</b> lembrete${lembretesUrgentes.length === 1 ? '' : 's'} de hoje/atrasado${lembretesUrgentes.length === 1 ? '' : 's'}</span>`);
+  if (prospeccoesAtrasadas.length > 0) {
+    const n = prospeccoesAtrasadas.length;
+    linhas.push(`<span>🏗️ <b>${n}</b> ${n === 1 ? 'prospecção de captação atrasada' : 'prospecções de captação atrasadas'}</span>`);
+  }
+
+  let title, breakdownHtml;
+  if (linhas.length > 0) {
+    title = 'Hoje você tem:';
+    breakdownHtml = `<div class="foco-resumo">${linhas.map(l => `<div class="foco-resumo-item">${l}</div>`).join('')}</div>`;
+  } else if (compromissoHoje) {
+    title = 'Nenhuma pendência — próximo compromisso hoje:';
+    breakdownHtml = `<div class="u-sub">${compromissoHoje.hora} · ${compromissoHoje.titulo}</div>`;
+  } else if (compromissoAmanha) {
+    title = 'Nenhuma pendência hoje — próximo compromisso amanhã:';
+    breakdownHtml = `<div class="u-sub">${compromissoAmanha.hora} · ${compromissoAmanha.titulo}</div>`;
+  } else {
+    title = 'Tudo em dia por aqui.';
+    breakdownHtml = `<div class="u-sub">Bom momento pra prospectar ou dar follow-up em quem já tá na carteira.</div>`;
+  }
+
+  banner.setAttribute('aria-label', title + '. Clique para ver detalhes na aba Agenda.');
+  banner.innerHTML = `
+    <div class="u-icon" aria-hidden="true">${icon}</div>
+    <div>
+      <div class="u-label">${label}</div>
+      <div class="u-title">${title}</div>
+      ${breakdownHtml}
+    </div>`;
+  const irParaAgenda = () => { if (window.ativarPainelTab) window.ativarPainelTab('agenda'); };
+  banner.addEventListener('click', irParaAgenda);
+  banner.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); irParaAgenda(); } });
+})();
+
+// ---- Saudação dinâmica (Home) ----
+(function renderGreeting() {
+  const el = document.getElementById('greetingBlock');
+  if (!el) return;
+  const hora = new Date().getHours();
+  const saudacao = hora < 12 ? 'Bom dia' : (hora < 18 ? 'Boa tarde' : 'Boa noite');
+  const { leadsAtrasados, leadsReativar, total } = computeAcoesUrgentes();
+  const contatosPendentes = leadsAtrasados.length + leadsReativar.length;
+  const visitasHoje = AGENDA_DIA.hoje.length;
+  const propostasVencidas = (DATA.leads || []).filter(l => l.fase === 'Proposta Enviada' && l.status === 'Atrasado').length;
+
+  const itens = [];
+  itens.push(`<span>${contatosPendentes > 0 ? contatosPendentes + ' contato' + (contatosPendentes === 1 ? '' : 's') + ' para realizar' : 'Nenhum contato pendente'}</span>`);
+  itens.push(`<span>${visitasHoje > 0 ? visitasHoje + ' visita' + (visitasHoje === 1 ? '' : 's') + ' agendada' + (visitasHoje === 1 ? '' : 's') : 'Nenhuma visita agendada hoje'}</span>`);
+  itens.push(`<span>${propostasVencidas > 0 ? propostasVencidas + ' proposta' + (propostasVencidas === 1 ? '' : 's') + ' vencida' + (propostasVencidas === 1 ? '' : 's') : 'Nenhuma proposta vencida'}</span>`);
+
+  el.innerHTML = `
+    <div class="greet-title">${saudacao}, Thúlio!</div>
+    <div class="greet-list">${itens.join('')}</div>`;
+})();
+
+// ---- KPIs estratégicos (Home) ----
+(function renderHomeKpis() {
+  const el = document.getElementById('homeKpis');
+  if (!el) return;
+  const fasesInativasLocal = ['Inativo', 'Fechado Ganho', 'Fechado Perdido'];
+  const imoveisAtivos = (DATA.imoveis || []).filter(im => im.status === 'Disponível' || im.status === 'Reservado').length;
+  const leadsAtivosCount = (DATA.leads || []).filter(l => !fasesInativasLocal.includes(l.fase)).length;
+  const valorPipeline = (DATA.leads || []).filter(l => !fasesInativasLocal.includes(l.fase)).reduce((acc, l) => acc + (l.valor || 0), 0);
+  const valorVGV = (DATA.imoveis || []).filter(im => im.status === 'Disponível' && im.tipoOperacao !== 'Locação').reduce((acc, im) => acc + (im.valor || 0), 0);
+  const comissaoTotalPct = 0.05; // comissão padrão paga pelo vendedor
+  const vgcDireto = valorVGV * comissaoTotalPct * 0.70; // venda direta (comprador + vendedor próprios): fica com 70% dos 5%
+  const vgcParceria = valorVGV * comissaoTotalPct * 0.35; // venda com corretor parceiro: fica com 35% dos 5%
+  const hojeD = new Date();
+  const fechamentosLeadsMes = (DATA.leads || []).filter(l => {
+    if (l.fase !== 'Fechado Ganho') return false;
+    if (!l.dataProximaAcao) return true;
+    const [y, m] = l.dataProximaAcao.split('-').map(Number);
+    return y === hojeD.getFullYear() && (m - 1) === hojeD.getMonth();
+  }).length;
+  // Tambem conta vendas do lado da captacao (imovel proprio vendido, mesmo sem lead comprador no CRM) —
+  // sem isso, uma venda como a do Cod.10638 (comprador trazido por corretor parceiro) nao aparecia aqui.
+  const fechamentosImoveisMes = (DATA.imoveis || []).filter(im => {
+    if (im.status !== 'Vendido' || !im.dataVenda) return false;
+    const [y, m] = im.dataVenda.split('-').map(Number);
+    return y === hojeD.getFullYear() && (m - 1) === hojeD.getMonth();
+  }).length;
+  const fechamentosMes = fechamentosLeadsMes + fechamentosImoveisMes;
+  const captacoesAndamento = (DATA.imoveis || []).filter(im => im.status === 'Em Captação').length;
+
+  function grupo(itens) {
+    return `<div class="kpi-group">${itens.map(it => `
+      <div class="kpi-group-item">
+        <div class="kpi-group-label"><span class="icon">${it.icon}</span> ${it.label}</div>
+        <div class="kpi-group-vals">
+          <div class="kpi-group-value">${it.value}</div>
+          ${it.hint ? `<div class="kpi-group-hint">${it.hint}</div>` : ''}
+        </div>
+      </div>`).join('')}</div>`;
+  }
+  function simples(k) {
+    return `<div class="kpi">
+      <div class="icon">${k.icon}</div>
+      <div class="label">${k.label}</div>
+      <div class="value">${k.value}</div>
+      ${k.hint ? `<div class="hint">${k.hint}</div>` : ''}
+    </div>`;
+  }
+
+  el.innerHTML =
+    grupo([
+      { icon: '🏠', label: 'Imóveis Ativos', value: imoveisAtivos },
+      { icon: '🤝', label: 'Leads Ativos', value: leadsAtivosCount },
+      { icon: '📋', label: 'Captações em Andamento', value: captacoesAndamento },
+      { icon: '🏆', label: 'Fechamentos no Mês', value: fechamentosMes },
+    ]) +
+    grupo([
+      { icon: '💰', label: 'Pipeline (Provável)', value: brl(valorPipeline), hint: 'Soma do valor dos leads ativos' },
+      { icon: '🏘️', label: 'V.G.V.', value: brl(valorVGV), hint: 'Imóveis disponíveis na carteira' },
+      { icon: '💵', label: 'V.G.C.', value: brl(vgcDireto), hint: 'Direto (70%) · Parceiro (35%): ' + brl(vgcParceria) },
+    ]);
+})();
+
+// ---- Compromissos de Destaque (Home) ----
+(function renderCompromissosDestaque() {
+  const el = document.getElementById('compromissosDestaqueList');
+  if (!el) return;
+  const itens = [...AGENDA_DIA.hoje.map(a => ({ ...a, quando: 'Hoje' })), ...AGENDA_DIA.amanha.map(a => ({ ...a, quando: 'Amanhã' }))];
+  if (itens.length === 0) {
+    el.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum compromisso em destaque no momento.</div>';
+    return;
+  }
+  function acharLead(texto) {
+    return (DATA.leads || []).find(l => texto && (texto.includes(l.nome) || (l.telefone && texto.includes(l.telefone))));
+  }
+  el.innerHTML = itens.map(a => {
+    const lead = acharLead(a.titulo) || acharLead(a.local);
+    const btn = lead ? `<button class="btn-abrir-cliente" type="button" data-lead="${lead.nome}">Abrir Cliente</button>` : '';
+    return `
+      <div class="compromisso-card">
+        <div class="cc-time">${a.quando}<br>${a.hora}</div>
+        <div>
+          <div class="cc-tag">🏠 Compromisso</div>
+          <div class="cc-titulo">${a.titulo}</div>
+          <div class="cc-local">${a.local || ''}</div>
+        </div>
+        <div class="cc-action">${btn}</div>
+      </div>`;
+  }).join('');
+  el.querySelectorAll('.btn-abrir-cliente').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const nome = btn.dataset.lead;
+      if (window.abrirHistoricoLead) window.abrirHistoricoLead(nome);
+    });
+  });
+})();
+
+const agendaList = document.getElementById('agendaList');
+function renderAgenda(list, label) {
+  const heading = document.createElement('div');
+  heading.style.cssText = 'font-size:var(--fs-xs);font-weight:700;color:#8C6D1F;text-transform:uppercase;letter-spacing:.4px;margin:4px 4px 8px;';
+  heading.textContent = label;
+  agendaList.appendChild(heading);
+  list.forEach(a => {
+    const row = document.createElement('div');
+    row.className = 'agenda-row';
+    row.dataset.agId = agendaItemId(a);
+    row.innerHTML = `
+      <div class="agenda-time">${esc(a.hora)}</div>
+      <div class="agenda-icon">🏠</div>
+      <div class="agenda-info">
+        <div class="titulo">${esc(a.titulo)}</div>
+        <div class="local">${esc(a.local)}</div>
+      </div>
+      <button type="button" class="agenda-feito" title="Marcar como realizado — some da agenda">✓ Realizada</button>`;
+    const btn = row.querySelector('.agenda-feito');
+    btn.addEventListener('click', () => {
+      btn.disabled = true;
+      marcarAgendaRealizada(agendaItemId(a));
+      row.style.transition = 'opacity .3s';
+      row.style.opacity = '0';
+      setTimeout(() => row.remove(), 300);
+    });
+    agendaList.appendChild(row);
+  });
+}
+const temHoje = AGENDA_DIA.hoje.length > 0;
+const temAmanha = AGENDA_DIA.amanha.length > 0;
+if (!temHoje && !temAmanha) {
+  agendaList.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum compromisso encontrado na agenda.</div>';
+} else {
+  if (temHoje) renderAgenda(AGENDA_DIA.hoje, 'Hoje');
+  else agendaList.innerHTML = '<div style="font-size:var(--fs-sm);color:#8A9186;margin-bottom:8px;">Nada marcado para hoje.</div>';
+  if (temAmanha) renderAgenda(AGENDA_DIA.amanha, 'Amanhã');
+}
+
+// O filtro inicial da agenda usa só o localStorage (instantâneo). Esta etapa
+// consulta o servidor e tira da tela o que já foi marcado como realizado em
+// OUTRO dispositivo — sem isso, uma visita concluída no celular voltaria a
+// aparecer no computador.
+(async function sincronizarAgendaRealizada() {
+  let remotos = [];
+  try {
+    const r = await fetch('/api/lembretes/concluidos', { cache: 'no-store' });
+    if (!r.ok) return;
+    const j = await r.json();
+    if (Array.isArray(j)) remotos = j;
+  } catch (e) { return; }
+  const agRemotos = remotos.filter(x => String(x).startsWith('ag'));
+  if (agRemotos.length === 0) return;
+  try {
+    const raw = localStorage.getItem('painelEmobiLembretesConcluidos');
+    const arr = raw ? JSON.parse(raw) : [];
+    let mudou = false;
+    agRemotos.forEach(id => { if (!arr.includes(id)) { arr.push(id); mudou = true; } });
+    if (mudou) localStorage.setItem('painelEmobiLembretesConcluidos', JSON.stringify(arr));
+  } catch (e) { /* segue mesmo sem cache local */ }
+  const set = new Set(agRemotos);
+  document.querySelectorAll('.agenda-row[data-ag-id]').forEach(row => {
+    if (set.has(row.dataset.agId)) row.remove();
+  });
+})();
+
+// ---- Próximos Compromissos (além de hoje/amanhã) ----
+(function renderAgendaProximos() {
+  const container = document.getElementById('agendaProximosList');
+  const itens = AGENDA_DIA.proximos;
+  if (itens.length === 0) {
+    container.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nada marcado além de hoje e amanhã, por enquanto.</div>';
+    return;
+  }
+  const porData = {};
+  itens.forEach(a => {
+    if (!porData[a.data]) porData[a.data] = [];
+    porData[a.data].push(a);
+  });
+  const datasOrdenadas = Object.keys(porData).sort();
+  let html = '';
+  datasOrdenadas.forEach(d => {
+    const [y, m, dia] = d.split('-').map(Number);
+    const dt = new Date(y, m - 1, dia);
+    const label = dt.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit' });
+    html += `<div style="font-size:var(--fs-xs);font-weight:700;color:#8C6D1F;text-transform:uppercase;letter-spacing:.4px;margin:12px 4px 8px;">${label}</div>`;
+    porData[d].sort((a, b) => (a.hora || '').localeCompare(b.hora || '')).forEach(a => {
+      html += `
+        <div class="agenda-row">
+          <div class="agenda-time">${a.hora || ''}</div>
+          <div class="agenda-icon" aria-hidden="true">🏠</div>
+          <div class="agenda-info">
+            <div class="titulo">${a.titulo}</div>
+            <div class="local">${a.local || ''}</div>
+          </div>
+        </div>`;
+    });
+  });
+  container.innerHTML = html;
+})();
+
+const pct = Math.min(100, (DATA.meta2026.realizado / DATA.meta2026.meta) * 100);
+document.getElementById('metaPct').textContent = pct.toFixed(1) + '%';
+document.getElementById('metaBar').style.width = pct.toFixed(1) + '%';
+document.getElementById('metaHint').textContent = brl(DATA.meta2026.realizado) + ' de ' + brl(DATA.meta2026.meta) + ' • faltam ' + brl(DATA.meta2026.saldo);
+
+const pctComissao = Math.min(100, (DATA.comissao.paga / DATA.metaComissao2026.meta) * 100);
+document.getElementById('metaComissaoPct').textContent = pctComissao.toFixed(1) + '%';
+document.getElementById('metaComissaoBar').style.width = pctComissao.toFixed(1) + '%';
+document.getElementById('metaComissaoHint').textContent = brl(DATA.comissao.paga) + ' de ' + brl(DATA.metaComissao2026.meta) + ' • faltam ' + brl(Math.max(0, DATA.metaComissao2026.meta - DATA.comissao.paga));
+
+// ---- Meta Mensal de Comissao ----
+document.getElementById('metaMensalValor').textContent = brl(DATA.metaMensal.metaMensalDinamica);
+const recebidoNoCRM = DATA.comissao.paga - DATA.metaMensal.jaRecebidoForaCRM;
+document.getElementById('metaMensalSub').textContent =
+  '(' + brl(DATA.metaComissao2026.meta) + ' meta anual − ' + brl(DATA.metaMensal.jaRecebidoForaCRM) + ' já recebido fora do CRM − ' +
+  brl(recebidoNoCRM) + ' recebido no CRM) ÷ ' + DATA.metaMensal.mesesRestantes + ' meses restantes';
+
+const hojeReal = new Date();
+const metaMensalTabela = document.getElementById('metaMensalTabela');
+DATA.metaMensal.tabela.forEach(m => {
+  const inicioMes = new Date(m.ano, m.mesNum - 1, 1);
+  const fimMes = new Date(m.ano, m.mesNum, 1);
+  let statusHtml;
+  if (hojeReal < inicioMes) {
+    statusHtml = '<span class="status-aguarda">Ainda não chegou</span>';
+  } else if (m.recebido >= DATA.metaMensal.metaMensalDinamica) {
+    statusHtml = '<span class="status-bateu">✅ Bateu a meta</span>';
+  } else {
+    statusHtml = '<span class="status-falta">🔴 Faltam ' + brl(DATA.metaMensal.metaMensalDinamica - m.recebido) + '</span>';
+  }
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td>${m.mes}</td>
+    <td>${brl(DATA.metaMensal.metaMensalDinamica)}</td>
+    <td>${brl(m.recebido)}</td>
+    <td>${statusHtml}</td>`;
+  metaMensalTabela.appendChild(tr);
+});
+
+document.getElementById('comissaoPaga').textContent = brl(DATA.comissao.paga);
+document.getElementById('comissaoAguardando').textContent = brl(DATA.comissao.aguardando);
+
+// Sentinela de divergência: os valores de DATA.comissao são declarados à mão,
+// mas listaNegociacoes tem os mesmos números negócio a negócio. Se as somas
+// não baterem, alguém atualizou um lado e esqueceu o outro — o painel avisa
+// em vez de exibir número financeiro errado em silêncio.
+(function sentinelaFinanceira() {
+  const somaPaga = (DATA.listaNegociacoes || []).filter(n => n.status === 'pago').reduce((s, n) => s + (n.comissao || 0), 0);
+  const somaAguardando = (DATA.listaNegociacoes || []).filter(n => n.status === 'aguardando').reduce((s, n) => s + (n.comissao || 0), 0);
+  const drift = Math.abs(somaPaga - (DATA.comissao.paga || 0)) > 0.01 ||
+                Math.abs(somaAguardando - (DATA.comissao.aguardando || 0)) > 0.01;
+  if (!drift) return;
+  const painelFat = document.getElementById('panel-faturamento');
+  if (!painelFat) return;
+  const aviso = document.createElement('div');
+  aviso.style.cssText = 'background:#FDECEC;border:1px solid #F0B9B9;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#8E2626;';
+  aviso.innerHTML = '⚠️ <b>Números fora de sincronia:</b> a soma das negociações (' +
+    brl(somaPaga) + ' pagas / ' + brl(somaAguardando) + ' aguardando) não bate com os totais declarados (' +
+    brl(DATA.comissao.paga) + ' / ' + brl(DATA.comissao.aguardando) + '). Peça ao Claude para conferir a Tabela de Negociações.';
+  painelFat.insertBefore(aviso, painelFat.firstChild);
+})();
+document.getElementById('comissaoPrevista').textContent = brl(DATA.comissao.prevista);
+const totalNeg = DATA.negociacoes.vendas.valor + DATA.negociacoes.locacoes.valor;
+document.getElementById('totalNegociado').textContent = brl(totalNeg);
+document.getElementById('totalNegociadoHint').textContent = DATA.negociacoes.vendas.qtd + ' vendas + ' + DATA.negociacoes.locacoes.qtd + ' locação(ões)';
+
+const negList = document.getElementById('negList');
+DATA.listaNegociacoes.forEach(n => {
+  const row = document.createElement('div');
+  row.className = 'neg-row';
+  const statusTxt = n.status === 'pago' ? 'Comissão paga' : 'Aguardando pagamento';
+  row.innerHTML = `
+    <span class="status-dot ${n.status}" role="img" aria-label="${statusTxt}" title="${statusTxt}"></span>
+    <div class="neg-info">
+      <div class="imovel">${n.imovel}</div>
+      <div class="cliente">${n.cliente} · ${n.tipo}</div>
+    </div>
+    <div class="neg-vals">
+      <div class="valor">${brl(n.valor)}</div>
+      <div class="comissao">${brl(n.comissao)}</div>
+      <div class="mes">${n.mes}</div>
+    </div>`;
+  negList.appendChild(row);
+});
+
+const funilList = document.getElementById('funilList');
+// Calculado ao vivo a partir de DATA.leads (fase atual de cada lead) — nunca fica dessincronizado,
+// mesmo que DATA.funil não seja atualizado manualmente em algum dia.
+const FASES_FUNIL = ["Novo Lead", "Primeiro Contato Feito", "Qualificado", "Visita Agendada", "Visita Realizada", "Proposta Enviada", "Em Negociação", "Fechado Ganho", "Fechado Perdido", "Inativo"];
+const funilCalculado = FASES_FUNIL.map(fase => [fase, DATA.leads.filter(l => l.fase === fase).length]);
+const maxFunil = Math.max(1, ...funilCalculado.map(f => f[1]));
+funilCalculado.forEach(([label, count]) => {
+  const w = Math.max(6, (count / maxFunil) * 100);
+  const row = document.createElement('div');
+  row.className = 'funil-row';
+  row.innerHTML = `
+    <div class="funil-label">${label}</div>
+    <div class="funil-track"><div class="funil-fill" style="width:${w}%"><span>${count > 0 ? count : ''}</span></div></div>
+    <div class="funil-count">${count}</div>`;
+  funilList.appendChild(row);
+});
+
+const origemList = document.getElementById('origemList');
+const origemCounts = {};
+(DATA.leads || []).forEach(l => {
+  const o = l.origem || 'Não informado';
+  origemCounts[o] = (origemCounts[o] || 0) + 1;
+});
+const origemEntries = Object.entries(origemCounts).sort((a, b) => b[1] - a[1]);
+if (origemEntries.length === 0) {
+  origemList.innerHTML = '<div style="font-size:13px;color:#8A9186;">Sem leads cadastrados ainda.</div>';
+} else {
+  const maxOrigem = Math.max(1, ...origemEntries.map(e => e[1]));
+  origemEntries.forEach(([label, count]) => {
+    const w = Math.max(6, (count / maxOrigem) * 100);
+    const row = document.createElement('div');
+    row.className = 'origem-row';
+    row.innerHTML = `
+      <div class="origem-label">${label}</div>
+      <div class="origem-track"><div class="origem-fill" style="width:${w}%"></div></div>
+      <div class="origem-count">${count}</div>`;
+    origemList.appendChild(row);
+  });
+}
+
+// ---- Conversao entre fases ----
+// Calculado ao vivo a partir de DATA.leads[].maiorFaseIndex (maior fase já alcançada por cada lead),
+// nunca precisa ser mantido manualmente em paralelo — elimina o risco de ficar desatualizado.
+const FUNIL_CONVERSAO_FASES = ["Novo Lead", "Primeiro Contato Feito", "Qualificado", "Visita Agendada", "Visita Realizada", "Proposta Enviada", "Em Negociação", "Fechado Ganho"];
+const totalCadastrados = DATA.leads.length;
+const alcancaramPorIndex = FUNIL_CONVERSAO_FASES.map((_, i) => DATA.leads.filter(l => (l.maiorFaseIndex || 0) >= (i + 1)).length);
+const funilConversaoCalculado = FUNIL_CONVERSAO_FASES.map((fase, i) => {
+  const alcancaram = alcancaramPorIndex[i];
+  const proximo = alcancaramPorIndex[i + 1];
+  const conversao = (proximo === undefined || alcancaram === 0) ? null : proximo / alcancaram;
+  return { fase, alcancaram, conversao };
+});
+const taxaFechamentoCalc = totalCadastrados === 0 ? 0 : DATA.leads.filter(l => l.fase === 'Fechado Ganho').length / totalCadastrados;
+const taxaPerdaCalc = totalCadastrados === 0 ? 0 : DATA.leads.filter(l => l.fase === 'Fechado Perdido').length / totalCadastrados;
+
+document.getElementById('amostraNota').textContent =
+  `⚠️ Amostra pequena (${totalCadastrados} leads cadastrados no total) — os % ficam mais confiáveis conforme mais leads entrarem no funil. Acompanhe a tendência mês a mês, não o valor isolado.`;
+const conversaoTabela = document.getElementById('conversaoTabela');
+funilConversaoCalculado.forEach(f => {
+  const conv = f.conversao === null ? '—' : Math.round(f.conversao * 100) + '%';
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${f.fase}</td><td>${f.alcancaram}</td><td>${conv}</td>`;
+  conversaoTabela.appendChild(tr);
+});
+const trFecha = document.createElement('tr');
+trFecha.innerHTML = `<td><b>Taxa de Fechamento Geral</b></td><td colspan="2"><b>${Math.round(taxaFechamentoCalc * 100)}%</b></td>`;
+conversaoTabela.appendChild(trFecha);
+const trPerda = document.createElement('tr');
+trPerda.innerHTML = `<td><b>Taxa de Perda</b></td><td colspan="2"><b>${Math.round(taxaPerdaCalc * 100)}%</b></td>`;
+conversaoTabela.appendChild(trPerda);
+
+// ---- Reativacao por temperatura ----
+// Calculado ao vivo a partir de DATA.leads[].statusReativacao + temperatura.
+const reativacaoCard = document.getElementById('reativacaoCard');
+const leadsReativarAgora = DATA.leads.filter(l => l.statusReativacao === '🔴 Reativar agora');
+const reativacaoCalc = {
+  quente: leadsReativarAgora.filter(l => l.temperatura === 'Quente').length,
+  morno: leadsReativarAgora.filter(l => l.temperatura === 'Morno').length,
+  frio: leadsReativarAgora.filter(l => l.temperatura === 'Frio').length,
+  total: leadsReativarAgora.length
+};
+const rTemps = [
+  { label: '🔥 Quente', valor: reativacaoCalc.quente },
+  { label: '🟠 Morno', valor: reativacaoCalc.morno },
+  { label: '❄️ Frio', valor: reativacaoCalc.frio }
+];
+reativacaoCard.innerHTML = rTemps.map(t => `
+  <div class="reativa-row">
+    <span>${t.label} — para reativar agora</span>
+    <span class="reativa-count ${t.valor === 0 ? 'zero' : ''}">${t.valor}</span>
+  </div>`).join('') + `
+  <div class="reativa-row">
+    <span><b>🔔 Total para reativar agora</b></span>
+    <span class="reativa-count ${reativacaoCalc.total === 0 ? 'zero' : ''}">${reativacaoCalc.total}</span>
+  </div>`;
+
+const alertCard = document.getElementById('alertCard');
+const atrasados = DATA.leads.filter(l => l.status === 'Atrasado');
+if (atrasados.length === 0) {
+  alertCard.innerHTML = '<div style="font-size:13px;color:#4C7A3A;font-weight:600;">✅ Nenhum lead atrasado agora.</div>';
+} else {
+  atrasados.forEach(l => {
+    const box = document.createElement('div');
+    box.className = 'alert-box';
+    box.innerHTML = `
+      <div class="a-icon">🔴</div>
+      <div>
+        <div class="a-title">${l.nome} está atrasado</div>
+        <div class="a-sub">Próxima ação: ${l.proximaAcao} — ${l.obs || ''}</div>
+      </div>`;
+    alertCard.appendChild(box);
+  });
+}
+const demoNote = document.createElement('div');
+demoNote.style.cssText = 'font-size:var(--fs-2xs);color:#8A9186;margin-top:6px;';
+demoNote.textContent = isDemo ? '* leads de exemplo — substitua pelos seus leads reais.' : '';
+if (isDemo) alertCard.appendChild(demoNote);
+
+const REATIVACAO_TEMPLATES = {
+  Quente: (nome, interesse) => `${nome}, fiquei pensando em você — o ${interesse} que a gente conversou continua com bastante procura, e não queria que você perdesse a chance por falta de retorno meu. Consegue me dar um retorno rápido?`,
+  Morno: (nome, interesse) => `${nome}, apareceram algumas opções novas parecidas com o que você me falou que procurava (${interesse}) — nada muito puxado, só passando pra manter você atualizado. Quer que eu te mande os detalhes?`,
+  Frio: (nome, interesse) => `${nome}, tudo bem? Já faz um tempinho desde nossa última conversa. Passando só pra deixar uma dica sobre ${interesse} — sem cobrança nenhuma de resposta, só fico à disposição se algum dia voltar a fazer sentido pra você.`
+};
+function buildReativacaoMsg(l) {
+  const nomeCurto = (l.nome || '').split(' ')[0];
+  const tpl = REATIVACAO_TEMPLATES[l.temperatura] || REATIVACAO_TEMPLATES.Morno;
+  return tpl(nomeCurto, l.interesse || 'o imóvel que você buscava');
+}
+
+const CONFIRM_ABERTURAS = ['Confirmando nosso encontro', 'Só passando pra fechar', 'Te chamando pra confirmar', 'Vamos confirmar'];
+const CONFIRM_FECHAMENTOS = ['Qualquer imprevisto me avisa que a gente remarca numa boa.', 'Combinado?', 'Te espero por lá.', 'Conto contigo.'];
+const CONFIRM_SEM_DATA_ABERTURAS = ['Ainda não fechamos dia e horário', 'Faltou só a gente travar dia e horário', 'Só falta combinarmos o dia certinho'];
+function pick(arr, seed) {
+  const idx = (seed + Math.floor(Math.random() * arr.length)) % arr.length;
+  return arr[idx];
+}
+function buildConfirmMsg(l) {
+  const nomeCurto = (l.nome || '').split(' ')[0];
+  const seed = nomeCurto.length;
+  if (l.visitaResumo) {
+    const abertura = pick(CONFIRM_ABERTURAS, seed);
+    const fechamento = pick(CONFIRM_FECHAMENTOS, seed + 1);
+    const detalhe = l.visitaDetalhe ? ` — ${l.visitaDetalhe}` : '';
+    return `${nomeCurto}, ${abertura.charAt(0).toLowerCase() + abertura.slice(1)}: ${l.visitaResumo}${detalhe}. ${fechamento}`;
+  }
+  const abertura = pick(CONFIRM_SEM_DATA_ABERTURAS, seed);
+  const detalhe = l.visitaDetalhe ? `, ${l.visitaDetalhe}` : '';
+  return `${nomeCurto}, ${abertura}${detalhe} — me fala o que fica melhor pra você que eu já reservo.`;
+}
+
+const leadsCard = document.getElementById('leadsCard');
+const leadsInativosCard = document.getElementById('leadsInativosCard');
+const FASES_INATIVAS = ['Inativo', 'Fechado Ganho', 'Fechado Perdido'];
+
+function getUltimaAtividade(nome) {
+  const itens = logDoLead(leadPorRef(nome));
+  if (itens.length === 0) return null;
+  return itens[itens.length - 1];
+}
+
+// Dias corridos entre uma data ISO (AAAA-MM-DD) e hoje.
+const diasDesde = diasDesdeISO;
+
+// Há quantos dias esse lead não registra nenhuma movimentação no histórico.
+// Vínculo lead ↔ histórico. A chave primária é o ID (mesmo da coluna A da
+// planilha); o nome segue aceito como fallback para registros antigos do log.
+// Antes disso o vínculo era só por nome — corrigir uma grafia desconectava
+// todo o histórico do cliente em silêncio.
+// Módulo único de datas: TODA conta de "dias desde" passa por aqui.
+// Antes havia duas cópias idênticas de diasSemContato em módulos diferentes —
+// funcionava, mas um ajuste em uma e não na outra criaria alertas divergentes.
+function diasDesdeISO(dataStr) {
+  if (!dataStr) return null;
+  const m = String(dataStr).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!m) return null;
+  const dt = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  const agora = new Date();
+  return Math.floor((new Date(agora.getFullYear(), agora.getMonth(), agora.getDate()) - dt) / 86400000);
+}
+
+// Escape de HTML para texto livre interpolado em innerHTML (obs, resumos).
+// Os dados são do próprio Thúlio — o risco não é ataque, é um "<" numa
+// observação quebrando o layout do card em silêncio.
+function esc(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Telefones ficam SÓ com dígitos no dado; máscara é coisa de exibição.
+function formatarTel(t) {
+  const d = String(t || '').replace(/\D/g, '');
+  if (d.length === 11) return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
+  if (d.length === 10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;
+  return t || '';
+}
+
+function logDoLead(l) {
+  if (!l) return [];
+  return (DATA.logAtividades || []).filter(a =>
+    (a.leadId !== undefined && l.id !== undefined && String(a.leadId) === String(l.id)) ||
+    a.lead === l.nome
+  );
+}
+
+function leadPorRef(ref) {
+  return (DATA.leads || []).find(x =>
+    (x.id !== undefined && String(x.id) === String(ref)) || x.nome === ref
+  ) || null;
+}
+
+function diasSemMovimento(nome) {
+  const l = leadPorRef(nome);
+  const itens = logDoLead(l);
+  if (itens.length === 0) return null;
+  let maisRecente = null;
+  itens.forEach(a => {
+    const m = String(a.data || '').match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+    if (!m) return;
+    const dt = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
+    if (!maisRecente || dt > maisRecente) maisRecente = dt;
+  });
+  if (!maisRecente) return null;
+  const hoje = new Date();
+  return Math.floor((new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()) - maisRecente) / 86400000);
+}
+
+// Quanto tempo parado já é demais, por temperatura (mesma régua da cadência).
+const LIMITE_PARADO = { 'Quente': 3, 'Morno': 7, 'Frio': 30 };
+
+function calcularUrgencia(l) {
+  if (FASES_INATIVAS.includes(l.fase)) return { classe: '', nivel: 'inativo', parado: null };
+  const parado = diasSemMovimento(l.nome);
+  const limite = LIMITE_PARADO[l.temperatura] || 7;
+  if (parado === null) return { classe: 'urg-ok', nivel: 'ok', parado: null };
+  const razao = parado / limite;
+  let classe, nivel;
+  if (razao >= 2)        { classe = 'urg-critica'; nivel = 'critica'; }
+  else if (razao >= 1)   { classe = 'urg-alta';    nivel = 'alta'; }
+  else if (razao >= 0.7) { classe = 'urg-media';   nivel = 'media'; }
+  else                   { classe = 'urg-ok';      nivel = 'ok'; }
+  return { classe, nivel, parado, limite };
+}
+
+function renderLeadCard(l, container) {
+  const badgeClass = l.status === 'Atrasado' ? 'atrasado' : (l.status === 'Em dia' ? 'emdia' : 'novo');
+  const tempClass = l.temperatura === 'Quente' ? 'quente' : (l.temperatura === 'Morno' ? 'morno' : 'frio');
+  const valorTxt = (l.valor === null || l.valor === undefined) ? 'a definir' : brl(l.valor);
+  const comissaoTxt = (l.comissaoPrevista === null || l.comissaoPrevista === undefined) ? 'a definir' : brl(l.comissaoPrevista);
+  let waHtml = '';
+  if (l.telefone) {
+    const digits = String(l.telefone).replace(/\D/g, '');
+    const withCountry = digits.startsWith('55') ? digits : '55' + digits;
+    const displayPhone = digits.length === 11 ? `(${digits.slice(0,2)}) ${digits.slice(2,7)}-${digits.slice(7)}` : l.telefone;
+    waHtml = `<a class="wa-link" href="https://wa.me/${withCountry}" target="_blank" rel="noopener">💬 WhatsApp ${displayPhone}</a>`;
+  }
+  let reativarHtml = '';
+  if (l.statusReativacao === '🔴 Reativar agora' && l.telefone) {
+    const digits = String(l.telefone).replace(/\D/g, '');
+    const withCountry = digits.startsWith('55') ? digits : '55' + digits;
+    const msg = buildReativacaoMsg(l);
+    reativarHtml = `<a class="wa-link reativar" href="https://wa.me/${withCountry}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">🔥 Reativar agora (script pronto)</a>`;
+  }
+  let confirmHtml = '';
+  if (l.fase === 'Visita Agendada' && l.telefone) {
+    const digits = String(l.telefone).replace(/\D/g, '');
+    const withCountry = digits.startsWith('55') ? digits : '55' + digits;
+    const msg = buildConfirmMsg(l);
+    confirmHtml = `<a class="wa-link confirm" href="https://wa.me/${withCountry}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">✅ Confirmar visita</a>`;
+  }
+  let matchHtml = '';
+  if (Array.isArray(l.imoveisCompativeis)) {
+    if (l.imoveisCompativeis.length === 0) {
+      matchHtml = `<div class="match-line"><span class="match-chip zero">🏠 Nenhum imóvel compatível no momento</span></div>`;
+    } else {
+      matchHtml = `<div class="match-line"><span class="match-chip">🏠 ${l.imoveisCompativeis.length} imóvel(is) compatível(is)</span>` +
+        l.imoveisCompativeis.map(c => `<span class="match-chip zero">${c}</span>`).join('') + `</div>`;
+    }
+  }
+  function truncar(txt, max) {
+    if (!txt) return '';
+    return txt.length > max ? txt.slice(0, max).trim() + '…' : txt;
+  }
+  const ultimaAtiv = getUltimaAtividade(l.nome);
+  const ultimaAtivTxt = esc(ultimaAtiv ? `${ultimaAtiv.data} — ${truncar(ultimaAtiv.resumo, 70)}` : truncar(l.obs, 70) || '—');
+  const proximaAcaoTxt = esc(truncar(l.proximaAcao, 60) || '—');
+  const urg = calcularUrgencia(l);
+  const idadeDias = diasDesde(l.dataEntrada);
+  const partesIdade = [];
+  if (idadeDias !== null) partesIdade.push(`no funil há <b>${idadeDias}d</b>`);
+  if (urg.parado !== null) {
+    const alerta = (urg.nivel === 'critica' || urg.nivel === 'alta') ? ' alerta' : '';
+    partesIdade.push(`<span class="lead-idade${alerta}">parado há <b>${urg.parado}d</b></span>`);
+  }
+  const motivoHtml = l.motivoPerda
+    ? `<div class="lead-motivo" title="${(l.motivoDetalhe || '').replace(/"/g,'&quot;')}">🚫 <b>${l.motivoPerda}</b>${l.motivoDetalhe ? ' — ' + truncar(l.motivoDetalhe, 90) : ''}</div>`
+    : '';
+  let chipHtml = '';
+  if (urg.nivel === 'critica' || urg.nivel === 'alta') {
+    const rotulo = urg.nivel === 'critica' ? 'Muito atrasado' : 'Passou da cadência';
+    chipHtml = `<span class="lead-alerta-chip ${urg.nivel}" title="${l.temperatura} deve ser tocado a cada ${urg.limite} dia(s) — está parado há ${urg.parado}.">⚠️ ${rotulo}</span>`;
+  }
+  const idadeHtml = partesIdade.length
+    ? `<div class="lead-idade" style="margin-top:6px;">⏱️ ${partesIdade.join(' <span class="sep">·</span> ')}</div>`
+    : '';
+
+  const card = document.createElement('div');
+  card.className = 'lead-card lead-card-clickable' + (urg.classe ? ' ' + urg.classe : '');
+  card.dataset.leadNome = l.nome;
+  card.dataset.leadRef = (l.id !== undefined ? String(l.id) : l.nome);
+  card.setAttribute('role', 'button');
+  card.setAttribute('tabindex', '0');
+  const refLead = (l.id !== undefined ? String(l.id) : l.nome);
+  const registrarHtml = l.telefone
+    ? `<a class="wa-link registrar" href="#" data-registrar="${refLead}">✔ Registrei contato</a>`
+    : '';
+  card.innerHTML = `
+    <div class="lead-top">
+      <span class="lead-name">${l.nome}${chipHtml}</span>
+      <span><span class="temp ${tempClass}">${l.temperatura}</span> <span class="badge ${badgeClass}">${l.status}</span></span>
+    </div>
+    <div class="lead-meta">
+      <span>${l.fase}</span>
+      <span>Valor: <b>${valorTxt}</b></span>
+      <span>Comissão prevista: <b>${comissaoTxt}</b></span>
+      ${l.origem ? '<span>Origem: <b>' + l.origem + '</b></span>' : ''}
+    </div>
+    <div class="lead-line3"><b>Última:</b> ${ultimaAtivTxt}<span class="sep">·</span><b>Próxima ação:</b> ${proximaAcaoTxt}</div>
+    ${idadeHtml}
+    ${motivoHtml}
+    ${matchHtml}
+    <div class="lead-actions">${waHtml}${confirmHtml}${reativarHtml}${registrarHtml}</div>
+    <div class="lead-card-hint">👆 Clique para ver o histórico completo</div>`;
+  container.appendChild(card);
+}
+
+// Ordena os cards por temperatura (Quente > Morno > Frio) para que os clientes
+// mais próximos de fechar fiquem sempre no topo, sem depender de rolagem.
+// Dentro da mesma temperatura, quem está parado há mais tempo vem primeiro —
+// dois leads Quentes não são iguais se um está parado há 1 dia e o outro há 9.
+const ORDEM_TEMPERATURA = { 'Quente': 0, 'Morno': 1, 'Frio': 2 };
+
+function ordenarPorTemperatura(arr) {
+  return arr.slice().sort((a, b) => {
+    const ta = ORDEM_TEMPERATURA[a.temperatura] ?? 3;
+    const tb = ORDEM_TEMPERATURA[b.temperatura] ?? 3;
+    if (ta !== tb) return ta - tb;
+    const pa = diasSemMovimento(a.nome);
+    const pb = diasSemMovimento(b.nome);
+    if (pa === null && pb === null) return 0;
+    if (pa === null) return 1;
+    if (pb === null) return -1;
+    return pb - pa;
+  });
+}
+
+const leadsAtivosArr = ordenarPorTemperatura(DATA.leads.filter(l => !FASES_INATIVAS.includes(l.fase)));
+const leadsInativosArr = ordenarPorTemperatura(DATA.leads.filter(l => FASES_INATIVAS.includes(l.fase)));
+
+if (leadsAtivosArr.length === 0) {
+  leadsCard.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum lead ativo cadastrado ainda.</div>';
+} else {
+  // Legenda: a faixa colorida à esquerda NÃO é a temperatura (essa já está no
+  // selo do card) — é o cruzamento de temperatura com tempo parado. Sem esta
+  // legenda, dois leads Quentes com faixas diferentes parecem contradição.
+  const legenda = document.createElement('div');
+  legenda.className = 'urg-legenda';
+  legenda.innerHTML = '<span><b>Faixa colorida à esquerda</b> = urgência (temperatura + tempo parado):</span>' +
+    '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#7BA05B"></span>em dia</span>' +
+    '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#E5C35C"></span>chegando no limite</span>' +
+    '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#E8892B"></span>passou da cadência</span>' +
+    '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#C62828"></span>muito atrasado</span>' +
+    '<span style="opacity:.85;">Limite por temperatura: Quente 3d · Morno 7d · Frio 30d</span>';
+  leadsCard.appendChild(legenda);
+  leadsAtivosArr.forEach(l => renderLeadCard(l, leadsCard));
+}
+
+const inativosToggle = document.getElementById('inativosToggle');
+const inativosWrap = document.getElementById('inativosWrap');
+const inativosLabel = document.getElementById('inativosToggleLabel');
+if (leadsInativosArr.length === 0) {
+  inativosToggle.style.display = 'none';
+} else {
+  inativosLabel.textContent = `Leads Inativos (${leadsInativosArr.length})`;
+  leadsInativosArr.forEach(l => renderLeadCard(l, leadsInativosCard));
+  function toggleInativos() {
+    const open = inativosWrap.classList.toggle('open');
+    inativosToggle.classList.toggle('open', open);
+    inativosToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  inativosToggle.addEventListener('click', toggleInativos);
+  inativosToggle.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleInativos(); }
+  });
+}
+
+// ---- Modal de histórico do lead ----
+(function () {
+  const overlay = document.getElementById('leadModalOverlay');
+  const closeBtn = document.getElementById('leadModalClose');
+  const elNome = document.getElementById('leadModalNome');
+  const elBadges = document.getElementById('leadModalBadges');
+  const elInfo = document.getElementById('leadModalInfo');
+  const elObs = document.getElementById('leadModalObs');
+  const elTimeline = document.getElementById('leadModalTimeline');
+
+  function abrirHistorico(ref) {
+    const l = leadPorRef(ref);
+    if (!l) return;
+    const nome = l.nome;
+    const tempClass = l.temperatura === 'Quente' ? 'quente' : (l.temperatura === 'Morno' ? 'morno' : 'frio');
+    const badgeClass = l.status === 'Atrasado' ? 'atrasado' : (l.status === 'Em dia' ? 'emdia' : 'novo');
+    elNome.textContent = l.nome;
+    elBadges.innerHTML = `<span class="badge ${badgeClass}">${l.status}</span> <span class="temp ${tempClass}">${l.temperatura}</span> <span class="badge novo">${l.fase}</span>`;
+    const valorTxt = (l.valor === null || l.valor === undefined) ? 'a definir' : brl(l.valor);
+    elInfo.innerHTML = `<span>Valor: <b>${valorTxt}</b></span><span>Origem: <b>${l.origem || '—'}</b></span><span>Próxima ação: <b>${l.proximaAcao || '—'}</b></span>`;
+    elObs.textContent = l.obs || '';
+
+    const itens = logDoLead(leadPorRef(nome));
+    if (itens.length === 0) {
+      elTimeline.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum registro de histórico ainda para este cliente.</div>';
+    } else {
+      elTimeline.innerHTML = itens.slice().reverse().map(a => `
+        <div class="timeline-item">
+          <span class="timeline-date">${a.data}</span><span class="timeline-tipo">${a.tipo || 'Outro'}</span>
+          <div class="timeline-resumo">${esc(a.resumo || '')}</div>
+        </div>`).join('');
+    }
+
+    prepararNotas(nome);
+
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+
+  // ---- Notas rápidas por cliente (salvas na nuvem via /api/notas) ----
+  const notaTexto = document.getElementById('leadNotaTexto');
+  const notaSalvar = document.getElementById('leadNotaSalvar');
+  const notaStatus = document.getElementById('leadNotaStatus');
+  const notaPendentes = document.getElementById('leadNotasPendentes');
+  let leadAtual = null;
+  let notasCache = null;
+
+  function setNotaStatus(msg, tipo) {
+    if (!notaStatus) return;
+    notaStatus.textContent = msg || '';
+    notaStatus.className = 'nota-status' + (tipo ? ' ' + tipo : '');
+  }
+
+  // O backend (/api/notas) só existe quando o painel é servido pelo Worker da
+  // Cloudflare. Aberto como arquivo local ou dentro do Cowork, não há API —
+  // nesse caso a nota é guardada no próprio navegador para não se perder.
+  const NOTAS_LOCAL_KEY = 'painelEmobiNotasLocais';
+
+  function getNotasLocais() {
+    try {
+      const raw = localStorage.getItem(NOTAS_LOCAL_KEY);
+      const arr = raw ? JSON.parse(raw) : [];
+      return Array.isArray(arr) ? arr : [];
+    } catch (e) { return []; }
+  }
+
+  function addNotaLocal(nota) {
+    try {
+      const arr = getNotasLocais();
+      arr.push(nota);
+      localStorage.setItem(NOTAS_LOCAL_KEY, JSON.stringify(arr));
+      return true;
+    } catch (e) { return false; }
+  }
+
+  async function carregarNotas(force) {
+    if (notasCache && !force) return notasCache;
+    let remotas = [];
+    try {
+      const r = await fetch('/api/notas', { cache: 'no-store' });
+      if (r.ok) {
+        const j = await r.json();
+        if (Array.isArray(j)) remotas = j;
+      }
+    } catch (e) { /* sem backend aqui — segue só com as locais */ }
+    notasCache = remotas.concat(getNotasLocais());
+    return notasCache;
+  }
+
+  function renderNotasPendentes(nome) {
+    if (!notaPendentes) return;
+    notaPendentes.innerHTML = '';
+    if (!notasCache) return;
+    const minhas = notasCache.filter(n => n && n.lead === nome);
+    minhas.forEach(n => {
+      const div = document.createElement('div');
+      div.className = 'nota-pendente';
+      let quando = '';
+      if (n.criadaEm) {
+        const d = new Date(n.criadaEm);
+        if (!isNaN(d)) {
+          quando = d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) +
+                   ' às ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        }
+      }
+      const ondeSalvou = n.local ? ' · salva só neste navegador' : '';
+      div.textContent = '⏳ Aguardando incorporação' + (quando ? ' (em ' + quando + ')' : '') + ondeSalvou + ': ' + (n.texto || '');
+      notaPendentes.appendChild(div);
+    });
+  }
+
+  async function prepararNotas(nome) {
+    leadAtual = nome;
+    if (notaTexto) { notaTexto.value = ''; notaTexto.disabled = false; }
+    if (notaSalvar) notaSalvar.disabled = false;
+    setNotaStatus('');
+    if (notaPendentes) notaPendentes.innerHTML = '';
+    await carregarNotas(false);
+    if (leadAtual !== nome) return; // trocou de card enquanto carregava
+    renderNotasPendentes(nome);
+  }
+
+  if (notaSalvar) {
+    notaSalvar.addEventListener('click', async () => {
+      const texto = (notaTexto && notaTexto.value || '').trim();
+      if (!texto) { setNotaStatus('Escreva algo antes de salvar.', 'erro'); return; }
+      if (!leadAtual) return;
+      notaSalvar.disabled = true;
+      setNotaStatus('Salvando…');
+      let salvouNaNuvem = false;
+      let nota = null;
+      try {
+        const r = await fetch('/api/notas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lead: leadAtual, texto })
+        });
+        if (r.ok) {
+          const j = await r.json();
+          if (j && j.nota) { nota = j.nota; salvouNaNuvem = true; }
+        }
+      } catch (e) { /* sem backend nesta cópia — cai no plano B abaixo */ }
+
+      if (!salvouNaNuvem) {
+        // Plano B: guarda no navegador para a nota nunca se perder.
+        nota = {
+          id: 'nota-local-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
+          lead: leadAtual,
+          texto: texto,
+          criadaEm: new Date().toISOString(),
+          local: true
+        };
+        if (!addNotaLocal(nota)) {
+          setNotaStatus('Não consegui salvar aqui. Copie o texto antes de fechar.', 'erro');
+          notaSalvar.disabled = false;
+          return;
+        }
+      }
+
+      if (notasCache && nota) notasCache.push(nota);
+      if (notaTexto) notaTexto.value = '';
+      setNotaStatus(
+        salvouNaNuvem
+          ? '✓ Nota salva na nuvem — entra no histórico no próximo briefing.'
+          : '✓ Nota salva neste navegador. Esta cópia do painel não tem conexão com a nuvem — me peça para carregar as notas quando quiser.',
+        'ok'
+      );
+      renderNotasPendentes(leadAtual);
+      notaSalvar.disabled = false;
+    });
+  }
+
+  function fecharModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('click', async (e) => {
+    const a = e.target.closest('a[data-registrar]');
+    if (!a) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (a.dataset.feito) return;
+    a.textContent = 'Registrando…';
+    const ok = await (window.registrarContatoLead ? window.registrarContatoLead(a.dataset.registrar) : false);
+    a.textContent = ok ? '✓ Contato registrado — entra no histórico no próximo briefing' : 'Não consegui — anote pelo card do cliente';
+    a.dataset.feito = '1';
+    a.style.pointerEvents = 'none';
+  });
+
+  document.querySelectorAll('.lead-card-clickable').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('a')) return; // não abre modal se clicou num link de ação
+      abrirHistorico(card.dataset.leadRef || card.dataset.leadNome);
+    });
+    card.addEventListener('keydown', (e) => {
+      if (e.target.closest('a')) return;
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirHistorico(card.dataset.leadRef || card.dataset.leadNome); }
+    });
+  });
+  closeBtn.addEventListener('click', fecharModal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) fecharModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay.classList.contains('open')) fecharModal(); });
+  window.abrirHistoricoLead = abrirHistorico;
+
+  // "Registrei o contato" em 1 clique: grava uma nota rápida padrão para o
+  // lead, no mesmo fluxo das notas manuais (nuvem → navegador). Fecha o ciclo
+  // que os botões de WhatsApp deixavam aberto: o contato acontecia fora do
+  // painel e o sistema nunca ficava sabendo.
+  window.registrarContatoLead = async function (ref) {
+    const l = leadPorRef(ref);
+    if (!l) return false;
+    const hoje = new Date();
+    const dd = String(hoje.getDate()).padStart(2, '0');
+    const mm = String(hoje.getMonth() + 1).padStart(2, '0');
+    const texto = `[${dd}/${mm}] Contato feito via WhatsApp (registrado em 1 clique no painel).`;
+    let ok = false;
+    try {
+      const r = await fetch('/api/notas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lead: l.nome, texto })
+      });
+      if (r.ok) ok = true;
+    } catch (e) { /* sem backend — plano B */ }
+    if (!ok) {
+      ok = addNotaLocal({
+        id: 'nota-local-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
+        lead: l.nome, texto, criadaEm: hoje.toISOString(), local: true
+      });
+    }
+    if (ok && notasCache) notasCache.push({ lead: l.nome, texto, criadaEm: hoje.toISOString() });
+    return ok;
+  };
+})();
+
+// ---- O Que Fazer Agora: consolida leads atrasados, reativação, follow-up de proprietários e lembretes ----
+(function renderAcoesAgora() {
+  const list = document.getElementById('acoesAgoraList');
+  if (!list) return;
+
+  function waHref(telefone, msg) {
+    const digits = String(telefone).replace(/\D/g, '');
+    const withCountry = digits.startsWith('55') ? digits : '55' + digits;
+    return 'https://wa.me/' + withCountry + (msg ? ('?text=' + encodeURIComponent(msg)) : '');
+  }
+  const diasSemContato = diasDesdeISO;
+
+  const { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes, prospeccoesAtrasadas, total } = computeAcoesUrgentes();
+
+  if (total === 0) {
+    list.innerHTML = '<div class="acao-all-clear">✅ Tudo em dia — nenhuma ação urgente agora.</div>';
+    return;
+  }
+
+  let html = '';
+
+  if (leadsAtrasados.length > 0) {
+    html += `<div class="acao-group"><div class="acao-group-title">🔴 Leads atrasados (${leadsAtrasados.length})</div>` +
+      leadsAtrasados.map(l => {
+        const wa = l.telefone ? `<a class="wa-link" href="${waHref(l.telefone)}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+        return `<div class="acao-item"><span>${l.nome} — ${l.proximaAcao || 'follow-up pendente'}</span>${wa}</div>`;
+      }).join('') + `</div>`;
+  }
+
+  if (leadsReativar.length > 0) {
+    html += `<div class="acao-group"><div class="acao-group-title">🔥 Leads para reativar (${leadsReativar.length})</div>` +
+      leadsReativar.map(l => {
+        const wa = l.telefone ? `<a class="wa-link reativar" href="${waHref(l.telefone, buildReativacaoMsg(l))}" target="_blank" rel="noopener">🔥 Reativar</a>` : '';
+        return `<div class="acao-item"><span>${l.nome}</span>${wa}</div>`;
+      }).join('') + `</div>`;
+  }
+
+  if (imoveisAtrasados.length > 0) {
+    html += `<div class="acao-group"><div class="acao-group-title">🏠 Follow-up de proprietários atrasado (${imoveisAtrasados.length})</div>` +
+      imoveisAtrasados.map(im => {
+        const dias = diasSemContato(im.ultimaInteracaoProprietario);
+        const wa = im.telefone ? `<a class="wa-link" href="${waHref(im.telefone)}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+        return `<div class="acao-item"><span>${im.nome} — ${dias}d sem contato</span>${wa}</div>`;
+      }).join('') + `</div>`;
+  }
+
+  if (lembretesUrgentes.length > 0) {
+    html += `<div class="acao-group"><div class="acao-group-title">🔔 Lembretes de hoje/atrasados (${lembretesUrgentes.length})</div>` +
+      lembretesUrgentes.map(x => `<div class="acao-item"><span>${x.texto}</span></div>`).join('') + `</div>`;
+  }
+
+  if (prospeccoesAtrasadas.length > 0) {
+    html += `<div class="acao-group"><div class="acao-group-title">🏗️ Prospecção de captação atrasada (${prospeccoesAtrasadas.length})</div>` +
+      prospeccoesAtrasadas.map(pr => {
+        const atraso = pr.dataProximaAcao ? diasSemContato(pr.dataProximaAcao) : null;
+        const quanto = (atraso !== null && atraso > 0) ? ` — ${atraso}d de atraso` : '';
+        const wa = pr.telefone ? `<a class="wa-link" href="${waHref(pr.telefone)}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+        return `<div class="acao-item"><span>${pr.nome} (${pr.imovelBairro || 'imóvel a definir'})${quanto}</span>${wa}</div>`;
+      }).join('') + `</div>`;
+  }
+
+  list.innerHTML = html;
+})();
+
+const lembretesCard = document.getElementById('lembretesCard');
+const LEMBRETES_LOCAL_KEY = 'painelEmobiLembretesConcluidos';
+function lembreteId(l) {
+  const s = `${l.texto}|${l.dataFmt}|${l.hora || ''}`;
+  let h = 0;
+  for (let i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) | 0; }
+  return 'lb' + Math.abs(h).toString(36);
+}
+function getLocalConcluidos() {
+  // Usa o literal direto (não a const LEMBRETES_LOCAL_KEY) porque esta função pode ser chamada
+  // por computeAcoesUrgentes() antes daquela const ser inicializada no script — daria erro de
+  // "acesso antes da inicialização", capturado pelo catch abaixo, retornando [] silenciosamente
+  // e fazendo o "Seu Foco Hoje" continuar mostrando lembretes já concluídos.
+  try {
+    const raw = localStorage.getItem('painelEmobiLembretesConcluidos');
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr : [];
+  } catch (e) { return []; }
+}
+function addLocalConcluido(id) {
+  try {
+    const arr = getLocalConcluidos();
+    if (!arr.includes(id)) arr.push(id);
+    localStorage.setItem('painelEmobiLembretesConcluidos', JSON.stringify(arr));
+  } catch (e) { /* localStorage indisponível — segue só com o servidor */ }
+}
+(async () => {
+  // O servidor (Cloudflare KV) pode levar alguns segundos para propagar uma gravação recente
+  // entre localizações diferentes — por isso guardamos também uma cópia local (localStorage),
+  // que é instantânea e garante que o item some já na primeira atualização, mesmo neste device.
+  let remotos = [];
+  try {
+    const r = await fetch('/api/lembretes/concluidos', { cache: 'no-store' });
+    if (r.ok) {
+      const j = await r.json();
+      if (Array.isArray(j)) remotos = j;
+    }
+  } catch (e) { /* offline ou API indisponível — segue com o que tiver local */ }
+
+  const locais = getLocalConcluidos();
+  const concluidosSet = new Set([...remotos, ...locais]);
+
+  const pendentes = (DATA.lembretes || []).filter(l => !concluidosSet.has(lembreteId(l)));
+
+  if (pendentes.length === 0) {
+    lembretesCard.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum lembrete pendente. Fala comigo por voz — "me lembra de ligar pro fulano quinta às 14h" — que eu já registro aqui e te aviso na hora certa.</div>';
+    return;
+  }
+  const ordemPeso = { "Atrasado": 0, "Hoje": 1, "Futuro": 2 };
+  // Dentro de cada grupo (Atrasado/Hoje/Futuro), ordena por data de ação (dataFmt "DD/MM") e depois por hora —
+  // sem isso, ficava por ordem de inserção no array, o que não reflete a ordem real dos compromissos.
+  function chaveDataHora(l) {
+    const m = (l.dataFmt || '').match(/^(\d{1,2})\/(\d{1,2})$/);
+    if (!m) return Infinity;
+    const dia = parseInt(m[1], 10);
+    const mes = parseInt(m[2], 10);
+    let minutos;
+    const hm = (l.hora || '').match(/^(\d{1,2}):(\d{2})$/);
+    if (hm) minutos = parseInt(hm[1], 10) * 60 + parseInt(hm[2], 10);
+    else if (l.hora === 'Manhã') minutos = 8 * 60;
+    else if (l.hora === 'Tarde') minutos = 14 * 60;
+    else if (l.hora === 'Noite') minutos = 19 * 60;
+    else minutos = 23 * 60 + 59; // sem hora definida — depois dos com hora marcada no mesmo dia
+    return mes * 1000000 + dia * 10000 + minutos;
+  }
+  const ordenados = [...pendentes].sort((a, b) => {
+    const pesoA = ordemPeso[a.quando] ?? 3;
+    const pesoB = ordemPeso[b.quando] ?? 3;
+    if (pesoA !== pesoB) return pesoA - pesoB;
+    return chaveDataHora(a) - chaveDataHora(b);
+  });
+  const avisoConcluir = document.createElement('div');
+  avisoConcluir.style.cssText = 'font-size:var(--fs-2xs);color:#8A9186;margin-bottom:10px;';
+  avisoConcluir.textContent = '☑️ Marcar aqui salva de vez — o lembrete some da lista, inclusive depois de recarregar a página.';
+  lembretesCard.appendChild(avisoConcluir);
+  ordenados.forEach(l => {
+    const id = lembreteId(l);
+    const whenClass = l.quando === 'Atrasado' ? 'atrasado' : (l.quando === 'Hoje' ? 'hoje' : 'futuro');
+    // Idade do atraso: lembrete parado há mais de 7 dias ganha visual
+    // "envelhecido" — ou ele ainda importa (re-date) ou não importa mais
+    // (conclua). Ficar cinza eternamente na lista só gera cegueira de alerta.
+    let idadeAtraso = null;
+    const mIso = (l.dataFmt || '').match(/^(\d{1,2})\/(\d{1,2})$/);
+    if (l.quando === 'Atrasado' && mIso) {
+      const ano = new Date().getFullYear();
+      idadeAtraso = diasDesdeISO(`${ano}-${String(mIso[2]).padStart(2,'0')}-${String(mIso[1]).padStart(2,'0')}`);
+      if (idadeAtraso !== null && idadeAtraso < 0) idadeAtraso += 365; // virada de ano
+    }
+    const envelhecido = idadeAtraso !== null && idadeAtraso > 7;
+    const row = document.createElement('div');
+    row.className = 'lembrete-row' + (envelhecido ? ' envelhecido' : '');
+    row.innerHTML = `
+      <input type="checkbox" class="lembrete-check" aria-label="Marcar como concluído">
+      <div class="lembrete-when ${whenClass}">${l.quando}</div>
+      <div class="lembrete-info">
+        <div class="txt">${l.texto}</div>
+        <div class="meta">${l.dataFmt}${l.hora ? ' às ' + l.hora : ''}${l.relacionado ? ' · ' + l.relacionado : ''}${idadeAtraso !== null && idadeAtraso > 0 ? ' · <b class="idade-atraso">há ' + idadeAtraso + 'd</b>' : ''}</div>
+      </div>`;
+    const cb = row.querySelector('.lembrete-check');
+    cb.addEventListener('change', (e) => {
+      if (!e.target.checked) return;
+      cb.disabled = true;
+      row.classList.add('concluido');
+      addLocalConcluido(id);
+      fetch('/api/lembretes/concluir', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      }).catch(() => {});
+      setTimeout(() => {
+        row.style.transition = 'opacity .3s';
+        row.style.opacity = '0';
+        setTimeout(() => row.remove(), 300);
+      }, 350);
+    });
+    lembretesCard.appendChild(row);
+  });
+})();
+
+// Gráficos acompanham o tema do sistema
+if (window.Chart && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  try { Chart.defaults.color = '#9AA394'; Chart.defaults.borderColor = 'rgba(154,163,148,.18)'; } catch (e) {}
+}
+
+// ---- Gráficos de linha (evolução mensal 2026) ----
+const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const mesIndex = { "Janeiro":0,"Fevereiro":1,"Março":2,"Abril":3,"Maio":4,"Junho":5,"Julho":6,"Agosto":7,"Setembro":8,"Outubro":9,"Novembro":10,"Dezembro":11 };
+const comissaoPorMes = new Array(12).fill(0);
+const valorPorMes = new Array(12).fill(0);
+DATA.listaNegociacoes.forEach(n => {
+  const i = mesIndex[n.mes];
+  if (i === undefined) return;
+  comissaoPorMes[i] += n.comissao;
+  valorPorMes[i] += n.valor;
+});
+function acumular(arr) {
+  let acc = 0;
+  return arr.map(v => { acc += v; return acc; });
+}
+const comissaoAcumulada = acumular(comissaoPorMes);
+const valorAcumulado = acumular(valorPorMes);
+const metaLinear = MESES.map((_, i) => (DATA.meta2026.meta / 12) * (i + 1));
+const metaComissaoLinear = MESES.map((_, i) => (DATA.metaComissao2026.meta / 12) * (i + 1));
+
+// ---- Projecao anual (ritmo atual) ----
+const mesAtualIdx = new Date().getMonth(); // 0-based
+const mesesDecorridos = mesAtualIdx + 1;
+const projecaoAnual = (comissaoAcumulada[mesAtualIdx] / mesesDecorridos) * 12;
+document.getElementById('projecaoAnual').textContent = brl(projecaoAnual);
+const difMeta = projecaoAnual - DATA.metaComissao2026.meta;
+document.getElementById('projecaoAnualHint').textContent = difMeta >= 0
+  ? ('Acima da meta em ' + brl(difMeta))
+  : ('Abaixo da meta em ' + brl(Math.abs(difMeta)));
+
+Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif";
+
+new Chart(document.getElementById('chartComissaoLinha'), {
+  type: 'line',
+  data: {
+    labels: MESES,
+    datasets: [
+      {
+        label: 'Comissão acumulada',
+        data: comissaoAcumulada,
+        borderColor: BRAND.goldDeep,
+        backgroundColor: 'rgba(140,109,31,0.12)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 3,
+        pointBackgroundColor: BRAND.goldDeep
+      },
+      {
+        label: 'Meta de comissão (ritmo linear)',
+        data: metaComissaoLinear,
+        borderColor: BRAND.gold,
+        borderDash: [6, 4],
+        pointRadius: 0,
+        fill: false,
+        tension: 0
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 10, padding: 14, font: { size: 11 } } },
+      tooltip: { callbacks: { label: (ctx) => ctx.dataset.label + ': ' + brl(ctx.raw) } }
+    },
+    scales: {
+      y: { ticks: { callback: (v) => brl(v) } }
+    }
+  }
+});
+
+new Chart(document.getElementById('chartMetaLinha'), {
+  type: 'line',
+  data: {
+    labels: MESES,
+    datasets: [
+      {
+        label: 'Valor negociado acumulado',
+        data: valorAcumulado,
+        borderColor: BRAND.dark2,
+        backgroundColor: 'rgba(29,39,23,0.10)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 3,
+        pointBackgroundColor: BRAND.dark2
+      },
+      {
+        label: 'Meta 2026 (ritmo linear)',
+        data: metaLinear,
+        borderColor: BRAND.gold,
+        borderDash: [6, 4],
+        pointRadius: 0,
+        fill: false,
+        tension: 0
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 10, padding: 14, font: { size: 11 } } },
+      tooltip: { callbacks: { label: (ctx) => ctx.dataset.label + ': ' + brl(ctx.raw) } }
+    },
+    scales: {
+      y: { ticks: { callback: (v) => brl(v) } }
+    }
+  }
+});
+
+// ---- Navegacao por abas (agora via menu lateral) ----
+(function initTabs() {
+  const STORAGE_KEY = 'painelEmobiTabAtiva';
+  const TITULOS = {
+    inicio: 'Início', pipeline: 'Pipeline', agenda: 'Agenda', imoveis: 'Imóveis',
+    bicomercial: 'BI Comercial', faturamento: 'Faturamento',
+    conectatr: 'Conecta TR', prospeccao: 'Prospecção'
+  };
+  const tabs = Array.from(document.querySelectorAll('.tab-btn'));
+  const panels = Array.from(document.querySelectorAll('.tab-panel'));
+  const topbarTitle = document.getElementById('topbarTitle');
+  function ativar(nome) {
+    tabs.forEach(t => {
+      const ativo = t.dataset.tab === nome;
+      t.classList.toggle('active', ativo);
+      t.setAttribute('aria-selected', ativo ? 'true' : 'false');
+    });
+    panels.forEach(p => p.classList.toggle('active', p.dataset.tab === nome));
+    if (topbarTitle) topbarTitle.textContent = TITULOS[nome] || nome;
+    try { localStorage.setItem(STORAGE_KEY, nome); } catch (e) {}
+    // fecha o menu no mobile ao escolher uma secao
+    if (window.innerWidth <= 900 && typeof window.fecharGavetaMobilePainel === 'function') {
+      window.fecharGavetaMobilePainel();
+    }
+  }
+  tabs.forEach(t => t.addEventListener('click', () => ativar(t.dataset.tab)));
+  let inicial = 'inicio';
+  try { inicial = localStorage.getItem(STORAGE_KEY) || 'inicio'; } catch (e) {}
+  if (!tabs.some(t => t.dataset.tab === inicial)) inicial = 'inicio';
+  ativar(inicial);
+  window.ativarPainelTab = ativar;
+
+  // ---- Recolher/expandir menu lateral (desktop) ----
+  const sidebar = document.getElementById('sidebar');
+  const toggleBtn = document.getElementById('sidebarToggleBtn');
+  const COLLAPSE_KEY = 'painelEmobiSidebarRecolhida';
+  if (sidebar && toggleBtn) {
+    let recolhida = false;
+    try { recolhida = localStorage.getItem(COLLAPSE_KEY) === '1'; } catch (e) {}
+    if (recolhida) { sidebar.classList.add('collapsed'); toggleBtn.textContent = '»'; }
+    toggleBtn.addEventListener('click', () => {
+      const agora = sidebar.classList.toggle('collapsed');
+      toggleBtn.textContent = agora ? '»' : '«';
+      try { localStorage.setItem(COLLAPSE_KEY, agora ? '1' : '0'); } catch (e) {}
+    });
+  }
+
+  // ---- Menu lateral como gaveta no mobile ----
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const scrim = document.getElementById('sidebarScrim');
+  function fecharGavetaMobile() {
+    sidebar.classList.remove('mobile-open');
+    scrim.classList.remove('show');
+    if (hamburgerBtn) hamburgerBtn.setAttribute('aria-expanded', 'false');
+  }
+  window.fecharGavetaMobilePainel = fecharGavetaMobile;
+  if (hamburgerBtn && sidebar && scrim) {
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    hamburgerBtn.addEventListener('click', () => {
+      sidebar.classList.add('mobile-open');
+      scrim.classList.add('show');
+      hamburgerBtn.setAttribute('aria-expanded', 'true');
+    });
+    scrim.addEventListener('click', fecharGavetaMobile);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && sidebar.classList.contains('mobile-open')) fecharGavetaMobile();
+    });
+  }
+
+  // ---- Badge de acoes urgentes no item "Inicio" ----
+  try {
+    if (typeof computeAcoesUrgentes === 'function') {
+      const badge = document.getElementById('navBadgeInicio');
+      const total = computeAcoesUrgentes().total;
+      if (badge && total > 0) {
+        badge.textContent = total;
+        badge.style.display = 'inline-block';
+      }
+    }
+  } catch (e) {}
+})();
+
+// ---- Imoveis captados (agrupado por Tipo -> Bairro) ----
+const imoveisCard = document.getElementById('imoveisCard');
+if (!DATA.imoveis || DATA.imoveis.length === 0) {
+  imoveisCard.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum imóvel captado cadastrado ainda.</div>';
+} else {
+  const statusClass = { "Em Captação": "em-captacao", "Disponível": "disponivel", "Reservado": "reservado", "Vendido": "vendido", "Suspenso": "suspenso", "Perdido": "perdido" };
+  const tipoOrdem = ["Casa", "Casa em Condomínio", "Casa Comercial", "Apartamento", "Terreno/Lote", "Comercial", "Outro"];
+  const tipoIcone = { "Casa": "🏠", "Casa em Condomínio": "🏡", "Casa Comercial": "🏪", "Apartamento": "🏢", "Terreno/Lote": "📐", "Comercial": "🏬", "Outro": "🔑" };
+  const tipoPlural = { "Casa Comercial": "Casas Comerciais", "Terreno/Lote": "Terrenos/Lotes" };
+
+  function followupStatus(im) {
+    if (!im.ultimaInteracaoProprietario) return null;
+    const [y, m, d] = im.ultimaInteracaoProprietario.split('-').map(Number);
+    const ultima = new Date(y, m - 1, d);
+    const dias = Math.floor((new Date() - ultima) / (1000 * 60 * 60 * 24));
+    if (dias > 30) return { label: '🔴 Follow-up atrasado (' + dias + 'd)', cls: 'atrasado' };
+    if (dias >= 25) return { label: '🟡 Follow-up se aproximando (' + dias + 'd)', cls: 'aproximando' };
+    return { label: '🟢 Follow-up em dia (' + dias + 'd)', cls: 'em-dia' };
+  }
+
+  function renderCard(im) {
+    const badgeClass = statusClass[im.status] || 'em-captacao';
+    const valorTxt = im.valor ? brl(im.valor) : 'Valor a definir';
+    let waHtml = '';
+    if (im.telefone) {
+      const digits = String(im.telefone).replace(/\D/g, '');
+      const withCountry = digits.startsWith('55') ? digits : '55' + digits;
+      waHtml = `<a class="imovel-link" href="https://wa.me/${withCountry}" target="_blank" rel="noopener">💬 WhatsApp proprietário</a>`;
+    }
+    let linkHtml = '';
+    if (im.link) {
+      linkHtml = `<a class="imovel-link" href="${im.link}" target="_blank" rel="noopener">🔗 Ver anúncio / fotos</a>`;
+    }
+    const fu = followupStatus(im);
+    const fuTag = fu ? `<span class="followup-tag ${fu.cls}">${fu.label}</span>` : '';
+    const card = document.createElement('div');
+    card.className = 'imovel-card';
+    card.innerHTML = `
+      <div class="imovel-top">
+        <span class="imovel-nome">${im.nome}</span>
+        <span class="imovel-badge ${badgeClass}">${im.status}</span>
+      </div>
+      <div class="imovel-meta">
+        📍 ${im.endereco || 'Endereço a definir'} — ${im.bairro || 'Bairro a definir'}<br>
+        💰 ${valorTxt}${im.pctComissao ? ' · Comissão captação: ' + (im.pctComissao * 100) + '%' : ''}<br>
+        📐 ${im.detalhes || '—'}<br>
+        👤 Proprietário: ${im.proprietario}${im.telefone ? '' : ' (telefone pendente)'} ${fuTag}
+      </div>
+      <div class="imovel-meta" style="margin-top:4px;">${im.obs || ''}</div>
+      <div>${linkHtml}${waHtml}</div>`;
+    return card;
+  }
+
+  const resumoEl = document.getElementById('followupResumo');
+  let atrasados = 0, aproximando = 0, emDia = 0;
+  DATA.imoveis.filter(im => im.status !== 'Vendido').forEach(im => {
+    const fu = followupStatus(im);
+    if (fu) { if (fu.cls === 'atrasado') atrasados++; else if (fu.cls === 'aproximando') aproximando++; else emDia++; }
+  });
+  resumoEl.innerHTML = `
+    <span class="followup-chip ${atrasados > 0 ? 'atrasado' : ''}">🔴 ${atrasados} atrasado(s)</span>
+    <span class="followup-chip">🟡 ${aproximando} se aproximando</span>
+    <span class="followup-chip">🟢 ${emDia} em dia</span>
+    <span class="followup-chip">Cadência máxima: 30 dias sem falar com o proprietário</span>`;
+
+  const captacaoEl = document.getElementById('captacaoFunilResumo');
+  if (captacaoEl) {
+    // Calculado ao vivo a partir de DATA.imoveis[].status — nunca fica dessincronizado.
+    const cs = {
+      emCaptacao: DATA.imoveis.filter(im => im.status === 'Em Captação').length,
+      disponivel: DATA.imoveis.filter(im => im.status === 'Disponível').length,
+      reservado: DATA.imoveis.filter(im => im.status === 'Reservado').length,
+      vendido: DATA.imoveis.filter(im => im.status === 'Vendido').length,
+      suspenso: DATA.imoveis.filter(im => im.status === 'Suspenso').length,
+      total: DATA.imoveis.length
+    };
+    captacaoEl.innerHTML = `
+      <span class="followup-chip">🟠 ${cs.emCaptacao} em captação</span>
+      <span class="followup-chip">🟢 ${cs.disponivel} disponível(is)</span>
+      <span class="followup-chip">🟡 ${cs.reservado} reservado(s)</span>
+      <span class="followup-chip">⚪ ${cs.vendido} vendido(s)</span>
+      <span class="followup-chip ${cs.suspenso > 0 ? 'atrasado' : ''}">🔴 ${cs.suspenso} suspenso(s)</span>
+      <span class="followup-chip"><b>Total: ${cs.total}</b></span>`;
+  }
+
+  // Filtros da lista (bairro/status/valor) — re-renderiza a lista sem tocar
+  // no resto da aba. Filtro ativo abre os bairros automaticamente.
+  const filtroBairroEl = document.getElementById('filtroBairro');
+  const filtroStatusEl = document.getElementById('filtroStatus');
+  const filtroValorEl = document.getElementById('filtroValor');
+  const filtroLimparEl = document.getElementById('filtroLimpar');
+  const filtroResultadoEl = document.getElementById('filtroResultado');
+
+  const naoVendidos = DATA.imoveis.filter(im => im.status !== 'Vendido');
+  if (filtroBairroEl) {
+    [...new Set(naoVendidos.map(im => im.bairro).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'))
+      .forEach(b => { const o=document.createElement('option'); o.value=b; o.textContent=b; filtroBairroEl.appendChild(o); });
+    [...new Set(naoVendidos.map(im => im.status).filter(Boolean))].sort()
+      .forEach(s => { const o=document.createElement('option'); o.value=s; o.textContent=s; filtroStatusEl.appendChild(o); });
+  }
+
+  function filtroAtivo() {
+    return !!(filtroBairroEl && (filtroBairroEl.value || filtroStatusEl.value || filtroValorEl.value));
+  }
+
+  function passaFiltro(im) {
+    if (!filtroBairroEl) return true;
+    if (filtroBairroEl.value && im.bairro !== filtroBairroEl.value) return false;
+    if (filtroStatusEl.value && im.status !== filtroStatusEl.value) return false;
+    if (filtroValorEl.value) {
+      const [min, max] = filtroValorEl.value.split('-').map(Number);
+      if (im.valor === null || im.valor === undefined) return false;
+      if (im.valor < min || im.valor > max) return false;
+    }
+    return true;
+  }
+
+  function renderListaImoveis() {
+  imoveisCard.innerHTML = '';
+  const filtrados = naoVendidos.filter(passaFiltro);
+  if (filtroResultadoEl) {
+    filtroResultadoEl.textContent = filtroAtivo() ? `${filtrados.length} de ${naoVendidos.length} imóveis` : '';
+    if (filtroLimparEl) filtroLimparEl.style.display = filtroAtivo() ? '' : 'none';
+  }
+  if (filtrados.length === 0) {
+    imoveisCard.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum imóvel bate com esse filtro.</div>';
+    return;
+  }
+  const porCidade = {};
+  filtrados.forEach(im => {
+    const c = im.cidade || 'Cidade a definir';
+    (porCidade[c] = porCidade[c] || []).push(im);
+  });
+  const cidades = Object.keys(porCidade).sort((a, b) => porCidade[b].length - porCidade[a].length || a.localeCompare(b, 'pt-BR'));
+
+  cidades.forEach(cidade => {
+    const listaCidade = porCidade[cidade];
+    const tituloCidade = document.createElement('div');
+    tituloCidade.className = 'imovel-cidade-title';
+    tituloCidade.textContent = `🏙️ ${cidade} (${listaCidade.length})`;
+    imoveisCard.appendChild(tituloCidade);
+
+    const porBairro = {};
+    listaCidade.forEach(im => {
+      const b = im.bairro || 'Bairro a definir';
+      (porBairro[b] = porBairro[b] || []).push(im);
+    });
+    const bairros = Object.keys(porBairro).sort((a, b) => porBairro[b].length - porBairro[a].length || a.localeCompare(b, 'pt-BR'));
+
+    bairros.forEach(bairro => {
+      const listaBairro = porBairro[bairro];
+      const tituloBairro = document.createElement('div');
+      tituloBairro.className = 'imovel-bairro-title';
+      tituloBairro.setAttribute('role', 'button');
+      tituloBairro.setAttribute('tabindex', '0');
+      tituloBairro.setAttribute('aria-expanded', 'false');
+      tituloBairro.innerHTML = `<span class="bairro-chev" aria-hidden="true">▶</span> 📍 ${bairro} (${listaBairro.length})`;
+      imoveisCard.appendChild(tituloBairro);
+
+      // Conteúdo do bairro fica num container colapsável — começa fechado
+      // pra evitar rolagem gigante; toca no título do bairro pra abrir/fechar.
+      const bairroContent = document.createElement('div');
+      bairroContent.className = 'bairro-content';
+      imoveisCard.appendChild(bairroContent);
+
+      const toggleBairro = () => {
+        const abrir = !bairroContent.classList.contains('open');
+        bairroContent.classList.toggle('open', abrir);
+        tituloBairro.classList.toggle('open', abrir);
+        tituloBairro.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+      };
+      tituloBairro.addEventListener('click', toggleBairro);
+      tituloBairro.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleBairro(); }
+      });
+
+      const porTipo = {};
+      listaBairro.forEach(im => {
+        const t = tipoOrdem.includes(im.tipo) ? im.tipo : "Outro";
+        (porTipo[t] = porTipo[t] || []).push(im);
+      });
+
+      tipoOrdem.forEach(tipo => {
+        const lista = porTipo[tipo];
+        if (!lista || lista.length === 0) return;
+
+        const tituloTipo = document.createElement('div');
+        tituloTipo.className = 'imovel-tipo-title';
+        tituloTipo.textContent = `${tipoIcone[tipo] || '🔑'} ${tipoPlural[tipo] || (tipo + 's')} (${lista.length})`;
+        bairroContent.appendChild(tituloTipo);
+
+        lista
+          .slice()
+          .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
+          .forEach(im => bairroContent.appendChild(renderCard(im)));
+      });
+    });
+  });
+  }
+
+  renderListaImoveis();
+  if (filtroBairroEl) {
+    [filtroBairroEl, filtroStatusEl, filtroValorEl].forEach(el => el.addEventListener('change', () => {
+      renderListaImoveis();
+      // filtro ativo: abre todos os bairros pra mostrar o resultado direto
+      if (filtroAtivo()) imoveisCard.querySelectorAll('.bairro-content').forEach(bc => {
+        bc.classList.add('open');
+        const t = bc.previousElementSibling;
+        if (t) { t.classList.add('open'); t.setAttribute('aria-expanded','true'); }
+      });
+    }));
+    filtroLimparEl.addEventListener('click', () => {
+      filtroBairroEl.value = ''; filtroStatusEl.value = ''; filtroValorEl.value = '';
+      renderListaImoveis();
+    });
+  }
+
+  // ---- Vendidos por Thulio: ficam visiveis ate a comissao ser confirmada como paga ----
+  const vendidos = DATA.imoveis.filter(im => im.status === 'Vendido' && !im.comissaoConfirmada);
+  const vendidosCard = document.getElementById('imoveisVendidosCard');
+  if (vendidos.length > 0 && vendidosCard) {
+    document.getElementById('vendidosTitle').style.display = '';
+    document.getElementById('vendidosHint').style.display = '';
+    vendidosCard.style.display = '';
+    vendidos.forEach(im => {
+      const card = renderCard(im);
+      if (im.comissaoTotalVenda || im.comissaoThulioVenda) {
+        const comissaoInfo = document.createElement('div');
+        comissaoInfo.className = 'imovel-meta';
+        comissaoInfo.style.marginTop = '4px';
+        comissaoInfo.innerHTML = `💰 Comissão total: ${im.comissaoTotalVenda ? brl(im.comissaoTotalVenda) : '—'} · Parte de Thúlio: <b>${im.comissaoThulioVenda ? brl(im.comissaoThulioVenda) : '—'}</b>${im.corretorParceiro ? ' · Parceria: ' + im.corretorParceiro : ''}`;
+        card.appendChild(comissaoInfo);
+      }
+      vendidosCard.appendChild(card);
+    });
+  }
+}
+
+// ---- Historico de Negociacoes ----
+document.getElementById('historicoNotas').innerHTML =
+  `<div class="hist-nota">ℹ️ ${DATA.historico.notaAmostra}</div>
+   <div class="hist-nota">${DATA.historico.notaDivergencia}</div>`;
+
+const historicoTabela = document.getElementById('historicoTabela');
+DATA.historico.anos.forEach(a => {
+  const meta = a.meta === null ? '—' : brl(a.meta);
+  const pct = a.pctAtingido === null ? '—' : Math.round(a.pctAtingido * 100) + '%';
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${a.ano}</td><td>${a.nNegocios}</td><td>${brl(a.valorNegociado)}</td><td>${brl(a.comissaoTotal)}</td><td>${meta}</td><td>${pct}</td>`;
+  historicoTabela.appendChild(tr);
+});
+
+new Chart(document.getElementById('chartHistoricoAno'), {
+  type: 'bar',
+  data: {
+    labels: DATA.historico.anos.map(a => String(a.ano)),
+    datasets: [{
+      label: 'Comissão total',
+      data: DATA.historico.anos.map(a => a.comissaoTotal),
+      backgroundColor: BRAND.goldDeep,
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: (ctx) => brl(ctx.raw) } }
+    },
+    scales: { y: { ticks: { callback: (v) => brl(v) } } }
+  }
+});
+
+new Chart(document.getElementById('chartHistoricoSazonalidade'), {
+  type: 'bar',
+  data: {
+    labels: DATA.historico.sazonalidade.map(s => s.mes),
+    datasets: [{
+      label: 'Comissão por mês (ano vigente)',
+      data: DATA.historico.sazonalidade.map(s => s.comissao),
+      backgroundColor: BRAND.dark2,
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: (ctx) => brl(ctx.raw) } }
+    },
+    scales: { y: { ticks: { callback: (v) => brl(v) } } }
+  }
+});
+
+// ---- Conecta TR ----
+(function renderConectaTR() {
+  const ctr = DATA.conectaTR || {};
+  // Contadores calculados ao vivo a partir de indicadoresLista/lista — nunca ficam dessincronizados.
+  const ctrIndicadoresAtivos = (ctr.indicadoresLista || []).filter(i => i.status === 'Ativo').length;
+  const ctrItens = ctr.lista || [];
+  const ctrRegistradas = ctrItens.filter(it => it.status === 'Registrada').length;
+  const ctrCaptadas = ctrItens.filter(it => it.status === 'Captada').length;
+  const ctrVendidas = ctrItens.filter(it => it.status === 'Vendida').length;
+  const ctrValorDevido = ctrItens.filter(it => it.status !== 'Encerrada' && it.status !== 'Perdida').reduce((s, it) => s + (it.valorDevido || 0), 0);
+  // V.G.V. dos imóveis que passaram de "Registrada" (ou seja, já foram captados de fato via indicação),
+  // somando o valor de venda do imóvel vinculado na aba Imóveis — exclui locações, igual ao V.G.V. da Home.
+  // Faz o match pelo "Cód. NNNNN" citado no campo "imovel" da indicação (a posição no array não é confiável,
+  // já que a ordem do array não segue o ID da planilha). Sem "Cód." no texto, não há como casar com segurança
+  // — melhor deixar de fora da soma do que arriscar somar o imóvel errado.
+  const ctrVgvCaptado = ctrItens
+    .filter(it => it.status === 'Captada' || it.status === 'Vendida' || it.status === 'Encerrada')
+    .reduce((s, it) => {
+      const codMatch = (it.imovel || '').match(/Cód\.?\s*(\d+)/i);
+      if (!codMatch) return s;
+      const imovel = (DATA.imoveis || []).find(i => (i.nome || '').includes(codMatch[1]));
+      if (!imovel || imovel.tipoOperacao === 'Locação') return s;
+      return s + (imovel.valor || 0);
+    }, 0);
+  // % de indicações que já saíram do estágio "Registrada" (viraram captação de fato) — enriquece o box de Captadas.
+  const ctrTotalIndicacoes = ctrItens.length;
+  const ctrAlemDeRegistrada = ctrItens.filter(it => it.status !== 'Registrada' && it.status !== 'Perdida').length;
+  const ctrPctCaptacao = ctrTotalIndicacoes ? Math.round((ctrAlemDeRegistrada / ctrTotalIndicacoes) * 100) : 0;
+  document.getElementById('ctrIndicadores').textContent = ctrIndicadoresAtivos;
+  document.getElementById('ctrRegistradas').textContent = ctrRegistradas;
+  document.getElementById('ctrCaptadas').textContent = ctrCaptadas;
+  document.getElementById('ctrCaptadasHint').textContent = ctrTotalIndicacoes ? `${ctrPctCaptacao}% das indicações viraram captação` : 'sem indicações ainda';
+  document.getElementById('ctrVendidas').textContent = ctrVendidas;
+  document.getElementById('ctrValorDevido').textContent = brl(ctrValorDevido);
+  document.getElementById('ctrVgvCaptado').textContent = brl(ctrVgvCaptado);
+
+  const list = document.getElementById('conectaTRList');
+  const indicadoresCard = document.getElementById('ctrIndicadoresCard');
+  const indicadoresList = document.getElementById('conectaTRIndicadoresList');
+  const tituloEl = document.getElementById('ctrIndicacoesTitulo');
+  const itens = ctr.lista || [];
+  const indicadores = ctr.indicadoresLista || [];
+  const statusClass = { "Registrada": "novo", "Captada": "emdia", "Vendida": "emdia", "Encerrada": "atrasado" };
+  let filtroAtivo = null; // null | "ativos" | "Registrada" | "Captada" | "Vendida"
+
+  function renderIndicacoes() {
+    const filtradas = filtroAtivo && filtroAtivo !== 'ativos' ? itens.filter(it => it.status === filtroAtivo) : itens;
+    tituloEl.textContent = filtroAtivo && filtroAtivo !== 'ativos' ? `📇 Indicações — ${filtroAtivo}` : '📇 Indicações';
+    if (itens.length === 0) {
+      list.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhuma indicação recebida ainda. Assim que alguém indicar um imóvel pelo Forms do Conecta TR, ela aparece aqui com protocolo e status.</div>';
+      return;
+    }
+    if (filtradas.length === 0) {
+      list.innerHTML = `<div style="font-size:13px;color:#8A9186;">Nenhuma indicação com status "${filtroAtivo}" no momento.</div>`;
+      return;
+    }
+    list.innerHTML = filtradas.map(it => `
+      <div class="lead-card">
+        <div class="lead-top">
+          <span class="lead-name">${it.protocolo || '—'} · ${it.imovel || ''}</span>
+          <span class="badge ${statusClass[it.status] || 'novo'}">${it.status || '—'}</span>
+        </div>
+        <div class="lead-meta">
+          <span>Indicador: <b>${it.indicador || '—'}</b></span>
+          <span>Proprietário: <b>${it.proprietario || '—'}</b></span>
+          <span>Valor devido: <b>${brl(it.valorDevido || 0)}</b></span>
+        </div>
+        ${it.vinculadoId ? `<div class="match-line"><span class="match-chip">🔗 Vinculado à aba Imóveis (ID ${it.vinculadoId})</span></div>` : ''}
+      </div>`).join('');
+  }
+
+  function renderIndicadores() {
+    if (indicadores.length === 0) {
+      indicadoresList.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum indicador cadastrado ainda.</div>';
+      return;
+    }
+    indicadoresList.innerHTML = indicadores.map(ind => {
+      let waHtml = '';
+      if (ind.telefone) {
+        const digits = String(ind.telefone).replace(/\D/g, '');
+        const withCountry = digits.startsWith('55') ? digits : '55' + digits;
+        waHtml = `<a class="wa-link" href="https://wa.me/${withCountry}" target="_blank" rel="noopener">💬 WhatsApp</a>`;
+      }
+      return `
+      <div class="lead-card">
+        <div class="lead-top">
+          <span class="lead-name">${ind.nome || '—'}</span>
+          <span class="badge ${ind.status === 'Ativo' ? 'emdia' : 'atrasado'}">${ind.status || '—'}</span>
+        </div>
+        <div class="lead-meta"><span>${waHtml}</span></div>
+      </div>`;
+    }).join('');
+  }
+
+  function aplicarFiltro(novoFiltro) {
+    filtroAtivo = (filtroAtivo === novoFiltro) ? null : novoFiltro;
+    document.querySelectorAll('.kpi-clickable').forEach(el => {
+      const ativo = el.dataset.ctrFilter === filtroAtivo;
+      el.classList.toggle('active', ativo);
+      el.setAttribute('aria-pressed', ativo ? 'true' : 'false');
+    });
+    indicadoresCard.style.display = (filtroAtivo === 'ativos') ? '' : 'none';
+    renderIndicacoes();
+  }
+
+  document.querySelectorAll('.kpi-clickable').forEach(el => {
+    el.addEventListener('click', () => aplicarFiltro(el.dataset.ctrFilter));
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); aplicarFiltro(el.dataset.ctrFilter); }
+    });
+  });
+
+  renderIndicadores();
+  renderIndicacoes();
+})();
+
+// Títulos de evento vindos do Calendar são longos demais para uma coluna de 1/7
+// da tela ("Visita – Califórnia Gardens (Cód. 10627) — clientes Monique e Caio,
+// corretor Madson Oliveira (CRECI/RN 3385)"). Aqui fica só a parte essencial;
+// o título completo continua disponível no title/tooltip.
+function resumirEvento(titulo) {
+  if (!titulo) return '';
+  let t = String(titulo).trim();
+
+  // Preserva um emoji inicial (ex: ⏳ de "horário a confirmar") — ele carrega
+  // informação. Sem isso o prefixo atrapalhava os recortes seguintes.
+  let prefixo = '';
+  const mEmoji = t.match(/^([^\p{L}\p{N}]+)\s*/u);
+  if (mEmoji) { prefixo = mEmoji[1].trim() + ' '; t = t.slice(mEmoji[0].length); }
+
+  t = t.replace(/^Visita\s*[–—-]\s*/i, '');  // "Visita – X" -> "X"
+  t = t.split(/\s+—\s+/)[0];                // corta só no travessão longo (" — clientes ...")
+  t = t.replace(/\s*\(CRECI[^)]*\)/i, '').trim();
+
+  if (!t) t = String(titulo).replace(/^[^\p{L}\p{N}]+/u, '').trim();
+  if (t.length > 42) t = t.slice(0, 42).trim() + '…';
+  return (prefixo + t).trim();
+}
+
+(function buscaGlobal() {
+  const input = document.getElementById('buscaGlobal');
+  const box = document.getElementById('buscaResultados');
+  if (!input || !box) return;
+
+  function norm(s) {
+    return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function buscar(q) {
+    const n = norm(q);
+    if (n.length < 2) return null;
+    const leads = (DATA.leads || []).filter(l =>
+      norm(l.nome).includes(n) || String(l.telefone || '').includes(n.replace(/\D/g, '') || '␀') ||
+      norm(l.interesse).includes(n) || norm(l.obs).includes(n)
+    ).slice(0, 6);
+    const imoveis = (DATA.imoveis || []).filter(im =>
+      norm(im.nome).includes(n) || norm(im.bairro).includes(n) ||
+      norm(im.proprietario).includes(n) || norm(im.obs).includes(n)
+    ).slice(0, 6);
+    const indicacoes = ((DATA.conectaTR && DATA.conectaTR.lista) || []).filter(x =>
+      norm(x.protocolo).includes(n) || norm(x.imovel).includes(n) ||
+      norm(x.indicador).includes(n) || norm(x.proprietario).includes(n)
+    ).slice(0, 4);
+    return { leads, imoveis, indicacoes };
+  }
+
+  function fechar() { box.style.display = 'none'; box.innerHTML = ''; }
+
+  function render(r) {
+    if (!r) { fechar(); return; }
+    const total = r.leads.length + r.imoveis.length + r.indicacoes.length;
+    if (total === 0) {
+      box.innerHTML = '<div class="busca-vazio">Nada encontrado — tenta outro termo?</div>';
+      box.style.display = 'block';
+      return;
+    }
+    let html = '';
+    if (r.leads.length) {
+      html += '<div class="busca-grupo">Clientes</div>' + r.leads.map(l =>
+        `<button type="button" class="busca-item" data-tipo="lead" data-ref="${l.id ?? esc(l.nome)}">${esc(l.nome)}<small>${esc(l.fase)} · ${esc(l.temperatura)}${l.interesse ? ' · ' + esc(l.interesse) : ''}</small></button>`
+      ).join('');
+    }
+    if (r.imoveis.length) {
+      html += '<div class="busca-grupo">Imóveis</div>' + r.imoveis.map(im =>
+        `<button type="button" class="busca-item" data-tipo="imovel" data-bairro="${esc(im.bairro || '')}">${esc(im.nome)}<small>${esc(im.status)}${im.bairro ? ' · ' + esc(im.bairro) : ''}${im.valor ? ' · ' + brl(im.valor) : ''}</small></button>`
+      ).join('');
+    }
+    if (r.indicacoes.length) {
+      html += '<div class="busca-grupo">Conecta TR</div>' + r.indicacoes.map(x =>
+        `<button type="button" class="busca-item" data-tipo="indicacao">${esc(x.protocolo)}<small>${esc(x.imovel)} · ${esc(x.status)}</small></button>`
+      ).join('');
+    }
+    box.innerHTML = html;
+    box.style.display = 'block';
+  }
+
+  let deb = null;
+  input.addEventListener('input', () => {
+    clearTimeout(deb);
+    deb = setTimeout(() => render(buscar(input.value)), 150);
+  });
+
+  box.addEventListener('click', (e) => {
+    const item = e.target.closest('.busca-item');
+    if (!item) return;
+    const ativar = window.ativarAba || function(){};
+    if (item.dataset.tipo === 'lead') {
+      ativar('pipeline');
+      if (window.abrirHistoricoLead) window.abrirHistoricoLead(item.dataset.ref);
+    } else if (item.dataset.tipo === 'imovel') {
+      ativar('imoveis');
+      const fb = document.getElementById('filtroBairro');
+      if (fb && item.dataset.bairro) {
+        fb.value = item.dataset.bairro;
+        fb.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    } else {
+      ativar('conectatr');
+    }
+    input.value = '';
+    fechar();
+  });
+
+  // "/" foca a busca de qualquer lugar (fora de campos de texto); Esc fecha.
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && !e.target.closest('input, textarea, select')) {
+      e.preventDefault();
+      input.focus();
+    }
+    if (e.key === 'Escape' && box.style.display !== 'none') fechar();
+  });
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.busca-wrap')) fechar();
+  });
+})();
+
+(function botaoCarregarNotas() {
+  const box = document.getElementById('syncBox');
+  const btn = document.getElementById('btnCarregarNotas');
+  const status = document.getElementById('syncStatus');
+  if (!box || !btn || !status) return;
+
+  // window.cowork só existe quando o painel é aberto como artifact dentro do
+  // app do Claude. Na cópia do Cloudflare ou no arquivo local esse botão não
+  // teria como acionar nada — então nem aparece, em vez de dar erro ao clicar.
+  const dentroDoCowork = typeof window.cowork === 'object'
+    && window.cowork !== null
+    && typeof window.cowork.runScheduledTask === 'function';
+
+  box.style.display = 'flex';
+
+  if (dentroDoCowork) {
+    // Caminho ideal: o painel consegue disparar a rotina direto.
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      status.className = 'sync-status';
+      status.textContent = 'Chamando… vou ler suas anotações e incorporar ao histórico.';
+      try {
+        await window.cowork.runScheduledTask('carregar-notas-crm');
+        status.className = 'sync-status ok';
+        status.textContent = '✓ Pedido enviado. Acompanhe a resposta no chat — o painel atualiza quando eu terminar.';
+      } catch (e) {
+        status.className = 'sync-status erro';
+        status.textContent = 'Não consegui chamar a tarefa. Me peça no chat: "carrega as notas".';
+        btn.disabled = false;
+      }
+    });
+    return;
+  }
+
+  // Fora do Cowork (Cloudflare ou arquivo local) uma página web não tem como
+  // iniciar uma conversa no chat. Então o botão faz a próxima melhor coisa:
+  // junta as anotações pendentes num texto pronto para colar.
+  const textarea = document.getElementById('syncTexto');
+  btn.textContent = '📋 Copiar anotações pendentes';
+  status.textContent = 'Copia suas anotações num texto pronto — cole no chat do Claude e eu incorporo ao histórico.';
+
+  async function coletarNotas() {
+    let remotas = [];
+    try {
+      const r = await fetch('/api/notas', { cache: 'no-store' });
+      if (r.ok) {
+        const j = await r.json();
+        if (Array.isArray(j)) remotas = j;
+      }
+    } catch (e) { /* sem backend aqui */ }
+    let locais = [];
+    try {
+      const raw = localStorage.getItem('painelEmobiNotasLocais');
+      const arr = raw ? JSON.parse(raw) : [];
+      if (Array.isArray(arr)) locais = arr;
+    } catch (e) { /* localStorage indisponível */ }
+    return remotas.concat(locais);
+  }
+
+  btn.addEventListener('click', async () => {
+    btn.disabled = true;
+    status.className = 'sync-status';
+    status.textContent = 'Juntando…';
+    const notas = await coletarNotas();
+
+    if (notas.length === 0) {
+      status.className = 'sync-status';
+      status.textContent = 'Nenhuma anotação pendente no momento.';
+      btn.disabled = false;
+      return;
+    }
+
+    const linhas = notas.map(n => {
+      let quando = '';
+      if (n.criadaEm) {
+        const d = new Date(n.criadaEm);
+        if (!isNaN(d)) quando = ' (' + d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) + ')';
+      }
+      return `- ${n.lead}${quando}: ${n.texto}`;
+    });
+    const texto = 'Carrega essas anotações no CRM:\n\n' + linhas.join('\n');
+
+    let copiou = false;
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(texto);
+        copiou = true;
+      }
+    } catch (e) { /* cai no plano B */ }
+
+    if (copiou) {
+      status.className = 'sync-status ok';
+      status.textContent = `✓ ${notas.length} ${notas.length === 1 ? 'anotação copiada' : 'anotações copiadas'}. Cole no chat do Claude.`;
+    } else {
+      // file:// e navegadores sem clipboard: mostra o texto já selecionado.
+      textarea.style.display = 'block';
+      textarea.value = texto;
+      textarea.focus();
+      textarea.select();
+      status.className = 'sync-status ok';
+      status.textContent = `${notas.length} ${notas.length === 1 ? 'anotação pronta' : 'anotações prontas'} — o texto já está selecionado abaixo, é só copiar (Cmd+C) e colar no chat.`;
+    }
+    btn.disabled = false;
+  });
+})();
+
+(function renderOrigemResultado() {
+  const el = document.getElementById('origemResultado');
+  if (!el) return;
+  const leads = DATA.leads || [];
+  if (leads.length === 0) { el.innerHTML = '<div style="font-size:13px;color:#8A9186;">Sem leads ainda.</div>'; return; }
+
+  const porOrigem = {};
+  leads.forEach(l => {
+    const o = l.origem || 'Não informada';
+    porOrigem[o] = porOrigem[o] || { n: 0, somaFase: 0, visitou: 0, proposta: 0 };
+    const idx = l.maiorFaseIndex || 1;
+    porOrigem[o].n++;
+    porOrigem[o].somaFase += idx;
+    if (idx >= 5) porOrigem[o].visitou++;   // chegou a Visita Realizada
+    if (idx >= 6) porOrigem[o].proposta++;  // chegou a Proposta Enviada
+  });
+
+  const linhas = Object.entries(porOrigem)
+    .map(([origem, d]) => ({
+      origem, n: d.n,
+      media: d.somaFase / d.n,
+      pctVisita: Math.round(d.visitou / d.n * 100),
+      pctProposta: Math.round(d.proposta / d.n * 100)
+    }))
+    .sort((a, b) => b.media - a.media);
+
+  const melhor = linhas[0];
+  el.innerHTML = `<table class="tbl-mini">
+    <thead><tr><th>Origem</th><th style="text-align:right">Leads</th><th style="text-align:right">Fase média</th><th style="text-align:right">Visitaram</th><th style="text-align:right">Propuseram</th></tr></thead>
+    <tbody>${linhas.map(l => `<tr class="${l.origem === melhor.origem && linhas.length > 1 ? 'destaque' : ''}">
+      <td>${l.origem}</td>
+      <td class="num">${l.n}</td>
+      <td class="num">${l.media.toFixed(1)}</td>
+      <td class="num">${l.pctVisita}%</td>
+      <td class="num">${l.pctProposta}%</td>
+    </tr>`).join('')}</tbody>
+  </table>
+  <div class="tbl-nota">"Fase média" = até onde o lead daquele canal costuma chegar no funil (1 = Novo Lead, 8 = Fechado Ganho).
+  ${leads.length < 30 ? ' <b>Amostra ainda pequena (' + leads.length + ' leads)</b> — trate como tendência, não como conclusão fechada.' : ''}</div>`;
+})();
+
+(function renderMotivosPerda() {
+  const el = document.getElementById('motivosPerda');
+  if (!el) return;
+  const comMotivo = (DATA.leads || []).filter(l => l.motivoPerda);
+  if (comMotivo.length === 0) {
+    el.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum motivo registrado ainda. O motivo é preenchido quando um lead é perdido ou pausado — em alguns meses isso vira o diagnóstico do que mais faz você perder venda.</div>';
+    return;
+  }
+  const cont = {};
+  comMotivo.forEach(l => { (cont[l.motivoPerda] = cont[l.motivoPerda] || []).push(l.nome); });
+  const linhas = Object.entries(cont).sort((a, b) => b[1].length - a[1].length);
+  const total = comMotivo.length;
+  el.innerHTML = `<table class="tbl-mini">
+    <thead><tr><th>Motivo</th><th style="text-align:right">Qtd</th><th>Quem</th></tr></thead>
+    <tbody>${linhas.map(([m, nomes]) => `<tr>
+      <td>${m}</td><td class="num">${nomes.length}</td><td style="color:#8A9186;">${nomes.join(', ')}</td>
+    </tr>`).join('')}</tbody>
+  </table>
+  <div class="tbl-nota">${total} de ${(DATA.leads || []).length} leads com motivo registrado.</div>`;
+})();
+
+(function renderSemana() {
+  const el = document.getElementById('semanaStrip');
+  if (!el) return;
+
+  // Junta tudo que o painel conhece de agenda numa lista só, por data.
+  const eventos = [];
+  function pushAll(arr, dataFallback) {
+    (arr || []).forEach(ev => {
+      const data = ev.data || dataFallback;
+      if (data) eventos.push({ data: String(data).slice(0, 10), hora: ev.hora || '', titulo: ev.titulo || '' });
+    });
+  }
+  const hoje = new Date();
+  const isoDe = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  pushAll(AGENDA_DIA.hoje, null);
+  pushAll(AGENDA_DIA.amanha, null);
+  pushAll(AGENDA_DIA.proximos, null);
+
+  const porData = {};
+  eventos.forEach(ev => { (porData[ev.data] = porData[ev.data] || []).push(ev); });
+
+  const DOW = ['dom','seg','ter','qua','qui','sex','sáb'];
+  let html = '<div class="semana-grid">';
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(hoje); d.setDate(d.getDate() + i);
+    const iso = isoDe(d);
+    const doDia = (porData[iso] || []).sort((a,b) => (a.hora || '').localeCompare(b.hora || ''));
+    const classes = ['semana-dia'];
+    if (i === 0) classes.push('hoje');
+    if (doDia.length === 0) classes.push('vazio');
+    html += `<div class="${classes.join(' ')}">
+      <div class="semana-dow">${DOW[d.getDay()]}${i === 0 ? ' · hoje' : ''}</div>
+      <div class="semana-num">${d.getDate()}</div>` +
+      (doDia.length
+        ? doDia.map(ev => {
+            const completo = ((ev.hora ? ev.hora + ' ' : '') + ev.titulo).replace(/"/g, '&quot;');
+            return `<div class="semana-ev" title="${completo}">${ev.hora ? `<span class="semana-hora">${ev.hora}</span>` : ''}${resumirEvento(ev.titulo)}</div>`;
+          }).join('')
+        : '<div class="semana-vazia-msg">livre</div>') +
+    `</div>`;
+  }
+  html += '</div>';
+  const totalSemana = eventos.filter(ev => {
+    const diff = Math.floor((new Date(ev.data.slice(0,4), Number(ev.data.slice(5,7))-1, ev.data.slice(8,10)) - new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate())) / 86400000);
+    return diff >= 0 && diff < 7;
+  }).length;
+  html += `<div class="termo-nota">${totalSemana === 0 ? 'Nenhum compromisso nos próximos 7 dias.' : totalSemana + (totalSemana === 1 ? ' compromisso' : ' compromissos') + ' nos próximos 7 dias.'}</div>`;
+  el.innerHTML = html;
+})();
+
+(function renderTermometroFunil() {
+  const el = document.getElementById('termometroFunil');
+  if (!el) return;
+  const leads = DATA.leads || [];
+  if (leads.length === 0) {
+    el.innerHTML = '<div style="font-size:13px;color:#8A9186;">Sem leads cadastrados ainda.</div>';
+    return;
+  }
+  // Quantos leads já ALCANÇARAM cada fase (não quantos estão nela agora) —
+  // é isso que mostra onde o funil aperta.
+  const alcancaram = FUNIL_CONVERSAO_FASES.map((_, i) =>
+    leads.filter(l => (l.maiorFaseIndex || 0) >= (i + 1)).length
+  );
+  const base = alcancaram[0] || 1;
+
+  // Gargalo = maior queda percentual entre duas fases consecutivas.
+  // Só considera quedas onde a fase anterior tem volume relevante (>=2), senão
+  // uma fase com 1-2 leads vira "100% de queda" e rouba o diagnóstico real.
+  let gargaloIdx = -1, piorQueda = 0;
+  for (let i = 1; i < alcancaram.length; i++) {
+    if (alcancaram[i - 1] < 3) continue;  // menos de 3 leads não sustenta leitura de %
+    const queda = (alcancaram[i - 1] - alcancaram[i]) / alcancaram[i - 1];
+    if (queda > piorQueda) { piorQueda = queda; gargaloIdx = i; }
+  }
+
+  // Vendas fechadas SEM passar pelo pipeline de leads (compradores que vieram
+  // pelo lado da captação). Não entram no funil — se entrassem só no fim,
+  // inflariam a taxa de conversão de quem nunca foi contado no topo.
+  const vendasForaDoFunil = (DATA.imoveis || []).filter(im => im.status === 'Vendido').length;
+
+  el.innerHTML = FUNIL_CONVERSAO_FASES.map((fase, i) => {
+    const n = alcancaram[i];
+    const pct = Math.round((n / base) * 100);
+    const larg = base > 0 ? Math.max(n / base * 100, n > 0 ? 3 : 0) : 0;
+    const isGargalo = i === gargaloIdx;
+    return `<div class="termo-row">
+      <span class="termo-label">${fase}</span>
+      <span class="termo-bar-wrap"><span class="termo-bar${isGargalo ? ' gargalo' : ''}" style="width:${larg}%"></span></span>
+      <span class="termo-val"><b>${n}</b> · ${pct}%</span>
+    </div>`;
+  }).join('')
+    + (gargaloIdx > 0
+      ? `<div class="termo-nota">Maior perda entre <b>${FUNIL_CONVERSAO_FASES[gargaloIdx - 1]}</b> e <b>${FUNIL_CONVERSAO_FASES[gargaloIdx]}</b> — de ${alcancaram[gargaloIdx - 1]} para ${alcancaram[gargaloIdx]} (${Math.round(piorQueda * 100)}% de queda). É onde vale atacar primeiro.</div>`
+      : '')
+    + (vendasForaDoFunil > 0
+      ? `<div class="termo-extra">➕ <b>${vendasForaDoFunil}</b> ${vendasForaDoFunil === 1 ? 'venda fechada fora do funil' : 'vendas fechadas fora do funil'} (compradores que vieram pela captação e não passaram pelo pipeline). Ficam de fora do cálculo acima de propósito — somar só no fim distorceria a taxa de conversão.</div>`
+      : '');
+})();
+
+(function renderProspeccao() {
+  const list = document.getElementById('prospeccaoList');
+  if (!list) return;
+  const itens = DATA.prospeccaoCaptacao || [];
+  if (itens.length === 0) {
+    list.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum proprietário em prospecção no momento.</div>';
+    return;
+  }
+  const statusClass = { "Contato Inicial": "novo", "Aguardando Retorno": "atrasado", "Convertido em Captação": "emdia", "Descartado": "descartado" };
+  list.innerHTML = itens.map(it => `
+    <div class="lead-card">
+      <div class="lead-top">
+        <span class="lead-name">${it.nome || '—'}</span>
+        <span class="badge ${statusClass[it.status] || 'novo'}">${it.status || '—'}</span>
+        ${it.statusPrazo ? `<span class="badge ${it.statusPrazo.indexOf('Atrasado') !== -1 ? 'atrasado' : 'emdia'}">${it.statusPrazo}</span>` : ''}
+      </div>
+      <div class="lead-meta">
+        <span>Imóvel/Bairro: <b>${it.imovelBairro || '—'}</b></span>
+        <span>Indicação: <b>${it.indicacao || '—'}</b></span>
+        ${it.telefone ? `<span>Tel: <b>${formatarTel(it.telefone)}</b></span>` : ''}
+      </div>
+      ${it.proximaAcao ? `<div class="lead-meta" style="margin-top:4px;"><span>Próxima ação: <b>${it.proximaAcao}</b>${it.dataProximaAcao ? ' — ' + it.dataProximaAcao.split('-').reverse().join('/') : ''}</span></div>` : ''}
+      ${it.obs ? `<div style="font-size:var(--fs-2xs);color:#8A9186;margin-top:6px;">${it.obs}</div>` : ''}
+    </div>`).join('');
+})();
+</script>
+</body>
+</html>
