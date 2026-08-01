@@ -350,6 +350,15 @@
     background: #FFF9E6; border: 1px solid #F0E2B0; border-radius: 8px;
     padding: 8px 10px; margin-top: 8px; font-size: var(--fs-2xs); color: #6B5D2E;
   }
+  .notas-barra { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:10px; font-size: var(--fs-2xs); color:#8A9186; }
+  .nota-limpar-todas { font-family:inherit; font-size:10px; font-weight:600; border:1px solid #DCE3D3; background:#EEF2E9;
+    color:#4A5240; border-radius:7px; padding:5px 10px; cursor:pointer; }
+  .nota-limpar-todas:hover:not(:disabled) { background:#E2E8DA; }
+  .nota-limpar-todas:disabled { opacity:.55; cursor:default; }
+  .nota-descartar { font-family:inherit; font-size:10px; font-weight:600; border:1px solid #E4D6A8; background:#FFF6DC;
+    color:#7A6524; border-radius:6px; padding:4px 9px; cursor:pointer; margin-top:6px; }
+  .nota-descartar:hover:not(:disabled) { background:#F7EBC6; }
+  .nota-descartar:disabled { opacity:.5; cursor:default; }
   .timeline-item { border-left: 2px solid #E9EBE4; padding: 2px 0 14px 14px; margin-left: 4px; position: relative; }
   .timeline-item:last-child { padding-bottom: 2px; }
   .timeline-item::before { content:''; position:absolute; left:-5px; top:4px; width:8px; height:8px; border-radius:50%; background: var(--brand-gold); }
@@ -1962,11 +1971,57 @@ if (leadsInativosArr.length === 0) {
     return notasCache;
   }
 
+  // Remove uma nota da fila (nuvem e/ou navegador). Sem isso a nota ficava
+  // "aguardando incorporação" para sempre, mesmo já estando no histórico —
+  // poluindo o card e dando a impressão de que nada tinha sido feito.
+  function removerNotaLocal(id) {
+    try {
+      const raw = localStorage.getItem(NOTAS_LOCAL_KEY);
+      const arr = raw ? JSON.parse(raw) : [];
+      localStorage.setItem(NOTAS_LOCAL_KEY, JSON.stringify(arr.filter(n => n && n.id !== id)));
+    } catch (e) { /* nada a fazer */ }
+  }
+
+  async function descartarNota(n) {
+    if (!n) return;
+    if (n.local) removerNotaLocal(n.id);
+    else {
+      try {
+        await fetch('/api/notas', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: n.id })
+        });
+      } catch (e) { /* offline: sai da tela mesmo assim */ }
+    }
+    if (notasCache) notasCache = notasCache.filter(x => x !== n);
+  }
+
   function renderNotasPendentes(nome) {
     if (!notaPendentes) return;
     notaPendentes.innerHTML = '';
     if (!notasCache) return;
     const minhas = notasCache.filter(n => n && n.lead === nome);
+    if (minhas.length === 0) return;
+
+    if (minhas.length > 1) {
+      const barra = document.createElement('div');
+      barra.className = 'notas-barra';
+      barra.innerHTML = `<span>${minhas.length} anotações aguardando</span>`;
+      const limpar = document.createElement('button');
+      limpar.type = 'button';
+      limpar.className = 'nota-limpar-todas';
+      limpar.textContent = '✓ Já incorporei todas — limpar';
+      limpar.addEventListener('click', async () => {
+        limpar.disabled = true;
+        limpar.textContent = 'Limpando…';
+        for (const n of minhas.slice()) await descartarNota(n);
+        renderNotasPendentes(nome);
+      });
+      barra.appendChild(limpar);
+      notaPendentes.appendChild(barra);
+    }
+
     minhas.forEach(n => {
       const div = document.createElement('div');
       div.className = 'nota-pendente';
@@ -1979,7 +2034,23 @@ if (leadsInativosArr.length === 0) {
         }
       }
       const ondeSalvou = n.local ? ' · salva só neste navegador' : '';
-      div.textContent = '⏳ Aguardando incorporação' + (quando ? ' (em ' + quando + ')' : '') + ondeSalvou + ': ' + (n.texto || '');
+      const txt = document.createElement('div');
+      txt.textContent = '⏳ Aguardando incorporação' + (quando ? ' (em ' + quando + ')' : '') + ondeSalvou + ': ' + (n.texto || '');
+      div.appendChild(txt);
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'nota-descartar';
+      btn.textContent = '✓ já entrou no histórico';
+      btn.title = 'Some daqui — use depois que a nota já tiver sido incorporada';
+      btn.addEventListener('click', async () => {
+        btn.disabled = true;
+        await descartarNota(n);
+        div.style.transition = 'opacity .25s';
+        div.style.opacity = '0';
+        setTimeout(() => renderNotasPendentes(nome), 260);
+      });
+      div.appendChild(btn);
       notaPendentes.appendChild(div);
     });
   }
