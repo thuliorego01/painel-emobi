@@ -246,6 +246,9 @@
     .ctr-motivo { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
     .ctr-motivo b { color:#E5D6A0; }
     .ctr-encerradas { border-top-color:#2C342A; }
+    .ctr-linha { background:#20261E; border-color:#2C342A; }
+    .ctr-linha:hover, .ctr-linha:focus-visible { border-color:#3A4435; }
+    .ctr-mini-chip { background:#252D22; border-color:#39423577; color:#B9C2B0; }
     /* Blocos de temperatura no escuro: mantêm a identidade da cor, mas com
        fundo profundo em vez de tinta clara. */
     .temp-secao.t-quente { background:#241A18; border-color:#3A2723; }
@@ -617,6 +620,21 @@
   .ctr-encerradas > summary b { color:#B4300F; }
   .ctr-encerradas > summary:hover { color: var(--text-strong); }
   .ctr-encerradas-corpo { margin-top:9px; opacity:.85; }
+  /* Linha compacta de indicação — 2 linhas em vez de 5, detalhe abre na janela */
+  .ctr-linha { border:1px solid #E9EBE4; border-radius:10px; padding:9px 12px; margin-bottom:7px; background:#fff; cursor:pointer; transition:border-color .15s, box-shadow .15s; }
+  .ctr-linha:hover, .ctr-linha:focus-visible { border-color:#CFD6C6; box-shadow:0 2px 8px rgba(18,22,14,.07); outline:none; }
+  .ctr-linha.ctr-parada { border-left:4px solid #E8892B; }
+  .ctr-linha-topo { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .ctr-linha-nome { font-size: var(--fs-xs); font-weight:700; color: var(--text-strong); line-height:1.3; }
+  .ctr-linha-selos { display:inline-flex; align-items:center; gap:5px; flex:0 0 auto; }
+  .ctr-linha-sub { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:5px; font-size: var(--fs-2xs); color:#8A9186; }
+  .ctr-seta { color:#B6BBB0; }
+  .ctr-mini-chip { background:#F1F4EC; border:1px solid #DCE3D3; border-radius:6px; padding:1px 7px; color:#4A5240; }
+  .ctr-mini-chip.pagar { background:#EDF4E8; border-color:#D8E5D0; color:#2E7D32; }
+  .ctr-mini-chip.motivo { background:#FFFBEF; border-color:#F0E2B0; color:#8A6A2E; }
+  .ctr-ind.clicavel { cursor:pointer; transition:border-color .15s, box-shadow .15s; }
+  .ctr-ind.clicavel:hover, .ctr-ind.clicavel:focus-visible { border-color:#CFD6C6; box-shadow:0 2px 8px rgba(18,22,14,.07); outline:none; }
+  .ctr-ind-dica { font-size:10px; color:#B6BBB0; margin-top:6px; }
   .wa-link.confirm { background:#FBF6EA; color:#8C6D1F; margin-left:6px; }
   .wa-link.confirm:hover { background:#F3EBD2; }
   .wa-link.reativar { background:#FBE4E4; color:#B3261E; margin-left:6px; }
@@ -1115,6 +1133,17 @@
   </main>
 
 </div>
+</div>
+
+<div class="modal-overlay" id="ctrModalOverlay" role="dialog" aria-modal="true" aria-labelledby="ctrModalTitulo" tabindex="-1">
+  <div class="modal-content">
+    <button class="modal-close" id="ctrModalClose" aria-label="Fechar">✕</button>
+    <div class="modal-header">
+      <div class="lead-name" id="ctrModalTitulo" style="font-size:17px;"></div>
+      <div id="ctrModalBadges" style="margin-top:6px;"></div>
+    </div>
+    <div id="ctrModalCorpo" style="margin-top:12px;"></div>
+  </div>
 </div>
 
 <div class="modal-overlay" id="leadModalOverlay" role="dialog" aria-modal="true" aria-labelledby="leadModalNome" tabindex="-1">
@@ -3154,24 +3183,21 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
       const nomeInd = ind ? ind.nome : (it.indicador || '—');
       const waInd = ind && ind.telefone ? waHrefCtr(ind.telefone) : null;
       const waProp = it.telefoneProprietario ? waHrefCtr(it.telefoneProprietario) : null;
+      // Card enxuto: duas linhas. O detalhe completo (contatos, vínculo,
+      // motivo, ações) abre na janela ao clicar — mesmo padrão do pipeline.
       return `
-      <div class="lead-card ctr-card${parada ? ' ctr-parada' : ''}">
-        <div class="lead-top">
-          <span class="lead-name">${esc(it.protocolo || '—')} · ${esc(it.imovel || '')}</span>
-          <span>${parada ? `<span class="ctr-idade alerta">⚠️ ${dias}d parada</span>` : (dias !== null ? `<span class="ctr-idade${atencao ? ' atencao' : ''}">${dias === 0 ? 'hoje' : dias + 'd'}</span>` : '')}
+      <div class="ctr-linha${parada ? ' ctr-parada' : ''}" role="button" tabindex="0" data-ctr-indicacao="${esc(it.protocolo)}">
+        <div class="ctr-linha-topo">
+          <span class="ctr-linha-nome">${esc(it.protocolo || '—')} · ${esc(it.imovel || '')}</span>
+          <span class="ctr-linha-selos">${parada ? `<span class="ctr-idade alerta">⚠️ ${dias}d</span>` : (dias !== null ? `<span class="ctr-idade${atencao ? ' atencao' : ''}">${dias === 0 ? 'hoje' : dias + 'd'}</span>` : '')}
             <span class="badge ${statusClass[it.status] || 'novo'}">${esc(it.status || '—')}</span></span>
         </div>
-        <div class="lead-meta">
-          <span>Indicador: <b>${esc(nomeInd)}</b></span>
-          <span>Proprietário: <b>${esc(it.proprietario || '—')}</b></span>
-          ${it.valorDevido ? `<span>💰 A pagar: <b>${brl(it.valorDevido)}</b></span>` : ''}
+        <div class="ctr-linha-sub">
+          <span>${esc(nomeInd)} <span class="ctr-seta">→</span> ${esc(it.proprietario || '—')}</span>
+          ${it.vinculadoId ? `<span class="ctr-mini-chip">🔗 ID ${it.vinculadoId}</span>` : ''}
+          ${it.valorDevido ? `<span class="ctr-mini-chip pagar">💰 ${brl(it.valorDevido)}</span>` : ''}
+          ${it.motivoPerda ? `<span class="ctr-mini-chip motivo">🚫 ${esc(it.motivoPerda)}</span>` : ''}
         </div>
-        ${it.vinculadoId ? `<div class="match-line"><span class="match-chip">🔗 Vinculado à aba Imóveis (ID ${it.vinculadoId})</span></div>` : ''}
-        ${it.motivoPerda ? `<div class="ctr-motivo">🚫 <b>${esc(it.motivoPerda)}</b>${it.detalhePerda ? ' — ' + esc(it.detalhePerda) : ''}</div>` : ''}
-        ${(waInd || waProp) && it.status !== 'Perdida' ? `<div class="lead-actions">
-          ${waProp ? `<a class="wa-link" href="${waProp}" target="_blank" rel="noopener">💬 Falar com o proprietário</a>` : ''}
-          ${waInd ? `<a class="wa-link registrar" href="${waInd}" target="_blank" rel="noopener">💬 Avisar ${esc(nomeInd.split(' ')[0])}</a>` : ''}
-        </div>` : ''}
       </div>`;
   }
 
@@ -3241,16 +3267,122 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
       const wa = waHrefCtr(s.ind.telefone);
       const topo = i === 0 && s.total > 0;
       return `
-      <div class="ctr-ind${s.total === 0 ? ' inativo' : ''}">
+      <div class="ctr-ind${s.total === 0 ? ' inativo' : ''}${s.total > 0 ? ' clicavel' : ''}"${s.total > 0 ? ` role="button" tabindex="0" data-ctr-indicador="${s.ind.id}"` : ''}>
         <div class="ctr-ind-topo">
           <span class="ctr-ind-nome">${topo ? '🏆 ' : ''}${esc(s.ind.nome || '—')}</span>
           ${s.total === 0 ? '<span class="ctr-ind-zero">sem indicações</span>' : `<span class="ctr-ind-num">${s.total}</span>`}
         </div>
         ${s.total > 0 ? `<div class="ctr-ind-meta">${s.captadas} captada(s) · ${s.vendidas} vendida(s)${s.aReceber > 0 ? ` · <b>${brl(s.aReceber)} a receber</b>` : ''}</div>` : ''}
         ${wa ? `<a class="wa-link" href="${wa}" target="_blank" rel="noopener">💬 WhatsApp</a>` : ''}
+        ${s.total > 0 ? '<div class="ctr-ind-dica">👆 ver indicações</div>' : ''}
       </div>`;
     }).join('') + `</div>`;
   }
+
+  // ---- Janela de detalhe (indicação ou indicador) ----
+  const mOver = document.getElementById('ctrModalOverlay');
+  const mTit = document.getElementById('ctrModalTitulo');
+  const mBad = document.getElementById('ctrModalBadges');
+  const mBody = document.getElementById('ctrModalCorpo');
+  const mClose = document.getElementById('ctrModalClose');
+
+  function abrirModal() {
+    mOver.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    mClose.focus();
+  }
+  function fecharCtrModal() {
+    mOver.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function indicadorDe(it) {
+    return indicadores.find(x =>
+      (it.indicadorId !== undefined && x.id === it.indicadorId) || x.nome === it.indicador) || null;
+  }
+
+  function abrirIndicacao(protocolo) {
+    const it = itens.find(x => x.protocolo === protocolo);
+    if (!it) return;
+    const ind = indicadorDe(it);
+    const dias = it.data ? diasDesdeISO(it.data) : null;
+    const waInd = ind && ind.telefone ? waHrefCtr(ind.telefone) : null;
+    const waProp = it.telefoneProprietario ? waHrefCtr(it.telefoneProprietario) : null;
+    mTit.textContent = `${it.protocolo} · ${it.imovel || ''}`;
+    mBad.innerHTML = `<span class="badge ${statusClass[it.status] || 'novo'}">${esc(it.status)}</span>` +
+      (dias !== null ? ` <span class="ctr-idade">registrada há ${dias === 0 ? 'menos de 1 dia' : dias + ' dias'}</span>` : '');
+    mBody.innerHTML = `
+      <div class="lead-meta">
+        <span>Indicador: <b>${esc(ind ? ind.nome : (it.indicador || '—'))}</b></span>
+        <span>Proprietário: <b>${esc(it.proprietario || '—')}</b></span>
+        ${it.data ? `<span>Recebida em: <b>${String(it.data).split('-').reverse().join('/')}</b></span>` : ''}
+        ${it.valorDevido ? `<span>💰 A pagar: <b>${brl(it.valorDevido)}</b></span>` : ''}
+      </div>
+      ${it.vinculadoId ? `<div class="match-line" style="margin-top:8px;"><span class="match-chip">🔗 Vinculado à aba Imóveis (ID ${it.vinculadoId})</span></div>` : ''}
+      ${it.motivoPerda ? `<div class="ctr-motivo">🚫 <b>${esc(it.motivoPerda)}</b>${it.detalhePerda ? '<br>' + esc(it.detalhePerda) : ''}</div>` : ''}
+      ${it.obs ? `<div class="pilar-desc" style="margin-top:8px;">${esc(it.obs)}</div>` : ''}
+      ${(waInd || waProp) && it.status !== 'Perdida' ? `<div class="lead-actions" style="margin-top:12px;">
+        ${waProp ? `<a class="wa-link" href="${waProp}" target="_blank" rel="noopener">💬 Falar com o proprietário</a>` : ''}
+        ${waInd && ind ? `<a class="wa-link registrar" href="${waInd}" target="_blank" rel="noopener">💬 Avisar ${esc(ind.nome.split(' ')[0])}</a>` : ''}
+      </div>` : ''}
+      ${ind ? `<div style="margin-top:14px;"><button type="button" class="nota-limpar-todas" data-ver-indicador="${ind.id}">👤 Ver tudo de ${esc(ind.nome.split(' ')[0])}</button></div>` : ''}`;
+    abrirModal();
+  }
+
+  function abrirIndicador(id) {
+    const ind = indicadores.find(x => String(x.id) === String(id));
+    if (!ind) return;
+    const minhas = itens.filter(it =>
+      (it.indicadorId !== undefined && it.indicadorId === ind.id) || it.indicador === ind.nome);
+    const captadas = minhas.filter(x => x.status === 'Captada' || x.status === 'Vendida').length;
+    const vendidas = minhas.filter(x => x.status === 'Vendida').length;
+    const aReceber = minhas.reduce((s, x) => s + (x.valorDevido || 0), 0);
+    const wa = waHrefCtr(ind.telefone);
+    mTit.textContent = ind.nome;
+    mBad.innerHTML = `<span class="badge ${ind.status === 'Ativo' ? 'emdia' : 'atrasado'}">${esc(ind.status || '—')}</span>`;
+    mBody.innerHTML = `
+      <div class="lead-meta">
+        <span>Indicações: <b>${minhas.length}</b></span>
+        <span>Viraram captação: <b>${captadas}</b></span>
+        <span>Vendidas: <b>${vendidas}</b></span>
+        ${aReceber > 0 ? `<span>💰 A receber: <b>${brl(aReceber)}</b></span>` : ''}
+      </div>
+      ${wa ? `<div class="lead-actions" style="margin-top:10px;"><a class="wa-link" href="${wa}" target="_blank" rel="noopener">💬 WhatsApp</a></div>` : ''}
+      <div class="modal-timeline-title">📇 Indicações desta pessoa</div>
+      ${minhas.length === 0 ? '<div style="font-size:13px;color:#8A9186;">Ainda não indicou nenhum imóvel.</div>'
+        : minhas.map(it => {
+            const dias = it.data ? diasDesdeISO(it.data) : null;
+            return `<div class="ctr-linha" role="button" tabindex="0" data-ctr-indicacao="${esc(it.protocolo)}">
+              <div class="ctr-linha-topo">
+                <span class="ctr-linha-nome">${esc(it.protocolo)} · ${esc(it.imovel || '')}</span>
+                <span class="ctr-linha-selos">${dias !== null ? `<span class="ctr-idade">${dias}d</span>` : ''}<span class="badge ${statusClass[it.status] || 'novo'}">${esc(it.status)}</span></span>
+              </div>
+              ${it.motivoPerda ? `<div class="ctr-linha-sub"><span class="ctr-mini-chip motivo">🚫 ${esc(it.motivoPerda)}</span></div>` : ''}
+            </div>`;
+          }).join('')}`;
+    abrirModal();
+  }
+
+  // Delegação: cobre os cards da lista e os de dentro da própria janela.
+  document.addEventListener('click', (e) => {
+    const btnInd = e.target.closest('[data-ver-indicador]');
+    if (btnInd) { abrirIndicador(btnInd.dataset.verIndicador); return; }
+    const alvoI = e.target.closest('[data-ctr-indicacao]');
+    if (alvoI && !e.target.closest('a')) { abrirIndicacao(alvoI.dataset.ctrIndicacao); return; }
+    const alvoP = e.target.closest('[data-ctr-indicador]');
+    if (alvoP && !e.target.closest('a')) { abrirIndicador(alvoP.dataset.ctrIndicador); }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mOver.classList.contains('open')) { fecharCtrModal(); return; }
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const alvo = e.target.closest('[data-ctr-indicacao], [data-ctr-indicador]');
+    if (!alvo) return;
+    e.preventDefault();
+    if (alvo.dataset.ctrIndicacao) abrirIndicacao(alvo.dataset.ctrIndicacao);
+    else abrirIndicador(alvo.dataset.ctrIndicador);
+  });
+  mClose.addEventListener('click', fecharCtrModal);
+  mOver.addEventListener('click', (e) => { if (e.target === mOver) fecharCtrModal(); });
 
   function aplicarFiltro(novoFiltro) {
     filtroAtivo = (filtroAtivo === novoFiltro) ? null : novoFiltro;
