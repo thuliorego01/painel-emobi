@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-01T16:20:00-03:00",
+  "ultimaAtualizacao": "2026-08-01T16:45:00-03:00",
   "meta2026": {
     "meta": 10000000,
     "realizado": 2359100,
@@ -9,47 +9,7 @@
     "meta": 240000
   },
   "metaMensal": {
-    "jaRecebidoForaCRM": 66462.5,
-    "mesesRestantes": 6,
-    "metaMensalDinamica": 28922.9166666667,
-    "tabela": [
-      {
-        "mes": "Julho",
-        "ano": 2026,
-        "mesNum": 7,
-        "recebido": 0
-      },
-      {
-        "mes": "Agosto",
-        "ano": 2026,
-        "mesNum": 8,
-        "recebido": 0
-      },
-      {
-        "mes": "Setembro",
-        "ano": 2026,
-        "mesNum": 9,
-        "recebido": 0
-      },
-      {
-        "mes": "Outubro",
-        "ano": 2026,
-        "mesNum": 10,
-        "recebido": 0
-      },
-      {
-        "mes": "Novembro",
-        "ano": 2026,
-        "mesNum": 11,
-        "recebido": 0
-      },
-      {
-        "mes": "Dezembro",
-        "ano": 2026,
-        "mesNum": 12,
-        "recebido": 0
-      }
-    ]
+    "observacao": "Calculado ao vivo no painel a partir da data atual + listaNegociacoes (desde 01/08/2026). Campos mesesRestantes/metaMensalDinamica/tabela foram removidos porque envelheciam sozinhos."
   },
   "comissao": {
     "paga": 66462.5,

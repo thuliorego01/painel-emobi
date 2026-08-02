@@ -1412,34 +1412,59 @@ document.getElementById('metaComissaoPct').textContent = pctComissao.toFixed(1) 
 document.getElementById('metaComissaoBar').style.width = pctComissao.toFixed(1) + '%';
 document.getElementById('metaComissaoHint').textContent = brl(DATA.comissao.paga) + ' de ' + brl(DATA.metaComissao2026.meta) + ' • faltam ' + brl(Math.max(0, DATA.metaComissao2026.meta - DATA.comissao.paga));
 
-// ---- Meta Mensal de Comissao ----
-document.getElementById('metaMensalValor').textContent = brl(DATA.metaMensal.metaMensalDinamica);
-const recebidoNoCRM = DATA.comissao.paga - DATA.metaMensal.jaRecebidoForaCRM;
-document.getElementById('metaMensalSub').textContent =
-  '(' + brl(DATA.metaComissao2026.meta) + ' meta anual − ' + brl(DATA.metaMensal.jaRecebidoForaCRM) + ' já recebido fora do CRM − ' +
-  brl(recebidoNoCRM) + ' recebido no CRM) ÷ ' + DATA.metaMensal.mesesRestantes + ' meses restantes';
-
+// ---- Meta Mensal de Comissao (CALCULADA AO VIVO) ----
+// Antes `mesesRestantes` e `metaMensalDinamica` eram valores gravados à mão em
+// DATA — e envelheciam sozinhos: virou agosto e o painel seguia dividindo por
+// 6 meses (contando julho, que já tinha acabado), subestimando a meta. Agora
+// tudo sai da data de hoje + listaNegociacoes, então não há o que desatualizar.
+const MESES_NOME = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const hojeReal = new Date();
-const metaMensalTabela = document.getElementById('metaMensalTabela');
-DATA.metaMensal.tabela.forEach(m => {
-  const inicioMes = new Date(m.ano, m.mesNum - 1, 1);
-  const fimMes = new Date(m.ano, m.mesNum, 1);
-  let statusHtml;
-  if (hojeReal < inicioMes) {
-    statusHtml = '<span class="status-aguarda">Ainda não chegou</span>';
-  } else if (m.recebido >= DATA.metaMensal.metaMensalDinamica) {
-    statusHtml = '<span class="status-bateu">✅ Bateu a meta</span>';
-  } else {
-    statusHtml = '<span class="status-falta">🔴 Faltam ' + brl(DATA.metaMensal.metaMensalDinamica - m.recebido) + '</span>';
+const ANO_META = 2026;
+
+(function renderMetaMensal() {
+  const mesAtual = hojeReal.getFullYear() === ANO_META ? hojeReal.getMonth() + 1 : 12;
+
+  // Recebido de fato por mês = soma das comissões com status "pago".
+  const recebidoPorMes = {};
+  (DATA.listaNegociacoes || []).forEach(n => {
+    if (n.status !== 'pago') return;
+    recebidoPorMes[n.mes] = (recebidoPorMes[n.mes] || 0) + (n.comissao || 0);
+  });
+
+  const totalRecebido = Object.values(recebidoPorMes).reduce((s, v) => s + v, 0);
+  const metaAnual = (DATA.metaComissao2026 && DATA.metaComissao2026.meta) || 0;
+  const mesesRestantes = Math.max(1, 12 - mesAtual + 1);   // inclui o mês corrente
+  const falta = Math.max(0, metaAnual - totalRecebido);
+  const metaMensal = falta / mesesRestantes;
+
+  document.getElementById('metaMensalValor').textContent = brl(metaMensal);
+  document.getElementById('metaMensalSub').textContent =
+    '(' + brl(metaAnual) + ' meta anual − ' + brl(totalRecebido) + ' já recebido em ' + ANO_META + ') ÷ ' +
+    mesesRestantes + (mesesRestantes === 1 ? ' mês restante' : ' meses restantes') +
+    (mesAtual === 12 ? ' · só Dezembro' : ' · de ' + MESES_NOME[mesAtual - 1] + ' a Dezembro');
+
+  const tbody = document.getElementById('metaMensalTabela');
+  tbody.innerHTML = '';
+  for (let m = mesAtual; m <= 12; m++) {
+    const nome = MESES_NOME[m - 1];
+    const recebido = recebidoPorMes[nome] || 0;
+    let statusHtml;
+    if (m > mesAtual) {
+      statusHtml = '<span class="status-aguarda">Ainda não chegou</span>';
+    } else if (recebido >= metaMensal) {
+      statusHtml = '<span class="status-bateu">✅ Bateu a meta</span>';
+    } else {
+      statusHtml = '<span class="status-falta">🔴 Faltam ' + brl(metaMensal - recebido) + '</span>';
+    }
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${nome}${m === mesAtual ? ' <b style="color:var(--brand-gold-deep);">(mês atual)</b>' : ''}</td>
+      <td>${brl(metaMensal)}</td>
+      <td>${brl(recebido)}</td>
+      <td>${statusHtml}</td>`;
+    tbody.appendChild(tr);
   }
-  const tr = document.createElement('tr');
-  tr.innerHTML = `
-    <td>${m.mes}</td>
-    <td>${brl(DATA.metaMensal.metaMensalDinamica)}</td>
-    <td>${brl(m.recebido)}</td>
-    <td>${statusHtml}</td>`;
-  metaMensalTabela.appendChild(tr);
-});
+})();
 
 document.getElementById('comissaoPaga').textContent = brl(DATA.comissao.paga);
 document.getElementById('comissaoAguardando').textContent = brl(DATA.comissao.aguardando);
