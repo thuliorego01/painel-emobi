@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-02T23:05:00-03:00",
+  "ultimaAtualizacao": "2026-08-02T23:20:00-03:00",
   "meta2026": {
     "meta": 10000000,
     "realizado": 2359100,
@@ -341,7 +341,7 @@
       "id": 12,
       "nome": "Renato Cássio",
       "telefone": "84999885255",
-      "origem": "Relacionamento",
+      "origem": "Instagram",
       "dataEntrada": "2026-07-30",
       "fase": "Visita Realizada",
       "maiorFaseIndex": 5,
@@ -351,7 +351,7 @@
       "proximaAcao": "Buscar outras unidades no Residencial Cabugi + feedback da visita ao Corais Alto (31/07, 16h)",
       "dataProximaAcao": "2026-08-02",
       "status": "Em dia",
-      "obs": "Ex-proprietário do Cód. 10638 (Candelária), vendido recentemente com sinal pago. Agora em atendimento como comprador. Visita em 30/07 às 18h ao Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h. [30/07] Visitou o Residencial Cabugi: gostou da disposição e da metragem, mas NÃO aprovou a posição — apartamento quente. Quer ver outras unidades no mesmo condomínio. [31/07] Contato feito via WhatsApp.",
+      "obs": "Veio de um anúncio no Instagram como cliente VENDEDOR: captei o Cód. 10638 (Candelária) com ele e vendi em 29/07. Hoje é lead COMPRADOR — mesma pessoa, segunda jornada. Visita em 30/07 às 18h ao Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h. [30/07] Visitou o Residencial Cabugi: gostou da disposição e da metragem, mas NÃO aprovou a posição — apartamento quente. Quer ver outras unidades no mesmo condomínio. [31/07] Contato feito via WhatsApp.",
       "imoveisCompativeis": [],
       "interesse": "outras unidades no Residencial Cabugi (posição melhor)"
     },
@@ -719,7 +719,7 @@
       "dataVenda": "2026-07-29",
       "dataCaptacao": "2026-07-20",
       "ultimaInteracaoProprietario": "2026-07-29",
-      "obs": "Condomínio Mirante dos Eucaliptos. Reformado, parcialmente mobiliado, pronto para morar. Pet friendly. Condomínio R$ 400,00 (água e gás inclusos). IPTU R$ 1.000,00/ano. Próximo à UFRN, Natal Shopping, BR-101 e Av. Prudente de Morais. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [29/07] Entrou em processo de assinatura de contrato — negociado por R$265.000,00 (tabela R$269.990,00). Venda em parceria com o corretor Ricardo Pantoja, da própria Emobi. [29/07] Contrato assinado e sinal pago — venda concluída. Agora em processo de financiamento. Comissão total: R$13.250,00; parte de Thúlio: R$4.637,50 — paga quando o vendedor receber o valor do financiamento."
+      "obs": "Condomínio Mirante dos Eucaliptos. Reformado, parcialmente mobiliado, pronto para morar. Pet friendly. Condomínio R$ 400,00 (água e gás inclusos). IPTU R$ 1.000,00/ano. Próximo à UFRN, Natal Shopping, BR-101 e Av. Prudente de Morais. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [29/07] Entrou em processo de assinatura de contrato — negociado por R$265.000,00 (tabela R$269.990,00). Venda em parceria com o corretor Ricardo Pantoja, da própria Emobi. [29/07] Contrato assinado e sinal pago — venda concluída. Agora em processo de financiamento. Comissão total: R$13.250,00; parte de Thúlio: R$4.637,50 — paga quando o vendedor receber o valor do financiamento. Origem da captação: anúncio no Instagram — o proprietário chegou por lá."
     },
     {
       "nome": "Apartamento 4 Quartos Tirol 240m² (Cód. 10650)",
@@ -1836,7 +1836,7 @@
       "data": "30/07/2026",
       "lead": "Renato Cássio",
       "tipo": "Outro",
-      "resumo": "Novo lead cadastrado: ex-proprietário do Cód. 10638, agora em atendimento como comprador. Origem Relacionamento, temperatura Quente. Visita hoje às 18h no Residencial Cabugi, com o corretor Victor Bezerra."
+      "resumo": "Novo lead cadastrado: ex-proprietário do Cód. 10638, agora em atendimento como comprador. Origem Instagram (chegou por anúncio como vendedor, o imóvel foi captado e vendido), temperatura Quente. Visita hoje às 18h no Residencial Cabugi, com o corretor Victor Bezerra."
     },
     {
       "data": "30/07/2026",
@@ -1975,6 +1975,12 @@
       "lead": "Tácito Barreto",
       "tipo": "Contato",
       "resumo": "Enviada opção no Francisco de Goya — retomada da busca dentro da cadência de 15 dias."
+    },
+    {
+      "data": "02/08/2026 19:00",
+      "lead": "Renato Cássio",
+      "tipo": "Outro",
+      "resumo": "Correção de origem: veio de anúncio no Instagram (como vendedor), não de relacionamento. A venda do Cód. 10638 e a comissão de R$4.637,50 são resultado desse canal."
     }
   ]
 }
