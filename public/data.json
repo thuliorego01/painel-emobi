@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-01T16:00:00-03:00",
+  "ultimaAtualizacao": "2026-08-01T16:20:00-03:00",
   "meta2026": {
     "meta": 10000000,
     "realizado": 2359100,
@@ -284,19 +284,19 @@
       "fase": "Em Negociação",
       "maiorFaseIndex": 7,
       "temperatura": "Quente",
-      "valor": 600000,
+      "valor": 575000,
       "comissaoPrevista": null,
       "proximaAcao": "Acompanhar leitura do contrato pela Diana — vendedores já validaram",
       "dataProximaAcao": "2026-08-03",
       "status": "Em dia",
-      "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Cód. 5485 do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607 do Porto Arena. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar.",
+      "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Cód. 5485 do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607 do Porto Arena. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar. [01/08] Valor do negócio: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento.",
       "imoveisCompativeis": [
         "Cód. 5485"
       ],
       "visitaResumo": null,
       "visitaDetalhe": null,
       "statusReativacao": "🟢 Em dia",
-      "interesse": "apartamento 607, Porto Arena — contrato em leitura"
+      "interesse": "apartamento 607, Porto Arena — R$575 mil, contrato em leitura"
     },
     {
       "id": 7,
@@ -412,18 +412,18 @@
       "telefone": "84994771313",
       "origem": "Relacionamento",
       "dataEntrada": "2026-07-30",
-      "fase": "Proposta Enviada",
-      "maiorFaseIndex": 6,
+      "fase": "Em Negociação",
+      "maiorFaseIndex": 7,
       "temperatura": "Quente",
-      "valor": 120000,
+      "valor": 122500,
       "comissaoPrevista": null,
-      "proximaAcao": "Acompanhar retorno da proposta de R$120.000 à vista (apto 404, bloco 11, Jardim Satélite)",
+      "proximaAcao": "Acompanhar fechamento do apto 404 (bloco 11, Jardim Satélite) — R$122.500, parceria com a corretora Natália Barbosa",
       "dataProximaAcao": "2026-08-03",
       "status": "Em dia",
-      "obs": "Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista. [31/07] Contato feito via WhatsApp.",
+      "obs": "Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista. [31/07] Contato feito via WhatsApp. [01/08] Negócio sendo fechado por R$122.500,00 (proposta inicial era R$120.000,00), em parceria com a corretora Natália Barbosa.",
       "imoveisCompativeis": [],
       "statusReativacao": "🟢 Em dia",
-      "interesse": "apartamento 404, bloco 11, Condomínio Jardim Satélite"
+      "interesse": "apto 404, Jardim Satélite — fechando por R$122.500"
     }
   ],
   "imoveis": [
@@ -1963,6 +1963,18 @@
       "lead": "Heber Lima",
       "tipo": "Outro",
       "resumo": "Visita das 10h com o corretor André Brito não aconteceu — cliente vai remarcar durante a semana."
+    },
+    {
+      "data": "01/08/2026",
+      "lead": "Diana Rêgo",
+      "tipo": "Em Negociação",
+      "resumo": "Valor do negócio definido: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento."
+    },
+    {
+      "data": "01/08/2026",
+      "lead": "Camilla Natasha",
+      "tipo": "Em Negociação",
+      "resumo": "Negócio sendo fechado por R$122.500,00 (proposta inicial R$120.000,00), em parceria com a corretora Natália Barbosa."
     }
   ]
 }
