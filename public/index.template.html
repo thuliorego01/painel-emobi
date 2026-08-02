@@ -255,7 +255,8 @@
     .imovel-linha:hover, .imovel-linha:focus-visible { border-color:#3A4435; }
     .bairro-grupo:hover { background:#232B21; }
     .bairro-qtd { background:#252D22; border-color:#39423577; color:#C3CBBB; }
-    .cidade-rotulo::after { background:#2C342A; }
+    .cidade-rotulo { background:linear-gradient(90deg,#232A22,#1E241D); }
+    .tipo-divisor::after { background:#2C342A; }
     .aviso-telefones { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
     .aviso-telefones b { color:#E5D6A0; }
     /* Blocos de temperatura no escuro: mantêm a identidade da cor, mas com
@@ -647,11 +648,25 @@
 
   /* Cidade como divisor leve; bairro como grupo recolhível — mesmo padrão do
      Conecta TR, mas sem empilhar dois acordeões. */
-  .cidade-rotulo { font-size:9.5px; font-weight:800; text-transform:uppercase; letter-spacing:1.1px;
-    color:#8A9186; margin:16px 2px 7px; display:flex; align-items:center; gap:8px; }
+  .cidade-rotulo { display:flex; align-items:center; gap:9px; margin:22px 0 9px; padding:9px 13px;
+    background:linear-gradient(90deg,#F4F6F0,#FAFBF7); border-left:4px solid var(--brand-gold);
+    border-radius:0 9px 9px 0; }
   .cidade-rotulo:first-child { margin-top:2px; }
-  .cidade-rotulo::after { content:''; flex:1; height:1px; background:#EDEFE9; }
-  .cidade-qtd { font-weight:700; color:#B6BBB0; letter-spacing:0; }
+  .cidade-pin { color:var(--brand-gold-deep); flex:0 0 auto; }
+  .cidade-nome { font-size:13.5px; font-weight:800; text-transform:uppercase; letter-spacing:1.3px;
+    color:var(--text-strong); }
+  .cidade-meta { margin-left:auto; font-size: var(--fs-2xs); color:#7B8177; font-weight:600;
+    white-space:nowrap; }
+  .cidade-meta b { color:#5C6155; font-weight:800; }
+
+  /* Dentro do bairro, o tipo só ganha divisor quando há mais de um —
+     rótulo sozinho sobre um grupo único seria ruído. */
+  .tipo-divisor { display:flex; align-items:center; gap:7px; margin:9px 0 4px; padding-left:2px; }
+  .tipo-divisor:first-child { margin-top:2px; }
+  .tipo-divisor svg { color:var(--brand-gold-deep); flex:0 0 auto; }
+  .tipo-rotulo { font-size:9.5px; font-weight:800; text-transform:uppercase; letter-spacing:1px;
+    color:#8A9186; }
+  .tipo-divisor::after { content:''; flex:1; height:1px; background:#EDEFE9; }
   .bairro-grupo { display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin:3px 0; padding:7px 10px;
     border-radius:9px; cursor:pointer; transition:background .15s; }
   .bairro-grupo:hover { background:#F6F7F2; }
@@ -3041,6 +3056,35 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
   // cerca de 15 cabeçalhos para 30 imóveis, e dois cliques até ver qualquer um.
   // O filtro por bairro já fazia o trabalho do agrupamento — a hierarquia só
   // duplicava a função e escondia a carteira.
+  // Agrupa as variações que a planilha usa ("Casa", "Casa em Condomínio",
+  // "Casa Comercial") em famílias legíveis, sem perder a distinção real.
+  const ORDEM_TIPO = ['Apartamento', 'Casa em Condomínio', 'Casa', 'Casa Comercial', 'Terreno/Lote', 'Outros'];
+  const ICONE_TIPO = {
+    'Apartamento': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2"/></svg>',
+    'Casa em Condomínio': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg>',
+    'Casa': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg>',
+    'Casa Comercial': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><rect x="10" y="13" width="4" height="8"/></svg>',
+    'Terreno/Lote': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><path d="M5 20V9l7-4 7 4v11"/><path d="M5 14h14"/></svg>',
+    'Outros': '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>'
+  };
+  const PLURAL_TIPO = {
+    'Apartamento': 'Apartamentos', 'Casa em Condomínio': 'Casas em condomínio', 'Casa': 'Casas',
+    'Casa Comercial': 'Casas comerciais', 'Terreno/Lote': 'Terrenos e lotes', 'Outros': 'Outros'
+  };
+  function familiaTipo(t) {
+    const s = String(t || '').trim();
+    return ORDEM_TIPO.includes(s) ? s : (s || 'Outros');
+  }
+  function rotuloTipo(t, n) {
+    const nome = n === 1 ? t : (PLURAL_TIPO[t] || t);
+    return nome + ' · ' + n;
+  }
+  function valorCompacto(v) {
+    if (v >= 1e6) return 'R$ ' + (v / 1e6).toFixed(1).replace('.', ',') + ' mi';
+    if (v >= 1e3) return 'R$ ' + Math.round(v / 1e3) + ' mil';
+    return brl(v);
+  }
+
   const ORDENADORES = {
     bairro:    (a, b) => (a.bairro || 'zz').localeCompare(b.bairro || 'zz', 'pt-BR') || (a.nome || '').localeCompare(b.nome || '', 'pt-BR'),
     maiorval:  (a, b) => (b.valor || 0) - (a.valor || 0),
@@ -3067,9 +3111,14 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
 
   cidades.forEach(cidade => {
     const daCidade = porCidade[cidade];
+    const somaCidade = daCidade.reduce((s, im) => s + (im.valor || 0), 0);
     const rotuloCidade = document.createElement('div');
     rotuloCidade.className = 'cidade-rotulo';
-    rotuloCidade.innerHTML = `${esc(cidade)} <span class="cidade-qtd">${daCidade.length}</span>`;
+    rotuloCidade.innerHTML =
+      `<svg class="cidade-pin" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>` +
+      `<span class="cidade-nome">${esc(cidade)}</span>` +
+      `<span class="cidade-meta"><b>${daCidade.length}</b> ${daCidade.length === 1 ? 'imóvel' : 'imóveis'}` +
+      (somaCidade > 0 ? ` · <b>${valorCompacto(somaCidade)}</b> em carteira` : '') + `</span>`;
     imoveisCard.appendChild(rotuloCidade);
 
     const porBairro = {};
@@ -3101,7 +3150,23 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
 
       const corpo = document.createElement('div');
       corpo.className = 'bairro-corpo';
-      doBairro.forEach(im => corpo.appendChild(renderCard(im)));
+      const porTipo = {};
+      doBairro.forEach(im => {
+        const t = familiaTipo(im.tipo);
+        (porTipo[t] = porTipo[t] || []).push(im);
+      });
+      const tipos = Object.keys(porTipo).sort(
+        (a, b) => (ORDEM_TIPO.indexOf(a) + 1 || 99) - (ORDEM_TIPO.indexOf(b) + 1 || 99));
+      const marcarTipo = tipos.length > 1;
+      tipos.forEach(t => {
+        if (marcarTipo) {
+          const div = document.createElement('div');
+          div.className = 'tipo-divisor';
+          div.innerHTML = ICONE_TIPO[t] + `<span class="tipo-rotulo">${esc(rotuloTipo(t, porTipo[t].length))}</span>`;
+          corpo.appendChild(div);
+        }
+        porTipo[t].forEach(im => corpo.appendChild(renderCard(im)));
+      });
       imoveisCard.appendChild(corpo);
 
       const alternar = () => {
