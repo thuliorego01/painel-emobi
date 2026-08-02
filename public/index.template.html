@@ -191,36 +191,6 @@
   .lembrete-row.envelhecido { opacity:.55; }
   .lembrete-row.envelhecido:hover { opacity:1; }
   .idade-atraso { color:#C62828; }
-  .insta-post { border:1px solid #E9EBE4; border-left-width:4px; border-radius:10px; padding:10px 12px; margin-bottom:8px; }
-  .insta-post.st-ideia { border-left-color:#B6BBB0; }
-  .insta-post.st-roteiro { border-left-color:#E5C35C; }
-  .insta-post.st-gravado { border-left-color:#E8892B; }
-  .insta-post.st-publicado { border-left-color:#7BA05B; }
-  .insta-topo { display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
-  .insta-tema { font-weight:700; color:var(--text-strong); font-size:var(--fs-sm); }
-  .insta-meta { font-size:var(--fs-2xs); color:#8A9186; margin-top:4px; display:flex; gap:10px; flex-wrap:wrap; }
-  .insta-leads { margin-top:6px; font-size:var(--fs-2xs); }
-  .insta-lead-chip { display:inline-block; background:#F1F4EC; border:1px solid #DCE3D3; border-radius:6px; padding:2px 8px; margin:2px 4px 0 0; color:#4A5240; }
-  .insta-vazio { font-size:13px; color:#8A9186; line-height:1.6; }
-  .insta-publicar { font-family:inherit; font-size:10px; font-weight:600; border:1px solid #DCE3D3; background:#EEF2E9;
-    color:#4A5240; border-radius:7px; padding:5px 11px; cursor:pointer; margin-top:8px; }
-  .insta-publicar:hover:not(:disabled) { background:#E2E8DA; }
-  .insta-publicar:disabled { opacity:.5; cursor:default; }
-  .pilar-item { display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px solid #F3F5F0; }
-  .pilar-item:last-child { border-bottom:none; }
-  .pilar-nome { flex:0 0 96px; font-weight:700; font-size:var(--fs-xs); color:var(--text-strong); }
-  .pilar-nome .ordem { display:inline-block; width:16px; color:#8A9186; font-weight:400; }
-  .pilar-desc { font-size:var(--fs-2xs); color:#8A9186; line-height:1.5; }
-  .insta-regra { background:#FFFBEF; border:1px solid #F0E2B0; border-radius:8px; padding:9px 12px; font-size:var(--fs-2xs); color:#6B5D2E; line-height:1.5; margin-bottom:12px; }
-  .serie-card { border:1px solid #E9EBE4; border-radius:10px; padding:9px 12px; margin-top:8px; }
-  .serie-topo { display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; }
-  .serie-nome { font-weight:700; font-size:var(--fs-xs); color:var(--text-strong); }
-  .serie-ep { font-size:var(--fs-2xs); color:#8A9186; margin-top:5px; padding-left:12px; border-left:2px solid #E9EBE4; }
-  .funil-fluxo { display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:6px; }
-  .funil-etapa { background:#F1F4EC; border:1px solid #DCE3D3; border-radius:6px; padding:4px 9px; font-size:var(--fs-2xs); color:#4A5240; }
-  .funil-seta { color:#B6BBB0; font-size:11px; }
-  .insta-sub { font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:#8A9186; margin:14px 0 6px; }
-  .insta-janela { margin-top:10px; background:#F4F7F0; border:1px solid #DFE6D6; border-radius:8px; padding:8px 11px; font-size:var(--fs-2xs); color:#4A5240; line-height:1.5; }
   .agenda-feito { font-family:inherit; font-size:10px; font-weight:600; border:1px solid #DCE3D3; background:#EEF2E9;
     color:#4A5240; border-radius:7px; padding:5px 9px; cursor:pointer; white-space:nowrap; align-self:center; margin-left:auto; }
   .agenda-feito:hover:not(:disabled) { background:#E2E8DA; }
@@ -674,7 +644,6 @@
       <button class="tab-btn" data-tab="imoveis" role="tab" aria-controls="panel-imoveis"><span class="tab-icon">🏢</span><span class="tab-label">Imóveis</span></button>
       <button class="tab-btn" data-tab="prospeccao" role="tab" aria-controls="panel-prospeccao"><span class="tab-icon">🏗️</span><span class="tab-label">Prospecção</span></button>
       <button class="tab-btn" data-tab="conectatr" role="tab" aria-controls="panel-conectatr"><span class="tab-icon">🤝</span><span class="tab-label">Conecta TR</span></button>
-      <button class="tab-btn" data-tab="instagram" role="tab" aria-controls="panel-instagram"><span class="tab-icon">📸</span><span class="tab-label">Instagram</span></button>
 
       <div class="nav-group-label">Resultados</div>
       <button class="tab-btn" data-tab="bicomercial" role="tab" aria-controls="panel-bicomercial"><span class="tab-icon">📊</span><span class="tab-label">BI Comercial</span></button>
@@ -941,25 +910,6 @@
     <div class="section-title" id="vendidosTitle" style="display:none;"><span class="dot" aria-hidden="true"></span>💰 Vendidos — aguardando confirmação de comissão</div>
     <div style="font-size:var(--fs-xs);color:#8A9186;margin-bottom:10px;display:none;" id="vendidosHint">Saem daqui automaticamente assim que você confirmar o pagamento da comissão — a partir daí ficam só em registro (Log de Atividades e Faturamento).</div>
     <div class="card" id="imoveisVendidosCard" style="display:none;"></div>
-  </div>
-
-  <div class="tab-panel" data-tab="instagram" id="panel-instagram" role="tabpanel">
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>📈 O Instagram está trazendo negócio?</div>
-    <div class="card" style="margin-bottom:18px;">
-      <div id="instaResultado"></div>
-    </div>
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>🎯 Linha editorial</div>
-    <div class="card" style="margin-bottom:18px;">
-      <div id="instaEditorial"></div>
-    </div>
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>🗓️ Fila de produção</div>
-    <div class="card" style="margin-bottom:18px;">
-      <div id="instaFila"></div>
-    </div>
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>✅ Publicados</div>
-    <div class="card">
-      <div id="instaPublicados"></div>
-    </div>
   </div>
 
   <div class="tab-panel" data-tab="conectatr" id="panel-conectatr" role="tabpanel">
@@ -2557,7 +2507,7 @@ new Chart(document.getElementById('chartMetaLinha'), {
   const TITULOS = {
     inicio: 'Início', pipeline: 'Pipeline', agenda: 'Agenda', imoveis: 'Imóveis',
     bicomercial: 'BI Comercial', faturamento: 'Faturamento',
-    conectatr: 'Conecta TR', prospeccao: 'Prospecção', instagram: 'Instagram'
+    conectatr: 'Conecta TR', prospeccao: 'Prospecção'
   };
   const tabs = Array.from(document.querySelectorAll('.tab-btn'));
   const panels = Array.from(document.querySelectorAll('.tab-panel'));
@@ -3428,231 +3378,6 @@ function resumirEvento(titulo) {
     + (vendasForaDoFunil > 0
       ? `<div class="termo-extra">➕ <b>${vendasForaDoFunil}</b> ${vendasForaDoFunil === 1 ? 'venda fechada fora do funil' : 'vendas fechadas fora do funil'} (compradores que vieram pela captação e não passaram pelo pipeline). Ficam de fora do cálculo acima de propósito — somar só no fim distorceria a taxa de conversão.</div>`
       : '');
-})();
-
-// Marcar pauta como publicada. Reusa o mesmo armazenamento dos lembretes
-// concluídos (uma lista de ids quaisquer) — daí o prefixo "ig".
-function postIgId(p) {
-  const s = `ig|${p.data}|${p.tema}`;
-  let x = 0;
-  for (let i = 0; i < s.length; i++) { x = (x * 31 + s.charCodeAt(i)) | 0; }
-  return 'ig' + Math.abs(x).toString(36);
-}
-function getIgPublicados() {
-  try {
-    const raw = localStorage.getItem('painelEmobiLembretesConcluidos');
-    const arr = raw ? JSON.parse(raw) : [];
-    return new Set((Array.isArray(arr) ? arr : []).filter(x => String(x).startsWith('ig')));
-  } catch (e) { return new Set(); }
-}
-function marcarIgPublicado(id) {
-  try {
-    const raw = localStorage.getItem('painelEmobiLembretesConcluidos');
-    const arr = raw ? JSON.parse(raw) : [];
-    if (!arr.includes(id)) arr.push(id);
-    localStorage.setItem('painelEmobiLembretesConcluidos', JSON.stringify(arr));
-  } catch (e) { /* segue só com o servidor */ }
-  fetch('/api/lembretes/concluir', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id })
-  }).catch(() => {});
-}
-
-(function renderEditorialInstagram() {
-  const el = document.getElementById('instaEditorial');
-  if (!el) return;
-  const ig = DATA.instagram || {};
-  const pil = ig.pilares, series = ig.series || [], funil = ig.funil, aud = ig.auditoriaPreCalendario;
-  if (!pil && series.length === 0 && !funil) {
-    el.innerHTML = '<div class="insta-vazio">Linha editorial ainda não definida.</div>';
-    return;
-  }
-
-  // Quantas pautas da fila caem em cada pilar — mostra o equilíbrio real,
-  // não o pretendido.
-  const posts = ig.posts || [];
-  const contagem = {};
-  posts.forEach(p => {
-    const m = String(p.obs || '').match(/Pilar:\s*([A-Za-zÀ-ú]+)/);
-    let nome = m ? m[1] : null;
-    if (!nome) {
-      const t = (p.tema || '').toLowerCase();
-      nome = t.startsWith('oferta') ? 'Ofertas' : (t.startsWith('índices') || t.startsWith('indices') ? 'Mercado' : (t.startsWith('bastidor') ? 'Bastidores' : 'Autoridade'));
-    }
-    const chave = { 'oferta':'Ofertas','ofertas':'Ofertas','autoridade':'Autoridade','mercado':'Mercado','índices':'Mercado','indices':'Mercado','bastidores':'Bastidores','pessoal':'Bastidores' }[nome.toLowerCase()] || nome;
-    contagem[chave] = (contagem[chave] || 0) + 1;
-  });
-
-  let html = '';
-  if (pil && pil.regra) html += `<div class="insta-regra">📌 ${esc(pil.regra)}</div>`;
-  if (pil && pil.lista) {
-    html += Object.entries(pil.lista).map(([nome, desc], i) => `
-      <div class="pilar-item">
-        <div class="pilar-nome"><span class="ordem">${i + 1}.</span>${esc(nome)}${contagem[nome] ? ` <span style="font-weight:400;color:#8A9186;">(${contagem[nome]})</span>` : ''}</div>
-        <div class="pilar-desc">${esc(desc)}</div>
-      </div>`).join('');
-  }
-
-  if (series.length > 0) {
-    html += '<div class="insta-sub">Séries em andamento</div>';
-    html += series.map(s => `
-      <div class="serie-card">
-        <div class="serie-topo">
-          <span class="serie-nome">${esc(s.nome)}</span>
-          <span class="badge novo">${esc(s.pilar)}</span>
-          <span style="font-size:var(--fs-2xs);color:#8A9186;">${esc(s.periodicidade)} · ${(s.episodios || []).length} episódio(s)</span>
-        </div>
-        ${s.descricao ? `<div class="pilar-desc" style="margin-top:4px;">${esc(s.descricao)}</div>` : ''}
-        ${(s.episodios || []).map(e => `<div class="serie-ep">${esc(e)}</div>`).join('')}
-      </div>`).join('');
-  }
-
-  if (funil && funil.fluxo) {
-    html += '<div class="insta-sub">Funil de conteúdo</div>';
-    html += '<div class="funil-fluxo">' +
-      funil.fluxo.map(f => `<span class="funil-etapa">${esc(f)}</span>`).join('<span class="funil-seta">→</span>') +
-      '</div>';
-    if (funil.observacao) html += `<div class="pilar-desc" style="margin-top:6px;">${esc(funil.observacao)}</div>`;
-    if (funil.blogRelacionado) html += `<div class="pilar-desc" style="margin-top:2px;">Blog: ${esc(funil.blogRelacionado)}</div>`;
-  }
-
-  if (aud && aud.ultimaExecucao) {
-    html += `<div class="insta-sub">Última auditoria de pauta — ${esc(aud.ultimaExecucao.data || '')}</div>
-      <div class="pilar-desc">${esc(aud.ultimaExecucao.respostas || '')}</div>`;
-  }
-  el.innerHTML = html;
-})();
-
-(function renderInstagram() {
-  const elRes = document.getElementById('instaResultado');
-  const elFila = document.getElementById('instaFila');
-  const elPub = document.getElementById('instaPublicados');
-  if (!elRes || !elFila || !elPub) return;
-
-  const ig = DATA.instagram || {};
-  const leadsInsta = (DATA.leads || []).filter(l => l.origem === 'Instagram');
-
-  function montar() {
-  const marcados = getIgPublicados();
-  // Pauta marcada no painel conta como publicada, mesmo que o data.json ainda diga "Ideia".
-  const posts = (ig.posts || []).map(p => marcados.has(postIgId(p))
-    ? { ...p, status: 'Publicado', marcadoNoPainel: true }
-    : p);
-
-  // ---- Resultado: o que só o CRM sabe (post -> lead -> negócio) ----
-  const vinculados = new Set();
-  posts.forEach(p => (p.leadsGerados || []).forEach(n => vinculados.add(n)));
-  const emNegociacao = leadsInsta.filter(l => (l.maiorFaseIndex || 1) >= 7);
-  const pipeline = emNegociacao.reduce((s, l) => s + (l.valor || 0), 0);
-  const publicados = posts.filter(p => p.status === 'Publicado');
-  const comLead = publicados.filter(p => (p.leadsGerados || []).length > 0);
-
-  const mesAtual = new Date().getMonth() + 1;
-  const publicadosMes = publicados.filter(p => {
-    const m = String(p.data || '').match(/^\d{4}-(\d{2})/);
-    return m && Number(m[1]) === mesAtual;
-  }).length;
-
-  elRes.innerHTML = `
-    <div class="followup-resumo" style="margin-bottom:10px;">
-      <span class="followup-chip">📸 <b>${publicadosMes}</b> publicado(s) neste mês</span>
-      <span class="followup-chip">👤 <b>${leadsInsta.length}</b> lead(s) vindos do Instagram</span>
-      <span class="followup-chip">🤝 <b>${emNegociacao.length}</b> em negociação</span>
-      <span class="followup-chip"><b>${pipeline > 0 ? brl(pipeline) : 'R$ 0'}</b> em pipeline</span>
-    </div>
-    ${leadsInsta.length > 0 ? `<div style="font-size:var(--fs-2xs);color:#8A9186;margin-bottom:6px;">Quem veio do Instagram:</div>
-      <div>${leadsInsta.map(l => `<span class="insta-lead-chip">${esc(l.nome)} · ${esc(l.fase)}${vinculados.has(l.nome) ? '' : ' · post não identificado'}</span>`).join('')}</div>` : ''}
-    ${publicados.length > 0 ? `<div class="tbl-nota">${comLead.length} de ${publicados.length} publicações geraram lead identificado.</div>`
-      : `<div class="tbl-nota">${esc(ig.notaAtribuicao || '')}</div>`}
-    ${ig.janelaAudiencia ? `<div class="insta-janela">
-      ⏰ <b>Melhor horário: ${esc(ig.janelaAudiencia.pico)}</b> — o pico se repete em ${ig.janelaAudiencia.confirmadoEm.length} dias da semana (${ig.janelaAudiencia.confirmadoEm.join(', ')}).
-      ${ig.janelaAudiencia.melhoresDias ? `<br>📅 <b>Melhores dias: ${ig.janelaAudiencia.melhoresDias.join(', ')}</b> — é o ranking do próprio Instagram.` : ''}
-      ${ig.janelaAudiencia.segundoMelhor ? `<br><span style="opacity:.85;">Segunda melhor faixa: ${esc(ig.janelaAudiencia.segundoMelhor)}.</span>` : ''}
-      ${ig.janelaAudiencia.observacaoSabado ? `<br><span style="opacity:.85;">${esc(ig.janelaAudiencia.observacaoSabado)}</span>` : ''}
-      ${ig.janelaAudiencia.faltaConferir && ig.janelaAudiencia.faltaConferir.length ? `<br><span style="opacity:.75;">Ainda sem dado: ${ig.janelaAudiencia.faltaConferir.join(', ')}.</span>` : ''}
-    </div>` : ''}`;
-
-  // ---- Fila de produção (tudo que ainda não foi publicado) ----
-  const ORDEM = { 'Ideia': 0, 'Roteiro pronto': 1, 'Gravado': 2 };
-  const CLASSE = { 'Ideia': 'st-ideia', 'Roteiro pronto': 'st-roteiro', 'Gravado': 'st-gravado', 'Publicado': 'st-publicado' };
-  const fila = posts.filter(p => p.status !== 'Publicado')
-    .sort((a, b) => String(a.data || '9999').localeCompare(String(b.data || '9999')) || (ORDEM[b.status] || 0) - (ORDEM[a.status] || 0));
-
-  if (fila.length === 0) {
-    elFila.innerHTML = `<div class="insta-vazio">Nenhuma pauta na fila.<br>
-      Me diga o que você quer publicar — ou espere o radar de notícias de sábado, que já sugere pautas a partir do que está acontecendo no mercado.</div>`;
-  } else {
-    elFila.innerHTML = fila.map(p => `
-      <div class="insta-post ${CLASSE[p.status] || 'st-ideia'}">
-        <div class="insta-topo">
-          <span class="insta-tema">${esc(p.tema)}</span>
-          <span class="badge novo">${esc(p.status)}</span>
-        </div>
-        <div class="insta-meta">
-          ${p.data ? `<span>📅 ${String(p.data).split('-').reverse().join('/')}</span>` : '<span>📅 sem data</span>'}
-          ${p.hora ? `<span>⏰ ${esc(p.hora)}</span>` : ''}
-          ${p.formato ? `<span>🎬 ${esc(p.formato)}</span>` : ''}
-        </div>
-        ${p.obs ? `<div class="insta-meta">${esc(p.obs)}</div>` : ''}
-        <button type="button" class="insta-publicar" data-ig-publicar="${postIgId(p)}">✓ Publiquei</button>
-      </div>`).join('');
-  }
-
-  // ---- Publicados (mais recentes primeiro) ----
-  const pubs = publicados.slice().sort((a, b) => String(b.data || '').localeCompare(String(a.data || '')));
-  if (pubs.length === 0) {
-    elPub.innerHTML = `<div class="insta-vazio">Nenhuma publicação registrada ainda.<br>
-      Quando você me contar que postou, eu registro aqui — e se algum lead chegar por aquele post, ele fica vinculado.</div>`;
-  } else {
-    elPub.innerHTML = pubs.map(p => {
-      const ls = p.leadsGerados || [];
-      return `
-      <div class="insta-post st-publicado">
-        <div class="insta-topo">
-          <span class="insta-tema">${esc(p.tema)}</span>
-          ${p.link ? `<a class="wa-link" href="${esc(p.link)}" target="_blank" rel="noopener">ver post</a>` : ''}
-        </div>
-        <div class="insta-meta">
-          ${p.data ? `<span>📅 ${String(p.data).split('-').reverse().join('/')}</span>` : ''}
-          ${p.hora ? `<span>⏰ ${esc(p.hora)}</span>` : ''}
-          ${p.formato ? `<span>🎬 ${esc(p.formato)}</span>` : ''}
-        </div>
-        ${p.marcadoNoPainel ? '<div class="insta-meta" style="color:#7BA05B;">✓ marcado como publicado no painel</div>' : ''}
-        <div class="insta-leads">${ls.length > 0
-          ? '🎯 ' + ls.map(n => `<span class="insta-lead-chip">${esc(n)}</span>`).join('')
-          : '<span style="color:#8A9186;">Nenhum lead atribuído a este post.</span>'}</div>
-      </div>`;
-    }).join('');
-  }
-
-  // botão "✓ Publiquei" nas pautas da fila
-  elFila.querySelectorAll('[data-ig-publicar]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      btn.disabled = true;
-      marcarIgPublicado(btn.dataset.igPublicar);
-      montar();
-    });
-  });
-  }
-
-  montar();
-
-  // Se a pauta foi marcada como publicada em outro aparelho, reflete aqui.
-  (async () => {
-    try {
-      const r = await fetch('/api/lembretes/concluidos', { cache: 'no-store' });
-      if (!r.ok) return;
-      const j = await r.json();
-      if (!Array.isArray(j)) return;
-      const igRemotos = j.filter(x => String(x).startsWith('ig'));
-      if (igRemotos.length === 0) return;
-      const raw = localStorage.getItem('painelEmobiLembretesConcluidos');
-      const arr = raw ? JSON.parse(raw) : [];
-      let mudou = false;
-      igRemotos.forEach(id => { if (!arr.includes(id)) { arr.push(id); mudou = true; } });
-      if (mudou) { localStorage.setItem('painelEmobiLembretesConcluidos', JSON.stringify(arr)); montar(); }
-    } catch (e) { /* offline */ }
-  })();
 })();
 
 (function renderProspeccao() {
