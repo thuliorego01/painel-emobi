@@ -226,6 +226,9 @@
     .termo-bar-wrap.vazio { background:transparent; border-color:#39423577; }
     .termo-row.linha-gargalo { background:#2A1A18; }
     .termo-num-fora { color:#9AA394; }
+    .degrau-selo { background:#1B211A; border-color:#39423577; }
+    .termo-ajuda { border-top-color:#2C342A; }
+    .termo-ajuda-corpo { color:#A8B0A2; }
     .tbl-mini td { border-bottom-color: var(--border-soft); }
     .tbl-mini th { border-bottom-color: #39423577; }
     .urg-legenda { border-bottom-color: var(--border-soft); }
@@ -269,31 +272,44 @@
   .busca-vazio { padding:12px; font-size: var(--fs-2xs); color:#8A9186; }
   @media (max-width: 700px) { .busca-wrap { flex-basis: 100%; } .topbar { flex-wrap: wrap; gap:8px; } }
   .sync-textarea { width:100%; min-height:110px; margin-top:8px; font-family:inherit; font-size: var(--fs-2xs); color: var(--text-strong); padding:9px; border:1px solid #D7DBD2; border-radius:8px; background:#fff; resize:vertical; }
-  .termo-row { display:flex; align-items:center; gap:10px; margin-bottom:6px; padding:3px 6px; border-radius:8px; }
+  .termo-row { display:flex; align-items:center; gap:10px; margin-bottom:2px; padding:2px 6px; border-radius:8px; }
   .termo-row.linha-gargalo { background:#FDF4F1; }
-  .termo-label { flex:0 0 148px; font-size: var(--fs-2xs); color: var(--text-strong); line-height:1.25; }
-  .termo-bar-wrap { flex:1; background:#F1F3EE; border-radius:6px; height:24px; position:relative; overflow:hidden; min-width:60px; }
+  .termo-label { flex:0 0 148px; font-size: var(--fs-2xs); color: var(--text-strong); line-height:1.2; }
+  .termo-bar-wrap { flex:1; background:#F1F3EE; border-radius:5px; height:19px; position:relative; overflow:hidden; min-width:60px; }
   .termo-bar-wrap.vazio { background:transparent; border:1px dashed #DDE1D8; }
   /* display:block é obrigatório — sem ele o span ignora width e a barra some. */
   .termo-bar { display:block; height:100%; width:0; background:linear-gradient(90deg, #2C3A24, #5C6B4A);
     border-radius:6px; transition:width .5s ease; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; box-sizing:border-box; }
   .termo-bar.gargalo { background:linear-gradient(90deg, #A32B14, #E8892B); }
-  .termo-bar-num { font-size:11px; font-weight:700; color:#fff; letter-spacing:.2px; }
+  .termo-bar-num { font-size:10.5px; font-weight:700; color:#fff; letter-spacing:.2px; }
   .termo-num-fora { position:absolute; left:8px; top:50%; transform:translateY(-50%); font-size:11px; font-weight:700; color:#8A9186; }
   .termo-val { flex:0 0 54px; text-align:right; font-size: var(--fs-2xs); color:#8A9186; font-variant-numeric:tabular-nums; }
-  .termo-nota { font-size: var(--fs-2xs); color:#8A9186; margin-top:10px; line-height:1.5; }
+  .termo-nota { font-size: var(--fs-2xs); color:#8A9186; margin-top:9px; line-height:1.5; }
   .termo-nota b { color:#C62828; }
   /* Selo de conversão degrau a degrau, alinhado à coluna das barras */
-  .termo-degrau { display:flex; align-items:center; margin:-2px 0 -2px 0; }
-  .termo-degrau::before { content:''; flex:0 0 132px; }
-  .degrau-selo { font-size:9.5px; font-weight:700; color:#8A9186; background:#F1F3EE; border:1px solid #E4E7DF;
-    border-radius:10px; padding:1px 7px; line-height:1.6; letter-spacing:.2px; }
+  /* O selo de degrau deixa de ocupar uma linha inteira: vira uma etiqueta de
+     altura zero, sobreposta na emenda entre as duas barras. Economiza 7 linhas. */
+  .termo-degrau { display:flex; align-items:center; height:0; position:relative; z-index:2; }
+  .termo-degrau::before { content:''; flex:0 0 148px; }
+  .degrau-selo { font-size:9px; font-weight:700; color:#8A9186; background:#fff; border:1px solid #E4E7DF;
+    border-radius:9px; padding:0 6px; line-height:1.5; letter-spacing:.2px; transform:translateY(-1px); }
   .degrau-selo.cheio { color:#4A7A3B; background:#EDF4E8; border-color:#D8E5D0; }
   .degrau-selo.queda { color:#B4300F; background:#FDECE6; border-color:#F3CDBE; }
   .degrau-selo.vazio { opacity:.5; }
   .titulo-escopo { font-weight:400; font-size:var(--fs-2xs); color:#8A9186; text-transform:none; letter-spacing:0; }
-  .termo-escopo { font-size: var(--fs-2xs); color:#6B6F66; background:#F7F8F4; border:1px solid #E9EBE4; border-radius:8px; padding:8px 10px; margin-top:10px; line-height:1.5; }
-  .termo-escopo b { color: var(--text-strong); }
+  .termo-nota-mini { font-size: var(--fs-2xs); color:#8A9186; margin-top:4px; line-height:1.5; }
+  .termo-nota-mini b { color: var(--text-strong); }
+  .termo-ajuda { margin-top:10px; border-top:1px dashed #E9EBE4; padding-top:8px; }
+  .termo-ajuda > summary { cursor:pointer; font-size: var(--fs-2xs); color:#8A9186; list-style:none; display:inline-flex; align-items:center; gap:5px; }
+  .termo-ajuda > summary::-webkit-details-marker { display:none; }
+  .termo-ajuda > summary::before { content:'ℹ️'; }
+  .termo-ajuda > summary::after { content:'▸'; font-size:9px; transition:transform .2s; }
+  .termo-ajuda[open] > summary::after { transform:rotate(90deg); }
+  .termo-ajuda > summary:hover { color: var(--text-strong); }
+  .termo-ajuda-corpo { font-size: var(--fs-2xs); color:#6B6F66; line-height:1.55; margin-top:6px; }
+  .termo-ajuda-corpo p { margin:0 0 6px; }
+  .termo-ajuda-corpo p:last-child { margin-bottom:0; }
+  .termo-ajuda-corpo b { color: var(--text-strong); }
   .termo-extra { font-size: var(--fs-2xs); color:#4A5240; background:#F4F7F0; border:1px solid #DFE6D6; border-radius:8px; padding:8px 10px; margin-top:10px; line-height:1.5; }
   .termo-extra b { color: var(--text-strong); }
   .tbl-mini { width:100%; border-collapse:collapse; font-size: var(--fs-2xs); }
@@ -3543,12 +3559,20 @@ function resumirEvento(titulo) {
       ? `<div class="termo-nota">Maior perda entre <b>${FUNIL_CONVERSAO_FASES[gargaloIdx - 1]}</b> e <b>${FUNIL_CONVERSAO_FASES[gargaloIdx]}</b> — de ${alcancaram[gargaloIdx - 1]} para ${alcancaram[gargaloIdx]} (${Math.round(piorQueda * 100)}% de queda). É onde vale atacar primeiro.</div>`
       : '')
     + (alcancaram[ULTIMA - 1] > 0 && alcancaram[ULTIMA] === 0
-        ? `<div class="termo-nota">🤝 <b>${alcancaram[ULTIMA - 1]}</b> ${alcancaram[ULTIMA - 1] === 1 ? 'cliente está' : 'clientes estão'} em negociação e ainda sem fechamento — isso é fila de espera, não gargalo. A taxa de fechamento só passa a significar algo quando o primeiro assinar.</div>`
+        ? `<div class="termo-nota-mini">🤝 <b>${alcancaram[ULTIMA - 1]}</b> em negociação, nenhum fechado ainda — fila de espera, não gargalo.</div>`
         : '')
-    + `<div class="termo-escopo">ℹ️ Este funil cobre apenas os leads em <b>acompanhamento ativo</b> aqui no painel — não toda a sua base do Imoview. Quem parou antes de avançar não entra na conta, então os percentuais descrevem quem progrediu, não a taxa de conversão da base inteira.</div>`
     + (vendasForaDoFunil > 0
-      ? `<div class="termo-extra">➕ <b>${vendasForaDoFunil}</b> ${vendasForaDoFunil === 1 ? 'venda fechada fora do funil' : 'vendas fechadas fora do funil'} (compradores que vieram pela captação e não passaram pelo pipeline). Ficam de fora do cálculo acima de propósito — somar só no fim distorceria a taxa de conversão.</div>`
-      : '');
+        ? `<div class="termo-nota-mini">➕ <b>${vendasForaDoFunil}</b> ${vendasForaDoFunil === 1 ? 'venda fechada fora do funil' : 'vendas fechadas fora do funil'} (vieram pela captação).</div>`
+        : '')
+    + `<details class="termo-ajuda">
+        <summary>Como ler este funil</summary>
+        <div class="termo-ajuda-corpo">
+          <p><b>Barra</b> = quantos leads já <b>alcançaram</b> aquela fase (não quantos estão nela agora). O percentual à direita é sobre o topo do funil.</p>
+          <p><b>Selo entre as barras</b> = quanto passou de um degrau para o próximo. É ele que revela onde você perde gente.</p>
+          <p><b>Escopo:</b> cobre apenas os leads em acompanhamento ativo aqui no painel — não toda a sua base do Imoview. Quem parou antes de avançar não entra na conta, então os percentuais descrevem quem progrediu, não a conversão da base inteira.</p>
+          ${vendasForaDoFunil > 0 ? '<p><b>Vendas fora do funil</b> ficam de fora do cálculo de propósito: somar só no fim distorceria a taxa de conversão de quem nunca foi contado no topo.</p>' : ''}
+        </div>
+      </details>`;
 })();
 
 (function renderProspeccao() {
