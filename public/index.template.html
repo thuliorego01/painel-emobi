@@ -81,6 +81,16 @@
 
   .grid2 { display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px; align-items: start; }
   @media (max-width: 950px) { .grid2 { grid-template-columns: 1fr; } }
+  .pipeline-topo { display:grid; grid-template-columns: 1.45fr 1fr; gap:18px; align-items:start; }
+  @media (max-width: 950px) { .pipeline-topo { grid-template-columns: 1fr; } }
+  /* Cards de lead em grade: aproveita a largura em vez de uma coluna única e comprida */
+  .leads-grade { display:grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap:12px; align-items:start; }
+  .temp-grupo { margin: 6px 0 10px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .temp-grupo:first-child { margin-top:0; }
+  .temp-grupo-nome { font-size: var(--fs-sm); font-weight:700; color: var(--text-strong); }
+  .temp-grupo-linha { flex:1; height:1px; background:#E9EBE4; min-width:20px; }
+  .temp-grupo-qtd { font-size: var(--fs-2xs); color:#8A9186; }
+  .temp-grupo-alerta { font-size:10px; font-weight:700; color:#B4300F; background:#FDECE6; border:1px solid #F3CDBE; border-radius:10px; padding:2px 8px; }
 
   .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: -2px; padding: 2px; }
   .table-scroll table { min-width: 460px; }
@@ -805,30 +815,34 @@
   </div>
 
   <div class="tab-panel" data-tab="pipeline" id="panel-pipeline" role="tabpanel">
-    <div class="grid2">
+    <!-- Faixa superior: alertas e ações do dia ocupam a largura toda; os leads
+         ficam abaixo, em grade de duas colunas. Antes era 2 colunas lado a
+         lado e a da esquerda acabava enquanto a direita seguia rolando. -->
+    <div class="pipeline-topo">
       <div>
         <div class="section-title"><span class="dot" aria-hidden="true"></span>Atenção Hoje</div>
         <div class="card" id="alertCard"></div>
-        <div class="card" style="margin-top:18px;">
-          <h3>🔥 Cadência por Temperatura — Reativação</h3>
+      </div>
+      <div>
+        <div class="section-title"><span class="dot" aria-hidden="true"></span>Ações rápidas</div>
+        <div class="card">
+          <div class="sync-box" id="syncBox" style="display:none;">
+            <button type="button" class="sync-btn" id="btnCarregarNotas">🔄 Carregar minhas anotações</button>
+            <span class="sync-status" id="syncStatus" role="status" aria-live="polite">Incorpora as notas que você escreveu nos clientes ao histórico do CRM.</span>
+            <textarea id="syncTexto" class="sync-textarea" readonly style="display:none;" aria-label="Anotações pendentes para copiar"></textarea>
+          </div>
           <div id="reativacaoCard"></div>
         </div>
       </div>
-      <div>
-        <div class="section-title"><span class="dot" aria-hidden="true"></span>Leads Ativos</div>
-        <div class="sync-box" id="syncBox" style="display:none;">
-          <button type="button" class="sync-btn" id="btnCarregarNotas">🔄 Carregar minhas anotações</button>
-          <span class="sync-status" id="syncStatus" role="status" aria-live="polite">Incorpora as notas que você escreveu nos clientes ao histórico do CRM.</span>
-          <textarea id="syncTexto" class="sync-textarea" readonly style="display:none;" aria-label="Anotações pendentes para copiar"></textarea>
-        </div>
-        <div class="card" id="leadsCard"></div>
-        <div class="inativos-toggle" id="inativosToggle" role="button" tabindex="0" aria-expanded="false">
-          <span class="chev" aria-hidden="true">▶</span> <span id="inativosToggleLabel">Leads Inativos</span>
-        </div>
-        <div class="card inativos-wrap" id="inativosWrap">
-          <div id="leadsInativosCard"></div>
-        </div>
-      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>Leads Ativos</div>
+    <div class="card" id="leadsCard"></div>
+    <div class="inativos-toggle" id="inativosToggle" role="button" tabindex="0" aria-expanded="false">
+      <span class="chev" aria-hidden="true">▶</span> <span id="inativosToggleLabel">Leads Inativos</span>
+    </div>
+    <div class="card inativos-wrap" id="inativosWrap">
+      <div id="leadsInativosCard"></div>
     </div>
   </div>
 
@@ -1630,8 +1644,8 @@ if (atrasados.length === 0) {
     box.innerHTML = `
       <div class="a-icon">🔴</div>
       <div>
-        <div class="a-title">${l.nome} está atrasado</div>
-        <div class="a-sub">Próxima ação: ${l.proximaAcao} — ${l.obs || ''}</div>
+        <div class="a-title">${esc(l.nome)} — contato atrasado</div>
+        <div class="a-sub"><b>Próxima ação:</b> ${esc(l.proximaAcao || '—')}${l.obs ? ' <span style="opacity:.75;">· ' + esc(String(l.obs).length > 150 ? String(l.obs).slice(0, 150).trim() + '…' : l.obs) + '</span>' : ''}</div>
       </div>`;
     alertCard.appendChild(box);
   });
@@ -1880,6 +1894,50 @@ function ordenarPorTemperatura(arr) {
 const leadsAtivosArr = ordenarPorTemperatura(DATA.leads.filter(l => !FASES_INATIVAS.includes(l.fase)));
 const leadsInativosArr = ordenarPorTemperatura(DATA.leads.filter(l => FASES_INATIVAS.includes(l.fase)));
 
+// Agrupa os cards por temperatura, com cabeçalho e contagem. A ordenação por
+// urgência (tempo parado) continua valendo DENTRO de cada grupo.
+const TEMPS = [
+  { chave: 'Quente', rotulo: '🔥 Quentes' },
+  { chave: 'Morno',  rotulo: '🟠 Mornos'  },
+  { chave: 'Frio',   rotulo: '❄️ Frios'   }
+];
+
+function renderGrupoTemperatura(lista, container) {
+  const usados = new Set();
+  TEMPS.forEach(t => {
+    const doGrupo = lista.filter(l => l.temperatura === t.chave);
+    doGrupo.forEach(l => usados.add(l));
+    if (doGrupo.length === 0) return;
+    const atrasados = doGrupo.filter(l => {
+      const u = calcularUrgencia(l);
+      return u.nivel === 'alta' || u.nivel === 'critica';
+    }).length;
+    const cab = document.createElement('div');
+    cab.className = 'temp-grupo';
+    cab.innerHTML = `<span class="temp-grupo-nome">${t.rotulo}</span>` +
+      `<span class="temp-grupo-qtd">${doGrupo.length}</span>` +
+      (atrasados > 0 ? `<span class="temp-grupo-alerta">${atrasados} passou da cadência</span>` : '') +
+      `<span class="temp-grupo-linha"></span>`;
+    container.appendChild(cab);
+    const grade = document.createElement('div');
+    grade.className = 'leads-grade';
+    doGrupo.forEach(l => renderLeadCard(l, grade));
+    container.appendChild(grade);
+  });
+  // Qualquer temperatura fora das três conhecidas não pode sumir da tela.
+  const resto = lista.filter(l => !usados.has(l));
+  if (resto.length > 0) {
+    const cab = document.createElement('div');
+    cab.className = 'temp-grupo';
+    cab.innerHTML = `<span class="temp-grupo-nome">Sem temperatura definida</span><span class="temp-grupo-qtd">${resto.length}</span><span class="temp-grupo-linha"></span>`;
+    container.appendChild(cab);
+    const grade = document.createElement('div');
+    grade.className = 'leads-grade';
+    resto.forEach(l => renderLeadCard(l, grade));
+    container.appendChild(grade);
+  }
+}
+
 if (leadsAtivosArr.length === 0) {
   leadsCard.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum lead ativo cadastrado ainda.</div>';
 } else {
@@ -1895,7 +1953,7 @@ if (leadsAtivosArr.length === 0) {
     '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#C62828"></span>muito atrasado</span>' +
     '<span style="opacity:.85;">Limite por temperatura: Quente 3d · Morno 7d · Frio 30d</span>';
   leadsCard.appendChild(legenda);
-  leadsAtivosArr.forEach(l => renderLeadCard(l, leadsCard));
+  renderGrupoTemperatura(leadsAtivosArr, leadsCard);
 }
 
 const inativosToggle = document.getElementById('inativosToggle');
@@ -1905,7 +1963,7 @@ if (leadsInativosArr.length === 0) {
   inativosToggle.style.display = 'none';
 } else {
   inativosLabel.textContent = `Leads Inativos (${leadsInativosArr.length})`;
-  leadsInativosArr.forEach(l => renderLeadCard(l, leadsInativosCard));
+  renderGrupoTemperatura(leadsInativosArr, leadsInativosCard);
   function toggleInativos() {
     const open = inativosWrap.classList.toggle('open');
     inativosToggle.classList.toggle('open', open);
