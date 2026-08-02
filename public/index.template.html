@@ -249,6 +249,7 @@
     .ctr-linha { background:#20261E; border-color:#2C342A; }
     .ctr-linha:hover, .ctr-linha:focus-visible { border-color:#3A4435; }
     .ctr-mini-chip { background:#252D22; border-color:#39423577; color:#B9C2B0; }
+    .ctr-grupo:hover { background:#232B21; }
     /* Blocos de temperatura no escuro: mantêm a identidade da cor, mas com
        fundo profundo em vez de tinta clara. */
     .temp-secao.t-quente { background:#241A18; border-color:#3A2723; }
@@ -604,8 +605,15 @@
   .ctr-ind-meta { font-size: var(--fs-2xs); color:#8A9186; margin-top:4px; }
   .ctr-ind-meta b { color:#2E7D32; }
   .ctr-ind .wa-link { margin-top:7px; }
-  .ctr-grupo { display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin:16px 0 9px; }
-  .ctr-grupo:first-child { margin-top:2px; }
+  .ctr-grupo { display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin:10px 0 4px; padding:7px 10px;
+    border-radius:9px; cursor:pointer; transition:background .15s; }
+  .ctr-grupo:hover { background:#F6F7F2; }
+  .ctr-grupo:focus-visible { outline:2px solid var(--brand-gold); outline-offset:2px; }
+  .ctr-grupo:first-child { margin-top:0; }
+  .ctr-grupo .bairro-chev { color: var(--brand-gold-deep); font-size:12px; transition:transform .15s ease; }
+  .ctr-grupo.open .bairro-chev { transform: rotate(90deg); }
+  .ctr-grupo-content { display:none; padding-left:2px; }
+  .ctr-grupo-content.open { display:block; margin-bottom:10px; }
   .ctr-grupo-titulo { font-size: var(--fs-sm); font-weight:700; color: var(--text-strong); }
   .ctr-grupo-qtd { font-size: var(--fs-2xs); font-weight:700; background:#F1F3EE; border:1px solid #E4E7DF; border-radius:20px; padding:1px 9px; color:#5C6155; }
   .ctr-grupo-nota { font-size: var(--fs-2xs); color:#8A9186; }
@@ -3221,11 +3229,21 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
     GRUPOS_CTR.forEach(g => {
       const doGrupo = itens.filter(it => it.status === g.status);
       if (doGrupo.length === 0) return;
-      html += `<div class="ctr-grupo">
+      // Grupo recolhível, mesmo padrão dos bairros na aba Imóveis. Fechado por
+      // padrão — mas o cabeçalho carrega o alerta de quem está envelhecendo,
+      // pra recolher não esconder urgência.
+      const paradas = doGrupo.filter(it => {
+        const dd = it.data ? diasDesdeISO(it.data) : null;
+        return it.status === 'Registrada' && dd !== null && dd > 15;
+      }).length;
+      html += `<div class="ctr-grupo" role="button" tabindex="0" aria-expanded="false">
+          <span class="bairro-chev" aria-hidden="true">▶</span>
           <span class="ctr-grupo-titulo">${g.titulo}</span>
           <span class="ctr-grupo-qtd">${doGrupo.length}</span>
           <span class="ctr-grupo-nota">${g.nota}</span>
-        </div>` + doGrupo.map(cardIndicacao).join('');
+          ${paradas > 0 ? `<span class="temp-alerta">⚠️ ${paradas} parada${paradas === 1 ? '' : 's'} há +15d</span>` : ''}
+        </div>
+        <div class="ctr-grupo-content">${doGrupo.map(cardIndicacao).join('')}</div>`;
     });
 
     // Perdidas e encerradas: recolhidas, com o motivo à mão quando abrir.
@@ -3238,6 +3256,7 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
       </details>`;
     }
     list.innerHTML = html;
+    ligarGruposCtr();
   }
 
   function renderIndicadores() {
@@ -3361,6 +3380,23 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
             </div>`;
           }).join('')}`;
     abrirModal();
+  }
+
+  function ligarGruposCtr() {
+    list.querySelectorAll('.ctr-grupo').forEach(cab => {
+      const corpo = cab.nextElementSibling;
+      if (!corpo || !corpo.classList.contains('ctr-grupo-content')) return;
+      const alternar = () => {
+        const abrir = !corpo.classList.contains('open');
+        corpo.classList.toggle('open', abrir);
+        cab.classList.toggle('open', abrir);
+        cab.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+      };
+      cab.addEventListener('click', alternar);
+      cab.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); alternar(); }
+      });
+    });
   }
 
   // Delegação: cobre os cards da lista e os de dentro da própria janela.
