@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-01T17:10:00-03:00",
+  "ultimaAtualizacao": "2026-08-01T18:00:00-03:00",
   "meta2026": {
     "meta": 10000000,
     "realizado": 2359100,
@@ -1939,7 +1939,56 @@
   ],
   "instagram": {
     "handle": "@thuliorego",
-    "posts": [],
-    "notaAtribuicao": "Leads com origem Instagram anteriores a 01/08/2026 não têm post vinculado — a atribuição começa a valer para as próximas publicações."
+    "posts": [
+      {
+        "data": "2026-08-03",
+        "formato": "Carrossel",
+        "tema": "Oferta: Cód. 7726 — Candelária, 74m², 3 dorm./2 suítes, R$269.990",
+        "status": "Ideia",
+        "obs": "Pilar: oferta. Preço abaixo dos concorrentes do bairro — puxar esse ângulo.",
+        "leadsGerados": []
+      },
+      {
+        "data": "2026-08-06",
+        "formato": "Reel",
+        "tema": "Financiamento: o que o banco olha antes de aprovar seu crédito",
+        "status": "Ideia",
+        "obs": "Pilar: autoridade. Tema quente — três clientes seus estão em financiamento agora. TESTE DE HORÁRIO: publicar às 12h.",
+        "leadsGerados": []
+      },
+      {
+        "data": "2026-08-08",
+        "formato": "Reel",
+        "tema": "Bastidor: como eu avalio um imóvel antes de aceitar a captação",
+        "status": "Ideia",
+        "obs": "Pilar: pessoal/bastidor. Sábado é território inexplorado — teste de dia.",
+        "leadsGerados": []
+      },
+      {
+        "data": "2026-08-10",
+        "formato": "Carrossel",
+        "tema": "Oferta: Cód. 10641 — Portamaris, Ponta Negra, 101m² mobiliado, R$849.990",
+        "status": "Ideia",
+        "obs": "Pilar: oferta. Porteira fechada e vista panorâmica são o diferencial.",
+        "leadsGerados": []
+      },
+      {
+        "data": "2026-08-13",
+        "formato": "Reel",
+        "tema": "ITBI, escritura e registro: os custos que ninguém conta antes de comprar",
+        "status": "Ideia",
+        "obs": "Pilar: autoridade. TESTE DE HORÁRIO: publicar às 20h, pra comparar com o reel do dia 06.",
+        "leadsGerados": []
+      },
+      {
+        "data": "2026-08-15",
+        "formato": "Carrossel",
+        "tema": "Índices: como está o preço do m² em Natal por bairro",
+        "status": "Ideia",
+        "obs": "Pilar: índices (você já tem destaque disso). Pode sair do radar de notícias de sábado.",
+        "leadsGerados": []
+      }
+    ],
+    "notaAtribuicao": "Leads com origem Instagram anteriores a 01/08/2026 não têm post vinculado. Heber Lima (21/07) e Maria Matos (24/07) chegaram durante o mês de maior cadência do ano — 10 publicações."
   }
 }
