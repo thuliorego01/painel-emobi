@@ -252,6 +252,9 @@
   .termo-val b { color: var(--text-strong); font-size: var(--fs-xs); }
   .termo-nota { font-size: var(--fs-2xs); color:#8A9186; margin-top:10px; line-height:1.5; }
   .termo-nota b { color:#C62828; }
+  .titulo-escopo { font-weight:400; font-size:var(--fs-2xs); color:#8A9186; text-transform:none; letter-spacing:0; }
+  .termo-escopo { font-size: var(--fs-2xs); color:#6B6F66; background:#F7F8F4; border:1px solid #E9EBE4; border-radius:8px; padding:8px 10px; margin-top:10px; line-height:1.5; }
+  .termo-escopo b { color: var(--text-strong); }
   .termo-extra { font-size: var(--fs-2xs); color:#4A5240; background:#F4F7F0; border:1px solid #DFE6D6; border-radius:8px; padding:8px 10px; margin-top:10px; line-height:1.5; }
   .termo-extra b { color: var(--text-strong); }
   .tbl-mini { width:100%; border-collapse:collapse; font-size: var(--fs-2xs); }
@@ -672,7 +675,7 @@
       <div class="greeting-block" id="greetingBlock"></div>
       <div class="kpis" id="homeKpis" style="margin-bottom:18px;"></div>
       <div class="urgent-banner" id="urgentBanner"></div>
-      <div class="section-title"><span class="dot" aria-hidden="true"></span>🌡️ Termômetro do Funil</div>
+      <div class="section-title"><span class="dot" aria-hidden="true"></span>🌡️ Termômetro do Funil <span class="titulo-escopo">— leads em acompanhamento ativo</span></div>
       <div class="card" style="margin-bottom:18px;">
         <div id="termometroFunil"></div>
       </div>
@@ -841,7 +844,7 @@
     <div class="grid2">
       <div>
         <div class="card">
-          <h3>🔻 Funil por Fase</h3>
+          <h3>🔻 Funil por Fase <span class="titulo-escopo">— acompanhamento ativo</span></h3>
           <div id="funilList"></div>
         </div>
         <div class="card" style="margin-top:18px;">
@@ -3375,6 +3378,7 @@ function resumirEvento(titulo) {
     + (gargaloIdx > 0
       ? `<div class="termo-nota">Maior perda entre <b>${FUNIL_CONVERSAO_FASES[gargaloIdx - 1]}</b> e <b>${FUNIL_CONVERSAO_FASES[gargaloIdx]}</b> — de ${alcancaram[gargaloIdx - 1]} para ${alcancaram[gargaloIdx]} (${Math.round(piorQueda * 100)}% de queda). É onde vale atacar primeiro.</div>`
       : '')
+    + `<div class="termo-escopo">ℹ️ Este funil cobre apenas os leads em <b>acompanhamento ativo</b> aqui no painel — não toda a sua base do Imoview. Quem parou antes de avançar não entra na conta, então os percentuais descrevem quem progrediu, não a taxa de conversão da base inteira.</div>`
     + (vendasForaDoFunil > 0
       ? `<div class="termo-extra">➕ <b>${vendasForaDoFunil}</b> ${vendasForaDoFunil === 1 ? 'venda fechada fora do funil' : 'vendas fechadas fora do funil'} (compradores que vieram pela captação e não passaram pelo pipeline). Ficam de fora do cálculo acima de propósito — somar só no fim distorceria a taxa de conversão.</div>`
       : '');
