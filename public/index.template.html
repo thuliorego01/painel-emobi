@@ -238,6 +238,10 @@
     .busca-item:hover, .busca-item:focus { background: #262E24; }
     .wa-link.registrar { background: #232B21; color: #B9C2B0; border-color: #39423577; }
     .filtro-limpar { background: #232B21; color: #B9C2B0; }
+    .ctr-ind { background:#232B21; border-color:#2C342A; }
+    .ctr-idade { background:#252D22; border-color:#39423577; color:#9AA394; }
+    .ctr-idade.atencao { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
+    .ctr-idade.alerta  { background:#2A1A18; border-color:#4A2A22; color:#E8907F; }
     /* Blocos de temperatura no escuro: mantêm a identidade da cor, mas com
        fundo profundo em vez de tinta clara. */
     .temp-secao.t-quente { background:#241A18; border-color:#3A2723; }
@@ -574,6 +578,25 @@
   .match-line { font-size:var(--fs-xs); color:#5C6157; margin-top:6px; display:flex; align-items:flex-start; gap:6px; flex-wrap:wrap; }
   .match-chip { background:#E4F3EA; color:#1F7A4D; font-weight:700; padding:3px 9px; border-radius:20px; font-size:var(--fs-xs); white-space:nowrap; }
   .match-chip.zero { background:#F1F2ED; color:#8A9186; }
+
+  /* ---- Conecta TR ---- */
+  .ctr-idade { font-size:10px; font-weight:700; color:#8A9186; background:#F1F3EE; border:1px solid #E4E7DF;
+    border-radius:10px; padding:2px 8px; margin-right:5px; }
+  .ctr-idade.atencao { color:#8A6A2E; background:#FFF9E6; border-color:#F0E2B0; }
+  .ctr-idade.alerta  { color:#B4300F; background:#FDECE6; border-color:#F3CDBE; }
+  .ctr-card.ctr-parada { border-left:4px solid #E8892B; }
+  .ctr-resumo-ind { font-size: var(--fs-2xs); color:#8A9186; margin-bottom:10px; }
+  .ctr-resumo-ind b { color:#B4300F; }
+  .ctr-ind-grade { display:grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap:9px; }
+  .ctr-ind { border:1px solid #E9EBE4; border-radius:10px; padding:9px 11px; background:#FCFCFA; }
+  .ctr-ind.inativo { opacity:.72; border-style:dashed; }
+  .ctr-ind-topo { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .ctr-ind-nome { font-size: var(--fs-xs); font-weight:700; color: var(--text-strong); line-height:1.25; }
+  .ctr-ind-num { font-size: var(--fs-sm); font-weight:700; color: var(--brand-gold-deep); flex:0 0 auto; }
+  .ctr-ind-zero { font-size:10px; color:#8A9186; flex:0 0 auto; }
+  .ctr-ind-meta { font-size: var(--fs-2xs); color:#8A9186; margin-top:4px; }
+  .ctr-ind-meta b { color:#2E7D32; }
+  .ctr-ind .wa-link { margin-top:7px; }
   .wa-link.confirm { background:#FBF6EA; color:#8C6D1F; margin-left:6px; }
   .wa-link.confirm:hover { background:#F3EBD2; }
   .wa-link.reativar { background:#FBE4E4; color:#B3261E; margin-left:6px; }
@@ -1012,8 +1035,11 @@
           <div class="kpi-group-vals"><div class="kpi-group-value" id="ctrIndicadores">—</div></div>
         </div>
         <div class="kpi-group-item kpi-clickable" id="kpiCtrRegistradas" data-ctr-filter="Registrada" role="button" tabindex="0" aria-pressed="false">
-          <div class="kpi-group-label"><span class="icon">📋</span> Indicações Registradas</div>
-          <div class="kpi-group-vals"><div class="kpi-group-value" id="ctrRegistradas">—</div></div>
+          <div class="kpi-group-label"><span class="icon">📋</span> Aguardando captação</div>
+          <div class="kpi-group-vals">
+            <div class="kpi-group-value" id="ctrRegistradas">—</div>
+            <div class="kpi-group-hint" id="ctrRegistradasHint">—</div>
+          </div>
         </div>
       </div>
       <div class="kpi-group">
@@ -1026,7 +1052,10 @@
         </div>
         <div class="kpi-group-item kpi-clickable" id="kpiCtrVendidas" data-ctr-filter="Vendida" role="button" tabindex="0" aria-pressed="false">
           <div class="kpi-group-label"><span class="icon">✅</span> Indicações Vendidas</div>
-          <div class="kpi-group-vals"><div class="kpi-group-value" id="ctrVendidas">—</div></div>
+          <div class="kpi-group-vals">
+            <div class="kpi-group-value" id="ctrVendidas">—</div>
+            <div class="kpi-group-hint" id="ctrPerdidasHint">—</div>
+          </div>
         </div>
       </div>
       <div class="kpi-group">
@@ -1041,8 +1070,8 @@
       </div>
     </div>
     <div style="font-size:var(--fs-xs);color:#8A9186;margin-bottom:14px;">💡 Clique num card acima para ver só aquele grupo — clique de novo pra voltar a ver tudo.</div>
-    <div class="card" id="ctrIndicadoresCard" style="display:none;margin-bottom:16px;">
-      <h3>🧑‍🤝‍🧑 Indicadores Cadastrados</h3>
+    <div class="card" id="ctrIndicadoresCard" style="margin-bottom:16px;">
+      <h3>🧑‍🤝‍🧑 Quem está indicando</h3>
       <div id="conectaTRIndicadoresList"></div>
     </div>
     <div class="card">
@@ -3061,6 +3090,10 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
   const ctrPctCaptacao = ctrTotalIndicacoes ? Math.round((ctrAlemDeRegistrada / ctrTotalIndicacoes) * 100) : 0;
   document.getElementById('ctrIndicadores').textContent = ctrIndicadoresAtivos;
   document.getElementById('ctrRegistradas').textContent = ctrRegistradas;
+  const ctrPerdidas = ctrItens.filter(it => it.status === 'Perdida').length;
+  document.getElementById('ctrRegistradasHint').textContent = `de ${ctrTotalIndicacoes} indicações no total`;
+  document.getElementById('ctrPerdidasHint').textContent = ctrPerdidas > 0
+    ? `${ctrPerdidas} perdida${ctrPerdidas === 1 ? '' : 's'}` : 'nenhuma perdida';
   document.getElementById('ctrCaptadas').textContent = ctrCaptadas;
   document.getElementById('ctrCaptadasHint').textContent = ctrTotalIndicacoes ? `${ctrPctCaptacao}% das indicações viraram captação` : 'sem indicações ainda';
   document.getElementById('ctrVendidas').textContent = ctrVendidas;
@@ -3076,6 +3109,12 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
   const statusClass = { "Registrada": "novo", "Captada": "emdia", "Vendida": "emdia", "Encerrada": "atrasado" };
   let filtroAtivo = null; // null | "ativos" | "Registrada" | "Captada" | "Vendida"
 
+  function waHrefCtr(tel) {
+    const dg = String(tel || '').replace(/\D/g, '');
+    if (!dg) return null;
+    return 'https://wa.me/' + (dg.startsWith('55') ? dg : '55' + dg);
+  }
+
   function renderIndicacoes() {
     const filtradas = filtroAtivo && filtroAtivo !== 'ativos' ? itens.filter(it => it.status === filtroAtivo) : itens;
     tituloEl.textContent = filtroAtivo && filtroAtivo !== 'ativos' ? `📇 Indicações — ${filtroAtivo}` : '📇 Indicações';
@@ -3087,19 +3126,36 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
       list.innerHTML = `<div style="font-size:13px;color:#8A9186;">Nenhuma indicação com status "${filtroAtivo}" no momento.</div>`;
       return;
     }
-    list.innerHTML = filtradas.map(it => `
-      <div class="lead-card">
+    list.innerHTML = filtradas.map(it => {
+      const dias = it.data ? diasDesdeISO(it.data) : null;
+      // Indicação parada em "Registrada" há muito tempo é indicação esquecida —
+      // é o próprio critério da auditoria semanal, agora visível na tela.
+      const parada = it.status === 'Registrada' && dias !== null && dias > 15;
+      const atencao = it.status === 'Registrada' && dias !== null && dias > 7 && dias <= 15;
+      const ind = (ctr.indicadoresLista || []).find(x =>
+        (it.indicadorId !== undefined && x.id === it.indicadorId) || x.nome === it.indicador);
+      const nomeInd = ind ? ind.nome : (it.indicador || '—');
+      const waInd = ind && ind.telefone ? waHrefCtr(ind.telefone) : null;
+      const waProp = it.telefoneProprietario ? waHrefCtr(it.telefoneProprietario) : null;
+      return `
+      <div class="lead-card ctr-card${parada ? ' ctr-parada' : ''}">
         <div class="lead-top">
-          <span class="lead-name">${it.protocolo || '—'} · ${it.imovel || ''}</span>
-          <span class="badge ${statusClass[it.status] || 'novo'}">${it.status || '—'}</span>
+          <span class="lead-name">${esc(it.protocolo || '—')} · ${esc(it.imovel || '')}</span>
+          <span>${parada ? `<span class="ctr-idade alerta">⚠️ ${dias}d parada</span>` : (dias !== null ? `<span class="ctr-idade${atencao ? ' atencao' : ''}">${dias === 0 ? 'hoje' : dias + 'd'}</span>` : '')}
+            <span class="badge ${statusClass[it.status] || 'novo'}">${esc(it.status || '—')}</span></span>
         </div>
         <div class="lead-meta">
-          <span>Indicador: <b>${it.indicador || '—'}</b></span>
-          <span>Proprietário: <b>${it.proprietario || '—'}</b></span>
-          <span>Valor devido: <b>${brl(it.valorDevido || 0)}</b></span>
+          <span>Indicador: <b>${esc(nomeInd)}</b></span>
+          <span>Proprietário: <b>${esc(it.proprietario || '—')}</b></span>
+          ${it.valorDevido ? `<span>💰 A pagar: <b>${brl(it.valorDevido)}</b></span>` : ''}
         </div>
         ${it.vinculadoId ? `<div class="match-line"><span class="match-chip">🔗 Vinculado à aba Imóveis (ID ${it.vinculadoId})</span></div>` : ''}
-      </div>`).join('');
+        ${(waInd || waProp) ? `<div class="lead-actions">
+          ${waProp ? `<a class="wa-link" href="${waProp}" target="_blank" rel="noopener">💬 Falar com o proprietário</a>` : ''}
+          ${waInd ? `<a class="wa-link registrar" href="${waInd}" target="_blank" rel="noopener">💬 Avisar ${esc(nomeInd.split(' ')[0])}</a>` : ''}
+        </div>` : ''}
+      </div>`;
+    }).join('');
   }
 
   function renderIndicadores() {
@@ -3107,22 +3163,37 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
       indicadoresList.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum indicador cadastrado ainda.</div>';
       return;
     }
-    indicadoresList.innerHTML = indicadores.map(ind => {
-      let waHtml = '';
-      if (ind.telefone) {
-        const digits = String(ind.telefone).replace(/\D/g, '');
-        const withCountry = digits.startsWith('55') ? digits : '55' + digits;
-        waHtml = `<a class="wa-link" href="https://wa.me/${withCountry}" target="_blank" rel="noopener">💬 WhatsApp</a>`;
-      }
+    // Desempenho por indicador — o programa vive dessas pessoas, e antes elas
+    // só apareciam como nome solto dentro de cada indicação.
+    const stats = indicadores.map(ind => {
+      const minhas = itens.filter(it =>
+        (it.indicadorId !== undefined && it.indicadorId === ind.id) || it.indicador === ind.nome);
+      return {
+        ind,
+        total: minhas.length,
+        captadas: minhas.filter(x => x.status === 'Captada' || x.status === 'Vendida').length,
+        vendidas: minhas.filter(x => x.status === 'Vendida').length,
+        aReceber: minhas.reduce((s, x) => s + (x.valorDevido || 0), 0)
+      };
+    }).sort((a, b) => b.total - a.total || a.ind.nome.localeCompare(b.ind.nome, 'pt-BR'));
+
+    const semIndicar = stats.filter(s => s.total === 0).length;
+    const resumo = `<div class="ctr-resumo-ind">${stats.length} cadastrados · ${stats.length - semIndicar} já indicaram` +
+      (semIndicar > 0 ? ` · <b>${semIndicar} ainda não indicou</b> — vale um lembrete` : '') + `</div>`;
+
+    indicadoresList.innerHTML = resumo + `<div class="ctr-ind-grade">` + stats.map((s, i) => {
+      const wa = waHrefCtr(s.ind.telefone);
+      const topo = i === 0 && s.total > 0;
       return `
-      <div class="lead-card">
-        <div class="lead-top">
-          <span class="lead-name">${ind.nome || '—'}</span>
-          <span class="badge ${ind.status === 'Ativo' ? 'emdia' : 'atrasado'}">${ind.status || '—'}</span>
+      <div class="ctr-ind${s.total === 0 ? ' inativo' : ''}">
+        <div class="ctr-ind-topo">
+          <span class="ctr-ind-nome">${topo ? '🏆 ' : ''}${esc(s.ind.nome || '—')}</span>
+          ${s.total === 0 ? '<span class="ctr-ind-zero">sem indicações</span>' : `<span class="ctr-ind-num">${s.total}</span>`}
         </div>
-        <div class="lead-meta"><span>${waHtml}</span></div>
+        ${s.total > 0 ? `<div class="ctr-ind-meta">${s.captadas} captada(s) · ${s.vendidas} vendida(s)${s.aReceber > 0 ? ` · <b>${brl(s.aReceber)} a receber</b>` : ''}</div>` : ''}
+        ${wa ? `<a class="wa-link" href="${wa}" target="_blank" rel="noopener">💬 WhatsApp</a>` : ''}
       </div>`;
-    }).join('');
+    }).join('') + `</div>`;
   }
 
   function aplicarFiltro(novoFiltro) {

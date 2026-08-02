@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-02T17:55:00-03:00",
+  "ultimaAtualizacao": "2026-08-02T18:40:00-03:00",
   "meta2026": {
     "meta": 10000000,
     "realizado": 2359100,
@@ -1184,8 +1184,11 @@
         "indicador": "Jozimar Alves de Lima Júnior",
         "proprietario": "Natasha Ferreira",
         "status": "Perdida",
-        "valorDevido": 0,
-        "vinculadoId": null
+        "valorDevido": null,
+        "vinculadoId": null,
+        "indicadorId": 1,
+        "data": "2026-07-18",
+        "telefoneProprietario": "84988714374"
       },
       {
         "protocolo": "IND-TR-2026-0004",
@@ -1193,8 +1196,11 @@
         "indicador": "Nisia Raquel Gadelha de Lima",
         "proprietario": "Michelle",
         "status": "Captada",
-        "valorDevido": 0,
-        "vinculadoId": 17
+        "valorDevido": null,
+        "vinculadoId": 17,
+        "indicadorId": 2,
+        "data": "2026-07-18",
+        "telefoneProprietario": "8498002220"
       },
       {
         "protocolo": "IND-TR-2026-0005",
@@ -1202,8 +1208,11 @@
         "indicador": "Klevisson Ranniere Meira de Araújo",
         "proprietario": "Kris Suenir Meira de Araújo",
         "status": "Captada",
-        "valorDevido": 0,
-        "vinculadoId": 18
+        "valorDevido": null,
+        "vinculadoId": 18,
+        "indicadorId": 3,
+        "data": "2026-07-18",
+        "telefoneProprietario": "84999810266"
       },
       {
         "protocolo": "IND-TR-2026-0006",
@@ -1212,7 +1221,10 @@
         "proprietario": "Januncio",
         "status": "Registrada",
         "valorDevido": null,
-        "vinculadoId": 23
+        "vinculadoId": 23,
+        "indicadorId": 5,
+        "data": "2026-07-21",
+        "telefoneProprietario": "8499839625"
       },
       {
         "protocolo": "IND-TR-2026-0007",
@@ -1221,7 +1233,10 @@
         "proprietario": "Jairson",
         "status": "Registrada",
         "valorDevido": null,
-        "vinculadoId": 25
+        "vinculadoId": 25,
+        "indicadorId": 4,
+        "data": "2026-07-22",
+        "telefoneProprietario": "84981822264"
       },
       {
         "protocolo": "IND-TR-2026-0008",
@@ -1230,7 +1245,10 @@
         "proprietario": "Emerson",
         "status": "Registrada",
         "valorDevido": null,
-        "vinculadoId": 26
+        "vinculadoId": 26,
+        "indicadorId": 4,
+        "data": "2026-07-22",
+        "telefoneProprietario": "84996044000"
       },
       {
         "protocolo": "IND-TR-2026-0009",
@@ -1239,41 +1257,51 @@
         "proprietario": "Isabele Brasil",
         "status": "Registrada",
         "valorDevido": null,
-        "vinculadoId": 32
+        "vinculadoId": 32,
+        "indicadorId": 6,
+        "data": "2026-07-30",
+        "telefoneProprietario": "84999224699"
       }
     ],
     "indicadoresLista": [
       {
         "nome": "Jozimar Alves de Lima Júnior",
         "telefone": "84987531523",
-        "status": "Ativo"
+        "status": "Ativo",
+        "id": 1
       },
       {
         "nome": "Nisia Raquel Gadelha de Lima",
         "telefone": "84998918516",
-        "status": "Ativo"
+        "status": "Ativo",
+        "id": 2
       },
       {
         "nome": "Klevisson Ranniere Meira de Araújo",
         "telefone": "84996204433",
-        "status": "Ativo"
+        "status": "Ativo",
+        "id": 3
       },
       {
         "nome": "Flávia Costa Marinho",
         "telefone": "84999001343",
-        "status": "Ativo"
+        "status": "Ativo",
+        "id": 4
       },
       {
         "nome": "Hudson Bezerra de Brito",
         "telefone": "84988572343",
-        "status": "Ativo"
+        "status": "Ativo",
+        "id": 5
       },
       {
         "nome": "Jorge Tomé De Paiva Filho",
         "telefone": "84996744509",
-        "status": "Ativo"
+        "status": "Ativo",
+        "id": 6
       }
-    ]
+    ],
+    "regraBonificacao": "A bonificação só vira valor devido quando o imóvel indicado é VENDIDO. Tabela: até R$500 mil = R$1.000 · R$500 mil a R$1 milhão = R$2.000 · acima de R$1 milhão = R$3.000. Bônus de R$100 a cada 4 captações."
   },
   "logAtividades": [
     {
