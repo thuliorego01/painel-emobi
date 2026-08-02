@@ -206,6 +206,20 @@
     color:#4A5240; border-radius:7px; padding:5px 11px; cursor:pointer; margin-top:8px; }
   .insta-publicar:hover:not(:disabled) { background:#E2E8DA; }
   .insta-publicar:disabled { opacity:.5; cursor:default; }
+  .pilar-item { display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px solid #F3F5F0; }
+  .pilar-item:last-child { border-bottom:none; }
+  .pilar-nome { flex:0 0 96px; font-weight:700; font-size:var(--fs-xs); color:var(--text-strong); }
+  .pilar-nome .ordem { display:inline-block; width:16px; color:#8A9186; font-weight:400; }
+  .pilar-desc { font-size:var(--fs-2xs); color:#8A9186; line-height:1.5; }
+  .insta-regra { background:#FFFBEF; border:1px solid #F0E2B0; border-radius:8px; padding:9px 12px; font-size:var(--fs-2xs); color:#6B5D2E; line-height:1.5; margin-bottom:12px; }
+  .serie-card { border:1px solid #E9EBE4; border-radius:10px; padding:9px 12px; margin-top:8px; }
+  .serie-topo { display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; }
+  .serie-nome { font-weight:700; font-size:var(--fs-xs); color:var(--text-strong); }
+  .serie-ep { font-size:var(--fs-2xs); color:#8A9186; margin-top:5px; padding-left:12px; border-left:2px solid #E9EBE4; }
+  .funil-fluxo { display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:6px; }
+  .funil-etapa { background:#F1F4EC; border:1px solid #DCE3D3; border-radius:6px; padding:4px 9px; font-size:var(--fs-2xs); color:#4A5240; }
+  .funil-seta { color:#B6BBB0; font-size:11px; }
+  .insta-sub { font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:#8A9186; margin:14px 0 6px; }
   .insta-janela { margin-top:10px; background:#F4F7F0; border:1px solid #DFE6D6; border-radius:8px; padding:8px 11px; font-size:var(--fs-2xs); color:#4A5240; line-height:1.5; }
   .agenda-feito { font-family:inherit; font-size:10px; font-weight:600; border:1px solid #DCE3D3; background:#EEF2E9;
     color:#4A5240; border-radius:7px; padding:5px 9px; cursor:pointer; white-space:nowrap; align-self:center; margin-left:auto; }
@@ -933,6 +947,10 @@
     <div class="section-title"><span class="dot" aria-hidden="true"></span>📈 O Instagram está trazendo negócio?</div>
     <div class="card" style="margin-bottom:18px;">
       <div id="instaResultado"></div>
+    </div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>🎯 Linha editorial</div>
+    <div class="card" style="margin-bottom:18px;">
+      <div id="instaEditorial"></div>
     </div>
     <div class="section-title"><span class="dot" aria-hidden="true"></span>🗓️ Fila de produção</div>
     <div class="card" style="margin-bottom:18px;">
@@ -3439,6 +3457,71 @@ function marcarIgPublicado(id) {
     body: JSON.stringify({ id })
   }).catch(() => {});
 }
+
+(function renderEditorialInstagram() {
+  const el = document.getElementById('instaEditorial');
+  if (!el) return;
+  const ig = DATA.instagram || {};
+  const pil = ig.pilares, series = ig.series || [], funil = ig.funil, aud = ig.auditoriaPreCalendario;
+  if (!pil && series.length === 0 && !funil) {
+    el.innerHTML = '<div class="insta-vazio">Linha editorial ainda não definida.</div>';
+    return;
+  }
+
+  // Quantas pautas da fila caem em cada pilar — mostra o equilíbrio real,
+  // não o pretendido.
+  const posts = ig.posts || [];
+  const contagem = {};
+  posts.forEach(p => {
+    const m = String(p.obs || '').match(/Pilar:\s*([A-Za-zÀ-ú]+)/);
+    let nome = m ? m[1] : null;
+    if (!nome) {
+      const t = (p.tema || '').toLowerCase();
+      nome = t.startsWith('oferta') ? 'Ofertas' : (t.startsWith('índices') || t.startsWith('indices') ? 'Mercado' : (t.startsWith('bastidor') ? 'Bastidores' : 'Autoridade'));
+    }
+    const chave = { 'oferta':'Ofertas','ofertas':'Ofertas','autoridade':'Autoridade','mercado':'Mercado','índices':'Mercado','indices':'Mercado','bastidores':'Bastidores','pessoal':'Bastidores' }[nome.toLowerCase()] || nome;
+    contagem[chave] = (contagem[chave] || 0) + 1;
+  });
+
+  let html = '';
+  if (pil && pil.regra) html += `<div class="insta-regra">📌 ${esc(pil.regra)}</div>`;
+  if (pil && pil.lista) {
+    html += Object.entries(pil.lista).map(([nome, desc], i) => `
+      <div class="pilar-item">
+        <div class="pilar-nome"><span class="ordem">${i + 1}.</span>${esc(nome)}${contagem[nome] ? ` <span style="font-weight:400;color:#8A9186;">(${contagem[nome]})</span>` : ''}</div>
+        <div class="pilar-desc">${esc(desc)}</div>
+      </div>`).join('');
+  }
+
+  if (series.length > 0) {
+    html += '<div class="insta-sub">Séries em andamento</div>';
+    html += series.map(s => `
+      <div class="serie-card">
+        <div class="serie-topo">
+          <span class="serie-nome">${esc(s.nome)}</span>
+          <span class="badge novo">${esc(s.pilar)}</span>
+          <span style="font-size:var(--fs-2xs);color:#8A9186;">${esc(s.periodicidade)} · ${(s.episodios || []).length} episódio(s)</span>
+        </div>
+        ${s.descricao ? `<div class="pilar-desc" style="margin-top:4px;">${esc(s.descricao)}</div>` : ''}
+        ${(s.episodios || []).map(e => `<div class="serie-ep">${esc(e)}</div>`).join('')}
+      </div>`).join('');
+  }
+
+  if (funil && funil.fluxo) {
+    html += '<div class="insta-sub">Funil de conteúdo</div>';
+    html += '<div class="funil-fluxo">' +
+      funil.fluxo.map(f => `<span class="funil-etapa">${esc(f)}</span>`).join('<span class="funil-seta">→</span>') +
+      '</div>';
+    if (funil.observacao) html += `<div class="pilar-desc" style="margin-top:6px;">${esc(funil.observacao)}</div>`;
+    if (funil.blogRelacionado) html += `<div class="pilar-desc" style="margin-top:2px;">Blog: ${esc(funil.blogRelacionado)}</div>`;
+  }
+
+  if (aud && aud.ultimaExecucao) {
+    html += `<div class="insta-sub">Última auditoria de pauta — ${esc(aud.ultimaExecucao.data || '')}</div>
+      <div class="pilar-desc">${esc(aud.ultimaExecucao.respostas || '')}</div>`;
+  }
+  el.innerHTML = html;
+})();
 
 (function renderInstagram() {
   const elRes = document.getElementById('instaResultado');
