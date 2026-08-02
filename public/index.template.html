@@ -252,6 +252,14 @@
   .termo-val b { color: var(--text-strong); font-size: var(--fs-xs); }
   .termo-nota { font-size: var(--fs-2xs); color:#8A9186; margin-top:10px; line-height:1.5; }
   .termo-nota b { color:#C62828; }
+  /* Selo de conversão degrau a degrau, alinhado à coluna das barras */
+  .termo-degrau { display:flex; align-items:center; margin:-2px 0 -2px 0; }
+  .termo-degrau::before { content:''; flex:0 0 132px; }
+  .degrau-selo { font-size:9.5px; font-weight:700; color:#8A9186; background:#F1F3EE; border:1px solid #E4E7DF;
+    border-radius:10px; padding:1px 7px; line-height:1.6; letter-spacing:.2px; }
+  .degrau-selo.cheio { color:#4A7A3B; background:#EDF4E8; border-color:#D8E5D0; }
+  .degrau-selo.queda { color:#B4300F; background:#FDECE6; border-color:#F3CDBE; }
+  .degrau-selo.vazio { opacity:.5; }
   .titulo-escopo { font-weight:400; font-size:var(--fs-2xs); color:#8A9186; text-transform:none; letter-spacing:0; }
   .termo-escopo { font-size: var(--fs-2xs); color:#6B6F66; background:#F7F8F4; border:1px solid #E9EBE4; border-radius:8px; padding:8px 10px; margin-top:10px; line-height:1.5; }
   .termo-escopo b { color: var(--text-strong); }
@@ -3352,8 +3360,14 @@ function resumirEvento(titulo) {
   // Gargalo = maior queda percentual entre duas fases consecutivas.
   // Só considera quedas onde a fase anterior tem volume relevante (>=2), senão
   // uma fase com 1-2 leads vira "100% de queda" e rouba o diagnóstico real.
+  // A última transição (→ Fechado Ganho) fica FORA da busca por gargalo: quem
+  // acabou de entrar em "Em Negociação" ainda não teve tempo de fechar, e sem
+  // essa exceção o painel acusava "0% de fechamento" como se fosse o problema
+  // principal — quando na verdade é fila de espera. Taxa de fechamento é
+  // métrica própria, mostrada à parte.
+  const ULTIMA = FUNIL_CONVERSAO_FASES.length - 1;
   let gargaloIdx = -1, piorQueda = 0;
-  for (let i = 1; i < alcancaram.length; i++) {
+  for (let i = 1; i < ULTIMA; i++) {
     if (alcancaram[i - 1] < 3) continue;  // menos de 3 leads não sustenta leitura de %
     const queda = (alcancaram[i - 1] - alcancaram[i]) / alcancaram[i - 1];
     if (queda > piorQueda) { piorQueda = queda; gargaloIdx = i; }
@@ -3369,7 +3383,24 @@ function resumirEvento(titulo) {
     const pct = Math.round((n / base) * 100);
     const larg = base > 0 ? Math.max(n / base * 100, n > 0 ? 3 : 0) : 0;
     const isGargalo = i === gargaloIdx;
-    return `<div class="termo-row">
+
+    // Selo de conversão ENTRE as etapas: mostra quanto passou de um degrau
+    // para o próximo. O percentual da direita é acumulado (sobre o topo do
+    // funil); este é degrau a degrau — é ele que revela a queda sem exigir
+    // que o olho faça a conta.
+    let degrau = '';
+    if (i > 0) {
+      const ant = alcancaram[i - 1];
+      if (ant > 0) {
+        const passou = Math.round((n / ant) * 100);
+        const classe = isGargalo ? 'queda' : (passou === 100 ? 'cheio' : '');
+        degrau = `<div class="termo-degrau"><span class="degrau-selo ${classe}" title="${n} de ${ant} avançaram de ${FUNIL_CONVERSAO_FASES[i - 1]} para ${fase}">↓ ${passou}%</span></div>`;
+      } else {
+        degrau = `<div class="termo-degrau"><span class="degrau-selo vazio">↓ —</span></div>`;
+      }
+    }
+
+    return degrau + `<div class="termo-row">
       <span class="termo-label">${fase}</span>
       <span class="termo-bar-wrap"><span class="termo-bar${isGargalo ? ' gargalo' : ''}" style="width:${larg}%"></span></span>
       <span class="termo-val"><b>${n}</b> · ${pct}%</span>
@@ -3378,6 +3409,9 @@ function resumirEvento(titulo) {
     + (gargaloIdx > 0
       ? `<div class="termo-nota">Maior perda entre <b>${FUNIL_CONVERSAO_FASES[gargaloIdx - 1]}</b> e <b>${FUNIL_CONVERSAO_FASES[gargaloIdx]}</b> — de ${alcancaram[gargaloIdx - 1]} para ${alcancaram[gargaloIdx]} (${Math.round(piorQueda * 100)}% de queda). É onde vale atacar primeiro.</div>`
       : '')
+    + (alcancaram[ULTIMA - 1] > 0 && alcancaram[ULTIMA] === 0
+        ? `<div class="termo-nota">🤝 <b>${alcancaram[ULTIMA - 1]}</b> ${alcancaram[ULTIMA - 1] === 1 ? 'cliente está' : 'clientes estão'} em negociação e ainda sem fechamento — isso é fila de espera, não gargalo. A taxa de fechamento só passa a significar algo quando o primeiro assinar.</div>`
+        : '')
     + `<div class="termo-escopo">ℹ️ Este funil cobre apenas os leads em <b>acompanhamento ativo</b> aqui no painel — não toda a sua base do Imoview. Quem parou antes de avançar não entra na conta, então os percentuais descrevem quem progrediu, não a taxa de conversão da base inteira.</div>`
     + (vendasForaDoFunil > 0
       ? `<div class="termo-extra">➕ <b>${vendasForaDoFunil}</b> ${vendasForaDoFunil === 1 ? 'venda fechada fora do funil' : 'vendas fechadas fora do funil'} (compradores que vieram pela captação e não passaram pelo pipeline). Ficam de fora do cálculo acima de propósito — somar só no fim distorceria a taxa de conversão.</div>`
