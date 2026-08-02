@@ -250,6 +250,8 @@
     .ctr-linha:hover, .ctr-linha:focus-visible { border-color:#3A4435; }
     .ctr-mini-chip { background:#252D22; border-color:#39423577; color:#B9C2B0; }
     .ctr-grupo:hover { background:#232B21; }
+    .imovel-linha { background:#20261E; border-color:#2C342A; }
+    .imovel-linha:hover, .imovel-linha:focus-visible { border-color:#3A4435; }
     /* Blocos de temperatura no escuro: mantêm a identidade da cor, mas com
        fundo profundo em vez de tinta clara. */
     .temp-secao.t-quente { background:#241A18; border-color:#3A2723; }
@@ -643,6 +645,23 @@
   .ctr-ind.clicavel { cursor:pointer; transition:border-color .15s, box-shadow .15s; }
   .ctr-ind.clicavel:hover, .ctr-ind.clicavel:focus-visible { border-color:#CFD6C6; box-shadow:0 2px 8px rgba(18,22,14,.07); outline:none; }
   .ctr-ind-dica { font-size:10px; color:#B6BBB0; margin-top:6px; }
+
+  /* ---- Imóvel em linha compacta ---- */
+  .imovel-linha { border:1px solid #E9EBE4; border-radius:10px; padding:9px 12px; margin-bottom:7px; background:#fff;
+    cursor:pointer; transition:border-color .15s, box-shadow .15s; }
+  .imovel-linha:hover, .imovel-linha:focus-visible { border-color:#CFD6C6; box-shadow:0 2px 8px rgba(18,22,14,.07); outline:none; }
+  .imovel-linha.fu-atrasado { border-left:4px solid #C62828; }
+  .imovel-linha-topo { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .imovel-linha-nome { font-size: var(--fs-xs); font-weight:700; color: var(--text-strong); line-height:1.3; }
+  .imovel-linha-selos { display:inline-flex; align-items:center; gap:7px; flex:0 0 auto; }
+  .imovel-linha-valor { font-size: var(--fs-xs); font-weight:700; color: var(--brand-gold-deep); white-space:nowrap; }
+  .imovel-linha-sub { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-top:5px; font-size: var(--fs-2xs); color:#8A9186; }
+  .fu-chip { font-size:9.5px; font-weight:700; border-radius:6px; padding:1px 7px; border:1px solid; }
+  .fu-chip.em-dia { color:#3F6B4C; background:#EDF4E8; border-color:#D8E5D0; }
+  .fu-chip.aproximando { color:#8A6A2E; background:#FFF9E6; border-color:#F0E2B0; }
+  .fu-chip.atrasado { color:#B4300F; background:#FDECE6; border-color:#F3CDBE; }
+  .fu-chip.sem-tel { color:#8A5A14; background:#FDF6E8; border-color:#EBD9A8; }
+  .fu-chip.comissao { color:#2E7D32; background:#EDF4E8; border-color:#D8E5D0; }
   .wa-link.confirm { background:#FBF6EA; color:#8C6D1F; margin-left:6px; }
   .wa-link.confirm:hover { background:#F3EBD2; }
   .wa-link.reativar { background:#FBE4E4; color:#B3261E; margin-left:6px; }
@@ -1166,6 +1185,17 @@
   </main>
 
 </div>
+</div>
+
+<div class="modal-overlay" id="imovelModalOverlay" role="dialog" aria-modal="true" aria-labelledby="imovelModalTitulo" tabindex="-1">
+  <div class="modal-content">
+    <button class="modal-close" id="imovelModalClose" aria-label="Fechar">✕</button>
+    <div class="modal-header">
+      <div class="lead-name" id="imovelModalTitulo" style="font-size:17px;"></div>
+      <div id="imovelModalBadges" style="margin-top:6px;"></div>
+    </div>
+    <div id="imovelModalCorpo" style="margin-top:12px;"></div>
+  </div>
 </div>
 
 <div class="modal-overlay" id="ctrModalOverlay" role="dialog" aria-modal="true" aria-labelledby="ctrModalTitulo" tabindex="-1">
@@ -2869,36 +2899,38 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
     return { label: '🟢 Follow-up em dia (' + dias + 'd)', cls: 'em-dia' };
   }
 
+  // Card enxuto: nome, valor e o que exige ação. O detalhe completo (endereço,
+  // descrição, observações, links) abre na janela ao clicar — mesmo padrão do
+  // Pipeline e do Conecta TR. Antes cada card despejava a observação inteira,
+  // que chega a 700 caracteres em alguns imóveis.
+  function chaveImovel(im) {
+    const m = String(im.nome || '').match(/Cód\.\s*(\d+)/);
+    return m ? 'cod' + m[1] : 'nm' + String(im.nome || '').replace(/\W+/g, '').slice(0, 24);
+  }
+
   function renderCard(im) {
     const badgeClass = statusClass[im.status] || 'em-captacao';
-    const valorTxt = im.valor ? brl(im.valor) : 'Valor a definir';
-    let waHtml = '';
-    if (im.telefone) {
-      const digits = String(im.telefone).replace(/\D/g, '');
-      const withCountry = digits.startsWith('55') ? digits : '55' + digits;
-      waHtml = `<a class="imovel-link" href="https://wa.me/${withCountry}" target="_blank" rel="noopener">💬 WhatsApp proprietário</a>`;
-    }
-    let linkHtml = '';
-    if (im.link) {
-      linkHtml = `<a class="imovel-link" href="${im.link}" target="_blank" rel="noopener">🔗 Ver anúncio / fotos</a>`;
-    }
+    const valorTxt = im.valor ? brl(im.valor) : 'a definir';
     const fu = followupStatus(im);
-    const fuTag = fu ? `<span class="followup-tag ${fu.cls}">${fu.label}</span>` : '';
+    const semTel = !im.telefone;
     const card = document.createElement('div');
-    card.className = 'imovel-card';
+    card.className = 'imovel-linha' + (fu && fu.cls === 'atrasado' ? ' fu-atrasado' : '');
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.dataset.imovel = chaveImovel(im);
     card.innerHTML = `
-      <div class="imovel-top">
-        <span class="imovel-nome">${im.nome}</span>
-        <span class="imovel-badge ${badgeClass}">${im.status}</span>
+      <div class="imovel-linha-topo">
+        <span class="imovel-linha-nome">${esc(im.nome)}</span>
+        <span class="imovel-linha-selos">
+          <span class="imovel-linha-valor">${valorTxt}</span>
+          <span class="imovel-badge ${badgeClass}">${esc(im.status)}</span>
+        </span>
       </div>
-      <div class="imovel-meta">
-        📍 ${im.endereco || 'Endereço a definir'} — ${im.bairro || 'Bairro a definir'}<br>
-        💰 ${valorTxt}${im.pctComissao ? ' · Comissão captação: ' + (im.pctComissao * 100) + '%' : ''}<br>
-        📐 ${im.detalhes || '—'}<br>
-        👤 Proprietário: ${im.proprietario}${im.telefone ? '' : ' (telefone pendente)'} ${fuTag}
-      </div>
-      <div class="imovel-meta" style="margin-top:4px;">${im.obs || ''}</div>
-      <div>${linkHtml}${waHtml}</div>`;
+      <div class="imovel-linha-sub">
+        <span>${esc(im.bairro || 'bairro a definir')}${im.detalhes ? ' · ' + esc(String(im.detalhes).split(',').slice(0, 2).join(',')) : ''}</span>
+        ${fu ? `<span class="fu-chip ${fu.cls}">${esc(fu.label.replace(/Follow-up /, ''))}</span>` : ''}
+        ${semTel ? '<span class="fu-chip sem-tel">☎ sem telefone</span>' : ''}
+      </div>`;
     return card;
   }
 
@@ -3049,6 +3081,64 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
   });
   }
 
+  // ---- Janela de detalhe do imóvel ----
+  const imOver = document.getElementById('imovelModalOverlay');
+  const imTit = document.getElementById('imovelModalTitulo');
+  const imBad = document.getElementById('imovelModalBadges');
+  const imBody = document.getElementById('imovelModalCorpo');
+  const imClose = document.getElementById('imovelModalClose');
+
+  function fecharImovelModal() {
+    imOver.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function abrirImovel(chave) {
+    const im = (DATA.imoveis || []).find(x => chaveImovel(x) === chave);
+    if (!im) return;
+    const fu = followupStatus(im);
+    const dg = String(im.telefone || '').replace(/\D/g, '');
+    const wa = dg ? 'https://wa.me/' + (dg.startsWith('55') ? dg : '55' + dg) : null;
+    imTit.textContent = im.nome;
+    imBad.innerHTML = `<span class="imovel-badge ${statusClass[im.status] || 'em-captacao'}">${esc(im.status)}</span>` +
+      (fu ? ` <span class="fu-chip ${fu.cls}">${esc(fu.label)}</span>` : '') +
+      (im.tipoOperacao === 'Locação' ? ' <span class="fu-chip">Locação</span>' : '');
+    imBody.innerHTML = `
+      <div class="lead-meta">
+        <span>💰 <b>${im.valor ? brl(im.valor) : 'valor a definir'}</b></span>
+        ${im.tipo ? `<span>${esc(im.tipo)}</span>` : ''}
+        ${im.dataCaptacao ? `<span>Captado em <b>${String(im.dataCaptacao).split('-').reverse().join('/')}</b></span>` : ''}
+      </div>
+      <div class="imovel-meta" style="margin-top:8px;">
+        📍 ${esc(im.endereco || 'Endereço a definir')}${im.bairro ? ' — ' + esc(im.bairro) : ''}${im.cidade ? ', ' + esc(im.cidade) : ''}<br>
+        📐 ${esc(im.detalhes || '—')}<br>
+        👤 Proprietário: <b>${esc(im.proprietario || '—')}</b>${im.telefone ? ' · ' + esc(formatarTel(im.telefone)) : ' <span class="fu-chip sem-tel">☎ telefone pendente</span>'}
+      </div>
+      ${(im.comissaoTotalVenda || im.comissaoThulioVenda) ? `<div class="ctr-motivo" style="background:#EDF4E8;border-color:#D8E5D0;color:#2E5D30;">💰 Comissão total ${im.comissaoTotalVenda ? brl(im.comissaoTotalVenda) : '—'} · sua parte <b>${im.comissaoThulioVenda ? brl(im.comissaoThulioVenda) : '—'}</b>${im.corretorParceiro ? ' · parceria com ' + esc(im.corretorParceiro) : ''}</div>` : ''}
+      ${im.obs ? `<div class="modal-timeline-title">📝 Observações</div><div class="pilar-desc">${esc(im.obs)}</div>` : ''}
+      <div class="lead-actions" style="margin-top:14px;">
+        ${im.link ? `<a class="imovel-link" href="${esc(im.link)}" target="_blank" rel="noopener">🔗 Ver anúncio / fotos</a>` : ''}
+        ${wa ? `<a class="imovel-link" href="${wa}" target="_blank" rel="noopener">💬 WhatsApp proprietário</a>` : ''}
+      </div>
+      ${!wa ? '<div class="tbl-nota">Sem telefone cadastrado — é o que impede o follow-up com este proprietário. Me passe o número que eu registro.</div>' : ''}`;
+    imOver.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    imClose.focus();
+  }
+
+  document.addEventListener('click', (e) => {
+    const alvo = e.target.closest('[data-imovel]');
+    if (alvo && !e.target.closest('a')) abrirImovel(alvo.dataset.imovel);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && imOver.classList.contains('open')) { fecharImovelModal(); return; }
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const alvo = e.target.closest('[data-imovel]');
+    if (alvo) { e.preventDefault(); abrirImovel(alvo.dataset.imovel); }
+  });
+  imClose.addEventListener('click', fecharImovelModal);
+  imOver.addEventListener('click', (e) => { if (e.target === imOver) fecharImovelModal(); });
+
   renderListaImoveis();
   if (filtroBairroEl) {
     [filtroBairroEl, filtroStatusEl, filtroValorEl].forEach(el => el.addEventListener('change', () => {
@@ -3075,12 +3165,9 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
     vendidosCard.style.display = '';
     vendidos.forEach(im => {
       const card = renderCard(im);
-      if (im.comissaoTotalVenda || im.comissaoThulioVenda) {
-        const comissaoInfo = document.createElement('div');
-        comissaoInfo.className = 'imovel-meta';
-        comissaoInfo.style.marginTop = '4px';
-        comissaoInfo.innerHTML = `💰 Comissão total: ${im.comissaoTotalVenda ? brl(im.comissaoTotalVenda) : '—'} · Parte de Thúlio: <b>${im.comissaoThulioVenda ? brl(im.comissaoThulioVenda) : '—'}</b>${im.corretorParceiro ? ' · Parceria: ' + im.corretorParceiro : ''}`;
-        card.appendChild(comissaoInfo);
+      if (im.comissaoThulioVenda) {
+        const sub = card.querySelector('.imovel-linha-sub');
+        if (sub) sub.insertAdjacentHTML('beforeend', `<span class="fu-chip comissao">💰 sua parte ${brl(im.comissaoThulioVenda)}</span>`);
       }
       vendidosCard.appendChild(card);
     });
