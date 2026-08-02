@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-01T16:45:00-03:00",
+  "ultimaAtualizacao": "2026-08-01T17:10:00-03:00",
   "meta2026": {
     "meta": 10000000,
     "realizado": 2359100,
@@ -1936,5 +1936,10 @@
       "tipo": "Em Negociação",
       "resumo": "Negócio sendo fechado por R$122.500,00 (proposta inicial R$120.000,00), em parceria com a corretora Natália Barbosa."
     }
-  ]
+  ],
+  "instagram": {
+    "handle": "@thuliorego",
+    "posts": [],
+    "notaAtribuicao": "Leads com origem Instagram anteriores a 01/08/2026 não têm post vinculado — a atribuição começa a valer para as próximas publicações."
+  }
 }
