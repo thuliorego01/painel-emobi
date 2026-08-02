@@ -253,6 +253,11 @@
     .ctr-grupo:hover { background:#232B21; }
     .imovel-linha { background:#20261E; border-color:#2C342A; }
     .imovel-linha:hover, .imovel-linha:focus-visible { border-color:#3A4435; }
+    .bairro-grupo:hover { background:#232B21; }
+    .bairro-qtd { background:#252D22; border-color:#39423577; color:#C3CBBB; }
+    .cidade-rotulo::after { background:#2C342A; }
+    .aviso-telefones { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
+    .aviso-telefones b { color:#E5D6A0; }
     /* Blocos de temperatura no escuro: mantêm a identidade da cor, mas com
        fundo profundo em vez de tinta clara. */
     .temp-secao.t-quente { background:#241A18; border-color:#3A2723; }
@@ -639,6 +644,28 @@
   .fu-chip.atrasado { color:#B4300F; background:#FDECE6; border-color:#F3CDBE; }
   .fu-chip.sem-tel { color:#8A5A14; background:#FDF6E8; border-color:#EBD9A8; }
   .fu-chip.comissao { color:#2E7D32; background:#EDF4E8; border-color:#D8E5D0; }
+
+  /* Cidade como divisor leve; bairro como grupo recolhível — mesmo padrão do
+     Conecta TR, mas sem empilhar dois acordeões. */
+  .cidade-rotulo { font-size:9.5px; font-weight:800; text-transform:uppercase; letter-spacing:1.1px;
+    color:#8A9186; margin:16px 2px 7px; display:flex; align-items:center; gap:8px; }
+  .cidade-rotulo:first-child { margin-top:2px; }
+  .cidade-rotulo::after { content:''; flex:1; height:1px; background:#EDEFE9; }
+  .cidade-qtd { font-weight:700; color:#B6BBB0; letter-spacing:0; }
+  .bairro-grupo { display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin:3px 0; padding:7px 10px;
+    border-radius:9px; cursor:pointer; transition:background .15s; }
+  .bairro-grupo:hover { background:#F6F7F2; }
+  .bairro-grupo:focus-visible { outline:2px solid var(--brand-gold); outline-offset:2px; }
+  .bairro-grupo .bairro-chev { color:var(--brand-gold-deep); font-size:12px; transition:transform .15s ease; }
+  .bairro-grupo.open .bairro-chev { transform:rotate(90deg); }
+  .bairro-nome { font-size: var(--fs-sm); font-weight:700; color: var(--text-strong); }
+  .bairro-qtd { font-size: var(--fs-2xs); font-weight:700; background:#F1F3EE; border:1px solid #E4E7DF;
+    border-radius:20px; padding:1px 9px; color:#5C6155; }
+  .bairro-corpo { display:none; padding-left:2px; }
+  .bairro-corpo.open { display:block; margin-bottom:8px; }
+  .aviso-telefones { font-size: var(--fs-2xs); color:#8A5A14; background:#FDF6E8; border:1px solid #EBD9A8;
+    border-radius:9px; padding:8px 11px; margin-bottom:12px; line-height:1.5; }
+  .aviso-telefones b { color:#6B4A10; }
   .wa-link.confirm { background:#FBF6EA; color:#8C6D1F; margin-left:6px; }
   .wa-link.confirm:hover { background:#F3EBD2; }
   .wa-link.reativar { background:#FBE4E4; color:#B3261E; margin-left:6px; }
@@ -1087,7 +1114,7 @@
       <span class="filtro-sep"></span>
       <label class="filtro-ordem-rot" for="ordemImoveis">Ordenar por</label>
       <select id="ordemImoveis" aria-label="Ordenar imóveis">
-        <option value="bairro">Bairro (A-Z)</option>
+        <option value="bairro">Cidade e bairro</option>
         <option value="semcontato">Mais tempo sem contato</option>
         <option value="maiorval">Maior valor</option>
         <option value="menorval">Menor valor</option>
@@ -2920,6 +2947,20 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
     return card;
   }
 
+  // O telefone faltando é a pendência que trava o follow-up — mas repetir o
+  // aviso em cada bairro virava ruído. Fica um só, no resumo do topo.
+  (function avisoTelefones() {
+    const semTel = (DATA.imoveis || []).filter(im => im.status !== 'Vendido' && !im.telefone);
+    if (semTel.length === 0) return;
+    const alvo = document.getElementById('filtrosImoveis');
+    if (!alvo) return;
+    const box = document.createElement('div');
+    box.className = 'aviso-telefones';
+    const total = (DATA.imoveis || []).filter(im => im.status !== 'Vendido').length;
+    box.innerHTML = `☎ <b>${semTel.length} de ${total}</b> imóveis estão sem o telefone do proprietário — é o que impede o follow-up que o painel cobra. Me passe os números que eu registro.`;
+    alvo.parentNode.insertBefore(box, alvo);
+  })();
+
   const resumoEl = document.getElementById('followupResumo');
   let atrasados = 0, aproximando = 0, emDia = 0;
   DATA.imoveis.filter(im => im.status !== 'Vendido').forEach(im => {
@@ -3008,9 +3049,75 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
     recentes:  (a, b) => String(b.dataCaptacao || '').localeCompare(String(a.dataCaptacao || ''))
   };
   const ordem = (ordemEl && ORDENADORES[ordemEl.value]) ? ordemEl.value : 'bairro';
-  const listados = filtrados.slice().sort(ORDENADORES[ordem]);
 
-  listados.forEach(im => imoveisCard.appendChild(renderCard(im)));
+  // Ordem "Cidade e bairro" = visão agrupada, cada bairro recolhível.
+  // Qualquer outra ordem vira lista contínua — agrupar destruiria a ordenação.
+  if (ordem !== 'bairro') {
+    filtrados.slice().sort(ORDENADORES[ordem]).forEach(im => imoveisCard.appendChild(renderCard(im)));
+    return;
+  }
+
+  const porCidade = {};
+  filtrados.forEach(im => {
+    const c = im.cidade || 'Cidade a definir';
+    (porCidade[c] = porCidade[c] || []).push(im);
+  });
+  const cidades = Object.keys(porCidade).sort((a, b) =>
+    porCidade[b].length - porCidade[a].length || a.localeCompare(b, 'pt-BR'));
+
+  cidades.forEach(cidade => {
+    const daCidade = porCidade[cidade];
+    const rotuloCidade = document.createElement('div');
+    rotuloCidade.className = 'cidade-rotulo';
+    rotuloCidade.innerHTML = `${esc(cidade)} <span class="cidade-qtd">${daCidade.length}</span>`;
+    imoveisCard.appendChild(rotuloCidade);
+
+    const porBairro = {};
+    daCidade.forEach(im => {
+      const b = im.bairro || 'Bairro a definir';
+      (porBairro[b] = porBairro[b] || []).push(im);
+    });
+    const bairros = Object.keys(porBairro).sort((a, b) =>
+      porBairro[b].length - porBairro[a].length || a.localeCompare(b, 'pt-BR'));
+
+    bairros.forEach(bairro => {
+      const doBairro = porBairro[bairro].slice().sort((x, y) => (x.nome || '').localeCompare(y.nome || '', 'pt-BR'));
+      const atrasados = doBairro.filter(im => {
+        const f = followupStatus(im);
+        return f && f.cls === 'atrasado';
+      }).length;
+
+      const cab = document.createElement('div');
+      cab.className = 'bairro-grupo';
+      cab.setAttribute('role', 'button');
+      cab.setAttribute('tabindex', '0');
+      cab.setAttribute('aria-expanded', 'false');
+      cab.innerHTML =
+        `<span class="bairro-chev" aria-hidden="true">▶</span>` +
+        `<span class="bairro-nome">${esc(bairro)}</span>` +
+        `<span class="bairro-qtd">${doBairro.length}</span>` +
+        (atrasados > 0 ? `<span class="fu-chip atrasado">${atrasados} sem contato há +30d</span>` : '');
+      imoveisCard.appendChild(cab);
+
+      const corpo = document.createElement('div');
+      corpo.className = 'bairro-corpo';
+      doBairro.forEach(im => corpo.appendChild(renderCard(im)));
+      imoveisCard.appendChild(corpo);
+
+      const alternar = () => {
+        const abrir = !corpo.classList.contains('open');
+        corpo.classList.toggle('open', abrir);
+        cab.classList.toggle('open', abrir);
+        cab.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+      };
+      cab.addEventListener('click', alternar);
+      cab.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); alternar(); }
+      });
+      // Com filtro ativo, já abre — senão o resultado ficaria escondido.
+      if (filtroAtivo()) alternar();
+    });
+  });
   }
 
   // ---- Janela de detalhe do imóvel ----
