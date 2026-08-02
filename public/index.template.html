@@ -223,6 +223,9 @@
     .semana-dia.hoje { background: #2A2818; }
     .sync-box, .termo-extra { background: var(--surface-2); border-color: var(--border-soft); }
     .termo-bar-wrap { background: #2A3126; }
+    .termo-bar-wrap.vazio { background:transparent; border-color:#39423577; }
+    .termo-row.linha-gargalo { background:#2A1A18; }
+    .termo-num-fora { color:#9AA394; }
     .tbl-mini td { border-bottom-color: var(--border-soft); }
     .tbl-mini th { border-bottom-color: #39423577; }
     .urg-legenda { border-bottom-color: var(--border-soft); }
@@ -266,13 +269,18 @@
   .busca-vazio { padding:12px; font-size: var(--fs-2xs); color:#8A9186; }
   @media (max-width: 700px) { .busca-wrap { flex-basis: 100%; } .topbar { flex-wrap: wrap; gap:8px; } }
   .sync-textarea { width:100%; min-height:110px; margin-top:8px; font-family:inherit; font-size: var(--fs-2xs); color: var(--text-strong); padding:9px; border:1px solid #D7DBD2; border-radius:8px; background:#fff; resize:vertical; }
-  .termo-row { display:flex; align-items:center; gap:10px; margin-bottom:7px; }
-  .termo-label { flex:0 0 132px; font-size: var(--fs-2xs); color: var(--text-strong); }
-  .termo-bar-wrap { flex:1; background:#F1F3EE; border-radius:6px; height:20px; position:relative; overflow:hidden; }
-  .termo-bar { height:100%; background: linear-gradient(90deg, var(--brand-dark2), #5C6B4A); border-radius:6px; transition:width .4s; }
-  .termo-bar.gargalo { background: linear-gradient(90deg, #C62828, #E8892B); }
-  .termo-val { flex:0 0 70px; text-align:right; font-size: var(--fs-2xs); color:#8A9186; }
-  .termo-val b { color: var(--text-strong); font-size: var(--fs-xs); }
+  .termo-row { display:flex; align-items:center; gap:10px; margin-bottom:6px; padding:3px 6px; border-radius:8px; }
+  .termo-row.linha-gargalo { background:#FDF4F1; }
+  .termo-label { flex:0 0 148px; font-size: var(--fs-2xs); color: var(--text-strong); line-height:1.25; }
+  .termo-bar-wrap { flex:1; background:#F1F3EE; border-radius:6px; height:24px; position:relative; overflow:hidden; min-width:60px; }
+  .termo-bar-wrap.vazio { background:transparent; border:1px dashed #DDE1D8; }
+  /* display:block é obrigatório — sem ele o span ignora width e a barra some. */
+  .termo-bar { display:block; height:100%; width:0; background:linear-gradient(90deg, #2C3A24, #5C6B4A);
+    border-radius:6px; transition:width .5s ease; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; box-sizing:border-box; }
+  .termo-bar.gargalo { background:linear-gradient(90deg, #A32B14, #E8892B); }
+  .termo-bar-num { font-size:11px; font-weight:700; color:#fff; letter-spacing:.2px; }
+  .termo-num-fora { position:absolute; left:8px; top:50%; transform:translateY(-50%); font-size:11px; font-weight:700; color:#8A9186; }
+  .termo-val { flex:0 0 54px; text-align:right; font-size: var(--fs-2xs); color:#8A9186; font-variant-numeric:tabular-nums; }
   .termo-nota { font-size: var(--fs-2xs); color:#8A9186; margin-top:10px; line-height:1.5; }
   .termo-nota b { color:#C62828; }
   /* Selo de conversão degrau a degrau, alinhado à coluna das barras */
@@ -3519,10 +3527,16 @@ function resumirEvento(titulo) {
       }
     }
 
-    return degrau + `<div class="termo-row">
+    // O número vai DENTRO da barra quando ela tem largura suficiente; senão,
+    // fica ao lado, na pista. Assim a leitura é sempre "barra + valor juntos".
+    const cabeDentro = larg >= 14;
+    const miolo = n > 0
+      ? `<span class="termo-bar${isGargalo ? ' gargalo' : ''}" style="width:${larg}%">${cabeDentro ? `<span class="termo-bar-num">${n}</span>` : ''}</span>${cabeDentro ? '' : `<span class="termo-num-fora">${n}</span>`}`
+      : `<span class="termo-num-fora">0</span>`;
+    return degrau + `<div class="termo-row${isGargalo ? ' linha-gargalo' : ''}">
       <span class="termo-label">${fase}</span>
-      <span class="termo-bar-wrap"><span class="termo-bar${isGargalo ? ' gargalo' : ''}" style="width:${larg}%"></span></span>
-      <span class="termo-val"><b>${n}</b> · ${pct}%</span>
+      <span class="termo-bar-wrap${n > 0 ? '' : ' vazio'}">${miolo}</span>
+      <span class="termo-val">${pct}%</span>
     </div>`;
   }).join('')
     + (gargaloIdx > 0
