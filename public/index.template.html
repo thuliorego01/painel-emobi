@@ -123,8 +123,7 @@
 
     /* Cards com mais respiro — prioriza conforto de leitura mesmo com mais rolagem. */
     .card { padding: 20px 18px 12px; }
-    .imovel-card { padding: 18px 18px; margin-bottom: 16px; }
-    .imovel-nome { font-size: 17px; }
+      .imovel-nome { font-size: 17px; }
     .imovel-meta { line-height: 1.75; }
     .imovel-link, .wa-link { padding: 8px 14px; font-size: 14px; }
     .lead-card { padding: 16px 16px; margin-bottom: 14px; }
@@ -196,6 +195,8 @@
   .filtros-imoveis select { font-family:inherit; font-size: var(--fs-2xs); color: var(--text-strong); padding:7px 10px; border:1px solid #D7DBD2; border-radius:8px; background:#fff; }
   .filtro-limpar { font-family:inherit; font-size: var(--fs-2xs); border:none; background:#EEF2E9; color:#4A5240; border-radius:8px; padding:7px 12px; cursor:pointer; }
   .filtro-resultado { font-size: var(--fs-2xs); color:#8A9186; }
+  .filtro-sep { width:1px; height:20px; background:#E4E7DF; }
+  .filtro-ordem-rot { font-size: var(--fs-2xs); color:#8A9186; }
   .lembrete-row.envelhecido { opacity:.55; }
   .lembrete-row.envelhecido:hover { opacity:1; }
   .idade-atraso { color:#C62828; }
@@ -541,7 +542,6 @@
   .reativa-count.zero { color:#8A9186; font-weight:600; }
   .hist-nota { font-size:var(--fs-xs); color:#8A7644; background:#FBF6EA; border:1px solid #EBD9A8; border-radius:8px; padding:8px 10px; margin-bottom:8px; }
 
-  .imovel-card { border:1px solid #E9EBE4; border-radius:12px; padding:14px 16px; margin-bottom:12px; }
   .imovel-top { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
   .imovel-nome { font-weight:800; font-size:var(--fs-md); color: var(--text-strong); }
   .imovel-badge { font-size:var(--fs-2xs); font-weight:700; padding:3px 10px; border-radius:20px; text-transform:uppercase; letter-spacing:.3px; white-space:nowrap; }
@@ -554,30 +554,7 @@
   .imovel-meta { font-size:var(--fs-sm); color:#5C6157; margin-top:6px; line-height:1.6; }
   .imovel-link { display:inline-flex; align-items:center; gap:4px; font-size:var(--fs-xs); font-weight:700; color: var(--text-strong); text-decoration:none; background:#F1F2ED; padding:4px 10px; border-radius:20px; margin-top:8px; }
   .imovel-link:hover { background:#E6E8E0; }
-  .imovel-cidade-title {
-    font-size:20px; font-weight:800; color:#fff; margin:26px 0 14px; padding:10px 16px;
-    background: linear-gradient(135deg, var(--brand-dark2), var(--brand-dark));
-    border-left:5px solid var(--brand-gold); border-radius:10px;
-    display:flex; align-items:center; gap:8px; letter-spacing:.2px;
-  }
   .imovel-cidade-title:first-child { margin-top:0; }
-  .imovel-bairro-title {
-    font-size:16px; font-weight:800; color: var(--text-strong); margin:20px 2px 8px; padding:8px 10px 8px 10px;
-    border-left:4px solid var(--brand-gold); display:flex; align-items:center; gap:6px;
-    cursor:pointer; user-select:none; border-radius:0 8px 8px 0; transition: background .15s ease;
-  }
-  .imovel-bairro-title:hover { background:#F6F7F2; }
-  .imovel-bairro-title:focus-visible { outline: 2px solid var(--brand-gold); outline-offset: 2px; }
-  .imovel-bairro-title:first-of-type { margin-top:6px; }
-  .imovel-bairro-title .bairro-chev { display:inline-block; transition: transform .15s ease; font-size: 13px; color: var(--brand-gold-deep); }
-  .imovel-bairro-title.open .bairro-chev { transform: rotate(90deg); }
-  .bairro-content { display:none; }
-  .bairro-content.open { display:block; }
-  .imovel-tipo-title {
-    font-size:var(--fs-xs); font-weight:700; color: var(--brand-gold-deep); text-transform:uppercase; letter-spacing:.4px;
-    margin:8px 0 6px 8px; padding:4px 10px; background:#FBF6EC; border:1px solid var(--brand-gold-light);
-    border-radius:16px; display:inline-flex; align-items:center; gap:5px; width:fit-content;
-  }
   .followup-resumo { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
   .followup-chip { font-size:var(--fs-xs); font-weight:700; padding:6px 12px; border-radius:20px; background:#F1F2ED; color:#5C6157; }
   .followup-chip.atrasado { background:#FBE4E4; color:#B3261E; }
@@ -1107,6 +1084,15 @@
         <option value="800000-99999999">Acima de R$800 mil</option>
       </select>
       <button type="button" id="filtroLimpar" class="filtro-limpar" style="display:none;">✕ Limpar</button>
+      <span class="filtro-sep"></span>
+      <label class="filtro-ordem-rot" for="ordemImoveis">Ordenar por</label>
+      <select id="ordemImoveis" aria-label="Ordenar imóveis">
+        <option value="bairro">Bairro (A-Z)</option>
+        <option value="semcontato">Mais tempo sem contato</option>
+        <option value="maiorval">Maior valor</option>
+        <option value="menorval">Menor valor</option>
+        <option value="recentes">Captação mais recente</option>
+      </select>
       <span class="filtro-resultado" id="filtroResultado"></span>
     </div>
     <div class="card" id="imoveisCard"></div>
@@ -2973,6 +2959,7 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
   const filtroValorEl = document.getElementById('filtroValor');
   const filtroLimparEl = document.getElementById('filtroLimpar');
   const filtroResultadoEl = document.getElementById('filtroResultado');
+  const ordemEl = document.getElementById('ordemImoveis');
 
   const naoVendidos = DATA.imoveis.filter(im => im.status !== 'Vendido');
   if (filtroBairroEl) {
@@ -3009,76 +2996,21 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
     imoveisCard.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum imóvel bate com esse filtro.</div>';
     return;
   }
-  const porCidade = {};
-  filtrados.forEach(im => {
-    const c = im.cidade || 'Cidade a definir';
-    (porCidade[c] = porCidade[c] || []).push(im);
-  });
-  const cidades = Object.keys(porCidade).sort((a, b) => porCidade[b].length - porCidade[a].length || a.localeCompare(b, 'pt-BR'));
+  // Lista contínua, ordenável. Antes era cidade → bairro → tipo: três níveis,
+  // cerca de 15 cabeçalhos para 30 imóveis, e dois cliques até ver qualquer um.
+  // O filtro por bairro já fazia o trabalho do agrupamento — a hierarquia só
+  // duplicava a função e escondia a carteira.
+  const ORDENADORES = {
+    bairro:    (a, b) => (a.bairro || 'zz').localeCompare(b.bairro || 'zz', 'pt-BR') || (a.nome || '').localeCompare(b.nome || '', 'pt-BR'),
+    maiorval:  (a, b) => (b.valor || 0) - (a.valor || 0),
+    menorval:  (a, b) => (a.valor || Infinity) - (b.valor || Infinity),
+    semcontato:(a, b) => (diasDesdeISO(b.ultimaInteracaoProprietario) ?? -1) - (diasDesdeISO(a.ultimaInteracaoProprietario) ?? -1),
+    recentes:  (a, b) => String(b.dataCaptacao || '').localeCompare(String(a.dataCaptacao || ''))
+  };
+  const ordem = (ordemEl && ORDENADORES[ordemEl.value]) ? ordemEl.value : 'bairro';
+  const listados = filtrados.slice().sort(ORDENADORES[ordem]);
 
-  cidades.forEach(cidade => {
-    const listaCidade = porCidade[cidade];
-    const tituloCidade = document.createElement('div');
-    tituloCidade.className = 'imovel-cidade-title';
-    tituloCidade.textContent = `🏙️ ${cidade} (${listaCidade.length})`;
-    imoveisCard.appendChild(tituloCidade);
-
-    const porBairro = {};
-    listaCidade.forEach(im => {
-      const b = im.bairro || 'Bairro a definir';
-      (porBairro[b] = porBairro[b] || []).push(im);
-    });
-    const bairros = Object.keys(porBairro).sort((a, b) => porBairro[b].length - porBairro[a].length || a.localeCompare(b, 'pt-BR'));
-
-    bairros.forEach(bairro => {
-      const listaBairro = porBairro[bairro];
-      const tituloBairro = document.createElement('div');
-      tituloBairro.className = 'imovel-bairro-title';
-      tituloBairro.setAttribute('role', 'button');
-      tituloBairro.setAttribute('tabindex', '0');
-      tituloBairro.setAttribute('aria-expanded', 'false');
-      tituloBairro.innerHTML = `<span class="bairro-chev" aria-hidden="true">▶</span> 📍 ${bairro} (${listaBairro.length})`;
-      imoveisCard.appendChild(tituloBairro);
-
-      // Conteúdo do bairro fica num container colapsável — começa fechado
-      // pra evitar rolagem gigante; toca no título do bairro pra abrir/fechar.
-      const bairroContent = document.createElement('div');
-      bairroContent.className = 'bairro-content';
-      imoveisCard.appendChild(bairroContent);
-
-      const toggleBairro = () => {
-        const abrir = !bairroContent.classList.contains('open');
-        bairroContent.classList.toggle('open', abrir);
-        tituloBairro.classList.toggle('open', abrir);
-        tituloBairro.setAttribute('aria-expanded', abrir ? 'true' : 'false');
-      };
-      tituloBairro.addEventListener('click', toggleBairro);
-      tituloBairro.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleBairro(); }
-      });
-
-      const porTipo = {};
-      listaBairro.forEach(im => {
-        const t = tipoOrdem.includes(im.tipo) ? im.tipo : "Outro";
-        (porTipo[t] = porTipo[t] || []).push(im);
-      });
-
-      tipoOrdem.forEach(tipo => {
-        const lista = porTipo[tipo];
-        if (!lista || lista.length === 0) return;
-
-        const tituloTipo = document.createElement('div');
-        tituloTipo.className = 'imovel-tipo-title';
-        tituloTipo.textContent = `${tipoIcone[tipo] || '🔑'} ${tipoPlural[tipo] || (tipo + 's')} (${lista.length})`;
-        bairroContent.appendChild(tituloTipo);
-
-        lista
-          .slice()
-          .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
-          .forEach(im => bairroContent.appendChild(renderCard(im)));
-      });
-    });
-  });
+  listados.forEach(im => imoveisCard.appendChild(renderCard(im)));
   }
 
   // ---- Janela de detalhe do imóvel ----
@@ -3141,15 +3073,9 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
 
   renderListaImoveis();
   if (filtroBairroEl) {
-    [filtroBairroEl, filtroStatusEl, filtroValorEl].forEach(el => el.addEventListener('change', () => {
-      renderListaImoveis();
-      // filtro ativo: abre todos os bairros pra mostrar o resultado direto
-      if (filtroAtivo()) imoveisCard.querySelectorAll('.bairro-content').forEach(bc => {
-        bc.classList.add('open');
-        const t = bc.previousElementSibling;
-        if (t) { t.classList.add('open'); t.setAttribute('aria-expanded','true'); }
-      });
-    }));
+    [filtroBairroEl, filtroStatusEl, filtroValorEl, ordemEl].forEach(el => {
+      if (el) el.addEventListener('change', renderListaImoveis);
+    });
     filtroLimparEl.addEventListener('click', () => {
       filtroBairroEl.value = ''; filtroStatusEl.value = ''; filtroValorEl.value = '';
       renderListaImoveis();
