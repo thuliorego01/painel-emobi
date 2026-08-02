@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-02T22:45:00-03:00",
+  "ultimaAtualizacao": "2026-08-02T23:05:00-03:00",
   "meta2026": {
     "meta": 10000000,
     "realizado": 2359100,
@@ -134,10 +134,10 @@
       "temperatura": "Morno",
       "valor": null,
       "comissaoPrevista": null,
-      "proximaAcao": "Busca ativa a cada 15 dias — apartamento ~150m² em Lagoa Nova, até R$1,3M",
-      "dataProximaAcao": "2026-07-28",
+      "proximaAcao": "Cobrar retorno sobre a opção no Francisco de Goya — cadência de 15 dias",
+      "dataProximaAcao": "2026-08-17",
       "status": "Inativo",
-      "obs": "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso, mas prefere condomínios mais novos — sugerido o Vivant. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M.",
+      "obs": "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso, mas prefere condomínios mais novos — sugerido o Vivant. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M. Retomada em 02/08: enviada opção no Francisco de Goya, aguardando retorno.",
       "imoveisCompativeis": null,
       "visitaResumo": null,
       "visitaDetalhe": null,
@@ -1969,6 +1969,12 @@
       "lead": "Carteira de imóveis",
       "tipo": "Outro",
       "resumo": "Rodada de ativação: contato feito com todos os 29 proprietários da carteira ativa e informações dos imóveis atualizadas."
+    },
+    {
+      "data": "02/08/2026 18:30",
+      "lead": "Tácito Barreto",
+      "tipo": "Contato",
+      "resumo": "Enviada opção no Francisco de Goya — retomada da busca dentro da cadência de 15 dias."
     }
   ]
 }
