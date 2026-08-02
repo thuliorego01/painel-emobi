@@ -85,12 +85,7 @@
   @media (max-width: 950px) { .pipeline-topo { grid-template-columns: 1fr; } }
   /* Cards de lead em grade: aproveita a largura em vez de uma coluna única e comprida */
   .leads-grade { display:grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap:12px; align-items:start; }
-  .temp-grupo { margin: 6px 0 10px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-  .temp-grupo:first-child { margin-top:0; }
-  .temp-grupo-nome { font-size: var(--fs-sm); font-weight:700; color: var(--text-strong); }
-  .temp-grupo-linha { flex:1; height:1px; background:#E9EBE4; min-width:20px; }
-  .temp-grupo-qtd { font-size: var(--fs-2xs); color:#8A9186; }
-  .temp-grupo-alerta { font-size:10px; font-weight:700; color:#B4300F; background:#FDECE6; border:1px solid #F3CDBE; border-radius:10px; padding:2px 8px; }
+
 
   .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: -2px; padding: 2px; }
   .table-scroll table { min-width: 460px; }
@@ -180,7 +175,10 @@
   .lead-alerta-chip { display:inline-block; font-size:10px; font-weight:700; border-radius:5px; padding:2px 7px; margin-left:6px; vertical-align:middle; }
   .lead-alerta-chip.critica { background:#FDECEC; color:#C62828; }
   .lead-alerta-chip.alta { background:#FDF1E3; color:#B4650F; }
-  .urg-legenda { display:flex; flex-wrap:wrap; gap:12px; align-items:center; font-size: var(--fs-2xs); color:#8A9186; margin-bottom:12px; padding-bottom:10px; border-bottom:1px dashed #E9EBE4; }
+  .urg-legenda { font-size: var(--fs-2xs); color:#8A9186; margin-bottom:14px; padding-bottom:10px; border-bottom:1px dashed #E9EBE4; }
+  .legenda-linha { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:5px; }
+  .legenda-linha:last-child { margin-bottom:0; }
+  .legenda-linha b { color: var(--text-strong); font-weight:600; }
   .urg-legenda-item { display:inline-flex; align-items:center; gap:5px; }
   .urg-legenda-cor { width:10px; height:10px; border-radius:3px; display:inline-block; }
   .lead-motivo { font-size: var(--fs-2xs); color:#8A6A2E; background:#FFFBEF; border:1px solid #F0E2B0; border-radius:7px; padding:5px 8px; margin-top:6px; }
@@ -234,6 +232,21 @@
     .busca-item:hover, .busca-item:focus { background: #262E24; }
     .wa-link.registrar { background: #232B21; color: #B9C2B0; border-color: #39423577; }
     .filtro-limpar { background: #232B21; color: #B9C2B0; }
+    /* Blocos de temperatura no escuro: mantêm a identidade da cor, mas com
+       fundo profundo em vez de tinta clara. */
+    .temp-secao.t-quente { background:#241A18; border-color:#3A2723; }
+    .temp-secao.t-morno  { background:#241F16; border-color:#3A3222; }
+    .temp-secao.t-frio   { background:#171F26; border-color:#25313B; }
+    .temp-secao.t-neutro { background:#1D211B; border-color:#2C342A; }
+    .t-quente .temp-titulo { color:#E8907F; }
+    .t-morno  .temp-titulo { color:#E0B368; }
+    .t-frio   .temp-titulo { color:#8FBBD9; }
+    .t-neutro .temp-titulo { color:#AEB5A7; }
+    .temp-contagem { background:#2A322700; background-color:#252D22; border-color:#39423577; color:#C3CBBB; }
+    .temp-secao .lead-card { background:#20261E; }
+    .temp.quente { background:#3A211E; color:#E8907F; }
+    .temp.morno  { background:#332B18; color:#E0B368; }
+    .temp.frio   { background:#1C2A36; color:#8FBBD9; }
   }
   .busca-wrap { position:relative; flex:0 1 340px; margin-left:auto; }
   .busca-wrap input {
@@ -308,9 +321,38 @@
   .lead-meta { font-size:var(--fs-xs); color: var(--muted); display:flex; gap:12px; flex-wrap:wrap; }
   .lead-meta b { color: var(--text-strong); }
   .temp { font-size: var(--fs-xs); font-weight:700; padding:2px 7px; border-radius:20px; }
-  .temp.quente { background:#FBE4E4; color:#C0392B; }
-  .temp.morno { background:#FDF0D5; color:#B7791F; }
-  .temp.frio { background:#E1EEE4; color:#3F6B4C; }
+  .temp.quente { background:#FBE4E4; color:#B3352A; }
+  .temp.morno  { background:#FDF0D5; color:#A96A15; }
+  /* Frio agora é AZUL. Era verde e colidia com o verde de "em dia" da faixa de
+     urgência — duas informações diferentes com a mesma cor no mesmo card. */
+  .temp.frio   { background:#E4EDF4; color:#33607F; }
+
+  /* ---- Bloco de temperatura: a separação estrutural do pipeline ----
+     Temperatura = região colorida (grande, dominante).
+     Urgência    = faixa fina no card (semáforo, secundária).
+     Escalas diferentes de propósito, para os dois sistemas não competirem. */
+  .temp-secao { border-radius:14px; padding:14px 16px 6px; margin-bottom:18px; border:1px solid; border-left-width:6px; }
+  .temp-secao.t-quente { background:#FDF5F3; border-color:#F0D6D0; border-left-color:#B3352A; }
+  .temp-secao.t-morno  { background:#FDF9F0; border-color:#EFE2C8; border-left-color:#C9821E; }
+  .temp-secao.t-frio   { background:#F2F6FA; border-color:#D8E3EC; border-left-color:#33607F; }
+  .temp-secao.t-neutro { background:#F7F8F5; border-color:#E4E7DF; border-left-color:#A8AEA2; }
+
+  .temp-cab { display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin-bottom:12px; }
+  .temp-bolinha { width:11px; height:11px; border-radius:50%; flex:0 0 auto; }
+  .t-quente .temp-bolinha { background:#B3352A; }
+  .t-morno  .temp-bolinha { background:#C9821E; }
+  .t-frio   .temp-bolinha { background:#33607F; }
+  .t-neutro .temp-bolinha { background:#A8AEA2; }
+  .temp-titulo { font-size: var(--fs-md); font-weight:700; letter-spacing:-.2px; }
+  .t-quente .temp-titulo { color:#8E2A21; }
+  .t-morno  .temp-titulo { color:#8A5A14; }
+  .t-frio   .temp-titulo { color:#2A4E66; }
+  .t-neutro .temp-titulo { color:#5C6155; }
+  .temp-contagem { font-size: var(--fs-2xs); font-weight:700; background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:20px; padding:2px 9px; color:#5C6155; }
+  .temp-regra { font-size: var(--fs-2xs); color:#8A9186; }
+  .temp-alerta { font-size:10px; font-weight:700; color:#B4300F; background:#FDECE6; border:1px solid #F3CDBE; border-radius:20px; padding:2px 9px; }
+  /* dentro do bloco, o card volta a ser branco para destacar do fundo tingido */
+  .temp-secao .lead-card { background:#fff; border-left-width:3px; }
 
   .footer-note { margin: 26px 4px 0; font-size: var(--fs-xs); color: #8A9186; line-height:1.6; }
   .chart-wrap { position: relative; height: 220px; }
@@ -1897,44 +1939,54 @@ const leadsInativosArr = ordenarPorTemperatura(DATA.leads.filter(l => FASES_INAT
 // Agrupa os cards por temperatura, com cabeçalho e contagem. A ordenação por
 // urgência (tempo parado) continua valendo DENTRO de cada grupo.
 const TEMPS = [
-  { chave: 'Quente', rotulo: '🔥 Quentes' },
-  { chave: 'Morno',  rotulo: '🟠 Mornos'  },
-  { chave: 'Frio',   rotulo: '❄️ Frios'   }
+  { chave: 'Quente', rotulo: 'Quentes', icone: '🔥', classe: 't-quente' },
+  { chave: 'Morno',  rotulo: 'Mornos',  icone: '🟠', classe: 't-morno'  },
+  { chave: 'Frio',   rotulo: 'Frios',   icone: '❄️', classe: 't-frio'   }
 ];
+
+// Cada temperatura vira uma REGIÃO própria (fundo tingido + borda espessa na
+// cor), e não apenas um título. É o princípio de região comum: o olho agrupa
+// pelo cercado, não pelo rótulo. A faixa fina de urgência continua no card,
+// numa escala menor, para os dois sistemas conviverem sem competir.
+function blocoTemperatura(t, doGrupo, container) {
+  const atrasados = doGrupo.filter(l => {
+    const u = calcularUrgencia(l);
+    return u.nivel === 'alta' || u.nivel === 'critica';
+  }).length;
+  const limite = LIMITE_PARADO[t.chave];
+
+  const secao = document.createElement('section');
+  secao.className = 'temp-secao ' + t.classe;
+  secao.setAttribute('aria-label', `${doGrupo.length} lead(s) ${t.rotulo.toLowerCase()}`);
+
+  const cab = document.createElement('div');
+  cab.className = 'temp-cab';
+  cab.innerHTML =
+    `<span class="temp-bolinha" aria-hidden="true"></span>` +
+    `<span class="temp-titulo">${t.icone} ${t.rotulo}</span>` +
+    `<span class="temp-contagem">${doGrupo.length}</span>` +
+    (limite ? `<span class="temp-regra">toque a cada ${limite} ${limite === 1 ? 'dia' : 'dias'}</span>` : '') +
+    (atrasados > 0 ? `<span class="temp-alerta">⚠️ ${atrasados} passou do prazo</span>` : '');
+  secao.appendChild(cab);
+
+  const grade = document.createElement('div');
+  grade.className = 'leads-grade';
+  doGrupo.forEach(l => renderLeadCard(l, grade));
+  secao.appendChild(grade);
+  container.appendChild(secao);
+}
 
 function renderGrupoTemperatura(lista, container) {
   const usados = new Set();
   TEMPS.forEach(t => {
     const doGrupo = lista.filter(l => l.temperatura === t.chave);
     doGrupo.forEach(l => usados.add(l));
-    if (doGrupo.length === 0) return;
-    const atrasados = doGrupo.filter(l => {
-      const u = calcularUrgencia(l);
-      return u.nivel === 'alta' || u.nivel === 'critica';
-    }).length;
-    const cab = document.createElement('div');
-    cab.className = 'temp-grupo';
-    cab.innerHTML = `<span class="temp-grupo-nome">${t.rotulo}</span>` +
-      `<span class="temp-grupo-qtd">${doGrupo.length}</span>` +
-      (atrasados > 0 ? `<span class="temp-grupo-alerta">${atrasados} passou da cadência</span>` : '') +
-      `<span class="temp-grupo-linha"></span>`;
-    container.appendChild(cab);
-    const grade = document.createElement('div');
-    grade.className = 'leads-grade';
-    doGrupo.forEach(l => renderLeadCard(l, grade));
-    container.appendChild(grade);
+    if (doGrupo.length > 0) blocoTemperatura(t, doGrupo, container);
   });
   // Qualquer temperatura fora das três conhecidas não pode sumir da tela.
   const resto = lista.filter(l => !usados.has(l));
   if (resto.length > 0) {
-    const cab = document.createElement('div');
-    cab.className = 'temp-grupo';
-    cab.innerHTML = `<span class="temp-grupo-nome">Sem temperatura definida</span><span class="temp-grupo-qtd">${resto.length}</span><span class="temp-grupo-linha"></span>`;
-    container.appendChild(cab);
-    const grade = document.createElement('div');
-    grade.className = 'leads-grade';
-    resto.forEach(l => renderLeadCard(l, grade));
-    container.appendChild(grade);
+    blocoTemperatura({ chave: null, rotulo: 'Sem temperatura definida', icone: '⚪', classe: 't-neutro' }, resto, container);
   }
 }
 
@@ -1944,14 +1996,23 @@ if (leadsAtivosArr.length === 0) {
   // Legenda: a faixa colorida à esquerda NÃO é a temperatura (essa já está no
   // selo do card) — é o cruzamento de temperatura com tempo parado. Sem esta
   // legenda, dois leads Quentes com faixas diferentes parecem contradição.
+  // Duas leituras convivem na tela e precisam ser nomeadas separadamente,
+  // senão o olho mistura: o BLOCO diz o interesse do cliente (temperatura),
+  // a FAIXA do card diz se você está devendo contato (cadência).
   const legenda = document.createElement('div');
   legenda.className = 'urg-legenda';
-  legenda.innerHTML = '<span><b>Faixa colorida à esquerda</b> = urgência (temperatura + tempo parado):</span>' +
-    '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#7BA05B"></span>em dia</span>' +
-    '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#E5C35C"></span>chegando no limite</span>' +
-    '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#E8892B"></span>passou da cadência</span>' +
-    '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#C62828"></span>muito atrasado</span>' +
-    '<span style="opacity:.85;">Limite por temperatura: Quente 3d · Morno 7d · Frio 30d</span>';
+  legenda.innerHTML =
+    '<div class="legenda-linha"><b>🌡️ Bloco colorido</b> = temperatura do cliente:' +
+      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#B3352A"></span>quente</span>' +
+      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#C9821E"></span>morno</span>' +
+      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#33607F"></span>frio</span>' +
+    '</div>' +
+    '<div class="legenda-linha"><b>⏱️ Faixa fina no card</b> = cadência (quanto tempo sem contato):' +
+      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#7BA05B"></span>em dia</span>' +
+      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#E5C35C"></span>chegando no limite</span>' +
+      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#E8892B"></span>passou do prazo</span>' +
+      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:#C62828"></span>muito atrasado</span>' +
+    '</div>';
   leadsCard.appendChild(legenda);
   renderGrupoTemperatura(leadsAtivosArr, leadsCard);
 }
