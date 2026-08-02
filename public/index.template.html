@@ -546,6 +546,12 @@
   .reativa-row:last-child { border-bottom:none; }
   .reativa-count { font-weight:800; font-size:var(--fs-md); color: var(--text-strong); }
   .reativa-count.zero { color:#8A9186; font-weight:600; }
+  .reativa-quem { display:block; font-size: var(--fs-2xs); color:#8A9186; margin-top:2px; }
+  .reativa-detalhe { margin-top:10px; padding-top:9px; border-top:1px solid #F1F2ED; display:flex; flex-direction:column; gap:6px; }
+  .reativa-item { display:flex; align-items:center; justify-content:space-between; gap:8px; font-size: var(--fs-2xs); color:#5C6155; }
+  .reativa-item i { color:#8A9186; font-style:normal; }
+  .reativa-regra { margin-top:9px; font-size: var(--fs-2xs); color:#8A9186; line-height:1.55; }
+  .reativa-regra summary { cursor:pointer; font-weight:600; color:#7B8177; }
   .hist-nota { font-size:var(--fs-xs); color:#8A7644; background:#FBF6EA; border:1px solid #EBD9A8; border-radius:8px; padding:8px 10px; margin-bottom:8px; }
 
   .imovel-top { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
@@ -1346,10 +1352,48 @@ function agendaPorDia() {
 }
 const AGENDA_DIA = agendaPorDia();
 
+// ---- Quem precisa de reativação (calculado ao vivo) ----
+// Antes isto vinha de DATA.leads[].statusReativacao, um campo escrito à mão na
+// planilha. Ele nunca foi preenchido para os leads inativos, então o quadro da
+// aba Pipeline mostrava 0 para sempre — mesmo com clientes parados há 20 dias.
+// Mesma doença do "mesesRestantes": número guardado envelhece em silêncio.
+//
+// Regra, na ordem:
+//   1. Se existe uma data combinada de próxima ação e ela já passou → reativar.
+//      (respeita acordos individuais, tipo "retomar a cada 15 dias")
+//   2. Sem data combinada, vale a cadência por temperatura da planilha:
+//      Quente 3 dias · Morno 7 · Frio 30.
+// Escopo: só fases inativas. Lead ativo que passou do prazo já é contado como
+// "Atrasado" — contar nos dois lugares inflaria o banner de urgência.
+const FASES_PARA_REATIVAR = ['Inativo'];
+const CADENCIA_TEMPERATURA = { 'Quente': 3, 'Morno': 7, 'Frio': 30 };
+
+function motivoReativacao(l) {
+  if (!l || FASES_PARA_REATIVAR.indexOf(l.fase) === -1) return null;
+  if (l.dataProximaAcao) {
+    const atraso = diasDesdeISO(l.dataProximaAcao);
+    if (atraso !== null && atraso >= 0) {
+      return { dias: atraso, regra: 'combinado', texto: atraso === 0 ? 'retomada combinada para hoje' : 'retomada combinada há ' + atraso + 'd' };
+    }
+    return null; // há data combinada e ela ainda não chegou
+  }
+  const parado = diasSemMovimento(l.id !== undefined ? l.id : l.nome);
+  const limite = CADENCIA_TEMPERATURA[l.temperatura] || 7;
+  if (parado !== null && parado > limite) {
+    return { dias: parado - limite, regra: 'cadencia', texto: parado + 'd parado (limite ' + limite + 'd)' };
+  }
+  return null;
+}
+function precisaReativar(l) { return motivoReativacao(l) !== null; }
+function leadsParaReativar() {
+  return (DATA.leads || []).filter(precisaReativar)
+    .sort((a, b) => motivoReativacao(b).dias - motivoReativacao(a).dias);
+}
+
 function computeAcoesUrgentes() {
   const diasSemContato = diasDesdeISO;
   const leadsAtrasados = (DATA.leads || []).filter(l => l.status === 'Atrasado');
-  const leadsReativar = (DATA.leads || []).filter(l => l.statusReativacao === '🔴 Reativar agora');
+  const leadsReativar = leadsParaReativar();
   const imoveisAtrasados = (DATA.imoveis || []).filter(im =>
     im.status === 'Disponível' && im.ultimaInteracaoProprietario && diasSemContato(im.ultimaInteracaoProprietario) > 30
   );
@@ -1845,29 +1889,43 @@ trPerda.innerHTML = `<td><b>Taxa de Perda</b></td><td colspan="2"><b>${Math.roun
 conversaoTabela.appendChild(trPerda);
 
 // ---- Reativacao por temperatura ----
-// Calculado ao vivo a partir de DATA.leads[].statusReativacao + temperatura.
+// Ao vivo, via leadsParaReativar() — a mesma função que alimenta o banner de
+// urgência e "O Que Fazer Agora". Um número só, calculado em um lugar só.
+// Declarada como função e chamada depois de REATIVACAO_TEMPLATES existir:
+// o script pronto do WhatsApp depende dela.
+function renderReativacaoBox() {
 const reativacaoCard = document.getElementById('reativacaoCard');
-const leadsReativarAgora = DATA.leads.filter(l => l.statusReativacao === '🔴 Reativar agora');
-const reativacaoCalc = {
-  quente: leadsReativarAgora.filter(l => l.temperatura === 'Quente').length,
-  morno: leadsReativarAgora.filter(l => l.temperatura === 'Morno').length,
-  frio: leadsReativarAgora.filter(l => l.temperatura === 'Frio').length,
-  total: leadsReativarAgora.length
-};
+if (!reativacaoCard) return;
+const leadsReativarAgora = leadsParaReativar();
 const rTemps = [
-  { label: '🔥 Quente', valor: reativacaoCalc.quente },
-  { label: '🟠 Morno', valor: reativacaoCalc.morno },
-  { label: '❄️ Frio', valor: reativacaoCalc.frio }
+  { temp: 'Quente', label: '🔥 Quente' },
+  { temp: 'Morno',  label: '🟠 Morno' },
+  { temp: 'Frio',   label: '❄️ Frio' }
 ];
-reativacaoCard.innerHTML = rTemps.map(t => `
+reativacaoCard.innerHTML = rTemps.map(t => {
+  const doTipo = leadsReativarAgora.filter(l => l.temperatura === t.temp);
+  return `
   <div class="reativa-row">
-    <span>${t.label} — para reativar agora</span>
-    <span class="reativa-count ${t.valor === 0 ? 'zero' : ''}">${t.valor}</span>
-  </div>`).join('') + `
+    <span>${t.label} — para reativar agora
+      ${doTipo.length ? `<span class="reativa-quem">${doTipo.map(l => esc(l.nome.split(' ')[0])).join(', ')}</span>` : ''}
+    </span>
+    <span class="reativa-count ${doTipo.length === 0 ? 'zero' : ''}">${doTipo.length}</span>
+  </div>`;
+}).join('') + `
   <div class="reativa-row">
     <span><b>🔔 Total para reativar agora</b></span>
-    <span class="reativa-count ${reativacaoCalc.total === 0 ? 'zero' : ''}">${reativacaoCalc.total}</span>
-  </div>`;
+    <span class="reativa-count ${leadsReativarAgora.length === 0 ? 'zero' : ''}">${leadsReativarAgora.length}</span>
+  </div>` + (leadsReativarAgora.length ? `
+  <div class="reativa-detalhe">` + leadsReativarAgora.map(l => {
+    const m = motivoReativacao(l);
+    const wa = l.telefone ? `<a class="wa-link reativar" href="https://wa.me/${String(l.telefone).replace(/\D/g,'').replace(/^(?!55)/,'55')}?text=${encodeURIComponent(buildReativacaoMsg(l))}" target="_blank" rel="noopener">🔥 Reativar</a>` : '';
+    return `<div class="reativa-item"><span>${esc(l.nome)} <i>· ${esc(m.texto)}</i></span>${wa}</div>`;
+  }).join('') + `</div>` : '') + `
+  <details class="reativa-regra"><summary>Como esta conta é feita</summary>
+    Entram só os leads em fase <b>Inativo</b> — lead ativo fora do prazo já aparece como “Atrasado”, contar duas vezes inflaria o alerta.
+    Se existe data combinada de retomada, vale ela. Sem data, vale a cadência por temperatura da planilha: Quente 3 dias · Morno 7 · Frio 30.
+  </details>`;
+}
 
 const alertCard = document.getElementById('alertCard');
 const atrasados = DATA.leads.filter(l => l.status === 'Atrasado');
@@ -1901,6 +1959,8 @@ function buildReativacaoMsg(l) {
   const tpl = REATIVACAO_TEMPLATES[l.temperatura] || REATIVACAO_TEMPLATES.Morno;
   return tpl(nomeCurto, l.interesse || 'o imóvel que você buscava');
 }
+
+renderReativacaoBox();
 
 const CONFIRM_ABERTURAS = ['Confirmando nosso encontro', 'Só passando pra fechar', 'Te chamando pra confirmar', 'Vamos confirmar'];
 const CONFIRM_FECHAMENTOS = ['Qualquer imprevisto me avisa que a gente remarca numa boa.', 'Combinado?', 'Te espero por lá.', 'Conto contigo.'];
@@ -2028,7 +2088,7 @@ function renderLeadCard(l, container) {
     waHtml = `<a class="wa-link" href="https://wa.me/${withCountry}" target="_blank" rel="noopener">💬 WhatsApp ${displayPhone}</a>`;
   }
   let reativarHtml = '';
-  if (l.statusReativacao === '🔴 Reativar agora' && l.telefone) {
+  if (precisaReativar(l) && l.telefone) {
     const digits = String(l.telefone).replace(/\D/g, '');
     const withCountry = digits.startsWith('55') ? digits : '55' + digits;
     const msg = buildReativacaoMsg(l);

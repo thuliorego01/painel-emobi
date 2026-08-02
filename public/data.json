@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-02T22:15:00-03:00",
+  "ultimaAtualizacao": "2026-08-02T22:45:00-03:00",
   "meta2026": {
     "meta": 10000000,
     "realizado": 2359100,
@@ -141,7 +141,6 @@
       "imoveisCompativeis": null,
       "visitaResumo": null,
       "visitaDetalhe": null,
-      "statusReativacao": null,
       "interesse": "apartamento ~150m² em Lagoa Nova, até R$1,3M"
     },
     {
@@ -162,7 +161,6 @@
       "status": "Inativo",
       "obs": "Quer apê no Edifício Bosque do Tirol (Av. Alm. Alexandrino de Alencar 1362-1366, Tirol), ~100m². Retomada agendada 28/08. Monitoramento automático de portais a cada ~10 dias. ⚠️ ATENÇÃO (22/07): cliente reforçou que NÃO quer opções de outros condomínios — só unidades no próprio Edifício Bosque do Tirol.",
       "imoveisCompativeis": null,
-      "statusReativacao": null,
       "interesse": "apartamento no Edifício Bosque do Tirol"
     },
     {
@@ -183,7 +181,6 @@
       "imoveisCompativeis": [
         "Cód. 10594"
       ],
-      "statusReativacao": "🟢 Em dia",
       "interesse": "casa em condomínio em Nova Parnamirim"
     },
     {
@@ -206,7 +203,6 @@
       "imoveisCompativeis": [],
       "visitaResumo": null,
       "visitaDetalhe": "pra você trazer sua mãe dessa vez",
-      "statusReativacao": null,
       "interesse": "casa em Capim Macio"
     },
     {
@@ -232,7 +228,6 @@
         "Cód. 10567",
         "Cód. 7454"
       ],
-      "statusReativacao": "🟢 Em dia",
       "interesse": "apartamento em Candelária ou Lagoa Nova"
     },
     {
@@ -255,7 +250,6 @@
       ],
       "visitaResumo": null,
       "visitaDetalhe": null,
-      "statusReativacao": "🟢 Em dia",
       "interesse": "apartamento 607, Porto Arena — R$575 mil, contrato em leitura"
     },
     {
@@ -276,7 +270,6 @@
       "imoveisCompativeis": [
         "Cód. 9995"
       ],
-      "statusReativacao": "🟢 Em dia",
       "interesse": "apartamento em Tirol ou Barro Vermelho, mín. 80m²"
     },
     {
@@ -295,7 +288,6 @@
       "status": "Atrasado",
       "obs": "Visita agendada para 25/07 às 10h ao Cód. 10650 (Apartamento 4 Quartos, Residencial Ariane, Tirol) — fora do perfil ideal (Tirol, não Capim Macio), mas cliente confirmou a visita. [25/07] Rodada de busca: nenhum imóvel em Capim Macio no inventário atual.",
       "imoveisCompativeis": [],
-      "statusReativacao": "🟡 Se aproximando",
       "interesse": "Apartamento acima de 150m², Capim Macio, condomínio até ~R$2.000"
     },
     {
@@ -319,7 +311,6 @@
         "Cód. 7726",
         "Cód. 7560"
       ],
-      "statusReativacao": null,
       "interesse": "apartamento em Candelária, 3 dormitórios (1 suíte), até R$400 mil"
     },
     {
@@ -344,7 +335,6 @@
         "Cód. 7726",
         "Cód. 7560"
       ],
-      "statusReativacao": "🟢 Em dia",
       "interesse": "apartamento em Candelária — proposta no Cód. 7560"
     },
     {
@@ -363,7 +353,6 @@
       "status": "Em dia",
       "obs": "Ex-proprietário do Cód. 10638 (Candelária), vendido recentemente com sinal pago. Agora em atendimento como comprador. Visita em 30/07 às 18h ao Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h. [30/07] Visitou o Residencial Cabugi: gostou da disposição e da metragem, mas NÃO aprovou a posição — apartamento quente. Quer ver outras unidades no mesmo condomínio. [31/07] Contato feito via WhatsApp.",
       "imoveisCompativeis": [],
-      "statusReativacao": "🟢 Em dia",
       "interesse": "outras unidades no Residencial Cabugi (posição melhor)"
     },
     {
@@ -382,7 +371,6 @@
       "status": "Em dia",
       "obs": "Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista. [31/07] Contato feito via WhatsApp. [01/08] Negócio sendo fechado por R$122.500,00 (proposta inicial era R$120.000,00), em parceria com a corretora Natália Barbosa.",
       "imoveisCompativeis": [],
-      "statusReativacao": "🟢 Em dia",
       "interesse": "apto 404, Jardim Satélite — fechando por R$122.500"
     }
   ],
