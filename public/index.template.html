@@ -242,6 +242,10 @@
     .ctr-idade { background:#252D22; border-color:#39423577; color:#9AA394; }
     .ctr-idade.atencao { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
     .ctr-idade.alerta  { background:#2A1A18; border-color:#4A2A22; color:#E8907F; }
+    .ctr-grupo-qtd { background:#252D22; border-color:#39423577; color:#C3CBBB; }
+    .ctr-motivo { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
+    .ctr-motivo b { color:#E5D6A0; }
+    .ctr-encerradas { border-top-color:#2C342A; }
     /* Blocos de temperatura no escuro: mantêm a identidade da cor, mas com
        fundo profundo em vez de tinta clara. */
     .temp-secao.t-quente { background:#241A18; border-color:#3A2723; }
@@ -597,6 +601,22 @@
   .ctr-ind-meta { font-size: var(--fs-2xs); color:#8A9186; margin-top:4px; }
   .ctr-ind-meta b { color:#2E7D32; }
   .ctr-ind .wa-link { margin-top:7px; }
+  .ctr-grupo { display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin:16px 0 9px; }
+  .ctr-grupo:first-child { margin-top:2px; }
+  .ctr-grupo-titulo { font-size: var(--fs-sm); font-weight:700; color: var(--text-strong); }
+  .ctr-grupo-qtd { font-size: var(--fs-2xs); font-weight:700; background:#F1F3EE; border:1px solid #E4E7DF; border-radius:20px; padding:1px 9px; color:#5C6155; }
+  .ctr-grupo-nota { font-size: var(--fs-2xs); color:#8A9186; }
+  .ctr-motivo { font-size: var(--fs-2xs); color:#8A6A2E; background:#FFFBEF; border:1px solid #F0E2B0; border-radius:7px; padding:6px 9px; margin-top:6px; line-height:1.5; }
+  .ctr-motivo b { color:#6B5D2E; }
+  .ctr-encerradas { margin-top:18px; border-top:1px dashed #E9EBE4; padding-top:10px; }
+  .ctr-encerradas > summary { cursor:pointer; font-size: var(--fs-2xs); color:#8A9186; list-style:none; display:inline-flex; align-items:center; gap:5px; }
+  .ctr-encerradas > summary::-webkit-details-marker { display:none; }
+  .ctr-encerradas > summary::before { content:'🗄️'; }
+  .ctr-encerradas > summary::after { content:'▸'; font-size:9px; transition:transform .2s; }
+  .ctr-encerradas[open] > summary::after { transform:rotate(90deg); }
+  .ctr-encerradas > summary b { color:#B4300F; }
+  .ctr-encerradas > summary:hover { color: var(--text-strong); }
+  .ctr-encerradas-corpo { margin-top:9px; opacity:.85; }
   .wa-link.confirm { background:#FBF6EA; color:#8C6D1F; margin-left:6px; }
   .wa-link.confirm:hover { background:#F3EBD2; }
   .wa-link.reativar { background:#FBE4E4; color:#B3261E; margin-left:6px; }
@@ -3115,18 +3135,15 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
     return 'https://wa.me/' + (dg.startsWith('55') ? dg : '55' + dg);
   }
 
-  function renderIndicacoes() {
-    const filtradas = filtroAtivo && filtroAtivo !== 'ativos' ? itens.filter(it => it.status === filtroAtivo) : itens;
-    tituloEl.textContent = filtroAtivo && filtroAtivo !== 'ativos' ? `📇 Indicações — ${filtroAtivo}` : '📇 Indicações';
-    if (itens.length === 0) {
-      list.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhuma indicação recebida ainda. Assim que alguém indicar um imóvel pelo Forms do Conecta TR, ela aparece aqui com protocolo e status.</div>';
-      return;
-    }
-    if (filtradas.length === 0) {
-      list.innerHTML = `<div style="font-size:13px;color:#8A9186;">Nenhuma indicação com status "${filtroAtivo}" no momento.</div>`;
-      return;
-    }
-    list.innerHTML = filtradas.map(it => {
+  // Cada status vira um bloco próprio, na ordem em que exigem sua atenção.
+  // Perdidas ficam recolhidas no fim: são histórico, não operação.
+  const GRUPOS_CTR = [
+    { status: 'Registrada', titulo: '📋 Aguardando captação', nota: 'precisam de contato com o proprietário' },
+    { status: 'Captada',    titulo: '🏠 Captadas',            nota: 'já viraram imóvel na carteira' },
+    { status: 'Vendida',    titulo: '✅ Vendidas',            nota: 'bonificação devida ao indicador' }
+  ];
+
+  function cardIndicacao(it) {
       const dias = it.data ? diasDesdeISO(it.data) : null;
       // Indicação parada em "Registrada" há muito tempo é indicação esquecida —
       // é o próprio critério da auditoria semanal, agora visível na tela.
@@ -3150,12 +3167,51 @@ new Chart(document.getElementById('chartHistoricoSazonalidade'), {
           ${it.valorDevido ? `<span>💰 A pagar: <b>${brl(it.valorDevido)}</b></span>` : ''}
         </div>
         ${it.vinculadoId ? `<div class="match-line"><span class="match-chip">🔗 Vinculado à aba Imóveis (ID ${it.vinculadoId})</span></div>` : ''}
-        ${(waInd || waProp) ? `<div class="lead-actions">
+        ${it.motivoPerda ? `<div class="ctr-motivo">🚫 <b>${esc(it.motivoPerda)}</b>${it.detalhePerda ? ' — ' + esc(it.detalhePerda) : ''}</div>` : ''}
+        ${(waInd || waProp) && it.status !== 'Perdida' ? `<div class="lead-actions">
           ${waProp ? `<a class="wa-link" href="${waProp}" target="_blank" rel="noopener">💬 Falar com o proprietário</a>` : ''}
           ${waInd ? `<a class="wa-link registrar" href="${waInd}" target="_blank" rel="noopener">💬 Avisar ${esc(nomeInd.split(' ')[0])}</a>` : ''}
         </div>` : ''}
       </div>`;
-    }).join('');
+  }
+
+  function renderIndicacoes() {
+    tituloEl.textContent = filtroAtivo && filtroAtivo !== 'ativos' ? `📇 Indicações — ${filtroAtivo}` : '📇 Indicações';
+    if (itens.length === 0) {
+      list.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhuma indicação recebida ainda. Assim que alguém indicar um imóvel pelo Forms do Conecta TR, ela aparece aqui com protocolo e status.</div>';
+      return;
+    }
+
+    // Com filtro ativo pelo KPI, mostra só aquele status, sem cabeçalhos.
+    if (filtroAtivo && filtroAtivo !== 'ativos') {
+      const f = itens.filter(it => it.status === filtroAtivo);
+      list.innerHTML = f.length
+        ? f.map(cardIndicacao).join('')
+        : `<div style="font-size:13px;color:#8A9186;">Nenhuma indicação com status "${filtroAtivo}" no momento.</div>`;
+      return;
+    }
+
+    let html = '';
+    GRUPOS_CTR.forEach(g => {
+      const doGrupo = itens.filter(it => it.status === g.status);
+      if (doGrupo.length === 0) return;
+      html += `<div class="ctr-grupo">
+          <span class="ctr-grupo-titulo">${g.titulo}</span>
+          <span class="ctr-grupo-qtd">${doGrupo.length}</span>
+          <span class="ctr-grupo-nota">${g.nota}</span>
+        </div>` + doGrupo.map(cardIndicacao).join('');
+    });
+
+    // Perdidas e encerradas: recolhidas, com o motivo à mão quando abrir.
+    const encerradas = itens.filter(it => it.status === 'Perdida' || it.status === 'Encerrada');
+    if (encerradas.length > 0) {
+      const semMotivo = encerradas.filter(it => !it.motivoPerda).length;
+      html += `<details class="ctr-encerradas">
+        <summary>Perdidas e encerradas (${encerradas.length})${semMotivo > 0 ? ` · <b>${semMotivo} sem motivo registrado</b>` : ''}</summary>
+        <div class="ctr-encerradas-corpo">${encerradas.map(cardIndicacao).join('')}</div>
+      </details>`;
+    }
+    list.innerHTML = html;
   }
 
   function renderIndicadores() {

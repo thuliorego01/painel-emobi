@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-02T18:40:00-03:00",
+  "ultimaAtualizacao": "2026-08-02T19:00:00-03:00",
   "meta2026": {
     "meta": 10000000,
     "realizado": 2359100,
@@ -1188,7 +1188,10 @@
         "vinculadoId": null,
         "indicadorId": 1,
         "data": "2026-07-18",
-        "telefoneProprietario": "84988714374"
+        "telefoneProprietario": "84988714374",
+        "motivoPerda": "Proprietária alugou direto para outra pessoa, sem passar pela Emobi",
+        "detalhePerda": "Detectado em 23/07/2026. Era captação de locação, que não entra no cálculo padrão do programa — a bonificação combinada de R$200 para o Jozimar foi cancelada, pois só valeria se o contrato fechasse via Thúlio.",
+        "dataPerda": "2026-07-23"
       },
       {
         "protocolo": "IND-TR-2026-0004",
@@ -1301,7 +1304,16 @@
         "id": 6
       }
     ],
-    "regraBonificacao": "A bonificação só vira valor devido quando o imóvel indicado é VENDIDO. Tabela: até R$500 mil = R$1.000 · R$500 mil a R$1 milhão = R$2.000 · acima de R$1 milhão = R$3.000. Bônus de R$100 a cada 4 captações."
+    "regraBonificacao": "A bonificação só vira valor devido quando o imóvel indicado é VENDIDO. Tabela: até R$500 mil = R$1.000 · R$500 mil a R$1 milhão = R$2.000 · acima de R$1 milhão = R$3.000. Bônus de R$100 a cada 4 captações.",
+    "motivosPerdaSugeridos": [
+      "Proprietário alugou/vendeu por fora",
+      "Proprietário desistiu de vender",
+      "Já estava com outra imobiliária",
+      "Proprietário não respondeu",
+      "Imóvel fora do perfil de atuação",
+      "Indicação duplicada",
+      "Outro"
+    ]
   },
   "logAtividades": [
     {
