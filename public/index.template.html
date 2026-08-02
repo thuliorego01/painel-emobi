@@ -202,6 +202,7 @@
   .insta-leads { margin-top:6px; font-size:var(--fs-2xs); }
   .insta-lead-chip { display:inline-block; background:#F1F4EC; border:1px solid #DCE3D3; border-radius:6px; padding:2px 8px; margin:2px 4px 0 0; color:#4A5240; }
   .insta-vazio { font-size:13px; color:#8A9186; line-height:1.6; }
+  .insta-janela { margin-top:10px; background:#F4F7F0; border:1px solid #DFE6D6; border-radius:8px; padding:8px 11px; font-size:var(--fs-2xs); color:#4A5240; line-height:1.5; }
   .agenda-feito { font-family:inherit; font-size:10px; font-weight:600; border:1px solid #DCE3D3; background:#EEF2E9;
     color:#4A5240; border-radius:7px; padding:5px 9px; cursor:pointer; white-space:nowrap; align-self:center; margin-left:auto; }
   .agenda-feito:hover:not(:disabled) { background:#E2E8DA; }
@@ -3441,7 +3442,11 @@ function resumirEvento(titulo) {
     ${leadsInsta.length > 0 ? `<div style="font-size:var(--fs-2xs);color:#8A9186;margin-bottom:6px;">Quem veio do Instagram:</div>
       <div>${leadsInsta.map(l => `<span class="insta-lead-chip">${esc(l.nome)} · ${esc(l.fase)}${vinculados.has(l.nome) ? '' : ' · post não identificado'}</span>`).join('')}</div>` : ''}
     ${publicados.length > 0 ? `<div class="tbl-nota">${comLead.length} de ${publicados.length} publicações geraram lead identificado.</div>`
-      : `<div class="tbl-nota">${esc(ig.notaAtribuicao || '')}</div>`}`;
+      : `<div class="tbl-nota">${esc(ig.notaAtribuicao || '')}</div>`}
+    ${ig.janelaAudiencia ? `<div class="insta-janela">
+      ⏰ <b>Melhor horário: ${esc(ig.janelaAudiencia.pico)}</b> — confirmado em ${ig.janelaAudiencia.confirmadoEm.join(', ')} pelo Insights.
+      ${ig.janelaAudiencia.faltaConferir && ig.janelaAudiencia.faltaConferir.length ? `<br><span style="opacity:.8;">Ainda sem dado: ${ig.janelaAudiencia.faltaConferir.join(', ')}.</span>` : ''}
+    </div>` : ''}`;
 
   // ---- Fila de produção (tudo que ainda não foi publicado) ----
   const ORDEM = { 'Ideia': 0, 'Roteiro pronto': 1, 'Gravado': 2 };
@@ -3461,6 +3466,7 @@ function resumirEvento(titulo) {
         </div>
         <div class="insta-meta">
           ${p.data ? `<span>📅 ${String(p.data).split('-').reverse().join('/')}</span>` : '<span>📅 sem data</span>'}
+          ${p.hora ? `<span>⏰ ${esc(p.hora)}</span>` : ''}
           ${p.formato ? `<span>🎬 ${esc(p.formato)}</span>` : ''}
         </div>
         ${p.obs ? `<div class="insta-meta">${esc(p.obs)}</div>` : ''}
@@ -3483,6 +3489,7 @@ function resumirEvento(titulo) {
         </div>
         <div class="insta-meta">
           ${p.data ? `<span>📅 ${String(p.data).split('-').reverse().join('/')}</span>` : ''}
+          ${p.hora ? `<span>⏰ ${esc(p.hora)}</span>` : ''}
           ${p.formato ? `<span>🎬 ${esc(p.formato)}</span>` : ''}
         </div>
         <div class="insta-leads">${ls.length > 0
