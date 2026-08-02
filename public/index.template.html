@@ -202,6 +202,10 @@
   .insta-leads { margin-top:6px; font-size:var(--fs-2xs); }
   .insta-lead-chip { display:inline-block; background:#F1F4EC; border:1px solid #DCE3D3; border-radius:6px; padding:2px 8px; margin:2px 4px 0 0; color:#4A5240; }
   .insta-vazio { font-size:13px; color:#8A9186; line-height:1.6; }
+  .insta-publicar { font-family:inherit; font-size:10px; font-weight:600; border:1px solid #DCE3D3; background:#EEF2E9;
+    color:#4A5240; border-radius:7px; padding:5px 11px; cursor:pointer; margin-top:8px; }
+  .insta-publicar:hover:not(:disabled) { background:#E2E8DA; }
+  .insta-publicar:disabled { opacity:.5; cursor:default; }
   .insta-janela { margin-top:10px; background:#F4F7F0; border:1px solid #DFE6D6; border-radius:8px; padding:8px 11px; font-size:var(--fs-2xs); color:#4A5240; line-height:1.5; }
   .agenda-feito { font-family:inherit; font-size:10px; font-weight:600; border:1px solid #DCE3D3; background:#EEF2E9;
     color:#4A5240; border-radius:7px; padding:5px 9px; cursor:pointer; white-space:nowrap; align-self:center; margin-left:auto; }
@@ -3408,6 +3412,34 @@ function resumirEvento(titulo) {
       : '');
 })();
 
+// Marcar pauta como publicada. Reusa o mesmo armazenamento dos lembretes
+// concluídos (uma lista de ids quaisquer) — daí o prefixo "ig".
+function postIgId(p) {
+  const s = `ig|${p.data}|${p.tema}`;
+  let x = 0;
+  for (let i = 0; i < s.length; i++) { x = (x * 31 + s.charCodeAt(i)) | 0; }
+  return 'ig' + Math.abs(x).toString(36);
+}
+function getIgPublicados() {
+  try {
+    const raw = localStorage.getItem('painelEmobiLembretesConcluidos');
+    const arr = raw ? JSON.parse(raw) : [];
+    return new Set((Array.isArray(arr) ? arr : []).filter(x => String(x).startsWith('ig')));
+  } catch (e) { return new Set(); }
+}
+function marcarIgPublicado(id) {
+  try {
+    const raw = localStorage.getItem('painelEmobiLembretesConcluidos');
+    const arr = raw ? JSON.parse(raw) : [];
+    if (!arr.includes(id)) arr.push(id);
+    localStorage.setItem('painelEmobiLembretesConcluidos', JSON.stringify(arr));
+  } catch (e) { /* segue só com o servidor */ }
+  fetch('/api/lembretes/concluir', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id })
+  }).catch(() => {});
+}
+
 (function renderInstagram() {
   const elRes = document.getElementById('instaResultado');
   const elFila = document.getElementById('instaFila');
@@ -3415,8 +3447,14 @@ function resumirEvento(titulo) {
   if (!elRes || !elFila || !elPub) return;
 
   const ig = DATA.instagram || {};
-  const posts = ig.posts || [];
   const leadsInsta = (DATA.leads || []).filter(l => l.origem === 'Instagram');
+
+  function montar() {
+  const marcados = getIgPublicados();
+  // Pauta marcada no painel conta como publicada, mesmo que o data.json ainda diga "Ideia".
+  const posts = (ig.posts || []).map(p => marcados.has(postIgId(p))
+    ? { ...p, status: 'Publicado', marcadoNoPainel: true }
+    : p);
 
   // ---- Resultado: o que só o CRM sabe (post -> lead -> negócio) ----
   const vinculados = new Set();
@@ -3444,8 +3482,11 @@ function resumirEvento(titulo) {
     ${publicados.length > 0 ? `<div class="tbl-nota">${comLead.length} de ${publicados.length} publicações geraram lead identificado.</div>`
       : `<div class="tbl-nota">${esc(ig.notaAtribuicao || '')}</div>`}
     ${ig.janelaAudiencia ? `<div class="insta-janela">
-      ⏰ <b>Melhor horário: ${esc(ig.janelaAudiencia.pico)}</b> — confirmado em ${ig.janelaAudiencia.confirmadoEm.join(', ')} pelo Insights.
-      ${ig.janelaAudiencia.faltaConferir && ig.janelaAudiencia.faltaConferir.length ? `<br><span style="opacity:.8;">Ainda sem dado: ${ig.janelaAudiencia.faltaConferir.join(', ')}.</span>` : ''}
+      ⏰ <b>Melhor horário: ${esc(ig.janelaAudiencia.pico)}</b> — o pico se repete em ${ig.janelaAudiencia.confirmadoEm.length} dias da semana (${ig.janelaAudiencia.confirmadoEm.join(', ')}).
+      ${ig.janelaAudiencia.melhoresDias ? `<br>📅 <b>Melhores dias: ${ig.janelaAudiencia.melhoresDias.join(', ')}</b> — é o ranking do próprio Instagram.` : ''}
+      ${ig.janelaAudiencia.segundoMelhor ? `<br><span style="opacity:.85;">Segunda melhor faixa: ${esc(ig.janelaAudiencia.segundoMelhor)}.</span>` : ''}
+      ${ig.janelaAudiencia.observacaoSabado ? `<br><span style="opacity:.85;">${esc(ig.janelaAudiencia.observacaoSabado)}</span>` : ''}
+      ${ig.janelaAudiencia.faltaConferir && ig.janelaAudiencia.faltaConferir.length ? `<br><span style="opacity:.75;">Ainda sem dado: ${ig.janelaAudiencia.faltaConferir.join(', ')}.</span>` : ''}
     </div>` : ''}`;
 
   // ---- Fila de produção (tudo que ainda não foi publicado) ----
@@ -3470,6 +3511,7 @@ function resumirEvento(titulo) {
           ${p.formato ? `<span>🎬 ${esc(p.formato)}</span>` : ''}
         </div>
         ${p.obs ? `<div class="insta-meta">${esc(p.obs)}</div>` : ''}
+        <button type="button" class="insta-publicar" data-ig-publicar="${postIgId(p)}">✓ Publiquei</button>
       </div>`).join('');
   }
 
@@ -3492,12 +3534,42 @@ function resumirEvento(titulo) {
           ${p.hora ? `<span>⏰ ${esc(p.hora)}</span>` : ''}
           ${p.formato ? `<span>🎬 ${esc(p.formato)}</span>` : ''}
         </div>
+        ${p.marcadoNoPainel ? '<div class="insta-meta" style="color:#7BA05B;">✓ marcado como publicado no painel</div>' : ''}
         <div class="insta-leads">${ls.length > 0
           ? '🎯 ' + ls.map(n => `<span class="insta-lead-chip">${esc(n)}</span>`).join('')
           : '<span style="color:#8A9186;">Nenhum lead atribuído a este post.</span>'}</div>
       </div>`;
     }).join('');
   }
+
+  // botão "✓ Publiquei" nas pautas da fila
+  elFila.querySelectorAll('[data-ig-publicar]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.disabled = true;
+      marcarIgPublicado(btn.dataset.igPublicar);
+      montar();
+    });
+  });
+  }
+
+  montar();
+
+  // Se a pauta foi marcada como publicada em outro aparelho, reflete aqui.
+  (async () => {
+    try {
+      const r = await fetch('/api/lembretes/concluidos', { cache: 'no-store' });
+      if (!r.ok) return;
+      const j = await r.json();
+      if (!Array.isArray(j)) return;
+      const igRemotos = j.filter(x => String(x).startsWith('ig'));
+      if (igRemotos.length === 0) return;
+      const raw = localStorage.getItem('painelEmobiLembretesConcluidos');
+      const arr = raw ? JSON.parse(raw) : [];
+      let mudou = false;
+      igRemotos.forEach(id => { if (!arr.includes(id)) { arr.push(id); mudou = true; } });
+      if (mudou) { localStorage.setItem('painelEmobiLembretesConcluidos', JSON.stringify(arr)); montar(); }
+    } catch (e) { /* offline */ }
+  })();
 })();
 
 (function renderProspeccao() {

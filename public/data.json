@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-01T18:30:00-03:00",
+  "ultimaAtualizacao": "2026-08-01T19:00:00-03:00",
   "meta2026": {
     "meta": 10000000,
     "realizado": 2359100,
@@ -1942,57 +1942,57 @@
     "posts": [
       {
         "data": "2026-08-03",
+        "hora": "18:00",
         "formato": "Carrossel",
         "tema": "Oferta: Cód. 7726 — Candelária, 74m², 3 dorm./2 suítes, R$269.990",
         "status": "Ideia",
-        "obs": "Pilar: oferta. Preço abaixo dos concorrentes do bairro — puxar esse ângulo. Horário no pico confirmado (segunda, 18h–21h).",
-        "leadsGerados": [],
-        "hora": "18:00"
+        "obs": "Pilar: oferta. Segunda 18h — dia e horário de pico confirmados. Preço abaixo dos concorrentes do bairro.",
+        "leadsGerados": []
       },
       {
-        "data": "2026-08-06",
+        "data": "2026-08-05",
+        "hora": "18:00",
         "formato": "Reel",
         "tema": "Financiamento: o que o banco olha antes de aprovar seu crédito",
         "status": "Ideia",
-        "obs": "Pilar: autoridade. Tema quente — três clientes seus estão em financiamento agora. ⚠️ Quinta ainda não tem dado de audiência: confira no Insights antes.",
-        "leadsGerados": [],
-        "hora": "18:00"
+        "obs": "Pilar: autoridade. Quarta 18h. 🧪 TESTE A (horário): comparar com o reel de quarta 12/08 às 20h30 — mesmo dia da semana, mesmo formato, só a hora muda.",
+        "leadsGerados": []
       },
       {
         "data": "2026-08-08",
+        "hora": "09:00",
         "formato": "Reel",
         "tema": "Bastidor: como eu avalio um imóvel antes de aceitar a captação",
         "status": "Ideia",
-        "obs": "Pilar: pessoal/bastidor. ⚠️ Sábado ainda não tem dado de audiência — teste de dia, confira o Insights.",
-        "leadsGerados": [],
-        "hora": "18:00"
+        "obs": "Pilar: pessoal. 🧪 TESTE B (horário no sábado): 9h aproveita o pico da manhã que só o sábado tem — comparar com sábado 15/08 às 18h.",
+        "leadsGerados": []
       },
       {
         "data": "2026-08-10",
+        "hora": "18:00",
         "formato": "Carrossel",
         "tema": "Oferta: Cód. 10641 — Portamaris, Ponta Negra, 101m² mobiliado, R$849.990",
         "status": "Ideia",
-        "obs": "Pilar: oferta. Porteira fechada e vista panorâmica são o diferencial. Horário no pico confirmado (segunda).",
-        "leadsGerados": [],
-        "hora": "18:00"
+        "obs": "Pilar: oferta. Segunda 18h — dia e horário de pico. Porteira fechada e vista panorâmica são o diferencial.",
+        "leadsGerados": []
       },
       {
-        "data": "2026-08-13",
+        "data": "2026-08-12",
+        "hora": "20:30",
         "formato": "Reel",
         "tema": "ITBI, escritura e registro: os custos que ninguém conta antes de comprar",
         "status": "Ideia",
-        "obs": "Pilar: autoridade. TESTE DE AJUSTE FINO: 20h30 contra o 18h do dia 06 — os dois estão dentro da janela de pico, serve pra achar o melhor ponto dela.",
-        "leadsGerados": [],
-        "hora": "20:30"
+        "obs": "Pilar: autoridade. Quarta 20h30. 🧪 TESTE A (horário): o par do reel de 05/08 — mede o melhor ponto dentro da janela 18h–21h.",
+        "leadsGerados": []
       },
       {
         "data": "2026-08-15",
+        "hora": "18:00",
         "formato": "Carrossel",
         "tema": "Índices: como está o preço do m² em Natal por bairro",
         "status": "Ideia",
-        "obs": "Pilar: índices (você já tem destaque disso). Pode sair do radar de notícias de sábado.",
-        "leadsGerados": [],
-        "hora": "18:00"
+        "obs": "Pilar: índices. 🧪 TESTE B (horário no sábado): o par do post de 08/08 — 18h contra 9h.",
+        "leadsGerados": []
       }
     ],
     "notaAtribuicao": "Leads com origem Instagram anteriores a 01/08/2026 não têm post vinculado. Heber Lima (21/07) e Maria Matos (24/07) chegaram durante o mês de maior cadência do ano — 10 publicações.",
@@ -2001,14 +2001,20 @@
       "confirmadoEm": [
         "Segunda",
         "Terça",
-        "Quarta"
-      ],
-      "segundoMelhor": "12h",
-      "fonte": "Instagram Insights → Público → Horários de atividade dos seguidores (01/08/2026)",
-      "faltaConferir": [
+        "Quarta",
         "Quinta",
         "Sexta",
-        "Sábado",
+        "Sábado"
+      ],
+      "segundoMelhor": "12h",
+      "melhoresDias": [
+        "Segunda",
+        "Terça",
+        "Quarta"
+      ],
+      "observacaoSabado": "Sábado tem um pico extra às 9h que os dias úteis não têm.",
+      "fonte": "Instagram Insights → Público → Horários de atividade dos seguidores (01/08/2026)",
+      "faltaConferir": [
         "Domingo"
       ]
     }
