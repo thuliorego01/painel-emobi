@@ -891,14 +891,18 @@
   .sidebar.collapsed .sidebar-footer { justify-content:center; }
 
   .main-content { flex:1; min-width:0; }
-  .topbar { display:none; align-items:center; justify-content:space-between; margin-bottom:14px; }
-  .topbar-title { font-size:17px; font-weight:800; color:var(--brand-dark2); }
+  /* A topbar nasceu como barra de celular (hambúrguer + título) e por isso vivia
+     escondida acima de 900px. Só que a busca global mora dentro dela — resultado:
+     no computador, onde o painel é mais usado, o campo de busca simplesmente não
+     existia. Agora a barra aparece sempre; o que é de celular é que se esconde. */
+  .topbar { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
+  .topbar-title { font-size:17px; font-weight:800; color:var(--brand-dark2); display:none; }
   .hamburger-btn { display:none; background:var(--brand-dark2); color:#fff; border:none; border-radius:8px; width:36px; height:36px; font-size:16px; cursor:pointer; }
   .sidebar-scrim { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:19; }
 
   @media (max-width: 900px) {
     .app-shell { display:block; }
-    .topbar { display:flex; }
+    .topbar-title { display:block; }
     .sidebar {
       position:fixed; top:0; left:0; height:100vh; max-height:100vh; z-index:30; border-radius:0; width:250px; flex-basis:250px;
       transform:translateX(-100%); transition:transform .2s ease;
@@ -2041,6 +2045,14 @@ function abrirNegociacao(n) {
 
 // Janela de detalhe do BI: todo bloco que mostra uma contagem passa a
 // responder "quem são" — mesmo padrão do Pipeline, dos Imóveis e do Conecta TR.
+// Handlers delegados presumem que o alvo do evento é um elemento. Em evento
+// sintético (ou disparado no próprio document) o alvo não tem .closest e o
+// handler explodia. Aqui garantimos sempre um elemento.
+function alvoDe(e) {
+  const t = e && e.target;
+  return (t && typeof t.closest === 'function') ? t : document.documentElement;
+}
+
 function abrirBiModal(titulo, leads) {
   const over = document.getElementById('biModalOverlay');
   if (!over) return;
@@ -2837,7 +2849,7 @@ if (leadsInativosArr.length === 0) {
   }
 
   document.addEventListener('click', async (e) => {
-    const a = e.target.closest('a[data-registrar]');
+    const a = alvoDe(e).closest('a[data-registrar]');
     if (!a) return;
     e.preventDefault();
     e.stopPropagation();
@@ -2851,11 +2863,11 @@ if (leadsInativosArr.length === 0) {
 
   document.querySelectorAll('.lead-card-clickable').forEach(card => {
     card.addEventListener('click', (e) => {
-      if (e.target.closest('a')) return; // não abre modal se clicou num link de ação
+      if (alvoDe(e).closest('a')) return; // não abre modal se clicou num link de ação
       abrirHistorico(card.dataset.leadRef || card.dataset.leadNome);
     });
     card.addEventListener('keydown', (e) => {
-      if (e.target.closest('a')) return;
+      if (alvoDe(e).closest('a')) return;
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirHistorico(card.dataset.leadRef || card.dataset.leadNome); }
     });
   });
@@ -3596,13 +3608,13 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
   }
 
   document.addEventListener('click', (e) => {
-    const alvo = e.target.closest('[data-imovel]');
-    if (alvo && !e.target.closest('a')) abrirImovel(alvo.dataset.imovel);
+    const alvo = alvoDe(e).closest('[data-imovel]');
+    if (alvo && !alvoDe(e).closest('a')) abrirImovel(alvo.dataset.imovel);
   });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && imOver.classList.contains('open')) { fecharImovelModal(); return; }
     if (e.key !== 'Enter' && e.key !== ' ') return;
-    const alvo = e.target.closest('[data-imovel]');
+    const alvo = alvoDe(e).closest('[data-imovel]');
     if (alvo) { e.preventDefault(); abrirImovel(alvo.dataset.imovel); }
   });
   imClose.addEventListener('click', fecharImovelModal);
@@ -4079,17 +4091,17 @@ new Chart(document.getElementById('chartHistoricoAno'), {
 
   // Delegação: cobre os cards da lista e os de dentro da própria janela.
   document.addEventListener('click', (e) => {
-    const btnInd = e.target.closest('[data-ver-indicador]');
+    const btnInd = alvoDe(e).closest('[data-ver-indicador]');
     if (btnInd) { abrirIndicador(btnInd.dataset.verIndicador); return; }
-    const alvoI = e.target.closest('[data-ctr-indicacao]');
-    if (alvoI && !e.target.closest('a')) { abrirIndicacao(alvoI.dataset.ctrIndicacao); return; }
-    const alvoP = e.target.closest('[data-ctr-indicador]');
-    if (alvoP && !e.target.closest('a')) { abrirIndicador(alvoP.dataset.ctrIndicador); }
+    const alvoI = alvoDe(e).closest('[data-ctr-indicacao]');
+    if (alvoI && !alvoDe(e).closest('a')) { abrirIndicacao(alvoI.dataset.ctrIndicacao); return; }
+    const alvoP = alvoDe(e).closest('[data-ctr-indicador]');
+    if (alvoP && !alvoDe(e).closest('a')) { abrirIndicador(alvoP.dataset.ctrIndicador); }
   });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && mOver.classList.contains('open')) { fecharCtrModal(); return; }
     if (e.key !== 'Enter' && e.key !== ' ') return;
-    const alvo = e.target.closest('[data-ctr-indicacao], [data-ctr-indicador]');
+    const alvo = alvoDe(e).closest('[data-ctr-indicacao], [data-ctr-indicador]');
     if (!alvo) return;
     e.preventDefault();
     if (alvo.dataset.ctrIndicacao) abrirIndicacao(alvo.dataset.ctrIndicacao);
@@ -4207,7 +4219,7 @@ function resumirEvento(titulo) {
   });
 
   box.addEventListener('click', (e) => {
-    const item = e.target.closest('.busca-item');
+    const item = alvoDe(e).closest('.busca-item');
     if (!item) return;
     const ativar = window.ativarAba || function(){};
     if (item.dataset.tipo === 'lead') {
@@ -4229,14 +4241,14 @@ function resumirEvento(titulo) {
 
   // "/" foca a busca de qualquer lugar (fora de campos de texto); Esc fecha.
   document.addEventListener('keydown', (e) => {
-    if (e.key === '/' && !e.target.closest('input, textarea, select')) {
+    if (e.key === '/' && !alvoDe(e).closest('input, textarea, select')) {
       e.preventDefault();
       input.focus();
     }
     if (e.key === 'Escape' && box.style.display !== 'none') fechar();
   });
   document.addEventListener('click', (e) => {
-    if (!e.target.closest('.busca-wrap')) fechar();
+    if (!alvoDe(e).closest('.busca-wrap')) fechar();
   });
 })();
 
