@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-02T23:20:00-03:00",
+  "ultimaAtualizacao": "2026-08-02T23:55:00-03:00",
   "meta2026": {
     "meta": 10000000,
     "realizado": 2359100,
@@ -1009,7 +1009,116 @@
       }
     ],
     "notaAmostra": "Sazonalidade só do ano vigente (2026) — recalcula sozinha ano a ano.",
-    "notaDivergencia": "✅ Comissão de vendas de 2021 revisada e confirmada com Thúlio: R$ 95.746,83 (a planilha original tinha R$ 83.746,83, que não incluía a venda do Edifício Ubatuba)."
+    "notaDivergencia": "✅ Comissão de vendas de 2021 revisada e confirmada com Thúlio: R$ 95.746,83 (a planilha original tinha R$ 83.746,83, que não incluía a venda do Edifício Ubatuba).",
+    "sazonalidadeHistorica": {
+      "anos": [
+        2020,
+        2024,
+        2025,
+        2026
+      ],
+      "totalNegocios": 66,
+      "totalNaBase": 112,
+      "nota": "Só 2020 (parcial), 2024, 2025 e 2026 têm o mês do fechamento registrado na planilha original.",
+      "meses": [
+        {
+          "mes": "Jan",
+          "comissao": 2475.0,
+          "negocios": 1,
+          "anos": 4,
+          "mediaComissao": 618.75,
+          "mediaNegocios": 0.25
+        },
+        {
+          "mes": "Fev",
+          "comissao": 29948.5,
+          "negocios": 5,
+          "anos": 4,
+          "mediaComissao": 7487.12,
+          "mediaNegocios": 1.25
+        },
+        {
+          "mes": "Mar",
+          "comissao": 36100.0,
+          "negocios": 5,
+          "anos": 4,
+          "mediaComissao": 9025.0,
+          "mediaNegocios": 1.25
+        },
+        {
+          "mes": "Abr",
+          "comissao": 69462.5,
+          "negocios": 9,
+          "anos": 4,
+          "mediaComissao": 17365.62,
+          "mediaNegocios": 2.25
+        },
+        {
+          "mes": "Mai",
+          "comissao": 79950.0,
+          "negocios": 10,
+          "anos": 4,
+          "mediaComissao": 19987.5,
+          "mediaNegocios": 2.5
+        },
+        {
+          "mes": "Jun",
+          "comissao": 37652.5,
+          "negocios": 7,
+          "anos": 4,
+          "mediaComissao": 9413.12,
+          "mediaNegocios": 1.75
+        },
+        {
+          "mes": "Jul",
+          "comissao": 25850.25,
+          "negocios": 5,
+          "anos": 4,
+          "mediaComissao": 6462.56,
+          "mediaNegocios": 1.25
+        },
+        {
+          "mes": "Ago",
+          "comissao": 64437.5,
+          "negocios": 6,
+          "anos": 3,
+          "mediaComissao": 21479.17,
+          "mediaNegocios": 2.0
+        },
+        {
+          "mes": "Set",
+          "comissao": 41510.0,
+          "negocios": 4,
+          "anos": 3,
+          "mediaComissao": 13836.67,
+          "mediaNegocios": 1.33
+        },
+        {
+          "mes": "Out",
+          "comissao": 15687.5,
+          "negocios": 2,
+          "anos": 3,
+          "mediaComissao": 5229.17,
+          "mediaNegocios": 0.67
+        },
+        {
+          "mes": "Nov",
+          "comissao": 38875.0,
+          "negocios": 6,
+          "anos": 3,
+          "mediaComissao": 12958.33,
+          "mediaNegocios": 2.0
+        },
+        {
+          "mes": "Dez",
+          "comissao": 61112.5,
+          "negocios": 6,
+          "anos": 3,
+          "mediaComissao": 20370.83,
+          "mediaNegocios": 2.0
+        }
+      ]
+    }
   },
   "agendaHoje": [
     {

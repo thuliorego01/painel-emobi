@@ -257,6 +257,9 @@
     .bairro-qtd { background:#252D22; border-color:#39423577; color:#C3CBBB; }
     .cidade-rotulo { background:linear-gradient(90deg,#232A22,#1E241D); }
     .tipo-divisor::after { background:#2C342A; }
+    .ritmo-celula { background:#1E241D; border-color:#2C342A; }
+    .ritmo-trilho { background:#2C342A; }
+    .bi-clicavel:hover { background:#232A22; }
     .aviso-telefones { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
     .aviso-telefones b { color:#E5D6A0; }
     /* Blocos de temperatura no escuro: mantêm a identidade da cor, mas com
@@ -552,6 +555,47 @@
   .reativa-item i { color:#8A9186; font-style:normal; }
   .reativa-regra { margin-top:9px; font-size: var(--fs-2xs); color:#8A9186; line-height:1.55; }
   .reativa-regra summary { cursor:pointer; font-weight:600; color:#7B8177; }
+
+  /* ---- BI Comercial ---- */
+  .conv-fila { font-size:9.5px; font-weight:700; color:#8A6A2E; background:#FFF9E6; border:1px solid #F0E2B0;
+    border-radius:6px; padding:1px 7px; white-space:nowrap; }
+  .fech-linha { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 0;
+    border-bottom:1px solid #F1F2ED; font-size: var(--fs-sm); color:#5C6155; }
+  .fech-linha i { color:#8A9186; font-style:normal; font-size: var(--fs-2xs); }
+  .fech-linha.destaque { border-bottom:none; }
+  .fech-linha.destaque .fech-num { color:#2E7D32; }
+  .fech-num { font-weight:800; color: var(--text-strong); white-space:nowrap; }
+  .fech-num.zero { color:#8A9186; font-weight:600; }
+  .fech-nota, .ritmo-nota { margin-top:8px; font-size: var(--fs-2xs); color:#8A9186; line-height:1.55; }
+  .fech-nota summary, .ritmo-nota summary { cursor:pointer; font-weight:600; color:#7B8177; }
+
+  .ritmo-barras { display:flex; flex-direction:column; gap:11px; }
+  .ritmo-rot { display:flex; justify-content:space-between; font-size: var(--fs-2xs); color:#5C6155; margin-bottom:4px; }
+  .ritmo-rot b { color: var(--text-strong); font-size: var(--fs-sm); }
+  .ritmo-trilho { height:9px; background:#F1F3EE; border-radius:6px; overflow:hidden; }
+  .ritmo-preenche { display:block; height:100%; border-radius:6px; transition:width .5s ease; }
+  .ritmo-preenche.tempo { background:#B6BBB0; }
+  .ritmo-preenche.atras { background:linear-gradient(90deg,#C4571F,#E0813F); }
+  .ritmo-preenche.frente { background:linear-gradient(90deg,#2C3A24,#5C6B4A); }
+  .ritmo-frase { margin-top:12px; font-size: var(--fs-sm); color:#5C6155; line-height:1.5; }
+  .ritmo-frase.atras b { color:#B4300F; }
+  .ritmo-frase.frente b { color:#2E7D32; }
+  .ritmo-grade { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-top:14px; }
+  .ritmo-celula { background:#F8F9F5; border:1px solid #EDEFE9; border-radius:10px; padding:10px 12px;
+    display:flex; flex-direction:column; gap:2px; }
+  .ritmo-celula-rot { font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:#8A9186; line-height:1.35; }
+  .ritmo-celula-val { font-size: var(--fs-md); font-weight:800; color: var(--text-strong); }
+  .ritmo-celula-sub { font-size: var(--fs-2xs); color:#8A9186; }
+
+  .bi-clicavel { cursor:pointer; border-radius:8px; transition:background .15s; }
+  .bi-clicavel:hover { background:#F6F7F2; }
+  .bi-clicavel:focus-visible { outline:2px solid var(--brand-gold); outline-offset:2px; }
+  .bi-modal-lead { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 0;
+    border-bottom:1px solid #F1F2ED; font-size: var(--fs-sm); color:#5C6155; }
+  .bi-modal-lead:last-child { border-bottom:none; }
+  .bi-modal-lead b { color: var(--text-strong); }
+  .bi-modal-lead .bi-fase { font-size: var(--fs-2xs); color:#8A9186; white-space:nowrap; }
+  .bi-modal-vazio { font-size: var(--fs-sm); color:#8A9186; }
   .hist-nota { font-size:var(--fs-xs); color:#8A7644; background:#FBF6EA; border:1px solid #EBD9A8; border-radius:8px; padding:8px 10px; margin-bottom:8px; }
 
   .imovel-top { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
@@ -1088,6 +1132,7 @@
             <tbody id="conversaoTabela"></tbody>
           </table>
           </div>
+          <div id="fechamentoReal"></div>
         </div>
         <div class="card" style="margin-top:18px;">
           <h3>🏠 Funil de Captação por Status</h3>
@@ -1095,6 +1140,8 @@
         </div>
       </div>
     </div>
+    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>⏱️ Ritmo de 2026</div>
+    <div class="card"><div id="ritmoAno"></div></div>
     <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>📚 Histórico de Negociações (2020-2026)</div>
     <div id="historicoNotas"></div>
     <div class="grid2" style="margin-top:10px;">
@@ -1103,7 +1150,8 @@
         <div class="chart-wrap"><canvas id="chartHistoricoAno"></canvas></div>
       </div>
       <div class="card">
-        <h3>📅 Sazonalidade — Comissão por Mês (ano vigente)</h3>
+        <h3>📅 Sazonalidade — média histórica por mês</h3>
+        <div id="sazonalidadeNota" class="amostra-nota"></div>
         <div class="chart-wrap"><canvas id="chartHistoricoSazonalidade"></canvas></div>
       </div>
     </div>
@@ -1229,6 +1277,16 @@
       <div id="imovelModalBadges" style="margin-top:6px;"></div>
     </div>
     <div id="imovelModalCorpo" style="margin-top:12px;"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="biModalOverlay" role="dialog" aria-modal="true" aria-labelledby="biModalTitulo" tabindex="-1">
+  <div class="modal-content">
+    <button class="modal-close" id="biModalClose" aria-label="Fechar">✕</button>
+    <div class="modal-header">
+      <div class="lead-name" id="biModalTitulo" style="font-size:17px;"></div>
+    </div>
+    <div id="biModalCorpo" style="margin-top:12px;"></div>
   </div>
 </div>
 
@@ -1817,6 +1875,38 @@ DATA.listaNegociacoes.forEach(n => {
   negList.appendChild(row);
 });
 
+// Janela de detalhe do BI: todo bloco que mostra uma contagem passa a
+// responder "quem são" — mesmo padrão do Pipeline, dos Imóveis e do Conecta TR.
+function abrirBiModal(titulo, leads) {
+  const over = document.getElementById('biModalOverlay');
+  if (!over) return;
+  document.getElementById('biModalTitulo').textContent = titulo;
+  const corpo = document.getElementById('biModalCorpo');
+  if (!leads.length) {
+    corpo.innerHTML = '<div class="bi-modal-vazio">Nenhum lead aqui.</div>';
+  } else {
+    corpo.innerHTML = leads
+      .slice()
+      .sort((a, b) => (b.maiorFaseIndex || 0) - (a.maiorFaseIndex || 0))
+      .map(l => {
+        const dg = String(l.telefone || '').replace(/\D/g, '');
+        const wa = dg ? `<a class="wa-link" href="https://wa.me/${dg.startsWith('55') ? dg : '55' + dg}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+        return `<div class="bi-modal-lead"><span><b>${esc(l.nome)}</b> <span class="bi-fase">${esc(l.fase)} · ${esc(l.temperatura || '—')}</span></span>${wa}</div>`;
+      }).join('');
+  }
+  over.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+(function ligarBiModal() {
+  const over = document.getElementById('biModalOverlay');
+  if (!over) return;
+  const fechar = () => { over.classList.remove('open'); document.body.style.overflow = ''; };
+  over.addEventListener('click', e => { if (e.target === over) fechar(); });
+  const btn = document.getElementById('biModalClose');
+  if (btn) btn.addEventListener('click', fechar);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && over.classList.contains('open')) fechar(); });
+})();
+
 const funilList = document.getElementById('funilList');
 // Calculado ao vivo a partir de DATA.leads (fase atual de cada lead) — nunca fica dessincronizado,
 // mesmo que DATA.funil não seja atualizado manualmente em algum dia.
@@ -1826,7 +1916,14 @@ const maxFunil = Math.max(1, ...funilCalculado.map(f => f[1]));
 funilCalculado.forEach(([label, count]) => {
   const w = Math.max(6, (count / maxFunil) * 100);
   const row = document.createElement('div');
-  row.className = 'funil-row';
+  row.className = 'funil-row' + (count > 0 ? ' bi-clicavel' : '');
+  if (count > 0) {
+    row.setAttribute('role', 'button');
+    row.setAttribute('tabindex', '0');
+    const abrir = () => abrirBiModal('Leads em: ' + label, DATA.leads.filter(l => l.fase === label));
+    row.addEventListener('click', abrir);
+    row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(); } });
+  }
   row.innerHTML = `
     <div class="funil-label">${label}</div>
     <div class="funil-track"><div class="funil-fill" style="width:${w}%"><span>${count > 0 ? count : ''}</span></div></div>
@@ -1848,7 +1945,13 @@ if (origemEntries.length === 0) {
   origemEntries.forEach(([label, count]) => {
     const w = Math.max(6, (count / maxOrigem) * 100);
     const row = document.createElement('div');
-    row.className = 'origem-row';
+    row.className = 'origem-row bi-clicavel';
+    row.setAttribute('role', 'button');
+    row.setAttribute('tabindex', '0');
+    const abrir = () => abrirBiModal('Leads de origem: ' + label,
+      (DATA.leads || []).filter(l => (l.origem || 'Não informado') === label));
+    row.addEventListener('click', abrir);
+    row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(); } });
     row.innerHTML = `
       <div class="origem-label">${label}</div>
       <div class="origem-track"><div class="origem-fill" style="width:${w}%"></div></div>
@@ -1876,17 +1979,56 @@ document.getElementById('amostraNota').textContent =
   `⚠️ Amostra pequena (${totalCadastrados} leads cadastrados no total) — os % ficam mais confiáveis conforme mais leads entrarem no funil. Acompanhe a tendência mês a mês, não o valor isolado.`;
 const conversaoTabela = document.getElementById('conversaoTabela');
 funilConversaoCalculado.forEach(f => {
-  const conv = f.conversao === null ? '—' : Math.round(f.conversao * 100) + '%';
+  // 0% com gente parada na fase é FILA, não gargalo: os leads acabaram de
+  // chegar e ainda não tiveram tempo de avançar. Sem essa distinção, o
+  // "Em Negociação → 0%" parecia o pior buraco do funil, quando é o melhor
+  // momento dele. Mesma correção já feita no termômetro.
+  const naFase = DATA.leads.filter(l => l.fase === f.fase).length;
+  let conv = f.conversao === null ? '—' : Math.round(f.conversao * 100) + '%';
+  if (f.conversao === 0 && naFase > 0) {
+    conv = `<span class="conv-fila">${naFase} em andamento</span>`;
+  }
   const tr = document.createElement('tr');
   tr.innerHTML = `<td>${f.fase}</td><td>${f.alcancaram}</td><td>${conv}</td>`;
   conversaoTabela.appendChild(tr);
 });
-const trFecha = document.createElement('tr');
-trFecha.innerHTML = `<td><b>Taxa de Fechamento Geral</b></td><td colspan="2"><b>${Math.round(taxaFechamentoCalc * 100)}%</b></td>`;
-conversaoTabela.appendChild(trFecha);
-const trPerda = document.createElement('tr');
-trPerda.innerHTML = `<td><b>Taxa de Perda</b></td><td colspan="2"><b>${Math.round(taxaPerdaCalc * 100)}%</b></td>`;
-conversaoTabela.appendChild(trPerda);
+
+// ---- Fechamento: o número honesto ----
+// A "Taxa de Fechamento Geral" dava 0% e convivia, na mesma tela, com 8 vendas
+// no histórico. Não era bug: o funil só enxerga comprador que entrou como lead,
+// e as vendas dele entram pelo lado da captação. Zero sem essa ressalva lê como
+// "não fecho nada". Agora os dois números aparecem lado a lado, cada um com o
+// seu escopo escrito.
+(function renderFechamentoReal() {
+  const alvo = document.getElementById('fechamentoReal');
+  if (!alvo) return;
+  const ganhosNoFunil = DATA.leads.filter(l => l.fase === 'Fechado Ganho').length;
+  const perdidosOuPausados = DATA.leads.filter(l => l.motivoPerda).length;
+  const negs = (DATA.listaNegociacoes || []);
+  const pagas = negs.filter(n => n.status === 'pago');
+  const comissaoPaga = pagas.reduce((s, n) => s + (n.comissao || 0), 0);
+  const aguardando = negs.filter(n => n.status !== 'pago');
+  const comissaoAguardando = aguardando.reduce((s, n) => s + (n.comissao || 0), 0);
+  alvo.innerHTML = `
+    <div class="fech-linha">
+      <span>Fechados <b>pelo funil de leads</b></span>
+      <span class="fech-num ${ganhosNoFunil === 0 ? 'zero' : ''}">${ganhosNoFunil} de ${totalCadastrados}</span>
+    </div>
+    <div class="fech-linha">
+      <span>Perdidos ou pausados <i>(com motivo registrado)</i></span>
+      <span class="fech-num">${perdidosOuPausados} de ${totalCadastrados}</span>
+    </div>
+    <div class="fech-linha destaque">
+      <span>Negócios fechados no ano <b>(todas as origens)</b></span>
+      <span class="fech-num">${negs.length} · ${brl(comissaoPaga + comissaoAguardando)}</span>
+    </div>
+    <details class="fech-nota"><summary>Por que o funil mostra 0%</summary>
+      O funil acima conta só comprador que entrou como lead no CRM. Suas vendas de ${new Date().getFullYear()} fecharam pelo lado da <b>captação</b> — o comprador nunca virou lead — então elas não aparecem ali.
+      Não é erro de dado, é escopo: enquanto venda fechar fora do pipeline de compradores, essa taxa fica estruturalmente subestimada.
+      Para o funil passar a refletir a realidade, todo comprador que fecha precisaria ser criado como lead, mesmo que no ato do fechamento.
+      ${comissaoAguardando > 0 ? `<br><br>Dos ${negs.length} negócios, ${aguardando.length} ainda está com comissão a receber (${brl(comissaoAguardando)}) — por isso o histórico anual, que só soma o que entrou, mostra ${brl(comissaoPaga)}.` : ''}
+    </details>`;
+})();
 
 // ---- Reativacao por temperatura ----
 // Ao vivo, via leadsParaReativar() — a mesma função que alimenta o banner de
@@ -3367,26 +3509,129 @@ new Chart(document.getElementById('chartHistoricoAno'), {
   }
 });
 
-new Chart(document.getElementById('chartHistoricoSazonalidade'), {
-  type: 'bar',
-  data: {
-    labels: DATA.historico.sazonalidade.map(s => s.mes),
-    datasets: [{
-      label: 'Comissão por mês (ano vigente)',
-      data: DATA.historico.sazonalidade.map(s => s.comissao),
-      backgroundColor: BRAND.dark2,
-      borderRadius: 4
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: (ctx) => brl(ctx.raw) } }
-    },
-    scales: { y: { ticks: { callback: (v) => brl(v) } } }
+// ---- Ritmo do ano ----
+// A tabela do histórico mostrava "24% da meta" sem dizer quanto do ano já
+// passou — o que faz um atraso grande parecer pequeno. Tudo calculado ao vivo:
+// nenhum número de ritmo fica guardado para envelhecer.
+(function renderRitmoAno() {
+  const alvo = document.getElementById('ritmoAno');
+  if (!alvo) return;
+  const hoje = new Date();
+  const ano = hoje.getFullYear();
+  const inicio = new Date(ano, 0, 1);
+  const diasNoAno = ((ano % 4 === 0 && ano % 100 !== 0) || ano % 400 === 0) ? 366 : 365;
+  const diaDoAno = Math.floor((hoje - inicio) / 86400000) + 1;
+  const fracaoAno = diaDoAno / diasNoAno;
+
+  const negs = (DATA.listaNegociacoes || []);
+  const recebido = negs.filter(n => n.status === 'pago').reduce((s, n) => s + (n.comissao || 0), 0);
+  const metaCom = (DATA.metaComissao2026 && DATA.metaComissao2026.meta) || 0;
+  if (!metaCom) { alvo.innerHTML = '<div class="ritmo-vazio">Meta de comissão do ano não definida.</div>'; return; }
+
+  const pctMeta = recebido / metaCom;
+  const projecao = fracaoAno > 0 ? recebido / fracaoAno : 0;
+  const falta = Math.max(0, metaCom - recebido);
+  const mesAtual = hoje.getMonth();               // 0-11
+  const mesesRestantes = Math.max(1, 12 - mesAtual);
+  // Meses corridos como fração contínua: em 02/08, dividir por 8 puxaria a
+  // média para baixo por causa de um mês que mal começou.
+  const mesesCorridos = Math.max(0.5, fracaoAno * 12);
+  const precisaPorMes = falta / mesesRestantes;
+  const fezPorMes = recebido / mesesCorridos;
+
+  const anosConcluidos = (DATA.historico.anos || []).filter(a => a.ano < ano);
+  const mediaHist = anosConcluidos.length
+    ? anosConcluidos.reduce((s, a) => s + (a.comissaoTotal || 0), 0) / anosConcluidos.length : 0;
+
+  const atrasado = pctMeta < fracaoAno;
+  const dif = Math.round(Math.abs(fracaoAno - pctMeta) * 100);
+
+  alvo.innerHTML = `
+    <div class="ritmo-barras">
+      <div class="ritmo-item">
+        <div class="ritmo-rot"><span>Ano decorrido</span><b>${Math.round(fracaoAno * 100)}%</b></div>
+        <div class="ritmo-trilho"><span class="ritmo-preenche tempo" style="width:${Math.round(fracaoAno * 100)}%"></span></div>
+      </div>
+      <div class="ritmo-item">
+        <div class="ritmo-rot"><span>Meta de comissão atingida</span><b>${Math.round(pctMeta * 100)}%</b></div>
+        <div class="ritmo-trilho"><span class="ritmo-preenche ${atrasado ? 'atras' : 'frente'}" style="width:${Math.min(100, Math.round(pctMeta * 100))}%"></span></div>
+      </div>
+    </div>
+    <div class="ritmo-frase ${atrasado ? 'atras' : 'frente'}">
+      ${atrasado
+        ? `Você está <b>${dif} pontos atrás</b> do calendário: ${brl(recebido)} recebidos de ${brl(metaCom)}.`
+        : `Você está <b>${dif} pontos à frente</b> do calendário: ${brl(recebido)} recebidos de ${brl(metaCom)}.`}
+    </div>
+    <div class="ritmo-grade">
+      <div class="ritmo-celula">
+        <span class="ritmo-celula-rot">No ritmo atual, fecha o ano em</span>
+        <span class="ritmo-celula-val">${brl(projecao)}</span>
+        <span class="ritmo-celula-sub">${Math.round(projecao / metaCom * 100)}% da meta</span>
+      </div>
+      <div class="ritmo-celula">
+        <span class="ritmo-celula-rot">Para bater a meta, precisa por mês</span>
+        <span class="ritmo-celula-val">${brl(precisaPorMes)}</span>
+        <span class="ritmo-celula-sub">${mesesRestantes === 1 ? 'no último mês do ano' : 'nos ' + mesesRestantes + ' meses restantes'}</span>
+      </div>
+      <div class="ritmo-celula">
+        <span class="ritmo-celula-rot">Média que você fez por mês</span>
+        <span class="ritmo-celula-val">${brl(fezPorMes)}</span>
+        <span class="ritmo-celula-sub">no que já correu de ${ano}</span>
+      </div>
+      <div class="ritmo-celula">
+        <span class="ritmo-celula-rot">Sua média histórica</span>
+        <span class="ritmo-celula-val">${brl(mediaHist)}</span>
+        <span class="ritmo-celula-sub">por ano, de ${anosConcluidos[0] ? anosConcluidos[0].ano : ''} a ${ano - 1}</span>
+      </div>
+    </div>
+    <details class="ritmo-nota"><summary>Como esta conta é feita</summary>
+      "Recebido" soma só as comissões com status <b>pago</b> na lista de negociações — o que já entrou, não o previsto.
+      A projeção divide o recebido pela fração do ano já decorrida; ela assume que o resto do ano rende igual ao começo, o que a sazonalidade abaixo mostra que raramente acontece.
+      Tudo é recalculado toda vez que o painel abre.
+    </details>`;
+})();
+
+// Sazonalidade: antes olhava só o ano vigente — 8 negócios espalhados em 12
+// meses, ruído puro. Agora usa os 66 negócios com mês registrado (2020, 2024,
+// 2025 e 2026), em MÉDIA por ano, para não penalizar ago-dez, que ainda não
+// têm 2026. O ano vigente vai por cima, como linha, para comparação.
+(function renderSazonalidade() {
+  const sh = (DATA.historico && DATA.historico.sazonalidadeHistorica) || null;
+  const nota = document.getElementById('sazonalidadeNota');
+  if (!sh) return;
+  const labels = sh.meses.map(m => m.mes);
+  const medias = sh.meses.map(m => m.mediaComissao);
+  // Meses futuros ficam null e não viram zero: uma linha despencando para o
+  // fundo em setembro sugeriria queda, quando setembro nem chegou.
+  const mesCorrente = new Date().getMonth();
+  const atual = (DATA.historico.sazonalidade || []).map((s, i) => i <= mesCorrente ? s.comissao : null);
+  const melhor = sh.meses.reduce((a, b) => (b.mediaComissao > a.mediaComissao ? b : a), sh.meses[0]);
+  const mesAgora = sh.meses[new Date().getMonth()];
+  if (nota) {
+    nota.innerHTML = `Média de <b>${sh.totalNegocios}</b> negócios com mês registrado (${sh.anos.join(', ')}) — ${sh.nota}` +
+      `<br>Seu mês historicamente mais forte é <b>${melhor.mes}</b> (${brl(melhor.mediaComissao)} de média).` +
+      (mesAgora ? ` Estamos em <b>${mesAgora.mes}</b>, que rende ${brl(mesAgora.mediaComissao)} em média.` : '');
   }
-});
+  new Chart(document.getElementById('chartHistoricoSazonalidade'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        { label: 'Média histórica', data: medias, backgroundColor: BRAND.dark2, borderRadius: 4, order: 2 },
+        { label: String(new Date().getFullYear()), data: atual, type: 'line', borderColor: BRAND.gold || '#C8A24A',
+          backgroundColor: 'transparent', borderWidth: 2, pointRadius: 3, tension: .25, order: 1 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true, position: 'bottom' },
+        tooltip: { callbacks: { label: (ctx) => ctx.dataset.label + ': ' + brl(ctx.raw) } }
+      },
+      scales: { y: { ticks: { callback: (v) => brl(v) } } }
+    }
+  });
+})();
 
 // ---- Conecta TR ----
 (function renderConectaTR() {
