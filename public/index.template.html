@@ -258,6 +258,10 @@
     .cidade-rotulo { background:linear-gradient(90deg,#232A22,#1E241D); }
     .tipo-divisor::after { background:#2C342A; }
     .ritmo-celula { background:#1E241D; border-color:#2C342A; }
+    .meta-mensal-resumo { background:#1E241D; border-color:#2C342A; color:#C3C9BC; }
+    .mensal-table tr.mes-atual td { background:#232A22; }
+    .neg-pendente { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
+    .neg-modal-nota { background:#1E241D; }
     .ritmo-trilho { background:#2C342A; }
     .bi-clicavel:hover { background:#232A22; }
     .aviso-telefones { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
@@ -596,6 +600,26 @@
   .bi-modal-lead b { color: var(--text-strong); }
   .bi-modal-lead .bi-fase { font-size: var(--fs-2xs); color:#8A9186; white-space:nowrap; }
   .bi-modal-vazio { font-size: var(--fs-sm); color:#8A9186; }
+  .kpi-adefinir { font-size: var(--fs-md); color:#8A6A2E; font-weight:700; }
+  .kpi-parcial { font-size: var(--fs-2xs); color:#8A6A2E; font-weight:700; }
+  .meta-mensal-resumo { font-size: var(--fs-2xs); color:#5C6155; background:#F8F9F5; border:1px solid #EDEFE9;
+    border-radius:9px; padding:9px 12px; margin-bottom:12px; line-height:1.55; }
+  .meta-mensal-resumo .resumo-obs { color:#8A9186; }
+  .mensal-table tr.mes-passado td { color:#8A9186; }
+  .mensal-table tr.mes-atual td { background:#FBF8F0; }
+  .mensal-table td.recebido-zero { color:#B4300F; font-weight:700; }
+  .meta-tipo { font-size:9px; color:#B6BBB0; margin-left:5px; text-transform:uppercase; letter-spacing:.5px; }
+  .status-seco { font-size: var(--fs-2xs); font-weight:700; color:#B4300F; }
+  .neg-mes { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:14px 0 4px;
+    padding-bottom:5px; border-bottom:1px solid #EDEFE9; }
+  .neg-mes:first-child { margin-top:2px; }
+  .neg-mes-nome { font-size:9.5px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:#8A9186; }
+  .neg-mes-tot { font-size: var(--fs-2xs); color:#8A9186; }
+  .neg-mes-tot b { color: var(--text-strong); }
+  .neg-pendente { font-size: var(--fs-2xs); color:#8A5A14; background:#FDF6E8; border:1px solid #EBD9A8;
+    border-radius:9px; padding:9px 12px; margin-top:12px; line-height:1.55; }
+  .neg-modal-nota { margin-top:10px; font-size: var(--fs-2xs); color:#8A9186; line-height:1.55;
+    background:#F8F9F5; border-radius:8px; padding:9px 11px; }
   .hist-nota { font-size:var(--fs-xs); color:#8A7644; background:#FBF6EA; border:1px solid #EBD9A8; border-radius:8px; padding:8px 10px; margin-bottom:8px; }
 
   .imovel-top { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
@@ -1043,6 +1067,7 @@
       </div>
     </div>
     <div class="card" style="margin-bottom:18px;">
+      <div id="metaMensalResumo" class="meta-mensal-resumo"></div>
       <div class="table-scroll">
       <table class="mensal-table">
         <thead><tr><th>Mês</th><th>Meta do mês</th><th>Recebido</th><th>Status</th></tr></thead>
@@ -1765,15 +1790,66 @@ if (!temHoje && !temAmanha) {
   container.innerHTML = html;
 })();
 
-const pct = Math.min(100, (DATA.meta2026.realizado / DATA.meta2026.meta) * 100);
+// ---- Financeiro: uma fonte só ----
+// Antes meta2026.realizado, comissao.paga/aguardando/prevista e negociacoes.*
+// eram campos escritos à mão. O painel chegou a mostrar R$2.359.100 num KPI e
+// R$2.624.100 em outro, na mesma tela, porque um campo guardado não tinha sido
+// atualizado depois da venda do Cód. 10638. Agora tudo deriva de
+// listaNegociacoes: não há dois números para a mesma coisa.
+const FIN = (function calcularFinanceiro() {
+  const negs = DATA.listaNegociacoes || [];
+  const soma = (arr, campo) => arr.reduce((s, n) => s + (n[campo] || 0), 0);
+  const pagas = negs.filter(n => n.status === 'pago');
+  const aguardando = negs.filter(n => n.status !== 'pago');
+  const porTipo = {};
+  negs.forEach(n => {
+    const t = n.tipo || 'Outro';
+    porTipo[t] = porTipo[t] || { qtd: 0, valor: 0, comissao: 0 };
+    porTipo[t].qtd++; porTipo[t].valor += (n.valor || 0); porTipo[t].comissao += (n.comissao || 0);
+  });
+  // "Negociado" = o que passou por venda ou locação de imóvel. Serviços avulsos
+  // (Diversos) entram na comissão, mas não são volume de imóvel negociado.
+  const negociado = ['Venda', 'Locação'].reduce((s, t) => s + ((porTipo[t] && porTipo[t].valor) || 0), 0);
+  const metaValor = (DATA.meta2026 && DATA.meta2026.meta) || 0;
+  // Leads em negociação: a comissão só entra aqui quando você informa o valor.
+  // Estimar por taxa média daria um número que parece medido e não é.
+  const emNegociacao = (DATA.leads || []).filter(l => l.fase === 'Em Negociação' || l.fase === 'Proposta Enviada');
+  const previstaInformada = emNegociacao.filter(l => typeof l.comissaoPrevista === 'number');
+  return {
+    negs, pagas, aguardando, porTipo, negociado, metaValor,
+    comissaoPaga: soma(pagas, 'comissao'),
+    comissaoAguardando: soma(aguardando, 'comissao'),
+    saldoMeta: Math.max(0, metaValor - negociado),
+    emNegociacao,
+    comissaoPrevista: soma(previstaInformada, 'comissaoPrevista'),
+    previstaCompleta: previstaInformada.length === emNegociacao.length && emNegociacao.length > 0
+  };
+})();
+
+// Projeção anual: uma conta só, usada aqui e no BI Comercial. Antes existiam
+// duas — uma dividia por meses decorridos (8, mesmo no dia 2), a outra pela
+// fração real do ano — e as duas se diziam "ritmo atual", com R$6 mil de
+// diferença entre elas.
+function fracaoAnoDecorrida(ref) {
+  const hj = ref || new Date();
+  const ano = hj.getFullYear();
+  const dias = ((ano % 4 === 0 && ano % 100 !== 0) || ano % 400 === 0) ? 366 : 365;
+  return (Math.floor((hj - new Date(ano, 0, 1)) / 86400000) + 1) / dias;
+}
+function projecaoAnualComissao() {
+  const f = fracaoAnoDecorrida();
+  return f > 0 ? FIN.comissaoPaga / f : 0;
+}
+
+const pct = Math.min(100, (FIN.negociado / DATA.meta2026.meta) * 100);
 document.getElementById('metaPct').textContent = pct.toFixed(1) + '%';
 document.getElementById('metaBar').style.width = pct.toFixed(1) + '%';
-document.getElementById('metaHint').textContent = brl(DATA.meta2026.realizado) + ' de ' + brl(DATA.meta2026.meta) + ' • faltam ' + brl(DATA.meta2026.saldo);
+document.getElementById('metaHint').textContent = brl(FIN.negociado) + ' de ' + brl(FIN.metaValor) + ' • faltam ' + brl(FIN.saldoMeta);
 
-const pctComissao = Math.min(100, (DATA.comissao.paga / DATA.metaComissao2026.meta) * 100);
+const pctComissao = Math.min(100, (FIN.comissaoPaga / DATA.metaComissao2026.meta) * 100);
 document.getElementById('metaComissaoPct').textContent = pctComissao.toFixed(1) + '%';
 document.getElementById('metaComissaoBar').style.width = pctComissao.toFixed(1) + '%';
-document.getElementById('metaComissaoHint').textContent = brl(DATA.comissao.paga) + ' de ' + brl(DATA.metaComissao2026.meta) + ' • faltam ' + brl(Math.max(0, DATA.metaComissao2026.meta - DATA.comissao.paga));
+document.getElementById('metaComissaoHint').textContent = brl(FIN.comissaoPaga) + ' de ' + brl(DATA.metaComissao2026.meta) + ' • faltam ' + brl(Math.max(0, DATA.metaComissao2026.meta - FIN.comissaoPaga));
 
 // ---- Meta Mensal de Comissao (CALCULADA AO VIVO) ----
 // Antes `mesesRestantes` e `metaMensalDinamica` eram valores gravados à mão em
@@ -1806,74 +1882,160 @@ const ANO_META = 2026;
     mesesRestantes + (mesesRestantes === 1 ? ' mês restante' : ' meses restantes') +
     (mesAtual === 12 ? ' · só Dezembro' : ' · de ' + MESES_NOME[mesAtual - 1] + ' a Dezembro');
 
+  // A tabela começava no mês atual — o passado sumia. Só que é no passado que
+  // está a informação que dói: dois meses seguidos sem nada entrar não
+  // apareciam em lugar nenhum do painel. Agora o ano inteiro fica visível, com
+  // os meses já vividos medidos contra a meta linear (meta anual ÷ 12), e os
+  // que faltam contra a meta que sobrou por mês.
   const tbody = document.getElementById('metaMensalTabela');
   tbody.innerHTML = '';
-  for (let m = mesAtual; m <= 12; m++) {
+  const metaLinearMes = metaAnual / 12;
+  let secos = 0, ultimoComEntrada = null;
+  for (let m = 1; m <= 12; m++) {
     const nome = MESES_NOME[m - 1];
     const recebido = recebidoPorMes[nome] || 0;
+    const passado = m < mesAtual;
+    const alvo = passado ? metaLinearMes : metaMensal;
+    if (passado && recebido === 0) secos++;
+    if (recebido > 0) ultimoComEntrada = nome;
     let statusHtml;
     if (m > mesAtual) {
       statusHtml = '<span class="status-aguarda">Ainda não chegou</span>';
-    } else if (recebido >= metaMensal) {
+    } else if (recebido === 0 && passado) {
+      statusHtml = '<span class="status-seco">Nada entrou</span>';
+    } else if (recebido >= alvo) {
       statusHtml = '<span class="status-bateu">✅ Bateu a meta</span>';
+    } else if (passado) {
+      statusHtml = '<span class="status-falta">Faltaram ' + brl(alvo - recebido) + '</span>';
     } else {
-      statusHtml = '<span class="status-falta">🔴 Faltam ' + brl(metaMensal - recebido) + '</span>';
+      statusHtml = '<span class="status-falta">🔴 Faltam ' + brl(alvo - recebido) + '</span>';
     }
     const tr = document.createElement('tr');
+    tr.className = m === mesAtual ? 'mes-atual' : (passado ? 'mes-passado' : '');
     tr.innerHTML = `
       <td>${nome}${m === mesAtual ? ' <b style="color:var(--brand-gold-deep);">(mês atual)</b>' : ''}</td>
-      <td>${brl(metaMensal)}</td>
-      <td>${brl(recebido)}</td>
+      <td>${brl(alvo)}${passado ? '<span class="meta-tipo">linear</span>' : ''}</td>
+      <td${recebido === 0 && passado ? ' class="recebido-zero"' : ''}>${brl(recebido)}</td>
       <td>${statusHtml}</td>`;
     tbody.appendChild(tr);
   }
+  const resumo = document.getElementById('metaMensalResumo');
+  if (resumo) {
+    resumo.innerHTML = (secos > 0
+      ? `<b>${secos}</b> ${secos === 1 ? 'mês já vivido não teve nenhuma comissão entrando' : 'meses já vividos não tiveram nenhuma comissão entrando'}.` +
+        (ultimoComEntrada ? ` A última entrada foi em <b>${ultimoComEntrada}</b>.` : '')
+      : 'Todos os meses já vividos tiveram alguma comissão entrando.') +
+      ` <span class="resumo-obs">Meses passados são medidos contra a meta linear (${brl(metaLinearMes)}/mês); os que faltam, contra a meta redistribuída.</span>`;
+  }
 })();
 
-document.getElementById('comissaoPaga').textContent = brl(DATA.comissao.paga);
-document.getElementById('comissaoAguardando').textContent = brl(DATA.comissao.aguardando);
+document.getElementById('comissaoPaga').textContent = brl(FIN.comissaoPaga);
+document.getElementById('comissaoAguardando').textContent = brl(FIN.comissaoAguardando);
 
-// Sentinela de divergência: os valores de DATA.comissao são declarados à mão,
-// mas listaNegociacoes tem os mesmos números negócio a negócio. Se as somas
-// não baterem, alguém atualizou um lado e esqueceu o outro — o painel avisa
-// em vez de exibir número financeiro errado em silêncio.
-(function sentinelaFinanceira() {
-  const somaPaga = (DATA.listaNegociacoes || []).filter(n => n.status === 'pago').reduce((s, n) => s + (n.comissao || 0), 0);
-  const somaAguardando = (DATA.listaNegociacoes || []).filter(n => n.status === 'aguardando').reduce((s, n) => s + (n.comissao || 0), 0);
-  const drift = Math.abs(somaPaga - (DATA.comissao.paga || 0)) > 0.01 ||
-                Math.abs(somaAguardando - (DATA.comissao.aguardando || 0)) > 0.01;
-  if (!drift) return;
-  const painelFat = document.getElementById('panel-faturamento');
-  if (!painelFat) return;
-  const aviso = document.createElement('div');
-  aviso.style.cssText = 'background:#FDECEC;border:1px solid #F0B9B9;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#8E2626;';
-  aviso.innerHTML = '⚠️ <b>Números fora de sincronia:</b> a soma das negociações (' +
-    brl(somaPaga) + ' pagas / ' + brl(somaAguardando) + ' aguardando) não bate com os totais declarados (' +
-    brl(DATA.comissao.paga) + ' / ' + brl(DATA.comissao.aguardando) + '). Peça ao Claude para conferir a Tabela de Negociações.';
-  painelFat.insertBefore(aviso, painelFat.firstChild);
+// A sentinela financeira que existia aqui comparava os totais declarados à mão
+// com a soma das negociações. Os totais declarados deixaram de existir — tudo
+// vem de listaNegociacoes agora —, então não há mais dois lados para divergir.
+// "Prevista" mostrava R$0 com três clientes em negociação, porque nenhum lead
+// tinha a comissão informada. Zero lê como "não tem nada vindo". Enquanto o
+// valor não for informado, o KPI diz o que realmente sabe: quantos negócios
+// estão em jogo, e que falta a conta.
+(function renderPrevista() {
+  const el = document.getElementById('comissaoPrevista');
+  const hint = el.parentElement.querySelector('.hint');
+  const n = FIN.emNegociacao.length;
+  if (n === 0) { el.textContent = brl(0); if (hint) hint.textContent = 'nenhum lead em negociação'; return; }
+  if (FIN.previstaCompleta) {
+    el.textContent = brl(FIN.comissaoPrevista);
+    if (hint) hint.textContent = n + (n === 1 ? ' negócio em andamento' : ' negócios em andamento');
+    return;
+  }
+  const semValor = n - FIN.emNegociacao.filter(l => typeof l.comissaoPrevista === 'number').length;
+  el.innerHTML = FIN.comissaoPrevista > 0
+    ? brl(FIN.comissaoPrevista) + ' <span class="kpi-parcial">+ ' + semValor + ' sem valor</span>'
+    : '<span class="kpi-adefinir">a definir</span>';
+  if (hint) hint.textContent = n + (n === 1 ? ' negócio em negociação' : ' negócios em negociação') +
+    ' — ' + semValor + ' sem comissão informada';
 })();
-document.getElementById('comissaoPrevista').textContent = brl(DATA.comissao.prevista);
-const totalNeg = DATA.negociacoes.vendas.valor + DATA.negociacoes.locacoes.valor;
+const totalNeg = FIN.negociado;
 document.getElementById('totalNegociado').textContent = brl(totalNeg);
-document.getElementById('totalNegociadoHint').textContent = DATA.negociacoes.vendas.qtd + ' vendas + ' + DATA.negociacoes.locacoes.qtd + ' locação(ões)';
+document.getElementById('totalNegociadoHint').textContent =
+  ['Venda', 'Locação', 'Diversos'].filter(t => FIN.porTipo[t])
+    .map(t => FIN.porTipo[t].qtd + ' ' + (t === 'Venda' ? (FIN.porTipo[t].qtd === 1 ? 'venda' : 'vendas')
+              : t === 'Locação' ? (FIN.porTipo[t].qtd === 1 ? 'locação' : 'locações') : 'diversos')).join(' + ');
 
-const negList = document.getElementById('negList');
-DATA.listaNegociacoes.forEach(n => {
-  const row = document.createElement('div');
-  row.className = 'neg-row';
-  const statusTxt = n.status === 'pago' ? 'Comissão paga' : 'Aguardando pagamento';
-  row.innerHTML = `
-    <span class="status-dot ${n.status}" role="img" aria-label="${statusTxt}" title="${statusTxt}"></span>
-    <div class="neg-info">
-      <div class="imovel">${n.imovel}</div>
-      <div class="cliente">${n.cliente} · ${n.tipo}</div>
-    </div>
-    <div class="neg-vals">
-      <div class="valor">${brl(n.valor)}</div>
-      <div class="comissao">${brl(n.comissao)}</div>
-      <div class="mes">${n.mes}</div>
-    </div>`;
-  negList.appendChild(row);
-});
+// Negociações agrupadas por mês, com subtotal: uma lista corrida de 9 linhas
+// não responde "quanto entrou em abril?" sem somar de cabeça. Cada linha abre
+// a janela de detalhe, no mesmo padrão das outras abas.
+(function renderNegociacoes() {
+  const negList = document.getElementById('negList');
+  if (!negList) return;
+  const ordemMes = {};
+  MESES_NOME.forEach((m, i) => { ordemMes[m] = i; });
+  const porMes = {};
+  (DATA.listaNegociacoes || []).forEach(n => {
+    (porMes[n.mes] = porMes[n.mes] || []).push(n);
+  });
+  Object.keys(porMes)
+    .sort((a, b) => (ordemMes[a] === undefined ? 99 : ordemMes[a]) - (ordemMes[b] === undefined ? 99 : ordemMes[b]))
+    .forEach(mes => {
+      const itens = porMes[mes];
+      const totalCom = itens.reduce((s, n) => s + (n.comissao || 0), 0);
+      const cab = document.createElement('div');
+      cab.className = 'neg-mes';
+      cab.innerHTML = `<span class="neg-mes-nome">${esc(mes)}</span>` +
+        `<span class="neg-mes-tot">${itens.length} ${itens.length === 1 ? 'negócio' : 'negócios'} · <b>${brl(totalCom)}</b></span>`;
+      negList.appendChild(cab);
+      itens.forEach(n => {
+        const row = document.createElement('div');
+        row.className = 'neg-row bi-clicavel';
+        row.setAttribute('role', 'button');
+        row.setAttribute('tabindex', '0');
+        const statusTxt = n.status === 'pago' ? 'Comissão paga' : 'Aguardando pagamento';
+        const abrir = () => abrirNegociacao(n);
+        row.addEventListener('click', abrir);
+        row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(); } });
+        row.innerHTML = `
+          <span class="status-dot ${n.status}" role="img" aria-label="${statusTxt}" title="${statusTxt}"></span>
+          <div class="neg-info">
+            <div class="imovel">${esc(n.imovel)}</div>
+            <div class="cliente">${esc(n.cliente)} · ${esc(n.tipo)}</div>
+          </div>
+          <div class="neg-vals">
+            <div class="valor">${brl(n.valor)}</div>
+            <div class="comissao">${brl(n.comissao)}</div>
+            <div class="mes">${esc(n.mes)}</div>
+          </div>`;
+        negList.appendChild(row);
+      });
+    });
+  // O que ainda não entrou merece destaque próprio: é dinheiro fechado que
+  // depende de terceiro (financiamento, cartório) e some no meio da lista.
+  if (FIN.aguardando.length) {
+    const aviso = document.createElement('div');
+    aviso.className = 'neg-pendente';
+    aviso.innerHTML = `⏳ <b>${brl(FIN.comissaoAguardando)}</b> de comissão já fechada, ainda não recebida — ` +
+      FIN.aguardando.map(n => esc(n.imovel) + (n.previsaoRecebimento ? ' (previsto: ' + esc(n.previsaoRecebimento) + ')' : ' (sem previsão de data)')).join('; ') + '.';
+    negList.parentElement.appendChild(aviso);
+  }
+})();
+
+function abrirNegociacao(n) {
+  const over = document.getElementById('biModalOverlay');
+  if (!over) return;
+  document.getElementById('biModalTitulo').textContent = n.imovel;
+  const taxa = n.valor ? (n.comissao / n.valor * 100) : null;
+  document.getElementById('biModalCorpo').innerHTML = `
+    <div class="bi-modal-lead"><span>Cliente</span><b>${esc(n.cliente)}</b></div>
+    <div class="bi-modal-lead"><span>Tipo</span><b>${esc(n.tipo)}</b></div>
+    <div class="bi-modal-lead"><span>Valor do negócio</span><b>${brl(n.valor)}</b></div>
+    <div class="bi-modal-lead"><span>Sua comissão</span><b>${brl(n.comissao)}${taxa !== null ? ' <span class="bi-fase">(' + taxa.toFixed(1).replace('.', ',') + '%)</span>' : ''}</b></div>
+    <div class="bi-modal-lead"><span>Mês</span><b>${esc(n.mes)}</b></div>
+    <div class="bi-modal-lead"><span>Situação</span><b>${n.status === 'pago' ? 'Comissão recebida' : 'Aguardando pagamento'}</b></div>
+    ${n.previsaoRecebimento ? `<div class="bi-modal-lead"><span>Previsão de recebimento</span><b>${esc(n.previsaoRecebimento)}</b></div>` : ''}
+    ${n.nota ? `<div class="neg-modal-nota">${esc(n.nota)}</div>` : ''}`;
+  over.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
 
 // Janela de detalhe do BI: todo bloco que mostra uma contagem passa a
 // responder "quem são" — mesmo padrão do Pipeline, dos Imóveis e do Conecta TR.
@@ -2936,13 +3098,12 @@ function acumular(arr) {
 }
 const comissaoAcumulada = acumular(comissaoPorMes);
 const valorAcumulado = acumular(valorPorMes);
-const metaLinear = MESES.map((_, i) => (DATA.meta2026.meta / 12) * (i + 1));
+const metaLinear = MESES.map((_, i) => (FIN.metaValor / 12) * (i + 1));
 const metaComissaoLinear = MESES.map((_, i) => (DATA.metaComissao2026.meta / 12) * (i + 1));
 
 // ---- Projecao anual (ritmo atual) ----
 const mesAtualIdx = new Date().getMonth(); // 0-based
-const mesesDecorridos = mesAtualIdx + 1;
-const projecaoAnual = (comissaoAcumulada[mesAtualIdx] / mesesDecorridos) * 12;
+const projecaoAnual = projecaoAnualComissao();
 document.getElementById('projecaoAnual').textContent = brl(projecaoAnual);
 const difMeta = projecaoAnual - DATA.metaComissao2026.meta;
 document.getElementById('projecaoAnualHint').textContent = difMeta >= 0
@@ -3523,13 +3684,12 @@ new Chart(document.getElementById('chartHistoricoAno'), {
   const diaDoAno = Math.floor((hoje - inicio) / 86400000) + 1;
   const fracaoAno = diaDoAno / diasNoAno;
 
-  const negs = (DATA.listaNegociacoes || []);
-  const recebido = negs.filter(n => n.status === 'pago').reduce((s, n) => s + (n.comissao || 0), 0);
+  const recebido = FIN.comissaoPaga;   // mesma fonte do Faturamento
   const metaCom = (DATA.metaComissao2026 && DATA.metaComissao2026.meta) || 0;
   if (!metaCom) { alvo.innerHTML = '<div class="ritmo-vazio">Meta de comissão do ano não definida.</div>'; return; }
 
   const pctMeta = recebido / metaCom;
-  const projecao = fracaoAno > 0 ? recebido / fracaoAno : 0;
+  const projecao = projecaoAnualComissao();   // idêntica à do KPI "Projeção Anual"
   const falta = Math.max(0, metaCom - recebido);
   const mesAtual = hoje.getMonth();               // 0-11
   const mesesRestantes = Math.max(1, 12 - mesAtual);

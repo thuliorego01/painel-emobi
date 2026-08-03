@@ -1,9 +1,7 @@
 {
-  "ultimaAtualizacao": "2026-08-02T23:55:00-03:00",
+  "ultimaAtualizacao": "2026-08-03T00:40:00-03:00",
   "meta2026": {
-    "meta": 10000000,
-    "realizado": 2359100,
-    "saldo": 7640900
+    "meta": 10000000
   },
   "metaComissao2026": {
     "meta": 240000
@@ -12,30 +10,10 @@
     "observacao": "Calculado ao vivo no painel a partir da data atual + listaNegociacoes (desde 01/08/2026). Campos mesesRestantes/metaMensalDinamica/tabela foram removidos porque envelheciam sozinhos."
   },
   "comissao": {
-    "paga": 66462.5,
-    "aguardando": 4637.5,
-    "totalRecebimentos": 66462.5,
-    "prevista": 0
+    "observacao": "Pago, aguardando e previsto são calculados ao vivo a partir de listaNegociacoes e dos leads em negociação."
   },
   "negociacoes": {
-    "vendas": {
-      "qtd": 8,
-      "valor": 2620000,
-      "comissao": 64412.5
-    },
-    "locacoes": {
-      "qtd": 1,
-      "valor": 4100,
-      "comissao": 2050
-    },
-    "cartorio": {
-      "qtd": 0,
-      "valor": 0
-    },
-    "diversos": {
-      "qtd": 0,
-      "valor": 0
-    }
+    "observacao": "Contagens e totais por tipo são calculados ao vivo a partir de listaNegociacoes."
   },
   "listaNegociacoes": [
     {
@@ -90,7 +68,8 @@
       "comissao": 13000,
       "mes": "Abril",
       "status": "pago",
-      "tipo": "Venda"
+      "tipo": "Diversos",
+      "nota": "Intermediação/serviço — não é venda de imóvel. Reclassificado em 02/08/2026 porque uma comissão de 65% sobre R$20.000 distorcia a taxa média das vendas."
     },
     {
       "imovel": "João Mendonça",
