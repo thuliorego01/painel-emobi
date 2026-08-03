@@ -601,6 +601,8 @@
   .bi-modal-lead .bi-fase { font-size: var(--fs-2xs); color:#8A9186; white-space:nowrap; }
   .bi-modal-vazio { font-size: var(--fs-sm); color:#8A9186; }
   .kpi-adefinir { font-size: var(--fs-md); color:#8A6A2E; font-weight:700; }
+  .com-detalhe { display:block; font-size:9.5px; color:#B6BBB0; border-bottom:1px dotted #D5D9CF;
+    cursor:help; width:fit-content; margin-top:1px; }
   .kpi-parcial { font-size: var(--fs-2xs); color:#8A6A2E; font-weight:700; }
   .meta-mensal-resumo { font-size: var(--fs-2xs); color:#5C6155; background:#F8F9F5; border:1px solid #EDEFE9;
     border-radius:9px; padding:9px 12px; margin-bottom:12px; line-height:1.55; }
@@ -2459,7 +2461,7 @@ function renderLeadCard(l, container) {
     <div class="lead-meta">
       <span>${l.fase}</span>
       <span>Valor: <b>${valorTxt}</b></span>
-      <span>Comissão prevista: <b>${comissaoTxt}</b></span>
+      <span>Comissão prevista: <b>${comissaoTxt}</b>${l.comissaoDetalhe ? `<span class="com-detalhe" title="${esc(l.comissaoDetalhe)}">como se chega nesse valor</span>` : ''}</span>
       ${l.origem ? '<span>Origem: <b>' + l.origem + '</b></span>' : ''}
     </div>
     <div class="lead-line3"><b>Última:</b> ${ultimaAtivTxt}<span class="sep">·</span><b>Próxima ação:</b> ${proximaAcaoTxt}</div>

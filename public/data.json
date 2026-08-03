@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-03T00:40:00-03:00",
+  "ultimaAtualizacao": "2026-08-03T01:00:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -219,7 +219,7 @@
       "maiorFaseIndex": 7,
       "temperatura": "Quente",
       "valor": 575000,
-      "comissaoPrevista": null,
+      "comissaoPrevista": 12075.0,
       "proximaAcao": "Acompanhar leitura do contrato pela Diana — vendedores já validaram",
       "dataProximaAcao": "2026-08-03",
       "status": "Em dia",
@@ -229,7 +229,8 @@
       ],
       "visitaResumo": null,
       "visitaDetalhe": null,
-      "interesse": "apartamento 607, Porto Arena — R$575 mil, contrato em leitura"
+      "interesse": "apartamento 607, Porto Arena — R$575 mil, contrato em leitura",
+      "comissaoDetalhe": "R$ 575.000 × 6% = R$ 34.500,00 · dividido com Célia Cristina → R$ 17.250,00 · sua parte 70% → R$ 12.075,00"
     },
     {
       "id": 7,
@@ -302,7 +303,7 @@
       "maiorFaseIndex": 7,
       "temperatura": "Quente",
       "valor": 390000,
-      "comissaoPrevista": null,
+      "comissaoPrevista": 13650.0,
       "proximaAcao": "Acompanhar contrato do Cód. 7560 — inteiro teor já solicitado e pago pelo comprador",
       "dataProximaAcao": "2026-08-03",
       "status": "Em dia",
@@ -314,7 +315,8 @@
         "Cód. 7726",
         "Cód. 7560"
       ],
-      "interesse": "apartamento em Candelária — proposta no Cód. 7560"
+      "interesse": "apartamento em Candelária — proposta no Cód. 7560",
+      "comissaoDetalhe": "R$ 390.000 × 5% = R$ 19.500,00 · venda sem parceria · sua parte 70% → R$ 13.650,00"
     },
     {
       "id": 12,
@@ -344,13 +346,14 @@
       "maiorFaseIndex": 7,
       "temperatura": "Quente",
       "valor": 122500,
-      "comissaoPrevista": null,
+      "comissaoPrevista": 2143.75,
       "proximaAcao": "Acompanhar fechamento do apto 404 (bloco 11, Jardim Satélite) — R$122.500, parceria com a corretora Natália Barbosa",
       "dataProximaAcao": "2026-08-03",
       "status": "Em dia",
       "obs": "Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista. [31/07] Contato feito via WhatsApp. [01/08] Negócio sendo fechado por R$122.500,00 (proposta inicial era R$120.000,00), em parceria com a corretora Natália Barbosa.",
       "imoveisCompativeis": [],
-      "interesse": "apto 404, Jardim Satélite — fechando por R$122.500"
+      "interesse": "apto 404, Jardim Satélite — fechando por R$122.500",
+      "comissaoDetalhe": "R$ 122.500 × 5% = R$ 6.125,00 · dividido com Natália Barbosa → R$ 3.062,50 · sua parte 70% → R$ 2.143,75"
     }
   ],
   "imoveis": [
