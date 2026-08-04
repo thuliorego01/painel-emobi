@@ -47,7 +47,8 @@ module.exports = { nome: 'Pós-venda: seção própria e cadência viva', rodar:
   // fechado que depende de terceiro e some da vista.
   const pendentes = (DATA.listaNegociacoes || []).filter(n => n.status !== 'pago' &&
     fechados.some(l => String(n.compradorLeadId) === String(l.id) || String(n.vendedorLeadId) === String(l.id)));
-  if (pendentes.length) assert(/ainda não recebida/.test(card), 'comissão pendente do cliente sumiu do pós-venda');
+  if (pendentes.length) assert(/a receber/.test(card),
+    'comissão pendente do cliente sumiu do pós-venda — é dinheiro fechado que depende de terceiro');
 
   // A cadência tem que se mover com o tempo, sem nada guardado.
   const marcos = [
@@ -59,7 +60,8 @@ module.exports = { nome: 'Pós-venda: seção própria e cadência viva', rodar:
     const r = await montar({ quando: m.data });
     const t = txt(r.doc.getElementById('posVendaCard'));
     assert(t.includes(m.espera), `em ${m.data.toLocaleDateString('pt-BR')} o marco deveria ser "${m.espera}" — veio: ${t.slice(0, 160)}`);
-    assert(/vencido há/.test(t), 'marco vencido deveria estar sinalizado');
+    assert(/de atraso/.test(t) && /Com toque vencido/.test(t),
+      'marco vencido precisa estar sinalizado e no grupo de vencidos');
     // e precisa chegar em "O Que Fazer Agora", senão ninguém vê
     assert(/Pós-venda em aberto/.test(txt(r.doc.getElementById('acoesAgoraList'))),
       'pós-venda vencido não apareceu nas ações do dia');

@@ -3,8 +3,13 @@
 Rodam sobre `public/index.html` **já gerado** — então rode `node scripts/montar-painel.js` antes.
 
 ```bash
-node scripts/montar-painel.js && node tests/rodar.js
+bash tests/verificar.sh
 ```
+
+Isso monta o painel, confere a sintaxe do JS, o balanceamento das tags HTML e
+roda todas as suítes. **Se qualquer etapa falhar, o script para com erro — não
+publique.** (Já aconteceu de publicar com teste vermelho por rodar os comandos
+soltos; o `set -e` daqui existe para impedir isso.)
 
 Cada arquivo `t-*.js` exporta `{ nome, rodar(dom) }` ou faz suas próprias asserções.
 O runner monta o DOM com jsdom, com `fetch` e `Chart` dublados, e permite
