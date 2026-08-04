@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-04T19:20:00-03:00",
+  "ultimaAtualizacao": "2026-08-04T20:10:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1145,108 +1145,87 @@
   "lembretes": [
     {
       "texto": "Ativar clientes vendedores antigos",
-      "dataFmt": "13/07",
       "hora": "",
       "relacionado": "Clientes vendedores antigos",
-      "quando": "Atrasado"
-    },
-    {
-      "texto": "Retomar contato com Cláudia Montenegro (Natal Brisa)",
-      "dataFmt": "27/07",
-      "hora": "",
-      "relacionado": "Cláudia Montenegro",
-      "quando": "Atrasado"
-    },
-    {
-      "texto": "Tentar novo contato com Taciana (Smile Village — Indicação Anísio) — não respondeu às últimas tentativas",
-      "dataFmt": "24/07",
-      "hora": "",
-      "relacionado": "Taciana",
-      "quando": "Atrasado"
+      "data": "2026-07-13"
     },
     {
       "texto": "Ligação Januncio (Indicação Hudson — Condomínio Villaggio Di Roma)",
-      "dataFmt": "23/07",
       "hora": "09:00",
       "relacionado": "Hudson Bezerra de Brito",
-      "quando": "Atrasado"
+      "data": "2026-07-23"
     },
     {
       "texto": "Ligação Jairson (Indicação Flávia — Condomínio Bosque dos Pássaros) — reagendada",
-      "dataFmt": "23/07",
       "hora": "16:00",
       "relacionado": "Flávia",
-      "quando": "Atrasado"
+      "data": "2026-07-23"
     },
     {
       "texto": "Estudo de mercado — Roberto (Paradise Village)",
-      "dataFmt": "24/07",
       "hora": "",
       "relacionado": "Roberto",
-      "quando": "Atrasado"
+      "data": "2026-07-24"
     },
     {
       "texto": "Captação Jairson — Casa 02, Bosque dos Pássaros — confirmar se foi feita",
-      "dataFmt": "24/07",
       "hora": "15:00",
       "relacionado": "Casa 02, Bosque dos Pássaros — Jairson",
-      "quando": "Atrasado"
+      "data": "2026-07-24"
     },
     {
-      "texto": "Captação Jairson — Casa 02, Bosque dos Pássaros — confirmar se foi feita ontem às 15h (possível duplicata do lembrete acima)",
-      "dataFmt": "24/07",
-      "hora": "15:00",
-      "relacionado": "Casa 02, Bosque dos Pássaros — Jairson",
-      "quando": "Atrasado"
+      "texto": "Tentar novo contato com Taciana (Smile Village — Indicação Anísio) — não respondeu às últimas tentativas",
+      "hora": "",
+      "relacionado": "Taciana",
+      "data": "2026-07-24"
     },
     {
       "texto": "Visita Maria Matos — Residencial Ariane (Cód. 10650) — confirmar se foi feita",
-      "dataFmt": "25/07",
       "hora": "10:00",
       "relacionado": "Maria Matos",
-      "quando": "Atrasado"
+      "data": "2026-07-25"
+    },
+    {
+      "texto": "Retomar contato com Cláudia Montenegro (Natal Brisa)",
+      "hora": "",
+      "relacionado": "Cláudia Montenegro",
+      "data": "2026-07-27"
     },
     {
       "texto": "Confirmar assinatura de contrato — Cód. 10567 (Luiz Marques) e Cód. 10638 (Candelária)",
-      "dataFmt": "31/07",
       "hora": "",
       "relacionado": "Cód. 10567 e Cód. 10638",
-      "quando": "Hoje"
+      "data": "2026-07-31"
     },
     {
       "texto": "Cobrar da corretora Vanessa Oliveira o feedback da visita ao Cód. 9754 (Neópolis) — ela mostrou o imóvel sozinha em 31/07",
-      "dataFmt": "01/08",
       "hora": "",
       "relacionado": "Cód. 9754 (Neópolis) — Vanessa Oliveira",
-      "quando": "Futuro"
+      "data": "2026-08-01"
     },
     {
       "texto": "Retomar contato com Daianne — cliente estava de viagem, ver Candelária/Lagoa Nova até R$630 mil",
-      "dataFmt": "01/08",
       "hora": "",
       "relacionado": "Daianne",
-      "quando": "Futuro"
-    },
-    {
-      "texto": "Ligação de retomada: apartamento no Bosque Tirol — tel. (84) 98820-2035",
-      "dataFmt": "28/08",
-      "hora": "",
-      "relacionado": "Amarildo Jorge de Morais Costa",
-      "quando": "Futuro"
-    },
-    {
-      "texto": "Falar com Filipe Ideli sobre chegada da irmã e procura de apartamento em Tirol ou Petrópolis",
-      "dataFmt": "30/09",
-      "hora": "",
-      "relacionado": "Filipe Ideli",
-      "quando": "Futuro"
+      "data": "2026-08-01"
     },
     {
       "texto": "Se Maria Eduarda Revorêdo não responder, enviar mensagem de encerramento (\"demissão do cliente\")",
-      "dataFmt": "05/08",
       "hora": "",
       "relacionado": "Maria Eduarda Revorêdo",
-      "quando": "Futuro"
+      "data": "2026-08-05"
+    },
+    {
+      "texto": "Ligação de retomada: apartamento no Bosque Tirol — tel. (84) 98820-2035",
+      "hora": "",
+      "relacionado": "Amarildo Jorge de Morais Costa",
+      "data": "2026-08-28"
+    },
+    {
+      "texto": "Falar com Filipe Ideli sobre chegada da irmã e procura de apartamento em Tirol ou Petrópolis",
+      "hora": "",
+      "relacionado": "Filipe Ideli",
+      "data": "2026-09-30"
     }
   ],
   "prospeccaoCaptacao": [

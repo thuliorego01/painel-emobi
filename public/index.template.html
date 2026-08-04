@@ -263,6 +263,7 @@
     .volta-resumo { background:#241E33; border-color:#3D3355; color:#C6BBDE; }
     .pv-resumo { background:#241E33; border-color:#3D3355; color:#C6BBDE; }
     .pr-aviso { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
+    .lembrete-btn { background:#232A22; border-color:#39423577; color:#C3C9BC; }
     .pv-marco { background:#1E241D; border-color:#2C342A; color:#C3C9BC; }
     .pv-marco.vencido { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
     .volta-resumo b { color:#DCCDF5; }
@@ -631,6 +632,13 @@
   .pr-topo { display:flex; align-items:center; justify-content:space-between; gap:10px; }
   .pr-nome { font-size: var(--fs-sm); font-weight:700; color: var(--text-strong); }
   .pr-sub { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-top:5px; font-size: var(--fs-2xs); color:#8A9186; }
+  .bloco-rotulo { font-size:9.5px; font-weight:800; text-transform:uppercase; letter-spacing:1px;
+    color:#8A9186; margin:0 0 10px; }
+  .lembrete-acoes { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-top:7px; }
+  .lembrete-btn { font-family:inherit; font-size:10.5px; font-weight:700; color:#5C6155; background:#F1F3EE;
+    border:1px solid #E4E7DF; border-radius:7px; padding:3px 9px; cursor:pointer; }
+  .lembrete-btn:hover { background:#E8EBE3; }
+  .lembrete-btn:focus-visible { outline:2px solid var(--brand-gold); outline-offset:2px; }
   .pr-aviso { margin-top:12px; font-size: var(--fs-2xs); color:#8A5A14; background:#FDF6E8; border:1px solid #EBD9A8;
     border-radius:9px; padding:9px 12px; line-height:1.55; }
   .pv-passo { padding:9px 0 9px 14px; border-left:3px solid #E4E7DF; margin-left:3px; }
@@ -1047,23 +1055,22 @@
 
 
   <div class="tab-panel" data-tab="agenda" id="panel-agenda" role="tabpanel">
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>🎯 Hoje</div>
+    <div class="card" style="margin-bottom:18px;">
+      <div class="bloco-rotulo">📅 Compromissos de hoje</div>
+      <div id="agendaList"></div>
+      <div class="bloco-rotulo" style="margin-top:16px;">✅ O que fazer</div>
+      <div id="acoesAgoraList"></div>
+    </div>
     <div class="section-title"><span class="dot" aria-hidden="true"></span>📆 Sua Semana</div>
     <div class="card" style="margin-bottom:18px;">
       <div id="semanaStrip"></div>
     </div>
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>🎯 Seu Foco Hoje</div>
-    <div class="card" style="margin-bottom:18px;">
-      <div id="acoesAgoraList"></div>
-    </div>
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>🔔 Lembretes</div>
-    <div class="card" id="lembretesCard" style="margin-bottom:18px;"></div>
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>📅 Agenda completa (Google Calendar)</div>
-    <div class="card" style="margin-bottom:18px;">
-      <div id="agendaList"></div>
-    </div>
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>🗓️ Próximos Compromissos</div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>🗓️ Depois</div>
     <div class="card">
-      <div id="agendaProximosList"></div>
+      <div class="bloco-rotulo">📅 Próximos compromissos</div>
+      <div id="agendaProximosList" style="margin-bottom:18px;"></div>
+      <div id="lembretesCard"></div>
     </div>
   </div>
 
@@ -1552,6 +1559,51 @@ function leadsParaReativar() {
     .sort((a, b) => motivoReativacao(b).dias - motivoReativacao(a).dias);
 }
 
+// ---- Lembretes ----
+// `quando` era um texto guardado ("Atrasado"/"Hoje"/"Futuro") e envelhecia
+// sozinho: havia lembrete de 31/07 marcado como "Hoje" no dia 04/08. E a data
+// vinha como "13/07", sem ano — impossível calcular na virada do ano.
+// Agora a data é completa e a situação é calculada.
+function situacaoLembrete(l) {
+  const dias = l && l.data ? diasDesdeISO(l.data) : null;
+  if (dias === null) return { cls: 'futuro', rotulo: 'Sem data', dias: null };
+  if (dias > 0) return { cls: 'atrasado', rotulo: 'Atrasado', dias };
+  if (dias === 0) return { cls: 'hoje', rotulo: 'Hoje', dias: 0 };
+  return { cls: 'futuro', rotulo: 'Futuro', dias };
+}
+// O id continua sendo calculado a partir do formato antigo ("DD/MM") de
+// propósito: os lembretes já concluídos estão guardados na nuvem com esse id.
+// Mudar a fórmula faria todos eles reaparecerem.
+function lembreteDataFmt(l) {
+  if (l.dataFmt) return l.dataFmt;
+  if (!l.data) return '';
+  const [, m, d] = l.data.split('-');
+  return `${d}/${m}`;
+}
+// Adiar e arquivar viajam na MESMA lista de concluídos do backend, com prefixo.
+// É o padrão que já usamos ali; evita criar endpoint novo.
+function lembreteAdiadoAte(id, concluidos) {
+  let ate = null;
+  concluidos.forEach(c => {
+    if (typeof c === 'string' && c.startsWith('sn:' + id + ':')) {
+      const dt = c.slice(('sn:' + id + ':').length);
+      if (!ate || dt > ate) ate = dt;
+    }
+  });
+  return ate;
+}
+function lembreteOculto(l, id, concluidos) {
+  if (concluidos.has ? concluidos.has(id) : concluidos.includes(id)) return true;
+  const arr = concluidos.has ? [...concluidos] : concluidos;
+  if (arr.includes('arq:' + id)) return true;
+  const ate = lembreteAdiadoAte(id, arr);
+  if (ate) {
+    const d = diasDesdeISO(ate);
+    if (d !== null && d < 0) return true;   // ainda dentro do adiamento
+  }
+  return false;
+}
+
 // ---- Prospecção de captação ----
 // O prazo era um texto copiado da planilha (`statusPrazo`). E a fórmula de lá
 // procurava "Captada"/"Encerrada" — valores que a lista suspensa nem oferecia.
@@ -1604,16 +1656,22 @@ function computeAcoesUrgentes() {
   // Exclui lembretes já marcados como concluídos (checkbox da aba Lembretes, salvo em localStorage) —
   // sem isso, "Seu Foco Hoje" continuava mostrando itens que já tinham sumido da aba Lembretes.
   const concluidosLocal = new Set(typeof getLocalConcluidos === 'function' ? getLocalConcluidos() : []);
-  const lembretesUrgentes = (DATA.lembretes || []).filter(x =>
-    (x.quando === 'Atrasado' || x.quando === 'Hoje') &&
-    !(typeof lembreteId === 'function' && concluidosLocal.has(lembreteId(x)))
-  );
+  const lembretesUrgentes = (DATA.lembretes || []).filter(x => {
+    const s = situacaoLembrete(x);
+    if (s.cls !== 'atrasado' && s.cls !== 'hoje') return false;
+    return !lembreteOculto(x, lembreteId(x), concluidosLocal);
+  });
   // Prospecção de captação atrasada — é onde nasce o estoque, e até 30/07/2026
   // não tinha alerta nenhum: um proprietário podia ficar semanas sem cobrança.
   const prospeccoesAtrasadas = (DATA.prospeccaoCaptacao || []).filter(pr =>
     prospeccaoPrazo(pr).cls === 'atrasado');
-  const total = leadsAtrasados.length + leadsReativar.length + imoveisAtrasados.length + lembretesUrgentes.length + prospeccoesAtrasadas.length;
-  return { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes, prospeccoesAtrasadas, total };
+  // Um lembrete que apenas repete uma prospecção atrasada já é contado ali.
+  // Somar os dois inflava o banner: 15 pendências quando existiam 13.
+  const nomesProsp = new Set(prospeccoesAtrasadas.map(p => p.nome));
+  const lembretesNaoRepetidos = lembretesUrgentes.filter(x => !nomesProsp.has(x.relacionado));
+  const total = leadsAtrasados.length + leadsReativar.length + imoveisAtrasados.length +
+                lembretesNaoRepetidos.length + prospeccoesAtrasadas.length;
+  return { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes: lembretesNaoRepetidos, prospeccoesAtrasadas, total };
 }
 
 (function renderUrgentBanner() {
@@ -3220,8 +3278,7 @@ if (leadsInativosArr.length === 0) {
   }
 
   if (lembretesUrgentes.length > 0) {
-    html += `<div class="acao-group"><div class="acao-group-title">🔔 Lembretes de hoje/atrasados (${lembretesUrgentes.length})</div>` +
-      lembretesUrgentes.map(x => `<div class="acao-item"><span>${x.texto}</span></div>`).join('') + `</div>`;
+    html += `<div class="acao-group" id="grupoLembretesHoje"><div class="acao-group-title">🔔 Lembretes de hoje e atrasados (${lembretesUrgentes.length})</div><div id="lembretesHojeLista"></div></div>`;
   }
 
   if (prospeccoesAtrasadas.length > 0) {
@@ -3246,12 +3303,23 @@ if (leadsInativosArr.length === 0) {
   }
 
   list.innerHTML = html;
+
+  // As linhas do lembrete são montadas depois porque precisam de botões e
+  // eventos — antes eram texto morto aqui e só tinham ação na seção de baixo,
+  // que era justamente a duplicata.
+  const alvoLembretes = document.getElementById('lembretesHojeLista');
+  if (alvoLembretes) {
+    const concluidos = getLocalConcluidos();
+    lembretesUrgentes
+      .sort((a, b) => String(a.data || '').localeCompare(String(b.data || '')))
+      .forEach(l => alvoLembretes.appendChild(linhaLembrete(l, concluidos)));
+  }
 })();
 
 const lembretesCard = document.getElementById('lembretesCard');
 const LEMBRETES_LOCAL_KEY = 'painelEmobiLembretesConcluidos';
 function lembreteId(l) {
-  const s = `${l.texto}|${l.dataFmt}|${l.hora || ''}`;
+  const s = `${l.texto}|${lembreteDataFmt(l)}|${l.hora || ''}`;
   let h = 0;
   for (let i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) | 0; }
   return 'lb' + Math.abs(h).toString(36);
@@ -3287,85 +3355,81 @@ function addLocalConcluido(id) {
     }
   } catch (e) { /* offline ou API indisponível — segue com o que tiver local */ }
 
-  const locais = getLocalConcluidos();
-  const concluidosSet = new Set([...remotos, ...locais]);
+  const concluidos = [...remotos, ...getLocalConcluidos()];
+  const visiveis = (DATA.lembretes || []).filter(l => !lembreteOculto(l, lembreteId(l), concluidos));
 
-  const pendentes = (DATA.lembretes || []).filter(l => !concluidosSet.has(lembreteId(l)));
+  // Vencido e de hoje já aparecem no bloco "Hoje", dentro de Seu Foco.
+  // Repetir aqui era o que fazia o mesmo lembrete aparecer duas vezes na tela.
+  const futuros = visiveis.filter(l => situacaoLembrete(l).cls === 'futuro')
+    .sort((a, b) => String(a.data || '').localeCompare(String(b.data || '')));
 
-  if (pendentes.length === 0) {
-    lembretesCard.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum lembrete pendente. Fala comigo por voz — "me lembra de ligar pro fulano quinta às 14h" — que eu já registro aqui e te aviso na hora certa.</div>';
+  lembretesCard.innerHTML = '';
+  const titulo = document.createElement('div');
+  titulo.className = 'bloco-rotulo';
+  titulo.textContent = '🔔 Lembretes agendados';
+  lembretesCard.appendChild(titulo);
+
+  if (futuros.length === 0) {
+    const vazio = document.createElement('div');
+    vazio.style.cssText = 'font-size:13px;color:#8A9186;';
+    vazio.textContent = 'Nenhum lembrete futuro. Me diga por voz — "me lembra de ligar pro fulano quinta às 14h" — que eu registro aqui.';
+    lembretesCard.appendChild(vazio);
     return;
   }
-  const ordemPeso = { "Atrasado": 0, "Hoje": 1, "Futuro": 2 };
-  // Dentro de cada grupo (Atrasado/Hoje/Futuro), ordena por data de ação (dataFmt "DD/MM") e depois por hora —
-  // sem isso, ficava por ordem de inserção no array, o que não reflete a ordem real dos compromissos.
-  function chaveDataHora(l) {
-    const m = (l.dataFmt || '').match(/^(\d{1,2})\/(\d{1,2})$/);
-    if (!m) return Infinity;
-    const dia = parseInt(m[1], 10);
-    const mes = parseInt(m[2], 10);
-    let minutos;
-    const hm = (l.hora || '').match(/^(\d{1,2}):(\d{2})$/);
-    if (hm) minutos = parseInt(hm[1], 10) * 60 + parseInt(hm[2], 10);
-    else if (l.hora === 'Manhã') minutos = 8 * 60;
-    else if (l.hora === 'Tarde') minutos = 14 * 60;
-    else if (l.hora === 'Noite') minutos = 19 * 60;
-    else minutos = 23 * 60 + 59; // sem hora definida — depois dos com hora marcada no mesmo dia
-    return mes * 1000000 + dia * 10000 + minutos;
-  }
-  const ordenados = [...pendentes].sort((a, b) => {
-    const pesoA = ordemPeso[a.quando] ?? 3;
-    const pesoB = ordemPeso[b.quando] ?? 3;
-    if (pesoA !== pesoB) return pesoA - pesoB;
-    return chaveDataHora(a) - chaveDataHora(b);
-  });
-  const avisoConcluir = document.createElement('div');
-  avisoConcluir.style.cssText = 'font-size:var(--fs-2xs);color:#8A9186;margin-bottom:10px;';
-  avisoConcluir.textContent = '☑️ Marcar aqui salva de vez — o lembrete some da lista, inclusive depois de recarregar a página.';
-  lembretesCard.appendChild(avisoConcluir);
-  ordenados.forEach(l => {
-    const id = lembreteId(l);
-    const whenClass = l.quando === 'Atrasado' ? 'atrasado' : (l.quando === 'Hoje' ? 'hoje' : 'futuro');
-    // Idade do atraso: lembrete parado há mais de 7 dias ganha visual
-    // "envelhecido" — ou ele ainda importa (re-date) ou não importa mais
-    // (conclua). Ficar cinza eternamente na lista só gera cegueira de alerta.
-    let idadeAtraso = null;
-    const mIso = (l.dataFmt || '').match(/^(\d{1,2})\/(\d{1,2})$/);
-    if (l.quando === 'Atrasado' && mIso) {
-      const ano = new Date().getFullYear();
-      idadeAtraso = diasDesdeISO(`${ano}-${String(mIso[2]).padStart(2,'0')}-${String(mIso[1]).padStart(2,'0')}`);
-      if (idadeAtraso !== null && idadeAtraso < 0) idadeAtraso += 365; // virada de ano
-    }
-    const envelhecido = idadeAtraso !== null && idadeAtraso > 7;
-    const row = document.createElement('div');
-    row.className = 'lembrete-row' + (envelhecido ? ' envelhecido' : '');
-    row.innerHTML = `
-      <input type="checkbox" class="lembrete-check" aria-label="Marcar como concluído">
-      <div class="lembrete-when ${whenClass}">${l.quando}</div>
-      <div class="lembrete-info">
-        <div class="txt">${l.texto}</div>
-        <div class="meta">${l.dataFmt}${l.hora ? ' às ' + l.hora : ''}${l.relacionado ? ' · ' + l.relacionado : ''}${idadeAtraso !== null && idadeAtraso > 0 ? ' · <b class="idade-atraso">há ' + idadeAtraso + 'd</b>' : ''}</div>
-      </div>`;
-    const cb = row.querySelector('.lembrete-check');
-    cb.addEventListener('change', (e) => {
-      if (!e.target.checked) return;
-      cb.disabled = true;
-      row.classList.add('concluido');
-      addLocalConcluido(id);
-      fetch('/api/lembretes/concluir', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id })
-      }).catch(() => {});
-      setTimeout(() => {
-        row.style.transition = 'opacity .3s';
-        row.style.opacity = '0';
-        setTimeout(() => row.remove(), 300);
-      }, 350);
-    });
-    lembretesCard.appendChild(row);
-  });
+  futuros.forEach(l => lembretesCard.appendChild(linhaLembrete(l, concluidos)));
 })();
+
+// Uma linha de lembrete, com tudo que ela precisa para virar ação:
+// concluir, adiar 7 dias, arquivar e falar com o cliente relacionado.
+// Antes era só um texto com caixa de seleção.
+function linhaLembrete(l, concluidos) {
+  const id = lembreteId(l);
+  const s = situacaoLembrete(l);
+  const envelhecido = s.cls === 'atrasado' && s.dias > 7;
+  const lead = l.relacionado ? leadPorRef(l.relacionado) : null;
+  const dg = lead && lead.telefone ? String(lead.telefone).replace(/\D/g, '') : null;
+
+  const row = document.createElement('div');
+  row.className = 'lembrete-row' + (envelhecido ? ' envelhecido' : '');
+  row.innerHTML = `
+    <input type="checkbox" class="lembrete-check" aria-label="Marcar como concluído">
+    <div class="lembrete-when ${s.cls}">${s.rotulo}</div>
+    <div class="lembrete-info">
+      <div class="txt">${esc(l.texto)}</div>
+      <div class="meta">${l.data ? esc(l.data.split('-').reverse().join('/')) : 'sem data'}${l.hora ? ' às ' + esc(l.hora) : ''}${l.relacionado ? ' · ' + esc(l.relacionado) : ''}${s.dias > 0 ? ' · <b class="idade-atraso">há ' + s.dias + 'd</b>' : ''}</div>
+      <div class="lembrete-acoes">
+        ${dg ? `<a class="wa-link" href="https://wa.me/${dg.startsWith('55') ? dg : '55' + dg}" target="_blank" rel="noopener">💬 Falar</a>` : ''}
+        <button type="button" class="lembrete-btn" data-adiar="${id}">⏰ Adiar 7 dias</button>
+        <button type="button" class="lembrete-btn" data-arquivar="${id}">🗄️ Não vale mais</button>
+      </div>
+    </div>`;
+
+  const sumir = () => {
+    row.classList.add('concluido');
+    setTimeout(() => { row.style.transition = 'opacity .3s'; row.style.opacity = '0';
+      setTimeout(() => row.remove(), 300); }, 250);
+  };
+  const gravar = (marca) => {
+    addLocalConcluido(marca);
+    fetch('/api/lembretes/concluir', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: marca })
+    }).catch(() => {});
+  };
+  row.querySelector('.lembrete-check').addEventListener('change', (e) => {
+    if (!e.target.checked) return;
+    e.target.disabled = true; gravar(id); sumir();
+  });
+  row.querySelector('[data-adiar]').addEventListener('click', () => {
+    const d = new Date(); d.setDate(d.getDate() + 7);
+    gravar('sn:' + id + ':' + d.toISOString().slice(0, 10));
+    sumir();
+  });
+  row.querySelector('[data-arquivar]').addEventListener('click', () => {
+    gravar('arq:' + id); sumir();
+  });
+  return row;
+}
 
 // Gráficos acompanham o tema do sistema
 if (window.Chart && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
