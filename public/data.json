@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-04T11:35:00-03:00",
+  "ultimaAtualizacao": "2026-08-04T14:05:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -97,6 +97,16 @@
       "mes": "Julho",
       "status": "aguardando",
       "tipo": "Venda"
+    },
+    {
+      "imovel": "Apartamento 607 — Porto Arena (Candelária)",
+      "cliente": "Diana Rêgo",
+      "valor": 575000,
+      "comissao": 12075.0,
+      "mes": "Agosto",
+      "status": "aguardando",
+      "tipo": "Venda",
+      "nota": "Comissão de 6% (R$34.500) dividida com a corretora Célia Cristina; sua parte 70% da metade. Contrato assinado em 04/08, aguardando sinal."
     }
   ],
   "leads": [
@@ -215,15 +225,15 @@
       "telefone": "84987706107",
       "origem": "Relacionamento",
       "dataEntrada": "2026-07-18",
-      "fase": "Em Negociação",
-      "maiorFaseIndex": 7,
+      "fase": "Fechado Ganho",
+      "maiorFaseIndex": 8,
       "temperatura": "Quente",
       "valor": 575000,
       "comissaoPrevista": 12075.0,
-      "proximaAcao": "Confirmar a assinatura do contrato hoje e registrar o sinal",
-      "dataProximaAcao": "2026-08-04",
-      "status": "Em dia",
-      "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Cód. 5485 do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607 do Porto Arena. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar. [01/08] Valor do negócio: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento. [04/08] Entrou na fase de assinatura de contrato — assinatura prevista para hoje.",
+      "proximaAcao": "Acompanhar o sinal e o pagamento da comissão (R$12.075)",
+      "dataProximaAcao": "2026-08-11",
+      "status": "Ganho",
+      "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Cód. 5485 do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607 do Porto Arena. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar. [01/08] Valor do negócio: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento. [04/08] Entrou na fase de assinatura de contrato — assinatura prevista para hoje. [04/08] CONTRATO ASSINADO — apartamento 607 do Porto Arena, R$575.000,00. Aguardando o sinal e o pagamento da comissão.",
       "imoveisCompativeis": [
         "Cód. 5485"
       ],
@@ -2125,6 +2135,13 @@
       "lead": "Carteira de imóveis",
       "tipo": "Outro",
       "resumo": "Cód. 7768: proprietária Juliska Azevedo, (84) 99407-2677. Bairro do anúncio corrigido no sistema — é Lagoa Nova."
+    },
+    {
+      "data": "04/08/2026 14:00",
+      "leadId": 6,
+      "lead": "Diana Rêgo",
+      "tipo": "Fechado Ganho",
+      "resumo": "CONTRATO ASSINADO — apartamento 607 do Porto Arena por R$575.000,00. Aguardando sinal e pagamento da comissão. Comissão de 6% dividida com a corretora Célia Cristina; parte de Thúlio R$12.075,00."
     }
   ]
 }

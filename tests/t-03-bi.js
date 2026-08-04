@@ -16,8 +16,19 @@ module.exports = { nome: 'BI: ritmo, escopo do funil, fila e sazonalidade', roda
   assert(/todas as origens/.test(fech), 'faltou o número real de fechamentos');
   assert(/Por que o funil mostra 0%/.test(fech), 'faltou explicar o zero');
 
-  assert(/em andamento/.test(porId(doc, 'conversaoTabela')),
-    'fase com 0% e gente dentro é fila, tem que dizer isso');
+  // Fase com 0% de conversão e gente parada dentro é FILA, não gargalo.
+  // Só cobramos o rótulo quando essa situação existe — quando não existe
+  // (todo mundo avançou), a ausência é o resultado certo.
+  const DATA = dom.window.eval('DATA');
+  const FASES = ['Novo Lead','Primeiro Contato Feito','Qualificado','Visita Agendada',
+                 'Visita Realizada','Proposta Enviada','Em Negociação','Fechado Ganho'];
+  const alcancaram = FASES.map((_, i) => DATA.leads.filter(l => (l.maiorFaseIndex || 0) >= i + 1).length);
+  const temFila = FASES.some((f, i) =>
+    alcancaram[i] > 0 && alcancaram[i + 1] === 0 && DATA.leads.some(l => l.fase === f));
+  if (temFila) {
+    assert(/em andamento/.test(porId(doc, 'conversaoTabela')),
+      'fase com 0% e gente dentro é fila, tem que dizer isso');
+  }
 
   const saz = graficos['chartHistoricoSazonalidade'];
   const hist = saz.data.datasets.find(x => /histórica/i.test(x.label));
