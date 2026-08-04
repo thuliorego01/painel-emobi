@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-04T15:45:00-03:00",
+  "ultimaAtualizacao": "2026-08-04T16:20:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -23,7 +23,9 @@
       "comissao": 2475,
       "mes": "Janeiro",
       "status": "pago",
-      "tipo": "Venda"
+      "tipo": "Venda",
+      "ano": 2026,
+      "mesNum": 1
     },
     {
       "imovel": "Natture 1501 Algaroba",
@@ -32,7 +34,9 @@
       "comissao": 12475,
       "mes": "Fevereiro",
       "status": "pago",
-      "tipo": "Venda"
+      "tipo": "Venda",
+      "ano": 2026,
+      "mesNum": 2
     },
     {
       "imovel": "Bairro Latino",
@@ -41,7 +45,9 @@
       "comissao": 4425,
       "mes": "Maio",
       "status": "pago",
-      "tipo": "Venda"
+      "tipo": "Venda",
+      "ano": 2026,
+      "mesNum": 5
     },
     {
       "imovel": "Maria Bernadete (803)",
@@ -51,7 +57,10 @@
       "mes": "Abril",
       "status": "pago",
       "tipo": "Venda",
-      "nota": "Vendedora: Caroline Evelin — voltou em 08/2026 como compradora de lote no Alphaville."
+      "nota": "Vendedora: Caroline Evelin — voltou em 08/2026 como compradora de lote no Alphaville.",
+      "vendedorLeadId": 14,
+      "ano": 2026,
+      "mesNum": 4
     },
     {
       "imovel": "Central Park (3-803)",
@@ -60,7 +69,9 @@
       "comissao": 7637.5,
       "mes": "Abril",
       "status": "pago",
-      "tipo": "Venda"
+      "tipo": "Venda",
+      "ano": 2026,
+      "mesNum": 4
     },
     {
       "imovel": "Prédio Alecrim",
@@ -70,7 +81,9 @@
       "mes": "Abril",
       "status": "pago",
       "tipo": "Diversos",
-      "nota": "Intermediação/serviço — não é venda de imóvel. Reclassificado em 02/08/2026 porque uma comissão de 65% sobre R$20.000 distorcia a taxa média das vendas."
+      "nota": "Intermediação/serviço — não é venda de imóvel. Reclassificado em 02/08/2026 porque uma comissão de 65% sobre R$20.000 distorcia a taxa média das vendas.",
+      "ano": 2026,
+      "mesNum": 4
     },
     {
       "imovel": "João Mendonça",
@@ -79,7 +92,10 @@
       "comissao": 6650,
       "mes": "Maio",
       "status": "pago",
-      "tipo": "Venda"
+      "tipo": "Venda",
+      "vendedorLeadId": 13,
+      "ano": 2026,
+      "mesNum": 5
     },
     {
       "imovel": "Bacara 1102",
@@ -88,7 +104,9 @@
       "comissao": 2050,
       "mes": "Fevereiro",
       "status": "pago",
-      "tipo": "Locação"
+      "tipo": "Locação",
+      "ano": 2026,
+      "mesNum": 2
     },
     {
       "imovel": "Apartamento Cód. 10638 (Mirante dos Eucaliptos, Candelária)",
@@ -97,7 +115,11 @@
       "comissao": 4637.5,
       "mes": "Julho",
       "status": "aguardando",
-      "tipo": "Venda"
+      "tipo": "Venda",
+      "vendedorLeadId": 12,
+      "ano": 2026,
+      "mesNum": 7,
+      "data": "2026-07-29"
     },
     {
       "imovel": "Apartamento 607, Bloco C — Porto Arena (Candelária)",
@@ -107,7 +129,11 @@
       "mes": "Agosto",
       "status": "aguardando",
       "tipo": "Venda",
-      "nota": "Comissão de 6% (R$34.500) dividida com a corretora Célia Cristina; sua parte 70% da metade. Contrato assinado em 04/08, aguardando sinal."
+      "nota": "Comissão de 6% (R$34.500) dividida com a corretora Célia Cristina; sua parte 70% da metade. Contrato assinado em 04/08, aguardando sinal.",
+      "compradorLeadId": 6,
+      "ano": 2026,
+      "mesNum": 8,
+      "data": "2026-08-04"
     }
   ],
   "leads": [
@@ -358,10 +384,10 @@
       "temperatura": "Quente",
       "valor": 122500,
       "comissaoPrevista": 2143.75,
-      "proximaAcao": "Acompanhar fechamento do apto 404 (bloco 11, Jardim Satélite) — R$122.500, parceria com a corretora Natália Barbosa",
-      "dataProximaAcao": "2026-08-03",
+      "proximaAcao": "Acompanhar a leitura do contrato do apto 404 (bloco 11, Jardim Satélite) até a assinatura",
+      "dataProximaAcao": "2026-08-06",
       "status": "Em dia",
-      "obs": "Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista. [31/07] Contato feito via WhatsApp. [01/08] Negócio sendo fechado por R$122.500,00 (proposta inicial era R$120.000,00), em parceria com a corretora Natália Barbosa.",
+      "obs": "Cliente de relacionamento: foi a VENDEDORA do João Mendonça (301), vendido em maio/2026 por R$380.000. Agora volta como COMPRADORA. Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista. [31/07] Contato feito via WhatsApp. [01/08] Negócio sendo fechado por R$122.500,00 (proposta inicial era R$120.000,00), em parceria com a corretora Natália Barbosa. [04/08] Em fase de LEITURA DE CONTRATO.",
       "imoveisCompativeis": [],
       "interesse": "apto 404, Jardim Satélite — fechando por R$122.500",
       "comissaoDetalhe": "R$ 122.500 × 5% = R$ 6.125,00 · dividido com Natália Barbosa → R$ 3.062,50 · sua parte 70% → R$ 2.143,75"
@@ -2189,6 +2215,13 @@
       "lead": "Caroline Evelin",
       "tipo": "Visita Realizada",
       "resumo": "Correção: os 3 lotes do Alphaville foram visitados, não apenas apresentados. Origem corrigida para Relacionamento — ela foi a vendedora do Maria Bernadete (803), negócio fechado em abril/2026."
+    },
+    {
+      "data": "04/08/2026 16:00",
+      "leadId": 13,
+      "lead": "Camilla Natasha",
+      "tipo": "Em Negociação",
+      "resumo": "Em fase de leitura de contrato do apto 404, bloco 11 do Jardim Satélite. Cliente de relacionamento — foi a vendedora do João Mendonça (301), negócio fechado em maio/2026."
     }
   ]
 }

@@ -258,6 +258,9 @@
     .cidade-rotulo { background:linear-gradient(90deg,#232A22,#1E241D); }
     .tipo-divisor::after { background:#2C342A; }
     .ritmo-celula { background:#1E241D; border-color:#2C342A; }
+    .selo-recorrente { background:#2A2440; border-color:#443A63; color:#C3B2E8; }
+    .volta-resumo { background:#241E33; border-color:#3D3355; color:#C6BBDE; }
+    .volta-resumo b { color:#DCCDF5; }
     .meta-mensal-resumo { background:#1E241D; border-color:#2C342A; color:#C3C9BC; }
     .mensal-table tr.mes-atual td { background:#232A22; }
     .neg-pendente { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
@@ -601,6 +604,18 @@
   .bi-modal-lead .bi-fase { font-size: var(--fs-2xs); color:#8A9186; white-space:nowrap; }
   .bi-modal-vazio { font-size: var(--fs-sm); color:#8A9186; }
   .kpi-adefinir { font-size: var(--fs-md); color:#8A6A2E; font-weight:700; }
+  .selo-recorrente { font-size:9.5px; font-weight:700; color:#6B4E9E; background:#F2EEFA; border:1px solid #DDD3F0;
+    border-radius:6px; padding:1px 7px; margin-left:6px; white-space:nowrap; cursor:help; vertical-align:middle; }
+  .volta-linha { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; padding:9px 0;
+    border-bottom:1px solid #F1F2ED; font-size: var(--fs-sm); color:#5C6155; }
+  .volta-linha:last-of-type { border-bottom:none; }
+  .volta-quem b { color: var(--text-strong); }
+  .volta-antes { display:block; font-size: var(--fs-2xs); color:#8A9186; margin-top:2px; }
+  .volta-agora { font-size: var(--fs-2xs); color:#6B4E9E; font-weight:700; white-space:nowrap; text-align:right; }
+  .volta-resumo { font-size: var(--fs-2xs); color:#5C6155; background:#F6F3FC; border:1px solid #E4DCF3;
+    border-radius:9px; padding:9px 12px; margin-bottom:12px; line-height:1.55; }
+  .volta-resumo b { color:#5B3F8C; }
+  .volta-vazio { font-size: var(--fs-2xs); color:#8A9186; }
   .com-detalhe { display:block; font-size:9.5px; color:#B6BBB0; border-bottom:1px dotted #D5D9CF;
     cursor:help; width:fit-content; margin-top:1px; }
   .kpi-parcial { font-size: var(--fs-2xs); color:#8A6A2E; font-weight:700; }
@@ -1139,6 +1154,10 @@
         <div class="card">
           <h3>🏆 Origem por Resultado</h3>
           <div id="origemResultado"></div>
+        </div>
+        <div class="card" style="margin-top:18px;">
+          <h3>↩ Clientes que voltam</h3>
+          <div id="clientesVoltam"></div>
         </div>
       </div>
     </div>
@@ -2039,6 +2058,13 @@ function abrirNegociacao(n) {
     <div class="bi-modal-lead"><span>Mês</span><b>${esc(n.mes)}</b></div>
     <div class="bi-modal-lead"><span>Situação</span><b>${n.status === 'pago' ? 'Comissão recebida' : 'Aguardando pagamento'}</b></div>
     ${n.previsaoRecebimento ? `<div class="bi-modal-lead"><span>Previsão de recebimento</span><b>${esc(n.previsaoRecebimento)}</b></div>` : ''}
+    ${(function () {
+      const vinc = [];
+      const v = leadPorRef(n.vendedorLeadId), c = leadPorRef(n.compradorLeadId);
+      if (v) vinc.push(`<div class="bi-modal-lead"><span>Vendedor</span><b>${esc(v.nome)}</b></div>`);
+      if (c) vinc.push(`<div class="bi-modal-lead"><span>Comprador</span><b>${esc(c.nome)}</b></div>`);
+      return vinc.join('');
+    })()}
     ${n.nota ? `<div class="neg-modal-nota">${esc(n.nota)}</div>` : ''}`;
   over.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -2107,6 +2133,48 @@ funilCalculado.forEach(([label, count]) => {
     <div class="funil-count">${count}</div>`;
   funilList.appendChild(row);
 });
+
+// ---- Clientes que voltam ----
+// Mede a recompra: quem já fechou um negócio com o Thúlio e voltou como lead.
+// Tudo derivado dos vínculos por ID — nenhum número guardado à mão.
+(function renderClientesVoltam() {
+  const alvo = document.getElementById('clientesVoltam');
+  if (!alvo) return;
+  const voltaram = clientesQueVoltaram();
+  const totalLeads = (DATA.leads || []).length;
+  if (!voltaram.length) {
+    alvo.innerHTML = '<div class="volta-vazio">Nenhum cliente antigo voltou como lead ainda. ' +
+      'Quando acontecer, aparece aqui automaticamente — basta o negócio antigo estar ligado ao lead.</div>';
+    return;
+  }
+  // O que a recompra já rendeu: comissão dos negócios anteriores dessas pessoas
+  // (o que elas já pagaram) e o que está em jogo agora (a segunda rodada).
+  const comissaoAntes = voltaram.reduce((s, l) =>
+    s + negociosAnteriores(l).reduce((a, n) => a + (n.comissao || 0), 0), 0);
+  const emJogo = voltaram.reduce((s, l) => s + (l.comissaoPrevista || 0), 0);
+  const semValor = voltaram.filter(l => typeof l.comissaoPrevista !== 'number').length;
+  const pct = Math.round(voltaram.length / totalLeads * 100);
+
+  alvo.innerHTML = `
+    <div class="volta-resumo">
+      <b>${voltaram.length} de ${totalLeads}</b> leads (${pct}%) são clientes que já fecharam negócio com você e voltaram.
+      Juntos, os negócios anteriores deles renderam <b>${brl(comissaoAntes)}</b> de comissão.
+      ${emJogo > 0 ? `A rodada atual tem <b>${brl(emJogo)}</b> em jogo${semValor ? ` (mais ${semValor} sem valor definido)` : ''}.` : ''}
+    </div>` +
+    voltaram.map(l => {
+      const ant = negociosAnteriores(l);
+      const antes = ant.map(n => `${esc(n.imovel)} · ${papelNoNegocio(n, l)} · ${esc(n.mes)}/${n.ano} · ${brl(n.comissao)}`).join('<br>');
+      return `<div class="volta-linha">
+        <span class="volta-quem"><b>${esc(l.nome)}</b><span class="volta-antes">${antes}</span></span>
+        <span class="volta-agora">agora: ${esc(l.fase)}<br>${typeof l.comissaoPrevista === 'number' ? brl(l.comissaoPrevista) : 'a definir'}</span>
+      </div>`;
+    }).join('') + `
+    <details class="fech-nota"><summary>Como esta conta é feita</summary>
+      Um cliente entra aqui quando existe uma negociação fechada <b>antes</b> da data de entrada dele como lead, ligada a ele pelo ID — como vendedor ou como comprador.
+      O negócio atual não conta: senão todo cliente que fecha viraria "recorrente" no mesmo dia.
+      Para registrar um vínculo novo, é só me dizer quem foi o vendedor ou o comprador de um negócio da lista.
+    </details>`;
+})();
 
 const origemList = document.getElementById('origemList');
 const origemCounts = {};
@@ -2347,6 +2415,46 @@ function formatarTel(t) {
   return t || '';
 }
 
+// ---- Clientes que voltam ----
+// Três casos em duas semanas: Renato Cássio, Caroline Evelin e Camilla Natasha
+// venderam um imóvel comigo e voltaram como compradores. Isso vivia só em texto
+// solto na observação — nenhum número do painel sabia contar essa história.
+// O vínculo é por ID nas duas pontas da negociação (vendedorLeadId /
+// compradorLeadId); nome já nos custou o histórico de um cliente inteiro.
+function negociosDoLead(l) {
+  if (!l) return [];
+  return (DATA.listaNegociacoes || []).filter(n =>
+    String(n.vendedorLeadId) === String(l.id) || String(n.compradorLeadId) === String(l.id));
+}
+// "Anterior" = fechado antes de o lead entrar nesta jornada. Sem isso, o
+// próprio negócio atual do cliente o marcaria como recorrente.
+function negociosAnteriores(l) {
+  if (!l || !l.dataEntrada) return [];
+  const entrada = l.dataEntrada;
+  const anoMesEntrada = entrada.slice(0, 7);
+  return negociosDoLead(l).filter(n => {
+    if (n.data) return n.data < entrada;
+    if (n.ano && n.mesNum) {
+      const am = n.ano + '-' + String(n.mesNum).padStart(2, '0');
+      return am < anoMesEntrada;
+    }
+    return false;
+  });
+}
+function papelNoNegocio(n, l) {
+  return String(n.vendedorLeadId) === String(l.id) ? 'vendedor' : 'comprador';
+}
+function seloRecorrente(l) {
+  const ant = negociosAnteriores(l);
+  if (!ant.length) return '';
+  const detalhe = ant.map(n => `${n.imovel} (${papelNoNegocio(n, l)}, ${n.mes}/${n.ano})`).join(' · ');
+  return ` <span class="selo-recorrente" title="Já fez negócio com você: ${esc(detalhe)}">↩ cliente que voltou</span>`;
+}
+
+function clientesQueVoltaram() {
+  return (DATA.leads || []).filter(l => negociosAnteriores(l).length > 0);
+}
+
 function logDoLead(l) {
   if (!l) return [];
   return (DATA.logAtividades || []).filter(a =>
@@ -2468,7 +2576,7 @@ function renderLeadCard(l, container) {
     : '';
   card.innerHTML = `
     <div class="lead-top">
-      <span class="lead-name">${l.nome}${chipHtml}</span>
+      <span class="lead-name">${l.nome}${chipHtml}${seloRecorrente(l)}</span>
       <span><span class="temp ${tempClass}">${l.temperatura}</span> <span class="badge ${badgeClass}">${l.status}</span></span>
     </div>
     <div class="lead-meta">
