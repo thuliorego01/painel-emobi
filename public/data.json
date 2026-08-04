@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-04T14:05:00-03:00",
+  "ultimaAtualizacao": "2026-08-04T14:40:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -99,7 +99,7 @@
       "tipo": "Venda"
     },
     {
-      "imovel": "Apartamento 607 — Porto Arena (Candelária)",
+      "imovel": "Apartamento 607, Bloco C — Porto Arena (Candelária)",
       "cliente": "Diana Rêgo",
       "valor": 575000,
       "comissao": 12075.0,
@@ -233,7 +233,7 @@
       "proximaAcao": "Acompanhar o sinal e o pagamento da comissão (R$12.075)",
       "dataProximaAcao": "2026-08-11",
       "status": "Ganho",
-      "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Cód. 5485 do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607 do Porto Arena. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar. [01/08] Valor do negócio: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento. [04/08] Entrou na fase de assinatura de contrato — assinatura prevista para hoje. [04/08] CONTRATO ASSINADO — apartamento 607 do Porto Arena, R$575.000,00. Aguardando o sinal e o pagamento da comissão.",
+      "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Porto Arena do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607, bloco C, do Porto Arena. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar. [01/08] Valor do negócio: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento. [04/08] Entrou na fase de assinatura de contrato — assinatura prevista para hoje. [04/08] CONTRATO ASSINADO — apartamento 607, bloco C, do Porto Arena, R$575.000,00. Aguardando o sinal e o pagamento da comissão.",
       "imoveisCompativeis": [
         "Cód. 5485"
       ],
@@ -1555,14 +1555,14 @@
       "data": "19/07/2026",
       "lead": "Diana Rêgo",
       "tipo": "Visita Agendada",
-      "resumo": "Visita agendada para hoje (19/07) às 10h, no Porto Arena (Cód. 5485, Candelária), unidade 607.",
+      "resumo": "Visita agendada para hoje (19/07) às 10h, no Porto Arena (Candelária), unidade 607, bloco C.",
       "leadId": 6
     },
     {
       "data": "19/07/2026",
       "lead": "Diana Rêgo",
       "tipo": "Visita Realizada",
-      "resumo": "Visita realizada no Porto Arena (Cód. 5485). Cliente vai ajustar com a arquiteta dela para uma nova visita.",
+      "resumo": "Visita realizada no Porto Arena, unidade 607 bloco C (imóvel de corretor parceiro, não é o Cód. 5485 do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita.",
       "leadId": 6
     },
     {
@@ -1613,7 +1613,7 @@
       "data": "20/07/2026",
       "lead": "Diana Rêgo",
       "tipo": "Visita Agendada",
-      "resumo": "2ª visita agendada para amanhã (21/07) às 17h, apartamento 607 do Porto Arena (Cód. 5485, Candelária).",
+      "resumo": "2ª visita agendada para amanhã (21/07) às 17h, apartamento 607, bloco C, do Porto Arena (Candelária).",
       "leadId": 6
     },
     {
@@ -1651,7 +1651,7 @@
       "data": "21/07/2026",
       "lead": "Diana Rêgo",
       "tipo": "Visita",
-      "resumo": "2ª visita realizada no apartamento 607 do Porto Arena, acompanhada da arquiteta dela. Cliente provavelmente vai fazer proposta — conferir hoje (22/07) à tarde.",
+      "resumo": "2ª visita realizada no apartamento 607, bloco C, do Porto Arena, acompanhada da arquiteta dela. Cliente provavelmente vai fazer proposta — conferir hoje (22/07) à tarde.",
       "leadId": 6
     },
     {
@@ -1972,7 +1972,7 @@
       "data": "30/07/2026",
       "lead": "Diana Rêgo",
       "tipo": "Proposta Enviada",
-      "resumo": "Proposta feita no apartamento 607 do Porto Arena — aguardando validação do vendedor.",
+      "resumo": "Proposta feita no apartamento 607, bloco C, do Porto Arena — aguardando validação do vendedor.",
       "leadId": 6
     },
     {
@@ -2122,7 +2122,7 @@
       "leadId": 6,
       "lead": "Diana Rêgo",
       "tipo": "Em Negociação",
-      "resumo": "Entrou na fase de assinatura de contrato — deve assinar ainda hoje (04/08). Imóvel: apartamento 607 do Porto Arena (Cód. 5485), R$575.000,00."
+      "resumo": "Entrou na fase de assinatura de contrato — deve assinar ainda hoje (04/08). Imóvel: apartamento 607, bloco C, do Porto Arena, R$575.000,00."
     },
     {
       "data": "04/08/2026 11:00",
@@ -2141,7 +2141,14 @@
       "leadId": 6,
       "lead": "Diana Rêgo",
       "tipo": "Fechado Ganho",
-      "resumo": "CONTRATO ASSINADO — apartamento 607 do Porto Arena por R$575.000,00. Aguardando sinal e pagamento da comissão. Comissão de 6% dividida com a corretora Célia Cristina; parte de Thúlio R$12.075,00."
+      "resumo": "CONTRATO ASSINADO — apartamento 607, bloco C, do Porto Arena por R$575.000,00. Aguardando sinal e pagamento da comissão. Comissão de 6% dividida com a corretora Célia Cristina; parte de Thúlio R$12.075,00."
+    },
+    {
+      "data": "04/08/2026 14:30",
+      "leadId": 6,
+      "lead": "Diana Rêgo",
+      "tipo": "Outro",
+      "resumo": "Unidade confirmada: apartamento 607, BLOCO C do Porto Arena (Candelária)."
     }
   ]
 }
