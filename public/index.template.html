@@ -264,6 +264,8 @@
     .pv-resumo { background:#241E33; border-color:#3D3355; color:#C6BBDE; }
     .pr-aviso { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
     .lembrete-btn { background:#232A22; border-color:#39423577; color:#C3C9BC; }
+    .prox-vencer { border-top-color:#2C342A; }
+    .prox-linha { border-bottom-color:#232A22; }
     .pv-marco { background:#1E241D; border-color:#2C342A; color:#C3C9BC; }
     .pv-marco.vencido { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
     .volta-resumo b { color:#DCCDF5; }
@@ -632,6 +634,16 @@
   .pr-topo { display:flex; align-items:center; justify-content:space-between; gap:10px; }
   .pr-nome { font-size: var(--fs-sm); font-weight:700; color: var(--text-strong); }
   .pr-sub { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-top:5px; font-size: var(--fs-2xs); color:#8A9186; }
+  .tudo-em-dia { font-size: var(--fs-sm); color:#4C7A3A; font-weight:700; }
+  .prox-vencer { margin-top:14px; padding-top:12px; border-top:1px solid #F1F2ED; }
+  .prox-linha { display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+    padding:8px 0; border-bottom:1px solid #F6F7F2; font-size: var(--fs-sm); color: var(--text-strong); }
+  .prox-linha:last-child { border-bottom:none; }
+  .prox-fase { font-size: var(--fs-2xs); color:#8A9186; font-weight:600; }
+  .prox-acao { display:block; font-size: var(--fs-2xs); color:#5C6155; margin-top:2px; line-height:1.45; }
+  .prox-prazo { font-size: var(--fs-2xs); color:#8A6A2E; font-weight:700; white-space:nowrap; text-align:right; }
+  .prox-prazo.hoje { color:#B4300F; }
+  .prox-prazo .wa-link { display:block; margin-top:5px; }
   .bloco-rotulo { font-size:9.5px; font-weight:800; text-transform:uppercase; letter-spacing:1px;
     color:#8A9186; margin:0 0 10px; }
   .lembrete-acoes { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-top:7px; }
@@ -2466,10 +2478,44 @@ reativacaoCard.innerHTML = rTemps.map(t => {
   </details>`;
 }
 
-const alertCard = document.getElementById('alertCard');
+// Renderizado por função e chamado mais abaixo: depende de FASES_INATIVAS e
+// calcularUrgencia, que são declarados adiante no script.
+function renderAtencaoHoje() {
+  const alertCard = document.getElementById('alertCard');
 const atrasados = DATA.leads.filter(l => l.status === 'Atrasado');
+// Sem atrasados, o card virava uma linha só ao lado de uma coluna cheia —
+// espaço morto num dos pontos mais nobres da tela. Em dia bom ele passa a
+// responder a pergunta seguinte: quem vence primeiro.
+function proximosAVencer(qtd) {
+  return (DATA.leads || [])
+    .filter(l => !FASES_INATIVAS.includes(l.fase) && l.status !== 'Atrasado')
+    .map(l => {
+      const u = calcularUrgencia(l);
+      if (u.parado === null || !u.limite) return null;
+      return { lead: l, restam: u.limite - u.parado, limite: u.limite };
+    })
+    .filter(x => x && x.restam >= 0)
+    .sort((a, b) => a.restam - b.restam)
+    .slice(0, qtd);
+}
+function blocoProximos(qtd, titulo) {
+  const prox = proximosAVencer(qtd);
+  if (!prox.length) return '';
+  return `<div class="prox-vencer"><div class="bloco-rotulo">${titulo}</div>` +
+    prox.map(({ lead, restam }) => {
+      const dg = String(lead.telefone || '').replace(/\D/g, '');
+      const wa = dg ? `<a class="wa-link" href="https://wa.me/${dg.startsWith('55') ? dg : '55' + dg}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+      const quando = restam === 0 ? 'vence hoje' : (restam === 1 ? 'vence amanhã' : `em ${restam} dias`);
+      return `<div class="prox-linha">
+        <span><b>${esc(lead.nome)}</b> <span class="prox-fase">${esc(lead.fase)} · ${esc(lead.temperatura)}</span>
+          <span class="prox-acao">${esc(lead.proximaAcao || 'sem próxima ação definida')}</span></span>
+        <span class="prox-prazo ${restam === 0 ? 'hoje' : ''}">${quando}${wa}</span>
+      </div>`;
+    }).join('') + '</div>';
+}
 if (atrasados.length === 0) {
-  alertCard.innerHTML = '<div style="font-size:13px;color:#4C7A3A;font-weight:600;">✅ Nenhum lead atrasado agora.</div>';
+  alertCard.innerHTML = '<div class="tudo-em-dia">✅ Nenhum lead atrasado agora.</div>' +
+    blocoProximos(5, '⏳ A seguir — quem vence primeiro');
 } else {
   atrasados.forEach(l => {
     const box = document.createElement('div');
@@ -2483,10 +2529,14 @@ if (atrasados.length === 0) {
     alertCard.appendChild(box);
   });
 }
+// Com atrasados na tela, ainda cabe mostrar os dois próximos: evita que o
+// dia seja resolvido só até o vermelho zerar e o amarelo virar vermelho amanhã.
+if (atrasados.length > 0) alertCard.insertAdjacentHTML('beforeend', blocoProximos(2, '⏳ Vencem em seguida'));
 const demoNote = document.createElement('div');
 demoNote.style.cssText = 'font-size:var(--fs-2xs);color:#8A9186;margin-top:6px;';
 demoNote.textContent = isDemo ? '* leads de exemplo — substitua pelos seus leads reais.' : '';
 if (isDemo) alertCard.appendChild(demoNote);
+}
 
 const REATIVACAO_TEMPLATES = {
   Quente: (nome, interesse) => `${nome}, fiquei pensando em você — o ${interesse} que a gente conversou continua com bastante procura, e não queria que você perdesse a chance por falta de retorno meu. Consegue me dar um retorno rápido?`,
@@ -2696,6 +2746,7 @@ function diasSemMovimento(nome) {
 
 // Quanto tempo parado já é demais, por temperatura (mesma régua da cadência).
 const LIMITE_PARADO = { 'Quente': 3, 'Morno': 7, 'Frio': 30 };
+renderAtencaoHoje();
 
 function calcularUrgencia(l) {
   if (FASES_INATIVAS.includes(l.fase)) return { classe: '', nivel: 'inativo', parado: null };
