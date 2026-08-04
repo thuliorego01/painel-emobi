@@ -262,6 +262,7 @@
     .lead-recorrente { background:#241E33; border-color:#3D3355; color:#C3B2E8; }
     .volta-resumo { background:#241E33; border-color:#3D3355; color:#C6BBDE; }
     .pv-resumo { background:#241E33; border-color:#3D3355; color:#C6BBDE; }
+    .pr-aviso { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
     .pv-marco { background:#1E241D; border-color:#2C342A; color:#C3C9BC; }
     .pv-marco.vencido { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
     .volta-resumo b { color:#DCCDF5; }
@@ -625,6 +626,13 @@
   .pv-pendencia { margin-top:6px; font-size: var(--fs-2xs); color:#8A5A14; }
   .pv-conecta { margin-top:6px; font-size: var(--fs-2xs); color:#6B4E9E; }
   .pv-selos { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-top:5px; }
+  .pr-linha { padding:10px 0; border-bottom:1px solid #F1F2ED; }
+  .pr-linha:last-child { border-bottom:none; }
+  .pr-topo { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .pr-nome { font-size: var(--fs-sm); font-weight:700; color: var(--text-strong); }
+  .pr-sub { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-top:5px; font-size: var(--fs-2xs); color:#8A9186; }
+  .pr-aviso { margin-top:12px; font-size: var(--fs-2xs); color:#8A5A14; background:#FDF6E8; border:1px solid #EBD9A8;
+    border-radius:9px; padding:9px 12px; line-height:1.55; }
   .pv-passo { padding:9px 0 9px 14px; border-left:3px solid #E4E7DF; margin-left:3px; }
   .pv-passo + .pv-passo { border-top:1px solid #F6F7F2; }
   .pv-passo-topo { display:flex; align-items:baseline; gap:8px; font-size: var(--fs-sm); color: var(--text-strong); }
@@ -1350,6 +1358,7 @@
   <div class="tab-panel" data-tab="prospeccao" id="panel-prospeccao" role="tabpanel">
     <div class="section-title"><span class="dot" aria-hidden="true"></span>🏗️ Prospecção de Captação</div>
     <div style="font-size:var(--fs-xs);color:#8A9186;margin-bottom:14px;">Proprietários sendo prospectados pra virar captação — antes de terem um imóvel formal na aba Imóveis. Diferente da aba Leads, que é focada em compradores.</div>
+    <div class="kpis" id="prospeccaoKpis" style="margin-bottom:14px;"></div>
     <div class="card">
       <div id="prospeccaoList"></div>
     </div>
@@ -1543,6 +1552,48 @@ function leadsParaReativar() {
     .sort((a, b) => motivoReativacao(b).dias - motivoReativacao(a).dias);
 }
 
+// ---- Prospecção de captação ----
+// O prazo era um texto copiado da planilha (`statusPrazo`). E a fórmula de lá
+// procurava "Captada"/"Encerrada" — valores que a lista suspensa nem oferecia.
+// Resultado: uma prospecção convertida continuaria marcada como ATRASADA para
+// sempre. Vocabulário agora é um só, e o prazo é calculado aqui.
+const PROSPECCAO_ENCERRADAS = ['Convertido em Captação', 'Descartado'];
+function prospeccaoPrazo(pr) {
+  if (!pr) return { cls: '', texto: '' };
+  if (pr.status === 'Convertido em Captação') return { cls: 'captada', texto: '✅ Virou captação' };
+  if (pr.status === 'Descartado') return { cls: 'encerrada', texto: '⚪ Descartada' };
+  if (!pr.dataProximaAcao) return { cls: 'sem-prazo', texto: 'Sem prazo definido' };
+  const dias = diasDesdeISO(pr.dataProximaAcao);
+  if (dias === null) return { cls: 'sem-prazo', texto: 'Sem prazo definido' };
+  if (dias > 0) return { cls: 'atrasado', texto: `🔴 ${dias}d de atraso`, dias };
+  if (dias === 0) return { cls: 'hoje', texto: '🟡 Vence hoje' };
+  return { cls: 'em-dia', texto: `🟢 Em dia · faltam ${-dias}d` };
+}
+function prospeccoesAtivas() {
+  return (DATA.prospeccaoCaptacao || []).filter(pr => !PROSPECCAO_ENCERRADAS.includes(pr.status));
+}
+// Taxa de conversão da prospecção: de quantas abordagens saem captações.
+// O "Funil de Captação" do BI mostra o status do estoque que já existe —
+// não responde quantos proprietários foram abordados para chegar nele.
+function funilProspeccao() {
+  const todas = DATA.prospeccaoCaptacao || [];
+  const convertidas = todas.filter(pr => pr.status === 'Convertido em Captação');
+  const descartadas = todas.filter(pr => pr.status === 'Descartado');
+  const ativas = prospeccoesAtivas();
+  return {
+    total: todas.length, convertidas: convertidas.length, descartadas: descartadas.length,
+    ativas: ativas.length,
+    taxa: todas.length ? convertidas.length / todas.length : null,
+    lista: { convertidas, descartadas, ativas }
+  };
+}
+// Vínculo prospecção → imóvel captado, por código. Sem isso não dá para saber
+// qual abordagem virou qual imóvel.
+function imovelDaProspeccao(pr) {
+  if (!pr || !pr.imovelCaptadoCod) return null;
+  return (DATA.imoveis || []).find(im => new RegExp('Cód\\.\\s*' + pr.imovelCaptadoCod + '\\b').test(im.nome)) || null;
+}
+
 function computeAcoesUrgentes() {
   const diasSemContato = diasDesdeISO;
   const leadsAtrasados = (DATA.leads || []).filter(l => l.status === 'Atrasado');
@@ -1559,12 +1610,8 @@ function computeAcoesUrgentes() {
   );
   // Prospecção de captação atrasada — é onde nasce o estoque, e até 30/07/2026
   // não tinha alerta nenhum: um proprietário podia ficar semanas sem cobrança.
-  const prospeccoesAtrasadas = (DATA.prospeccaoCaptacao || []).filter(pr => {
-    if (pr.status === 'Convertido em Captação' || pr.status === 'Descartado') return false;
-    if (pr.statusPrazo) return pr.statusPrazo.indexOf('Atrasado') !== -1;
-    if (!pr.dataProximaAcao) return false;
-    return diasSemContato(pr.dataProximaAcao) > 0;
-  });
+  const prospeccoesAtrasadas = (DATA.prospeccaoCaptacao || []).filter(pr =>
+    prospeccaoPrazo(pr).cls === 'atrasado');
   const total = leadsAtrasados.length + leadsReativar.length + imoveisAtrasados.length + lembretesUrgentes.length + prospeccoesAtrasadas.length;
   return { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes, prospeccoesAtrasadas, total };
 }
@@ -4972,23 +5019,120 @@ function abrirPosVenda(id) {
     list.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum proprietário em prospecção no momento.</div>';
     return;
   }
-  const statusClass = { "Contato Inicial": "novo", "Aguardando Retorno": "atrasado", "Convertido em Captação": "emdia", "Descartado": "descartado" };
-  list.innerHTML = itens.map(it => `
-    <div class="lead-card">
-      <div class="lead-top">
-        <span class="lead-name">${it.nome || '—'}</span>
-        <span class="badge ${statusClass[it.status] || 'novo'}">${it.status || '—'}</span>
-        ${it.statusPrazo ? `<span class="badge ${it.statusPrazo.indexOf('Atrasado') !== -1 ? 'atrasado' : 'emdia'}">${it.statusPrazo}</span>` : ''}
+  const f = funilProspeccao();
+
+  // KPIs: a aba não tinha nenhum. Sem eles não dá para saber se a prospecção
+  // está viva nem quanto dela vira captação.
+  const kpis = document.getElementById('prospeccaoKpis');
+  if (kpis) {
+    kpis.innerHTML = `
+      <div class="kpi-group">
+        <div class="kpi-group-item"><div class="kpi-group-label"><span class="icon">🏗️</span> Em prospecção</div>
+          <div class="kpi-group-vals"><div class="kpi-group-value">${f.ativas}</div></div></div>
+        <div class="kpi-group-item"><div class="kpi-group-label"><span class="icon">✅</span> Viraram captação</div>
+          <div class="kpi-group-vals"><div class="kpi-group-value">${f.convertidas}</div></div></div>
+        <div class="kpi-group-item"><div class="kpi-group-label"><span class="icon">📉</span> Taxa de conversão</div>
+          <div class="kpi-group-vals"><div class="kpi-group-value">${f.taxa === null ? '—' : Math.round(f.taxa * 100) + '%'}</div></div></div>
+      </div>`;
+  }
+
+  const GRUPOS = [
+    { chave: 'atrasado', rotulo: 'Atrasadas', aberto: true,  filtro: pr => prospeccaoPrazo(pr).cls === 'atrasado' },
+    { chave: 'andamento', rotulo: 'Em andamento', aberto: true,
+      filtro: pr => ['hoje', 'em-dia', 'sem-prazo'].includes(prospeccaoPrazo(pr).cls) },
+    { chave: 'captada', rotulo: 'Viraram captação', aberto: false, filtro: pr => pr.status === 'Convertido em Captação' },
+    { chave: 'descartada', rotulo: 'Descartadas', aberto: false, filtro: pr => pr.status === 'Descartado' }
+  ];
+
+  const linha = (pr) => {
+    const pz = prospeccaoPrazo(pr);
+    const im = imovelDaProspeccao(pr);
+    return `<div class="pr-linha bi-clicavel" role="button" tabindex="0" data-prospeccao="${pr.id}">
+      <div class="pr-topo">
+        <span class="pr-nome">${esc(pr.nome || '—')}</span>
+        <span class="fu-chip ${pz.cls === 'atrasado' ? 'atrasado' : (pz.cls === 'hoje' ? 'aproximando' : 'em-dia')}">${esc(pz.texto)}</span>
       </div>
-      <div class="lead-meta">
-        <span>Imóvel/Bairro: <b>${it.imovelBairro || '—'}</b></span>
-        <span>Indicação: <b>${it.indicacao || '—'}</b></span>
-        ${it.telefone ? `<span>Tel: <b>${formatarTel(it.telefone)}</b></span>` : ''}
+      <div class="pr-sub">
+        <span>${esc(pr.imovelBairro || 'imóvel a definir')}</span>
+        ${pr.indicadorNome ? `<span class="fu-chip ${pr.indicadorCadastrado === false ? 'sem-tel' : 'em-dia'}">↗ ${esc(pr.indicadorNome)}${pr.indicadorCadastrado === false ? ' · fora do Conecta TR' : ''}</span>` : ''}
+        ${!pr.telefone ? '<span class="fu-chip sem-tel">☎ sem telefone</span>' : ''}
+        ${im ? `<span class="fu-chip comissao">→ ${esc(im.nome)}</span>` : ''}
       </div>
-      ${it.proximaAcao ? `<div class="lead-meta" style="margin-top:4px;"><span>Próxima ação: <b>${it.proximaAcao}</b>${it.dataProximaAcao ? ' — ' + it.dataProximaAcao.split('-').reverse().join('/') : ''}</span></div>` : ''}
-      ${it.obs ? `<div style="font-size:var(--fs-2xs);color:#8A9186;margin-top:6px;">${it.obs}</div>` : ''}
-    </div>`).join('');
+    </div>`;
+  };
+
+  let html = '';
+  GRUPOS.forEach(g => {
+    const doGrupo = itens.filter(g.filtro);
+    if (!doGrupo.length) return;
+    doGrupo.sort((a, b) => (prospeccaoPrazo(b).dias || 0) - (prospeccaoPrazo(a).dias || 0));
+    html += `<div class="bairro-grupo${g.aberto ? ' open' : ''}" role="button" tabindex="0" aria-expanded="${g.aberto}" data-pr-grupo="${g.chave}">` +
+      `<span class="bairro-chev" aria-hidden="true">▶</span><span class="bairro-nome">${g.rotulo}</span>` +
+      `<span class="bairro-qtd">${doGrupo.length}</span></div>` +
+      `<div class="bairro-corpo${g.aberto ? ' open' : ''}" data-pr-corpo="${g.chave}">${doGrupo.map(linha).join('')}</div>`;
+  });
+
+  const semIndicador = itens.filter(pr => pr.indicadorNome && pr.indicadorCadastrado === false);
+  if (semIndicador.length) {
+    html += `<div class="pr-aviso">↗ ${semIndicador.map(pr => `<b>${esc(pr.indicadorNome)}</b>`).join(', ')} ` +
+      `${semIndicador.length === 1 ? 'indicou um imóvel e não está' : 'indicaram imóveis e não estão'} no Conecta TR. ` +
+      `Se a captação vingar, ${semIndicador.length === 1 ? 'ele fica' : 'eles ficam'} sem a bonificação — e o programa não registra a indicação.</div>`;
+  }
+  list.innerHTML = html;
+
+  list.addEventListener('click', (e) => {
+    const cab = alvoDe(e).closest('[data-pr-grupo]');
+    if (cab) {
+      const corpo = list.querySelector(`[data-pr-corpo="${cab.dataset.prGrupo}"]`);
+      const abrir = !corpo.classList.contains('open');
+      corpo.classList.toggle('open', abrir);
+      cab.classList.toggle('open', abrir);
+      cab.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+      return;
+    }
+    const item = alvoDe(e).closest('[data-prospeccao]');
+    if (item) abrirProspeccao(item.dataset.prospeccao);
+  });
+  list.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const alvo = alvoDe(e).closest('[data-pr-grupo],[data-prospeccao]');
+    if (alvo) { e.preventDefault(); alvo.dispatchEvent(new MouseEvent('click', { bubbles: true })); }
+  });
 })();
+
+function abrirProspeccao(id) {
+  const pr = (DATA.prospeccaoCaptacao || []).find(x => String(x.id) === String(id));
+  if (!pr) return;
+  const over = document.getElementById('biModalOverlay');
+  if (!over) return;
+  const pz = prospeccaoPrazo(pr);
+  const im = imovelDaProspeccao(pr);
+  const dg = String(pr.telefone || '').replace(/\D/g, '');
+  const wa = dg ? `<a class="wa-link" href="https://wa.me/${dg.startsWith('55') ? dg : '55' + dg}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+  const hist = (pr.historico || []).slice().reverse();
+
+  document.getElementById('biModalTitulo').textContent = pr.nome || '—';
+  document.getElementById('biModalCorpo').innerHTML =
+    `<div class="bi-modal-nota">${esc(pz.texto)}${pr.dataProximaAcao ? ' · próxima ação em ' + pr.dataProximaAcao.split('-').reverse().join('/') : ''}</div>` +
+    `<div class="bi-modal-lead"><span>Imóvel / bairro</span><b>${esc(pr.imovelBairro || '—')}</b></div>` +
+    `<div class="bi-modal-lead"><span>Situação</span><b>${esc(pr.status || '—')}</b></div>` +
+    `<div class="bi-modal-lead"><span>Origem</span><b>${esc(pr.indicacao || pr.origem || '—')}</b></div>` +
+    (pr.indicadorNome && pr.indicadorCadastrado === false
+      ? `<div class="pr-aviso" style="margin-top:8px;">↗ <b>${esc(pr.indicadorNome)}</b> não está cadastrado no Conecta TR. Se esta captação vingar, ele fica sem bonificação.</div>` : '') +
+    `<div class="bi-modal-lead"><span>Telefone</span><b>${pr.telefone ? esc(formatarTel(pr.telefone)) : 'não cadastrado'}</b>${wa}</div>` +
+    (im ? `<div class="bi-modal-lead"><span>Virou o imóvel</span><b>${esc(im.nome)}</b></div>` : '') +
+    `<div class="bi-modal-lead"><span>Próxima ação</span><b>${esc(pr.proximaAcao || '—')}</b></div>` +
+    `<div class="modal-timeline-title">📜 Histórico</div>` +
+    (hist.length
+      ? hist.map(a => `<div class="timeline-item">
+            <span class="timeline-date">${esc(a.data.split('-').reverse().join('/'))}</span><span class="timeline-tipo">${esc(a.tipo || 'Outro')}</span>
+            <div class="timeline-resumo">${esc(a.resumo || '')}</div>
+          </div>`).join('')
+      : '<div style="font-size:13px;color:#8A9186;">Nenhuma tentativa registrada ainda — me conte o que já foi feito que eu registro.</div>') +
+    (pr.obs ? `<div class="neg-modal-nota">${esc(pr.obs)}</div>` : '');
+  over.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
 </script>
 </body>
 </html>

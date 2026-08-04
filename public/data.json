@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-04T18:20:00-03:00",
+  "ultimaAtualizacao": "2026-08-04T19:20:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1258,8 +1258,28 @@
       "status": "Aguardando Retorno",
       "proximaAcao": "Tentar 1 último contato (ligação/WhatsApp), sem muita expectativa",
       "dataProximaAcao": "2026-07-24",
-      "statusPrazo": "🔴 Atrasado",
-      "obs": "Contato original em 13/07 sobre o Smile Village (indicação de Anísio). Cliente não respondeu às últimas tentativas. [25/07] Thúlio percebe que não deve vingar."
+      "obs": "Contato original em 13/07 sobre o Smile Village (indicação de Anísio). Cliente não respondeu às últimas tentativas. [25/07] Thúlio percebe que não deve vingar.",
+      "id": 1,
+      "origem": "Indicação",
+      "indicadorNome": "Anísio",
+      "indicadorCadastrado": false,
+      "historico": [
+        {
+          "data": "2026-07-13",
+          "tipo": "Contato",
+          "resumo": "Primeiro contato sobre o Smile Village, por indicação de Anísio."
+        },
+        {
+          "data": "2026-07-20",
+          "tipo": "Tentativa",
+          "resumo": "Nova tentativa de contato — sem resposta."
+        },
+        {
+          "data": "2026-07-25",
+          "tipo": "Avaliação",
+          "resumo": "Sem retorno depois de duas tentativas. Avaliação: provavelmente não vinga."
+        }
+      ]
     },
     {
       "nome": "Cláudia Montenegro",
@@ -1269,8 +1289,18 @@
       "status": "Contato Inicial",
       "proximaAcao": "Retomar contato",
       "dataProximaAcao": "2026-07-27",
-      "statusPrazo": "🔴 Atrasado",
-      "obs": ""
+      "obs": "",
+      "id": 2,
+      "origem": "A definir",
+      "indicadorNome": null,
+      "indicadorCadastrado": null,
+      "historico": [
+        {
+          "data": "2026-07-20",
+          "tipo": "Contato",
+          "resumo": "Contato inicial sobre o Natal Brisa."
+        }
+      ]
     }
   ],
   "conectaTR": {
