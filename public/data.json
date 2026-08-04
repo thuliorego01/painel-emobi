@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-04T20:10:00-03:00",
+  "ultimaAtualizacao": "2026-08-04T20:30:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -227,13 +227,13 @@
       "dataEntrada": "2026-07-06",
       "fase": "Qualificado",
       "maiorFaseIndex": 3,
-      "temperatura": "Frio",
+      "temperatura": "Morno",
       "valor": 630000,
       "comissaoPrevista": null,
-      "proximaAcao": "Retomar contato após viagem (fim do mês)",
-      "dataProximaAcao": "2026-08-01",
-      "status": "Atrasado",
-      "obs": "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08.",
+      "proximaAcao": "Enviar opções em Candelária/Lagoa Nova até R$630 mil e marcar visita",
+      "dataProximaAcao": "2026-08-11",
+      "status": "Em dia",
+      "obs": "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08. [04/08] Clientes voltaram de viagem e o contato foi retomado. Temperatura de Frio para Morno.",
       "imoveisCompativeis": [
         "Cód. 9272",
         "Cód. 8024",
@@ -294,17 +294,17 @@
       "telefone": "84987349007",
       "origem": "Instagram",
       "dataEntrada": "2026-07-24",
-      "fase": "Visita Agendada",
+      "fase": "Visita Realizada",
       "maiorFaseIndex": 5,
       "temperatura": "Morno",
       "valor": null,
       "comissaoPrevista": null,
-      "proximaAcao": "Retomar após o contato de hoje — segue sem opções em Capim Macio",
-      "dataProximaAcao": "2026-08-03",
-      "status": "Atrasado",
-      "obs": "Visita agendada para 25/07 às 10h ao Cód. 10650 (Apartamento 4 Quartos, Residencial Ariane, Tirol) — fora do perfil ideal (Tirol, não Capim Macio), mas cliente confirmou a visita. [25/07] Rodada de busca: nenhum imóvel em Capim Macio no inventário atual.",
+      "proximaAcao": "Cobrar a resposta sobre a opção enviada em Capim Macio",
+      "dataProximaAcao": "2026-08-06",
+      "status": "Em dia",
+      "obs": "Visita agendada para 25/07 às 10h ao Cód. 10650 (Apartamento 4 Quartos, Residencial Ariane, Tirol) — fora do perfil ideal (Tirol, não Capim Macio), mas cliente confirmou a visita. [25/07] Rodada de busca: nenhum imóvel em Capim Macio no inventário atual. [04/08] Visita realizada ao Residencial Ariane (Cód. 10650). Cliente confirmou que quer Capim Macio — opção enviada, aguardando resposta.",
       "imoveisCompativeis": [],
-      "interesse": "Apartamento acima de 150m², Capim Macio, condomínio até ~R$2.000"
+      "interesse": "apartamento em Capim Macio"
     },
     {
       "id": 10,
@@ -1180,12 +1180,6 @@
       "data": "2026-07-24"
     },
     {
-      "texto": "Visita Maria Matos — Residencial Ariane (Cód. 10650) — confirmar se foi feita",
-      "hora": "10:00",
-      "relacionado": "Maria Matos",
-      "data": "2026-07-25"
-    },
-    {
       "texto": "Retomar contato com Cláudia Montenegro (Natal Brisa)",
       "hora": "",
       "relacionado": "Cláudia Montenegro",
@@ -1201,12 +1195,6 @@
       "texto": "Cobrar da corretora Vanessa Oliveira o feedback da visita ao Cód. 9754 (Neópolis) — ela mostrou o imóvel sozinha em 31/07",
       "hora": "",
       "relacionado": "Cód. 9754 (Neópolis) — Vanessa Oliveira",
-      "data": "2026-08-01"
-    },
-    {
-      "texto": "Retomar contato com Daianne — cliente estava de viagem, ver Candelária/Lagoa Nova até R$630 mil",
-      "hora": "",
-      "relacionado": "Daianne",
       "data": "2026-08-01"
     },
     {
@@ -2272,6 +2260,20 @@
       "lead": "Tácito Barreto",
       "tipo": "Qualificado",
       "resumo": "Reativado: gostou da opção no Francisco de Goya e quer visitar. Sai da inatividade — busca não está mais suspensa."
+    },
+    {
+      "data": "04/08/2026 18:00",
+      "leadId": 5,
+      "lead": "Daianne",
+      "tipo": "Contato",
+      "resumo": "Clientes voltaram de viagem e o contato foi retomado. Temperatura passa de Frio para Morno."
+    },
+    {
+      "data": "04/08/2026 18:10",
+      "leadId": 9,
+      "lead": "Maria Matos",
+      "tipo": "Visita Realizada",
+      "resumo": "Visita realizada ao Residencial Ariane (Cód. 10650). Cliente reafirmou que quer Capim Macio; opção enviada, aguardando resposta."
     }
   ]
 }
