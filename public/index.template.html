@@ -268,6 +268,7 @@
     .neg-modal-nota { background:#1E241D; }
     .ritmo-trilho { background:#2C342A; }
     .bi-clicavel:hover { background:#232A22; }
+    .bi-modal-nota { background:#1E241D; border-color:#2C342A; color:#C3C9BC; }
     .aviso-telefones { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
     .aviso-telefones b { color:#E5D6A0; }
     /* Blocos de temperatura no escuro: mantêm a identidade da cor, mas com
@@ -604,6 +605,13 @@
   .bi-modal-lead b { color: var(--text-strong); }
   .bi-modal-lead .bi-fase { font-size: var(--fs-2xs); color:#8A9186; white-space:nowrap; }
   .bi-modal-vazio { font-size: var(--fs-sm); color:#8A9186; }
+  .bi-modal-nota { font-size: var(--fs-2xs); color:#5C6155; background:#F6F7F2; border:1px solid #EDEFE9;
+    border-radius:9px; padding:9px 12px; margin-bottom:10px; line-height:1.55; }
+  .termo-row.clicavel, .degrau-selo.clicavel { cursor:pointer; }
+  .termo-row.clicavel:hover .termo-label { color: var(--brand-gold-deep); }
+  .termo-row.clicavel:hover .termo-bar-wrap { outline:1px solid #E4E7DF; outline-offset:2px; border-radius:8px; }
+  .termo-row.clicavel:focus-visible, .degrau-selo.clicavel:focus-visible { outline:2px solid var(--brand-gold); outline-offset:2px; }
+  .degrau-selo.clicavel:hover { filter:brightness(.95); }
   .kpi-adefinir { font-size: var(--fs-md); color:#8A6A2E; font-weight:700; }
   .selo-recorrente { font-size:9.5px; font-weight:700; color:#6B4E9E; background:#F2EEFA; border:1px solid #DDD3F0;
     border-radius:6px; padding:1px 7px; margin-left:6px; white-space:nowrap; vertical-align:middle; }
@@ -2084,21 +2092,24 @@ function alvoDe(e) {
   return (t && typeof t.closest === 'function') ? t : document.documentElement;
 }
 
-function abrirBiModal(titulo, leads) {
+function abrirBiModal(titulo, leads, nota) {
   const over = document.getElementById('biModalOverlay');
   if (!over) return;
   document.getElementById('biModalTitulo').textContent = titulo;
   const corpo = document.getElementById('biModalCorpo');
+  const cabecalho = nota ? `<div class="bi-modal-nota">${nota}</div>` : '';
   if (!leads.length) {
-    corpo.innerHTML = '<div class="bi-modal-vazio">Nenhum lead aqui.</div>';
+    corpo.innerHTML = cabecalho + '<div class="bi-modal-vazio">Nenhum lead aqui.</div>';
   } else {
-    corpo.innerHTML = leads
+    corpo.innerHTML = cabecalho + leads
       .slice()
-      .sort((a, b) => (b.maiorFaseIndex || 0) - (a.maiorFaseIndex || 0))
+      .sort((a, b) => (diasSemMovimento(b.id) ?? -1) - (diasSemMovimento(a.id) ?? -1))
       .map(l => {
         const dg = String(l.telefone || '').replace(/\D/g, '');
         const wa = dg ? `<a class="wa-link" href="https://wa.me/${dg.startsWith('55') ? dg : '55' + dg}" target="_blank" rel="noopener">💬 Falar</a>` : '';
-        return `<div class="bi-modal-lead"><span><b>${esc(l.nome)}</b> <span class="bi-fase">${esc(l.fase)} · ${esc(l.temperatura || '—')}</span></span>${wa}</div>`;
+        const parado = diasSemMovimento(l.id);
+        const tempoTxt = parado === null ? '' : (parado === 0 ? ' · movimentou hoje' : ` · parado há ${parado}d`);
+        return `<div class="bi-modal-lead"><span><b>${esc(l.nome)}</b> <span class="bi-fase">${esc(l.fase)} · ${esc(l.temperatura || '—')}${tempoTxt}</span></span>${wa}</div>`;
       }).join('');
   }
   over.classList.add('open');
@@ -4658,7 +4669,10 @@ function resumirEvento(titulo) {
       if (ant > 0) {
         const passou = Math.round((n / ant) * 100);
         const classe = isGargalo ? 'queda' : (passou === 100 ? 'cheio' : '');
-        degrau = `<div class="termo-degrau"><span class="degrau-selo ${classe}" title="${n} de ${ant} avançaram de ${FUNIL_CONVERSAO_FASES[i - 1]} para ${fase}">↓ ${passou}%</span></div>`;
+        const travados = ant - n;
+        degrau = `<div class="termo-degrau"><span class="degrau-selo ${classe}${travados > 0 ? ' clicavel' : ''}" ` +
+          (travados > 0 ? `role="button" tabindex="0" data-travou="${i}" aria-label="Ver os ${travados} que pararam entre ${FUNIL_CONVERSAO_FASES[i - 1]} e ${fase}"` : '') +
+          `>↓ ${passou}%</span></div>`;
       } else {
         degrau = `<div class="termo-degrau"><span class="degrau-selo vazio">↓ —</span></div>`;
       }
@@ -4670,7 +4684,7 @@ function resumirEvento(titulo) {
     const miolo = n > 0
       ? `<span class="termo-bar${isGargalo ? ' gargalo' : ''}" style="width:${larg}%">${cabeDentro ? `<span class="termo-bar-num">${n}</span>` : ''}</span>${cabeDentro ? '' : `<span class="termo-num-fora">${n}</span>`}`
       : `<span class="termo-num-fora">0</span>`;
-    return degrau + `<div class="termo-row${isGargalo ? ' linha-gargalo' : ''}">
+    return degrau + `<div class="termo-row${isGargalo ? ' linha-gargalo' : ''}${n > 0 ? ' clicavel' : ''}"${n > 0 ? ` role="button" tabindex="0" data-fase-funil="${i}" aria-label="Ver os ${n} leads que chegaram em ${fase}"` : ''}>
       <span class="termo-label">${fase}</span>
       <span class="termo-bar-wrap${n > 0 ? '' : ' vazio'}">${miolo}</span>
       <span class="termo-val">${pct}%</span>
@@ -4692,8 +4706,42 @@ function resumirEvento(titulo) {
           <p><b>Selo entre as barras</b> = quanto passou de um degrau para o próximo. É ele que revela onde você perde gente.</p>
           <p><b>Escopo:</b> cobre apenas os leads em acompanhamento ativo aqui no painel — não toda a sua base do Imoview. Quem parou antes de avançar não entra na conta, então os percentuais descrevem quem progrediu, não a conversão da base inteira.</p>
           ${vendasForaDoFunil > 0 ? '<p><b>Vendas fora do funil</b> ficam de fora do cálculo de propósito: somar só no fim distorceria a taxa de conversão de quem nunca foi contado no topo.</p>' : ''}
+          <p>Clique numa <b>barra</b> para ver quem chegou naquela etapa, ou num <b>selo de queda</b> para ver quem parou ali.</p>
         </div>
       </details>`;
+
+  // O funil dizia ONDE perde, mas não QUEM. O selo de queda é o mais útil:
+  // clicar nele lista as pessoas que chegaram numa etapa e nunca passaram
+  // para a seguinte — o diagnóstico vira lista de trabalho.
+  const chegaramAte = (i) => (DATA.leads || []).filter(l => (l.maiorFaseIndex || 0) >= i + 1);
+  el.addEventListener('click', (e) => {
+    const selo = alvoDe(e).closest('[data-travou]');
+    if (selo) {
+      const i = Number(selo.dataset.travou);
+      const antes = FUNIL_CONVERSAO_FASES[i - 1], depois = FUNIL_CONVERSAO_FASES[i];
+      const ids = new Set(chegaramAte(i).map(l => String(l.id)));
+      const travados = chegaramAte(i - 1).filter(l => !ids.has(String(l.id)));
+      abrirBiModal(`Pararam entre ${antes} e ${depois}`, travados,
+        `Chegaram em <b>${antes}</b> e nunca avançaram para <b>${depois}</b>. ` +
+        `São ${travados.length} de ${alcancaram[i - 1]}.`);
+      return;
+    }
+    const barra = alvoDe(e).closest('[data-fase-funil]');
+    if (barra) {
+      const i = Number(barra.dataset.faseFunil);
+      const fase = FUNIL_CONVERSAO_FASES[i];
+      const quem = chegaramAte(i);
+      const aqui = quem.filter(l => l.fase === fase).length;
+      abrirBiModal(`Chegaram em ${fase}`, quem,
+        `Todos que já passaram por <b>${fase}</b>, mesmo que hoje estejam mais adiante.` +
+        (aqui > 0 ? ` <b>${aqui}</b> ${aqui === 1 ? 'está' : 'estão'} nesta etapa agora.` : ''));
+    }
+  });
+  el.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const alvo = alvoDe(e).closest('[data-travou],[data-fase-funil]');
+    if (alvo) { e.preventDefault(); alvo.dispatchEvent(new MouseEvent('click', { bubbles: true })); }
+  });
 })();
 
 (function renderProspeccao() {
