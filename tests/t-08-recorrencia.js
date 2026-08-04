@@ -41,5 +41,19 @@ module.exports = { nome: 'Clientes que voltam: vínculo por ID', rodar: async ()
   const selos = [...doc.querySelectorAll('.selo-recorrente')];
   assert(selos.length === esperados.length,
     `esperava ${esperados.length} selos de cliente recorrente, achei ${selos.length}`);
-  selos.forEach(s => assert(s.getAttribute('title'), 'o selo precisa dizer qual foi o negócio anterior'));
+
+  // O detalhe do negócio anterior tem que estar ESCRITO no card. Já esteve num
+  // title do navegador: o usuário via só o cursor de interrogação, sem balão.
+  const linhas = [...doc.querySelectorAll('.lead-recorrente')];
+  assert(linhas.length === esperados.length,
+    `esperava ${esperados.length} linhas explicando a recorrência, achei ${linhas.length}`);
+  linhas.forEach(li => {
+    const t = txt(li);
+    assert(/em \w+\/\d{4}/.test(t), 'a linha precisa dizer quando foi o negócio anterior: ' + t);
+    assert(/R\$/.test(t), 'a linha precisa dizer quanto rendeu: ' + t);
+  });
+  selos.forEach(s => assert(!s.hasAttribute('title'),
+    'o selo não pode depender de title: o balão do navegador nem sempre aparece'));
+  assert(!/cursor:\s*help/.test(require('fs').readFileSync(require('./ambiente').ALVO, 'utf8')),
+    'cursor:help promete um balão que pode não aparecer');
 }};

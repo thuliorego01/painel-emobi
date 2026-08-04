@@ -259,6 +259,7 @@
     .tipo-divisor::after { background:#2C342A; }
     .ritmo-celula { background:#1E241D; border-color:#2C342A; }
     .selo-recorrente { background:#2A2440; border-color:#443A63; color:#C3B2E8; }
+    .lead-recorrente { background:#241E33; border-color:#3D3355; color:#C3B2E8; }
     .volta-resumo { background:#241E33; border-color:#3D3355; color:#C6BBDE; }
     .volta-resumo b { color:#DCCDF5; }
     .meta-mensal-resumo { background:#1E241D; border-color:#2C342A; color:#C3C9BC; }
@@ -605,7 +606,9 @@
   .bi-modal-vazio { font-size: var(--fs-sm); color:#8A9186; }
   .kpi-adefinir { font-size: var(--fs-md); color:#8A6A2E; font-weight:700; }
   .selo-recorrente { font-size:9.5px; font-weight:700; color:#6B4E9E; background:#F2EEFA; border:1px solid #DDD3F0;
-    border-radius:6px; padding:1px 7px; margin-left:6px; white-space:nowrap; cursor:help; vertical-align:middle; }
+    border-radius:6px; padding:1px 7px; margin-left:6px; white-space:nowrap; vertical-align:middle; }
+  .lead-recorrente { margin-top:7px; font-size: var(--fs-2xs); color:#6B4E9E; background:#F6F3FC;
+    border:1px solid #E4DCF3; border-radius:8px; padding:6px 10px; line-height:1.5; }
   .volta-linha { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; padding:9px 0;
     border-bottom:1px solid #F1F2ED; font-size: var(--fs-sm); color:#5C6155; }
   .volta-linha:last-of-type { border-bottom:none; }
@@ -616,8 +619,8 @@
     border-radius:9px; padding:9px 12px; margin-bottom:12px; line-height:1.55; }
   .volta-resumo b { color:#5B3F8C; }
   .volta-vazio { font-size: var(--fs-2xs); color:#8A9186; }
-  .com-detalhe { display:block; font-size:9.5px; color:#B6BBB0; border-bottom:1px dotted #D5D9CF;
-    cursor:help; width:fit-content; margin-top:1px; }
+  .com-detalhe { display:block; font-size:9.5px; color:#8A9186; margin-top:2px; line-height:1.5; }
+  .com-detalhe summary { cursor:pointer; color:#B6BBB0; width:fit-content; }
   .kpi-parcial { font-size: var(--fs-2xs); color:#8A6A2E; font-weight:700; }
   .meta-mensal-resumo { font-size: var(--fs-2xs); color:#5C6155; background:#F8F9F5; border:1px solid #EDEFE9;
     border-radius:9px; padding:9px 12px; margin-bottom:12px; line-height:1.55; }
@@ -1361,6 +1364,7 @@
     </div>
     <div class="lead-meta" id="leadModalInfo" style="margin-top:10px;"></div>
     <div class="lead-meta" id="leadModalObs" style="margin-top:6px;"></div>
+    <div id="leadModalRecorrente"></div>
     <div class="modal-timeline-title">📜 Histórico</div>
     <div id="leadModalTimeline"></div>
     <div class="nota-box">
@@ -2445,10 +2449,18 @@ function papelNoNegocio(n, l) {
   return String(n.vendedorLeadId) === String(l.id) ? 'vendedor' : 'comprador';
 }
 function seloRecorrente(l) {
+  if (!negociosAnteriores(l).length) return '';
+  return ` <span class="selo-recorrente">↩ cliente que voltou</span>`;
+}
+// O detalhe do negócio anterior fica escrito no card, não escondido atrás do
+// mouse parado: o title nativo do navegador nem sempre aparece e o cursor de
+// ajuda vira uma promessa não cumprida.
+function linhaRecorrente(l) {
   const ant = negociosAnteriores(l);
   if (!ant.length) return '';
-  const detalhe = ant.map(n => `${n.imovel} (${papelNoNegocio(n, l)}, ${n.mes}/${n.ano})`).join(' · ');
-  return ` <span class="selo-recorrente" title="Já fez negócio com você: ${esc(detalhe)}">↩ cliente que voltou</span>`;
+  const txt = ant.map(n =>
+    `${papelNoNegocio(n, l)} do ${esc(n.imovel)} em ${esc(n.mes)}/${n.ano} · ${brl(n.comissao)}`).join(' · ');
+  return `<div class="lead-recorrente">↩ Já fez negócio com você: ${txt}</div>`;
 }
 
 function clientesQueVoltaram() {
@@ -2582,9 +2594,10 @@ function renderLeadCard(l, container) {
     <div class="lead-meta">
       <span>${l.fase}</span>
       <span>Valor: <b>${valorTxt}</b></span>
-      <span>Comissão prevista: <b>${comissaoTxt}</b>${l.comissaoDetalhe ? `<span class="com-detalhe" title="${esc(l.comissaoDetalhe)}">como se chega nesse valor</span>` : ''}</span>
+      <span>Comissão prevista: <b>${comissaoTxt}</b>${l.comissaoDetalhe ? `<details class="com-detalhe"><summary>como se chega nesse valor</summary>${esc(l.comissaoDetalhe)}</details>` : ''}</span>
       ${l.origem ? '<span>Origem: <b>' + l.origem + '</b></span>' : ''}
     </div>
+    ${linhaRecorrente(l)}
     <div class="lead-line3"><b>Última:</b> ${ultimaAtivTxt}<span class="sep">·</span><b>Próxima ação:</b> ${proximaAcaoTxt}</div>
     ${idadeHtml}
     ${motivoHtml}
@@ -2738,6 +2751,8 @@ if (leadsInativosArr.length === 0) {
     const valorTxt = (l.valor === null || l.valor === undefined) ? 'a definir' : brl(l.valor);
     elInfo.innerHTML = `<span>Valor: <b>${valorTxt}</b></span><span>Origem: <b>${l.origem || '—'}</b></span><span>Próxima ação: <b>${l.proximaAcao || '—'}</b></span>`;
     elObs.textContent = l.obs || '';
+    const recorrente = document.getElementById('leadModalRecorrente');
+    if (recorrente) recorrente.innerHTML = linhaRecorrente(l);
 
     const itens = logDoLead(leadPorRef(nome));
     if (itens.length === 0) {
