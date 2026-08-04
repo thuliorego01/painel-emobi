@@ -261,6 +261,9 @@
     .selo-recorrente { background:#2A2440; border-color:#443A63; color:#C3B2E8; }
     .lead-recorrente { background:#241E33; border-color:#3D3355; color:#C3B2E8; }
     .volta-resumo { background:#241E33; border-color:#3D3355; color:#C6BBDE; }
+    .pv-resumo { background:#241E33; border-color:#3D3355; color:#C6BBDE; }
+    .pv-marco { background:#1E241D; border-color:#2C342A; color:#C3C9BC; }
+    .pv-marco.vencido { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
     .volta-resumo b { color:#DCCDF5; }
     .meta-mensal-resumo { background:#1E241D; border-color:#2C342A; color:#C3C9BC; }
     .mensal-table tr.mes-atual td { background:#232A22; }
@@ -605,6 +608,23 @@
   .bi-modal-lead b { color: var(--text-strong); }
   .bi-modal-lead .bi-fase { font-size: var(--fs-2xs); color:#8A9186; white-space:nowrap; }
   .bi-modal-vazio { font-size: var(--fs-sm); color:#8A9186; }
+  .pv-resumo { font-size: var(--fs-2xs); color:#5C6155; background:#F6F3FC; border:1px solid #E4DCF3;
+    border-radius:9px; padding:9px 12px; margin-bottom:12px; }
+  .pv-resumo b { color:#5B3F8C; }
+  .pv-linha { padding:11px 0; border-bottom:1px solid #F1F2ED; }
+  .pv-linha:last-of-type { border-bottom:none; }
+  .pv-topo { display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+  .pv-nome { font-size: var(--fs-sm); font-weight:800; color: var(--text-strong); }
+  .pv-dias { font-size: var(--fs-2xs); color:#8A9186; white-space:nowrap; }
+  .pv-marco { margin-top:6px; font-size: var(--fs-2xs); color:#5C6155; background:#F8F9F5; border:1px solid #EDEFE9;
+    border-radius:8px; padding:8px 11px; line-height:1.55; }
+  .pv-marco.vencido { background:#FDF6E8; border-color:#EBD9A8; color:#8A5A14; }
+  .pv-quando { display:block; font-weight:800; margin-bottom:2px; }
+  .pv-acao { display:block; }
+  .pv-marco .wa-link { margin-top:6px; }
+  .pv-pendencia { margin-top:6px; font-size: var(--fs-2xs); color:#8A5A14; }
+  .pv-conecta { margin-top:6px; font-size: var(--fs-2xs); color:#6B4E9E; }
+  .pv-sem { font-size: var(--fs-2xs); color:#8A9186; }
   .bi-modal-nota { font-size: var(--fs-2xs); color:#5C6155; background:#F6F7F2; border:1px solid #EDEFE9;
     border-radius:9px; padding:9px 12px; margin-bottom:10px; line-height:1.55; }
   .termo-row.clicavel, .degrau-selo.clicavel { cursor:pointer; }
@@ -1150,6 +1170,9 @@
     <div class="card inativos-wrap" id="inativosWrap">
       <div id="leadsInativosCard"></div>
     </div>
+
+    <div class="section-title" id="posVendaTitulo" style="margin-top:22px;display:none;"><span class="dot" aria-hidden="true"></span>🤝 Clientes fechados — pós-venda</div>
+    <div class="card" id="posVendaCard" style="display:none;"></div>
   </div>
 
   <div class="tab-panel" data-tab="bicomercial" id="panel-bicomercial" role="tabpanel">
@@ -2430,6 +2453,55 @@ function formatarTel(t) {
   return t || '';
 }
 
+// ---- Pós-venda ----
+// Cliente que fechou caía em "Leads Inativos", junto de quem desistiu. É o
+// contrário: 3 dos 13 leads de hoje são gente que já comprou e voltou. Este é
+// o grupo mais valioso da base, e precisa de cadência própria.
+// Os marcos são contados a partir da data de fechamento.
+const POS_VENDA_MARCOS = [
+  { dias: 7,   rotulo: 'Primeira semana', acao: 'Confirmar que a documentação está andando — é a fase de maior ansiedade do cliente.' },
+  { dias: 30,  rotulo: '1 mês',           acao: 'Perguntar como foi a mudança e PEDIR INDICAÇÃO — a satisfação está no pico.', indicacao: true },
+  { dias: 90,  rotulo: '3 meses',         acao: 'Check-in: oferecer ajuda com reforma, decoração ou serviços do bairro.' },
+  { dias: 180, rotulo: '6 meses',         acao: 'Enviar algo útil: valorização do bairro, obras próximas, mercado da região.' },
+  { dias: 365, rotulo: '1 ano',           acao: 'Aniversário da compra: mandar a valorização do imóvel e lembrar da declaração do IR.', indicacao: true },
+  { dias: 730, rotulo: '2 anos',          acao: 'Reavaliar o momento do cliente — pode ser hora de trocar, investir ou indicar.', indicacao: true }
+];
+const POS_VENDA_SCRIPTS = {
+  7:   (n) => `${n}, tudo certo por aí? Passando pra confirmar que a documentação está caminhando bem e pra dizer que qualquer dúvida no processo é só me chamar — mesmo que pareça bobagem.`,
+  30:  (n) => `${n}, já faz um mês! Como foi a mudança, deu tudo certo? Fico feliz de ter participado dessa etapa com você. E se conhecer alguém procurando imóvel, pode me indicar — cuido da pessoa do mesmo jeito que cuidei de você.`,
+  90:  (n) => `${n}, tudo bem? Três meses de casa nova. Se precisar de indicação de alguém pra reforma, marcenaria ou qualquer serviço aqui da região, me chama que eu te passo gente de confiança.`,
+  180: (n) => `${n}, tudo certo? Separei um panorama de como o seu bairro vem se comportando em preço — achei que ia te interessar ver a valorização do imóvel de vocês.`,
+  365: (n) => `${n}, faz um ano da compra! Levantei quanto o imóvel valorizou nesse período. E lembrando: se for a primeira declaração com o imóvel, me chama que eu te ajudo com os documentos pro imposto de renda.`,
+  730: (n) => `${n}, dois anos! Passando pra saber como vocês estão e se o momento mudou — às vezes surge a vontade de trocar, investir, ou ajudar alguém da família a comprar. Estou por aqui.`
+};
+
+function clientesFechados() {
+  return (DATA.leads || []).filter(l => l.fase === 'Fechado Ganho');
+}
+// Qual marco está em aberto: o mais recente já vencido que ainda não foi feito.
+// Nada é guardado — a conta se refaz sozinha a cada dia que passa.
+function marcoPosVenda(l) {
+  if (!l.dataFechamento) return null;
+  const dias = diasDesdeISO(l.dataFechamento);
+  if (dias === null) return null;
+  const feitos = new Set((l.posVendaFeitos || []).map(String));
+  const vencidos = POS_VENDA_MARCOS.filter(m => dias >= m.dias && !feitos.has(String(m.dias)));
+  if (vencidos.length) {
+    const m = vencidos[vencidos.length - 1];
+    return { marco: m, dias, atraso: dias - m.dias, vencido: true };
+  }
+  const proximo = POS_VENDA_MARCOS.find(m => dias < m.dias && !feitos.has(String(m.dias)));
+  return proximo ? { marco: proximo, dias, faltam: proximo.dias - dias, vencido: false } : null;
+}
+function scriptPosVenda(l, m) {
+  const f = POS_VENDA_SCRIPTS[m.dias];
+  return f ? f((l.nome || '').split(' ')[0]) : '';
+}
+function posVendaVencidos() {
+  return clientesFechados().map(l => ({ lead: l, m: marcoPosVenda(l) }))
+    .filter(x => x.m && x.m.vencido);
+}
+
 // ---- Clientes que voltam ----
 // Três casos em duas semanas: Renato Cássio, Caroline Evelin e Camilla Natasha
 // venderam um imóvel comigo e voltaram como compradores. Isso vivia só em texto
@@ -2639,7 +2711,10 @@ function ordenarPorTemperatura(arr) {
 }
 
 const leadsAtivosArr = ordenarPorTemperatura(DATA.leads.filter(l => !FASES_INATIVAS.includes(l.fase)));
-const leadsInativosArr = ordenarPorTemperatura(DATA.leads.filter(l => FASES_INATIVAS.includes(l.fase)));
+// "Fechado Ganho" saiu daqui: cliente que comprou não é lead inativo, é a
+// melhor base que existe. Ele passa a viver na seção de pós-venda.
+const leadsInativosArr = ordenarPorTemperatura(
+  DATA.leads.filter(l => FASES_INATIVAS.includes(l.fase) && l.fase !== 'Fechado Ganho'));
 
 // Agrupa os cards por temperatura, com cabeçalho e contagem. A ordenação por
 // urgência (tempo parado) continua valendo DENTRO de cada grupo.
@@ -3100,6 +3175,17 @@ if (leadsInativosArr.length === 0) {
         const quanto = (atraso !== null && atraso > 0) ? ` — ${atraso}d de atraso` : '';
         const wa = pr.telefone ? `<a class="wa-link" href="${waHref(pr.telefone)}" target="_blank" rel="noopener">💬 Falar</a>` : '';
         return `<div class="acao-item"><span>${pr.nome} (${pr.imovelBairro || 'imóvel a definir'})${quanto}</span>${wa}</div>`;
+      }).join('') + `</div>`;
+  }
+
+  const pv = posVendaVencidos();
+  if (pv.length > 0) {
+    html += `<div class="acao-group"><div class="acao-group-title">🤝 Pós-venda em aberto (${pv.length})</div>` +
+      pv.map(({ lead, m }) => {
+        const dg = String(lead.telefone || '').replace(/\D/g, '');
+        const link = dg ? 'https://wa.me/' + (dg.startsWith('55') ? dg : '55' + dg) + '?text=' + encodeURIComponent(scriptPosVenda(lead, m.marco)) : null;
+        const wa = link ? `<a class="wa-link" href="${link}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+        return `<div class="acao-item"><span>${esc(lead.nome)} — ${esc(m.marco.rotulo)} do fechamento${m.atraso > 0 ? ` (${m.atraso}d de atraso)` : ''}</span>${wa}</div>`;
       }).join('') + `</div>`;
   }
 
@@ -4742,6 +4828,60 @@ function resumirEvento(titulo) {
     const alvo = alvoDe(e).closest('[data-travou],[data-fase-funil]');
     if (alvo) { e.preventDefault(); alvo.dispatchEvent(new MouseEvent('click', { bubbles: true })); }
   });
+})();
+
+(function renderPosVenda() {
+  const card = document.getElementById('posVendaCard');
+  const titulo = document.getElementById('posVendaTitulo');
+  if (!card) return;
+  const fechados = clientesFechados();
+  if (!fechados.length) return;
+  titulo.style.display = ''; card.style.display = '';
+
+  const linhas = fechados.map(l => {
+    const est = marcoPosVenda(l);
+    const dg = String(l.telefone || '').replace(/\D/g, '');
+    const wa = (msg) => dg ? 'https://wa.me/' + (dg.startsWith('55') ? dg : '55' + dg) + (msg ? '?text=' + encodeURIComponent(msg) : '') : null;
+    const neg = (DATA.listaNegociacoes || []).find(n => String(n.compradorLeadId) === String(l.id) || String(n.vendedorLeadId) === String(l.id));
+    const pendente = neg && neg.status !== 'pago' ? neg : null;
+
+    let marcoHtml = '<span class="pv-sem">Sem data de fechamento registrada — me diga a data que a cadência começa.</span>';
+    if (est) {
+      const m = est.marco;
+      const link = wa(scriptPosVenda(l, m));
+      marcoHtml = est.vencido
+        ? `<div class="pv-marco vencido">
+             <span class="pv-quando">${m.rotulo} · vencido há ${est.atraso}d</span>
+             <span class="pv-acao">${esc(m.acao)}</span>
+             ${link ? `<a class="wa-link" href="${link}" target="_blank" rel="noopener">💬 Falar (mensagem pronta)</a>` : ''}
+           </div>`
+        : `<div class="pv-marco">
+             <span class="pv-quando">Próximo toque: ${m.rotulo}, em ${est.faltam}d</span>
+             <span class="pv-acao">${esc(m.acao)}</span>
+           </div>`;
+    }
+    const jaIndicador = (DATA.conectaTR && DATA.conectaTR.indicadoresLista || [])
+      .some(i => String(i.nome || '').toLowerCase().includes(String(l.nome || '').split(' ')[0].toLowerCase()));
+    return `<div class="pv-linha">
+      <div class="pv-topo">
+        <span class="pv-nome">${esc(l.nome)}</span>
+        <span class="pv-dias">${l.dataFechamento ? 'fechou há ' + diasDesdeISO(l.dataFechamento) + 'd' : ''}</span>
+      </div>
+      ${pendente ? `<div class="pv-pendencia">⏳ Comissão de <b>${brl(pendente.comissao)}</b> ainda não recebida — ${esc(pendente.imovel)}.</div>` : ''}
+      ${marcoHtml}
+      ${!jaIndicador ? `<div class="pv-conecta">💡 Ainda não está no Conecta TR. Cliente satisfeito é o melhor indicador — vale convidar.</div>` : ''}
+    </div>`;
+  }).join('');
+
+  const vencidos = posVendaVencidos().length;
+  card.innerHTML =
+    `<div class="pv-resumo">${fechados.length} ${fechados.length === 1 ? 'cliente fechado' : 'clientes fechados'}` +
+    (vencidos ? ` · <b>${vencidos}</b> com toque de pós-venda vencido` : ' · nenhum toque vencido') + `</div>` +
+    linhas +
+    `<details class="fech-nota"><summary>A cadência de pós-venda</summary>
+      ${POS_VENDA_MARCOS.map(m => `<b>${m.rotulo}</b> (${m.dias}d) — ${esc(m.acao)}`).join('<br>')}
+      <br><br>Os marcos contam da data de fechamento e se recalculam sozinhos. Quando eu registrar que você fez um toque, ele sai da lista e o próximo assume.
+    </details>`;
 })();
 
 (function renderProspeccao() {
