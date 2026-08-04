@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-03T02:10:00-03:00",
+  "ultimaAtualizacao": "2026-08-04T10:35:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -220,10 +220,10 @@
       "temperatura": "Quente",
       "valor": 575000,
       "comissaoPrevista": 12075.0,
-      "proximaAcao": "Acompanhar leitura do contrato pela Diana — vendedores já validaram",
-      "dataProximaAcao": "2026-08-03",
+      "proximaAcao": "Confirmar a assinatura do contrato hoje e registrar o sinal",
+      "dataProximaAcao": "2026-08-04",
       "status": "Em dia",
-      "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Cód. 5485 do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607 do Porto Arena. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar. [01/08] Valor do negócio: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento.",
+      "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Cód. 5485 do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607 do Porto Arena. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar. [01/08] Valor do negócio: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento. [04/08] Entrou na fase de assinatura de contrato — assinatura prevista para hoje.",
       "imoveisCompativeis": [
         "Cód. 5485"
       ],
@@ -2088,6 +2088,13 @@
       "lead": "Carteira de imóveis",
       "tipo": "Outro",
       "resumo": "Telefones dos proprietários vinculados em 10 imóveis. Cód. 10572, 6830 e 9266 retirados da carteira — são imóveis da Emobi, não captações de Thúlio."
+    },
+    {
+      "data": "04/08/2026 10:30",
+      "leadId": 6,
+      "lead": "Diana Rêgo",
+      "tipo": "Em Negociação",
+      "resumo": "Entrou na fase de assinatura de contrato — deve assinar ainda hoje (04/08). Imóvel: apartamento 607 do Porto Arena (Cód. 5485), R$575.000,00."
     }
   ]
 }
