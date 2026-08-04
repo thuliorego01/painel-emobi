@@ -624,7 +624,16 @@
   .pv-marco .wa-link { margin-top:6px; }
   .pv-pendencia { margin-top:6px; font-size: var(--fs-2xs); color:#8A5A14; }
   .pv-conecta { margin-top:6px; font-size: var(--fs-2xs); color:#6B4E9E; }
-  .pv-sem { font-size: var(--fs-2xs); color:#8A9186; }
+  .pv-selos { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-top:5px; }
+  .pv-passo { padding:9px 0 9px 14px; border-left:3px solid #E4E7DF; margin-left:3px; }
+  .pv-passo + .pv-passo { border-top:1px solid #F6F7F2; }
+  .pv-passo-topo { display:flex; align-items:baseline; gap:8px; font-size: var(--fs-sm); color: var(--text-strong); }
+  .pv-passo-quando { font-size: var(--fs-2xs); color:#8A9186; font-weight:600; }
+  .pv-passo-acao { display:block; font-size: var(--fs-2xs); color:#5C6155; margin-top:2px; line-height:1.5; }
+  .pv-passo.feito { border-left-color:#7BA05B; opacity:.6; }
+  .pv-passo.vencido { border-left-color:#C4571F; background:#FDF6E8; border-radius:0 8px 8px 0; }
+  .pv-passo.futuro { opacity:.75; }
+  .pv-passo .wa-link { margin-top:7px; }
   .bi-modal-nota { font-size: var(--fs-2xs); color:#5C6155; background:#F6F7F2; border:1px solid #EDEFE9;
     border-radius:9px; padding:9px 12px; margin-bottom:10px; line-height:1.55; }
   .termo-row.clicavel, .degrau-selo.clicavel { cursor:pointer; }
@@ -4838,51 +4847,122 @@ function resumirEvento(titulo) {
   if (!fechados.length) return;
   titulo.style.display = ''; card.style.display = '';
 
-  const linhas = fechados.map(l => {
-    const est = marcoPosVenda(l);
-    const dg = String(l.telefone || '').replace(/\D/g, '');
-    const wa = (msg) => dg ? 'https://wa.me/' + (dg.startsWith('55') ? dg : '55' + dg) + (msg ? '?text=' + encodeURIComponent(msg) : '') : null;
-    const neg = (DATA.listaNegociacoes || []).find(n => String(n.compradorLeadId) === String(l.id) || String(n.vendedorLeadId) === String(l.id));
-    const pendente = neg && neg.status !== 'pago' ? neg : null;
+  // Com um cliente, lista simples resolve. Com trinta, vira parede de rolagem.
+  // Mesmo padrão dos bairros e do Conecta TR: grupos recolhíveis, linha
+  // compacta e o detalhe numa janela. O que está vencido nasce aberto —
+  // é o único grupo que representa trabalho a fazer.
+  const comEstado = fechados.map(l => ({ l, est: marcoPosVenda(l) }));
+  const GRUPOS = [
+    { chave: 'vencido', rotulo: 'Com toque vencido', aberto: true,
+      filtro: x => x.est && x.est.vencido },
+    { chave: 'emdia', rotulo: 'Em dia', aberto: false,
+      filtro: x => x.est && !x.est.vencido },
+    { chave: 'semdata', rotulo: 'Sem data de fechamento', aberto: false,
+      filtro: x => !x.est }
+  ];
 
-    let marcoHtml = '<span class="pv-sem">Sem data de fechamento registrada — me diga a data que a cadência começa.</span>';
-    if (est) {
-      const m = est.marco;
-      const link = wa(scriptPosVenda(l, m));
-      marcoHtml = est.vencido
-        ? `<div class="pv-marco vencido">
-             <span class="pv-quando">${m.rotulo} · vencido há ${est.atraso}d</span>
-             <span class="pv-acao">${esc(m.acao)}</span>
-             ${link ? `<a class="wa-link" href="${link}" target="_blank" rel="noopener">💬 Falar (mensagem pronta)</a>` : ''}
-           </div>`
-        : `<div class="pv-marco">
-             <span class="pv-quando">Próximo toque: ${m.rotulo}, em ${est.faltam}d</span>
-             <span class="pv-acao">${esc(m.acao)}</span>
-           </div>`;
-    }
-    const jaIndicador = (DATA.conectaTR && DATA.conectaTR.indicadoresLista || [])
-      .some(i => String(i.nome || '').toLowerCase().includes(String(l.nome || '').split(' ')[0].toLowerCase()));
-    return `<div class="pv-linha">
+  const linha = (x) => {
+    const { l, est } = x;
+    const neg = (DATA.listaNegociacoes || []).find(n =>
+      String(n.compradorLeadId) === String(l.id) || String(n.vendedorLeadId) === String(l.id));
+    const pendente = neg && neg.status !== 'pago' ? neg : null;
+    const chip = est
+      ? (est.vencido
+          ? `<span class="fu-chip atrasado">${esc(est.marco.rotulo)} · ${est.atraso}d de atraso</span>`
+          : `<span class="fu-chip em-dia">${esc(est.marco.rotulo)} em ${est.faltam}d</span>`)
+      : '<span class="fu-chip sem-tel">sem data de fechamento</span>';
+    return `<div class="pv-linha bi-clicavel" role="button" tabindex="0" data-posvenda="${l.id}">
       <div class="pv-topo">
         <span class="pv-nome">${esc(l.nome)}</span>
         <span class="pv-dias">${l.dataFechamento ? 'fechou há ' + diasDesdeISO(l.dataFechamento) + 'd' : ''}</span>
       </div>
-      ${pendente ? `<div class="pv-pendencia">⏳ Comissão de <b>${brl(pendente.comissao)}</b> ainda não recebida — ${esc(pendente.imovel)}.</div>` : ''}
-      ${marcoHtml}
-      ${!jaIndicador ? `<div class="pv-conecta">💡 Ainda não está no Conecta TR. Cliente satisfeito é o melhor indicador — vale convidar.</div>` : ''}
+      <div class="pv-selos">
+        ${chip}
+        ${pendente ? `<span class="fu-chip comissao">⏳ ${brl(pendente.comissao)} a receber</span>` : ''}
+      </div>
     </div>`;
-  }).join('');
+  };
 
-  const vencidos = posVendaVencidos().length;
-  card.innerHTML =
-    `<div class="pv-resumo">${fechados.length} ${fechados.length === 1 ? 'cliente fechado' : 'clientes fechados'}` +
-    (vencidos ? ` · <b>${vencidos}</b> com toque de pós-venda vencido` : ' · nenhum toque vencido') + `</div>` +
-    linhas +
-    `<details class="fech-nota"><summary>A cadência de pós-venda</summary>
+  const vencidos = comEstado.filter(x => x.est && x.est.vencido).length;
+  let html = `<div class="pv-resumo">${fechados.length} ${fechados.length === 1 ? 'cliente fechado' : 'clientes fechados'}` +
+    (vencidos ? ` · <b>${vencidos}</b> com toque de pós-venda vencido` : ' · nenhum toque vencido') + `</div>`;
+
+  GRUPOS.forEach(g => {
+    const itens = comEstado.filter(g.filtro);
+    if (!itens.length) return;
+    itens.sort((a, b) => ((b.est && b.est.atraso) || 0) - ((a.est && a.est.atraso) || 0));
+    html += `<div class="bairro-grupo${g.aberto ? ' open' : ''}" role="button" tabindex="0" aria-expanded="${g.aberto}" data-pv-grupo="${g.chave}">` +
+      `<span class="bairro-chev" aria-hidden="true">▶</span>` +
+      `<span class="bairro-nome">${g.rotulo}</span>` +
+      `<span class="bairro-qtd">${itens.length}</span></div>` +
+      `<div class="bairro-corpo${g.aberto ? ' open' : ''}" data-pv-corpo="${g.chave}">${itens.map(linha).join('')}</div>`;
+  });
+
+  html += `<details class="fech-nota"><summary>A cadência de pós-venda</summary>
       ${POS_VENDA_MARCOS.map(m => `<b>${m.rotulo}</b> (${m.dias}d) — ${esc(m.acao)}`).join('<br>')}
-      <br><br>Os marcos contam da data de fechamento e se recalculam sozinhos. Quando eu registrar que você fez um toque, ele sai da lista e o próximo assume.
+      <br><br>Os marcos contam da data de fechamento e se recalculam sozinhos. Clique num cliente para ver a linha do tempo dele e a mensagem pronta.
     </details>`;
+  card.innerHTML = html;
+
+  card.addEventListener('click', (e) => {
+    const cab = alvoDe(e).closest('[data-pv-grupo]');
+    if (cab) {
+      const corpo = card.querySelector(`[data-pv-corpo="${cab.dataset.pvGrupo}"]`);
+      const abrir = !corpo.classList.contains('open');
+      corpo.classList.toggle('open', abrir);
+      cab.classList.toggle('open', abrir);
+      cab.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+      return;
+    }
+    const item = alvoDe(e).closest('[data-posvenda]');
+    if (item) abrirPosVenda(item.dataset.posvenda);
+  });
+  card.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const alvo = alvoDe(e).closest('[data-pv-grupo],[data-posvenda]');
+    if (alvo) { e.preventDefault(); alvo.dispatchEvent(new MouseEvent('click', { bubbles: true })); }
+  });
 })();
+
+// Linha do tempo do pós-venda de um cliente: o que já passou, o que está em
+// aberto e o que ainda vem — com a mensagem pronta do marco atual.
+function abrirPosVenda(id) {
+  const l = leadPorRef(id);
+  if (!l) return;
+  const over = document.getElementById('biModalOverlay');
+  if (!over) return;
+  const est = marcoPosVenda(l);
+  const dias = l.dataFechamento ? diasDesdeISO(l.dataFechamento) : null;
+  const feitos = new Set((l.posVendaFeitos || []).map(String));
+  const neg = (DATA.listaNegociacoes || []).find(n =>
+    String(n.compradorLeadId) === String(l.id) || String(n.vendedorLeadId) === String(l.id));
+  const dg = String(l.telefone || '').replace(/\D/g, '');
+  const waBase = dg ? 'https://wa.me/' + (dg.startsWith('55') ? dg : '55' + dg) : null;
+
+  document.getElementById('biModalTitulo').textContent = l.nome;
+  document.getElementById('biModalCorpo').innerHTML =
+    (l.dataFechamento
+      ? `<div class="bi-modal-nota">Fechou em <b>${l.dataFechamento.split('-').reverse().join('/')}</b> — há ${dias} dias.</div>`
+      : `<div class="bi-modal-nota">Sem data de fechamento registrada. Me diga a data e a cadência começa a rodar.</div>`) +
+    (neg ? `<div class="bi-modal-lead"><span>Negócio</span><b>${esc(neg.imovel)}</b></div>
+            <div class="bi-modal-lead"><span>Comissão</span><b>${brl(neg.comissao)} · ${neg.status === 'pago' ? 'recebida' : 'a receber'}</b></div>` : '') +
+    `<div class="modal-timeline-title">🤝 Linha do tempo do pós-venda</div>` +
+    POS_VENDA_MARCOS.map(m => {
+      const feito = feitos.has(String(m.dias));
+      const vencido = dias !== null && dias >= m.dias && !feito;
+      const classe = feito ? 'feito' : (vencido ? 'vencido' : 'futuro');
+      const quando = dias === null ? '' :
+        (dias >= m.dias ? `há ${dias - m.dias}d` : `em ${m.dias - dias}d`);
+      const link = waBase && vencido ? `${waBase}?text=${encodeURIComponent(scriptPosVenda(l, m))}` : null;
+      return `<div class="pv-passo ${classe}">
+        <span class="pv-passo-topo"><b>${m.rotulo}</b> <span class="pv-passo-quando">${quando}</span></span>
+        <span class="pv-passo-acao">${esc(m.acao)}</span>
+        ${link ? `<a class="wa-link" href="${link}" target="_blank" rel="noopener">💬 Falar (mensagem pronta)</a>` : ''}
+      </div>`;
+    }).join('');
+  over.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
 
 (function renderProspeccao() {
   const list = document.getElementById('prospeccaoList');

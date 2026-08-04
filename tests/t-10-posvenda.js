@@ -13,9 +13,35 @@ module.exports = { nome: 'Pós-venda: seção própria e cadência viva', rodar:
   fechados.forEach(l => assert(!inativos.includes(l.nome),
     l.nome + ' fechou negócio e não pode aparecer como lead inativo'));
 
-  const card = txt(doc.getElementById('posVendaCard'));
+  const el = doc.getElementById('posVendaCard');
+  const card = txt(el);
   fechados.forEach(l => assert(card.includes(l.nome), l.nome + ' deveria estar no pós-venda'));
-  assert(/Próximo toque|vencido há/.test(card), 'falta dizer qual é o próximo toque');
+
+  // Com muitos clientes isso não pode virar parede de rolagem: grupos
+  // recolhíveis, e só o que está vencido nasce aberto.
+  const grupos = [...el.querySelectorAll('[data-pv-grupo]')];
+  assert(grupos.length > 0, 'o pós-venda precisa ser agrupado, não uma lista corrida');
+  grupos.forEach(g => {
+    const corpo = el.querySelector(`[data-pv-corpo="${g.dataset.pvGrupo}"]`);
+    assert(corpo, 'grupo sem corpo correspondente: ' + g.dataset.pvGrupo);
+    const deveAbrir = g.dataset.pvGrupo === 'vencido';
+    assert(corpo.classList.contains('open') === deveAbrir,
+      `grupo "${g.dataset.pvGrupo}" ${deveAbrir ? 'deveria nascer aberto' : 'deveria nascer recolhido'}`);
+  });
+  const primeiro = grupos[0];
+  const corpo1 = el.querySelector(`[data-pv-corpo="${primeiro.dataset.pvGrupo}"]`);
+  const antes = corpo1.classList.contains('open');
+  primeiro.dispatchEvent(new dom.window.MouseEvent('click', { bubbles: true }));
+  assert(corpo1.classList.contains('open') !== antes, 'o grupo não alterna no clique');
+
+  // Cada cliente abre a linha do tempo dele — não depende de hover.
+  const item = el.querySelector('[data-posvenda]');
+  assert(item, 'linha de cliente não é clicável');
+  item.dispatchEvent(new dom.window.MouseEvent('click', { bubbles: true }));
+  const jan = txt(doc.getElementById('biModalCorpo'));
+  assert(/Linha do tempo do pós-venda/.test(jan), 'a janela não mostra a linha do tempo');
+  assert(/Primeira semana/.test(jan) && /1 ano/.test(jan), 'a linha do tempo está incompleta');
+  assert(doc.querySelectorAll('#biModalCorpo .pv-passo').length === 6, 'esperava os 6 marcos da cadência');
 
   // Comissão ainda não recebida precisa aparecer no pós-venda: é dinheiro
   // fechado que depende de terceiro e some da vista.
