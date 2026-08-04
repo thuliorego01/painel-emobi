@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-04T15:10:00-03:00",
+  "ultimaAtualizacao": "2026-08-04T15:45:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -50,7 +50,8 @@
       "comissao": 17750,
       "mes": "Abril",
       "status": "pago",
-      "tipo": "Venda"
+      "tipo": "Venda",
+      "nota": "Vendedora: Caroline Evelin — voltou em 08/2026 como compradora de lote no Alphaville."
     },
     {
       "imovel": "Central Park (3-803)",
@@ -369,17 +370,17 @@
       "id": 14,
       "nome": "Caroline Evelin",
       "telefone": "84994769229",
-      "origem": "A definir",
+      "origem": "Relacionamento",
       "dataEntrada": "2026-08-04",
-      "fase": "Qualificado",
-      "maiorFaseIndex": 3,
+      "fase": "Visita Realizada",
+      "maiorFaseIndex": 5,
       "temperatura": "Quente",
       "valor": null,
       "comissaoPrevista": null,
       "proximaAcao": "Destravar a questão do lote e avançar para a proposta no N2-17 (Alphaville Pium)",
-      "dataProximaAcao": "2026-08-07",
+      "dataProximaAcao": "2026-08-06",
       "status": "Em dia",
-      "obs": "Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já foram apresentados 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta.",
+      "obs": "Cliente de relacionamento: foi a VENDEDORA do Maria Bernadete (803), vendido em abril/2026 por R$635.000. Agora volta como COMPRADORA. Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já visitou 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta.",
       "imoveisCompativeis": [],
       "interesse": "lote plano no Alphaville para construir casa térrea"
     }
@@ -2181,6 +2182,13 @@
       "lead": "Caroline Evelin",
       "tipo": "Outro",
       "resumo": "Inclinada a fazer proposta no lote N2-17 do Alphaville Pium, do corretor Alon Nunes. Trabalhando a questão para avançar até a proposta."
+    },
+    {
+      "data": "04/08/2026 15:40",
+      "leadId": 14,
+      "lead": "Caroline Evelin",
+      "tipo": "Visita Realizada",
+      "resumo": "Correção: os 3 lotes do Alphaville foram visitados, não apenas apresentados. Origem corrigida para Relacionamento — ela foi a vendedora do Maria Bernadete (803), negócio fechado em abril/2026."
     }
   ]
 }
