@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-04T14:40:00-03:00",
+  "ultimaAtualizacao": "2026-08-04T15:10:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -364,6 +364,24 @@
       "imoveisCompativeis": [],
       "interesse": "apto 404, Jardim Satélite — fechando por R$122.500",
       "comissaoDetalhe": "R$ 122.500 × 5% = R$ 6.125,00 · dividido com Natália Barbosa → R$ 3.062,50 · sua parte 70% → R$ 2.143,75"
+    },
+    {
+      "id": 14,
+      "nome": "Caroline Evelin",
+      "telefone": "84994769229",
+      "origem": "A definir",
+      "dataEntrada": "2026-08-04",
+      "fase": "Qualificado",
+      "maiorFaseIndex": 3,
+      "temperatura": "Quente",
+      "valor": null,
+      "comissaoPrevista": null,
+      "proximaAcao": "Destravar a questão do lote e avançar para a proposta no N2-17 (Alphaville Pium)",
+      "dataProximaAcao": "2026-08-07",
+      "status": "Em dia",
+      "obs": "Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já foram apresentados 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta.",
+      "imoveisCompativeis": [],
+      "interesse": "lote plano no Alphaville para construir casa térrea"
     }
   ],
   "imoveis": [
@@ -2149,6 +2167,20 @@
       "lead": "Diana Rêgo",
       "tipo": "Outro",
       "resumo": "Unidade confirmada: apartamento 607, BLOCO C do Porto Arena (Candelária)."
+    },
+    {
+      "data": "04/08/2026 15:00",
+      "leadId": 14,
+      "lead": "Caroline Evelin",
+      "tipo": "Novo Lead",
+      "resumo": "Novo lead cadastrado, temperatura Quente. Procura lote PLANO no Alphaville para construir casa térrea. Já foram apresentados 3 lotes."
+    },
+    {
+      "data": "04/08/2026 15:05",
+      "leadId": 14,
+      "lead": "Caroline Evelin",
+      "tipo": "Outro",
+      "resumo": "Inclinada a fazer proposta no lote N2-17 do Alphaville Pium, do corretor Alon Nunes. Trabalhando a questão para avançar até a proposta."
     }
   ]
 }
