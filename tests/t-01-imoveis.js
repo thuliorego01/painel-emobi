@@ -39,4 +39,24 @@ module.exports = { nome: 'Imóveis: cidade, bairro e telefones', rodar: async ()
   const alvo = card.querySelector('[data-imovel]');
   alvo.dispatchEvent(new dom.window.Event('click', { bubbles: true }));
   assert(doc.getElementById('imovelModalOverlay').classList.contains('open'), 'a janela do imóvel não abriu');
+
+  // Aluguel e preço de venda são grandezas diferentes. Sem separar, um
+  // apartamento de R$4.500/mês entra na faixa "até R$300 mil" como se fosse
+  // um imóvel de R$4.500, e engorda o "em carteira" da cidade.
+  const DATA = dom.window.eval('DATA');
+  const locacoes = (DATA.imoveis || []).filter(i => i.tipoOperacao === 'Locação' && i.status !== 'Vendido');
+  if (locacoes.length) {
+    const cod = (locacoes[0].nome.match(/Cód\.\s*(\d+)/) || [])[1];
+    assert(/\/mês/.test(card.textContent), 'valor de locação precisa do "/mês"');
+    assert(card.querySelector('.fu-chip.locacao'), 'falta o selo de Locação no card');
+    const faixa = doc.getElementById('filtroValor');
+    faixa.value = '0-300000';
+    faixa.dispatchEvent(new dom.window.Event('change', { bubbles: true }));
+    await new Promise(r => setTimeout(r, 200));
+    assert(!doc.getElementById('imoveisCard').textContent.includes('Cód. ' + cod),
+      'locação apareceu numa faixa de preço de venda');
+    faixa.value = '';
+    faixa.dispatchEvent(new dom.window.Event('change', { bubbles: true }));
+    await new Promise(r => setTimeout(r, 200));
+  }
 }};

@@ -720,6 +720,7 @@
   .fu-chip.aproximando { color:#8A6A2E; background:#FFF9E6; border-color:#F0E2B0; }
   .fu-chip.atrasado { color:#B4300F; background:#FDECE6; border-color:#F3CDBE; }
   .fu-chip.sem-tel { color:#8A5A14; background:#FDF6E8; border-color:#EBD9A8; }
+  .fu-chip.locacao { color:#2C5C8A; background:#EAF2F8; border-color:#C6DBEA; }
   .fu-chip.comissao { color:#2E7D32; background:#EDF4E8; border-color:#D8E5D0; }
 
   /* Cidade como divisor leve; bairro como grupo recolhível — mesmo padrão do
@@ -3315,7 +3316,10 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
 
   function renderCard(im) {
     const badgeClass = statusClass[im.status] || 'em-captacao';
-    const valorTxt = im.valor ? brl(im.valor) : 'a definir';
+    // Aluguel e preço de venda são grandezas diferentes; sem o "/mês" um
+    // apartamento de R$4.500 parece uma pechincha absurda na lista.
+    const locacao = im.tipoOperacao === 'Locação';
+    const valorTxt = im.valor ? (brl(im.valor) + (locacao ? '/mês' : '')) : 'a definir';
     const fu = followupStatus(im);
     const semTel = !im.telefone;
     const card = document.createElement('div');
@@ -3333,6 +3337,7 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
       </div>
       <div class="imovel-linha-sub">
         <span>${esc(im.bairro || 'bairro a definir')}${im.detalhes ? ' · ' + esc(String(im.detalhes).split(',').slice(0, 2).join(',')) : ''}</span>
+        ${locacao ? '<span class="fu-chip locacao">Locação</span>' : ''}
         ${fu ? `<span class="fu-chip ${fu.cls}">${esc(fu.label.replace(/Follow-up /, ''))}</span>` : ''}
         ${semTel ? '<span class="fu-chip sem-tel">☎ sem telefone</span>' : ''}
       </div>`;
@@ -3411,6 +3416,9 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
     if (filtroBairroEl.value && im.bairro !== filtroBairroEl.value) return false;
     if (filtroStatusEl.value && im.status !== filtroStatusEl.value) return false;
     if (filtroValorEl.value) {
+      // Faixa de valor é de venda: um aluguel de R$4.500 cairia sempre na
+      // faixa mais barata e apareceria como se fosse um imóvel de R$4.500.
+      if (im.tipoOperacao === 'Locação') return false;
       const [min, max] = filtroValorEl.value.split('-').map(Number);
       if (im.valor === null || im.valor === undefined) return false;
       if (im.valor < min || im.valor > max) return false;
@@ -3488,14 +3496,19 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
 
   cidades.forEach(cidade => {
     const daCidade = porCidade[cidade];
-    const somaCidade = daCidade.reduce((s, im) => s + (im.valor || 0), 0);
+    // "Em carteira" é valor de venda. Somar aluguel mensal aqui misturaria
+    // duas grandezas; as locações são contadas à parte.
+    const paraVenda = daCidade.filter(im => im.tipoOperacao !== 'Locação');
+    const locacoes = daCidade.length - paraVenda.length;
+    const somaCidade = paraVenda.reduce((s, im) => s + (im.valor || 0), 0);
     const rotuloCidade = document.createElement('div');
     rotuloCidade.className = 'cidade-rotulo';
     rotuloCidade.innerHTML =
       `<svg class="cidade-pin" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>` +
       `<span class="cidade-nome">${esc(cidade)}</span>` +
       `<span class="cidade-meta"><b>${daCidade.length}</b> ${daCidade.length === 1 ? 'imóvel' : 'imóveis'}` +
-      (somaCidade > 0 ? ` · <b>${valorCompacto(somaCidade)}</b> em carteira` : '') + `</span>`;
+      (somaCidade > 0 ? ` · <b>${valorCompacto(somaCidade)}</b> em carteira` : '') +
+      (locacoes > 0 ? ` · ${locacoes} p/ locação` : '') + `</span>`;
     imoveisCard.appendChild(rotuloCidade);
 
     const porBairro = {};
@@ -3586,7 +3599,7 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
       (im.tipoOperacao === 'Locação' ? ' <span class="fu-chip">Locação</span>' : '');
     imBody.innerHTML = `
       <div class="lead-meta">
-        <span>💰 <b>${im.valor ? brl(im.valor) : 'valor a definir'}</b></span>
+        <span>💰 <b>${im.valor ? (brl(im.valor) + (im.tipoOperacao === 'Locação' ? '/mês' : '')) : 'valor a definir'}</b>${im.tipoOperacao === 'Locação' ? ' <span class="fu-chip locacao">Locação</span>' : ''}</span>
         ${im.tipo ? `<span>${esc(im.tipo)}</span>` : ''}
         ${im.dataCaptacao ? `<span>Captado em <b>${String(im.dataCaptacao).split('-').reverse().join('/')}</b></span>` : ''}
       </div>
