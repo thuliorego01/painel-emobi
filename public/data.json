@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-04T11:05:00-03:00",
+  "ultimaAtualizacao": "2026-08-04T11:35:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -834,15 +834,15 @@
       "endereco": "Avenida Amintas Barros, Lagoa Nova - Natal/RN",
       "valor": 4500,
       "detalhes": "3 quartos (3 suítes), 5 banheiros, 2 vagas, 101m² privativos",
-      "proprietario": "A definir",
-      "telefone": null,
+      "proprietario": "Juliska Azevedo",
+      "telefone": "84994072677",
       "link": "https://emobiimobiliaria.com.br/imovel/7768/apartamento-3-quartos-lagoa-nova-natal/",
       "status": "Disponível",
       "tipoOperacao": "Locação",
       "pctComissao": null,
       "dataCaptacao": "2026-08-04",
       "ultimaInteracaoProprietario": "2026-08-04",
-      "obs": "Edifício Bacara, 11º andar. Locação por R$4.500,00 com todas as taxas inclusas. Captação com EXCLUSIVIDADE. Pet friendly. 3 suítes com móveis planejados, escritório montado, cozinha planejada, varanda, área e banheiro de serviço, banheiro social. Condomínio com piscina adulto e infantil, deck molhado, academia, salão de festas com área gourmet, salão de jogos, portaria 24h e controle de acesso. Atenção: o anúncio no site traz uma linha dizendo \"Capim Macio\" no texto — o imóvel é em Lagoa Nova, precisa corrigir."
+      "obs": "Edifício Bacara, 11º andar. Locação por R$4.500,00 com todas as taxas inclusas. Captação com EXCLUSIVIDADE. Pet friendly. 3 suítes com móveis planejados, escritório montado, cozinha planejada, varanda, área e banheiro de serviço, banheiro social. Condomínio com piscina adulto e infantil, deck molhado, academia, salão de festas com área gourmet, salão de jogos, portaria 24h e controle de acesso. O texto do anúncio citava \"Capim Macio\" por engano — corrigido no sistema em 04/08, o imóvel é em Lagoa Nova."
     }
   ],
   "historico": {
@@ -2119,6 +2119,12 @@
       "lead": "Carteira de imóveis",
       "tipo": "Outro",
       "resumo": "Nova captação para LOCAÇÃO: Cód. 7768 — Apartamento 3 suítes, 101m², Edifício Bacara (Av. Amintas Barros, Lagoa Nova). R$4.500,00/mês com taxas inclusas, com exclusividade."
+    },
+    {
+      "data": "04/08/2026 11:30",
+      "lead": "Carteira de imóveis",
+      "tipo": "Outro",
+      "resumo": "Cód. 7768: proprietária Juliska Azevedo, (84) 99407-2677. Bairro do anúncio corrigido no sistema — é Lagoa Nova."
     }
   ]
 }
