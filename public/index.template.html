@@ -266,6 +266,8 @@
     .lembrete-btn { background:#232A22; border-color:#39423577; color:#C3C9BC; }
     .prox-vencer { border-top-color:#2C342A; }
     .prestes-resumo { background:#1E241D; border-color:#2C342A; color:#C3C9BC; }
+    .ctr-parada { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
+    .ctr-bonus { background:#241E33; border-color:#3D3355; color:#C6BBDE; }
     .prestes-linha { border-bottom-color:#232A22; }
     .kpi-group-item.kpi-clicavel:hover { background:#232A22; }
     .prox-linha { border-bottom-color:#232A22; }
@@ -649,6 +651,12 @@
   .ano-frase { margin-top:12px; font-size: var(--fs-sm); color:#5C6155; }
   .ano-frase.atras b { color:#B4300F; }
   .ano-frase.frente b { color:#2E7D32; }
+  .ctr-parada { font-size: var(--fs-2xs); color:#8A5A14; background:#FDF6E8; border:1px solid #EBD9A8;
+    border-radius:9px; padding:9px 12px; margin-bottom:10px; line-height:1.55; }
+  .ctr-bonus { font-size: var(--fs-2xs); color:#5B3F8C; background:#F6F3FC; border:1px solid #E4DCF3;
+    border-radius:9px; padding:9px 12px; margin-bottom:10px; line-height:1.55; }
+  .ctr-mini-chip.alerta { color:#8A5A14; background:#FDF6E8; border-color:#EBD9A8; }
+  .ind-rendeu { display:block; font-size: var(--fs-2xs); color:#5B3F8C; margin-top:3px; }
   .prestes-resumo { font-size: var(--fs-2xs); color:#5C6155; background:#F8F9F5; border:1px solid #EDEFE9;
     border-radius:9px; padding:9px 12px; margin-bottom:10px; }
   .prestes-linha { display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
@@ -1385,7 +1393,7 @@
       <div class="kpi-group">
         <div class="kpi-group-item">
           <div class="kpi-group-label"><span class="icon">💰</span> Valor Devido em Aberto</div>
-          <div class="kpi-group-vals"><div class="kpi-group-value" id="ctrValorDevido">—</div></div>
+          <div class="kpi-group-vals"><div class="kpi-group-value" id="ctrValorDevido">—</div><div class="kpi-group-hint" id="ctrValorDevidoHint">—</div></div>
         </div>
         <div class="kpi-group-item">
           <div class="kpi-group-label"><span class="icon">🏗️</span> V.G.V. Indicado e Captado</div>
@@ -1393,6 +1401,8 @@
         </div>
       </div>
     </div>
+    <div class="ctr-parada" id="ctrParadas" style="display:none;"></div>
+    <div class="ctr-bonus" id="ctrBonus"></div>
     <div style="font-size:var(--fs-xs);color:#8A9186;margin-bottom:14px;">💡 Clique num card acima para ver só aquele grupo — clique de novo pra voltar a ver tudo.</div>
     <div class="card" id="ctrIndicadoresCard" style="margin-bottom:16px;">
       <h3>🧑‍🤝‍🧑 Quem está indicando</h3>
@@ -4362,50 +4372,37 @@ new Chart(document.getElementById('chartHistoricoAno'), {
 // ---- Conecta TR ----
 (function renderConectaTR() {
   const ctr = DATA.conectaTR || {};
-  // Contadores calculados ao vivo a partir de indicadoresLista/lista — nunca ficam dessincronizados.
-  const ctrIndicadoresAtivos = (ctr.indicadoresLista || []).filter(i => i.status === 'Ativo').length;
-  const ctrItens = ctr.lista || [];
-  const ctrRegistradas = ctrItens.filter(it => it.status === 'Registrada').length;
-  const ctrCaptadas = ctrItens.filter(it => it.status === 'Captada').length;
-  const ctrVendidas = ctrItens.filter(it => it.status === 'Vendida').length;
-  const ctrValorDevido = ctrItens.filter(it => it.status !== 'Encerrada' && it.status !== 'Perdida').reduce((s, it) => s + (it.valorDevido || 0), 0);
-  // V.G.V. dos imóveis que passaram de "Registrada" (ou seja, já foram captados de fato via indicação),
-  // somando o valor de venda do imóvel vinculado na aba Imóveis — exclui locações, igual ao V.G.V. da Home.
-  // Faz o match pelo "Cód. NNNNN" citado no campo "imovel" da indicação (a posição no array não é confiável,
-  // já que a ordem do array não segue o ID da planilha). Sem "Cód." no texto, não há como casar com segurança
-  // — melhor deixar de fora da soma do que arriscar somar o imóvel errado.
-  const ctrVgvCaptado = ctrItens
-    .filter(it => it.status === 'Captada' || it.status === 'Vendida' || it.status === 'Encerrada')
-    .reduce((s, it) => {
-      const codMatch = (it.imovel || '').match(/Cód\.?\s*(\d+)/i);
-      if (!codMatch) return s;
-      const imovel = (DATA.imoveis || []).find(i => (i.nome || '').includes(codMatch[1]));
-      if (!imovel || imovel.tipoOperacao === 'Locação') return s;
-      return s + (imovel.valor || 0);
+  // O vínculo era o ÍNDICE da posição no array de imóveis. Bastou remover três
+  // imóveis para 4 de 6 indicações passarem a apontar para o imóvel errado, e
+  // uma para o vazio — em silêncio, porque a tela mostrava só "ID 25".
+  function imovelDaIndicacao(it) {
+    if (!it || !it.imovelCarteira) return null;
+    return (DATA.imoveis || []).find(im => im.nome === it.imovelCarteira) || null;
+  }
+  // Indicação registrada há muito tempo é indicação esquecida: ela depende de
+  // um contato seu com o proprietário, e o indicador está esperando notícia.
+  const CTR_LIMITE_PARADA = 15;
+  function idadeIndicacao(it) {
+    return it && it.data ? diasDesdeISO(it.data) : null;
+  }
+  function indicacaoParada(it) {
+    if (!it || it.status !== 'Registrada') return false;
+    const d = idadeIndicacao(it);
+    return d !== null && d >= CTR_LIMITE_PARADA;
+  }
+  // Quanto cada indicador já colocou na mesa — é o que faz alguém indicar de novo.
+  function resumoIndicador(ind) {
+    const dele = (ctr.lista || []).filter(x => String(x.indicadorId) === String(ind.id));
+    const captadas = dele.filter(x => x.status === 'Captada');
+    const vendidas = dele.filter(x => x.status === 'Vendida');
+    const vgv = dele.reduce((s, x) => {
+      const im = imovelDaIndicacao(x);
+      return s + ((im && im.valor) || 0);
     }, 0);
-  // % de indicações que já saíram do estágio "Registrada" (viraram captação de fato) — enriquece o box de Captadas.
-  const ctrTotalIndicacoes = ctrItens.length;
-  const ctrAlemDeRegistrada = ctrItens.filter(it => it.status !== 'Registrada' && it.status !== 'Perdida').length;
-  const ctrPctCaptacao = ctrTotalIndicacoes ? Math.round((ctrAlemDeRegistrada / ctrTotalIndicacoes) * 100) : 0;
-  document.getElementById('ctrIndicadores').textContent = ctrIndicadoresAtivos;
-  document.getElementById('ctrRegistradas').textContent = ctrRegistradas;
-  const ctrPerdidas = ctrItens.filter(it => it.status === 'Perdida').length;
-  document.getElementById('ctrRegistradasHint').textContent = `de ${ctrTotalIndicacoes} indicações no total`;
-  document.getElementById('ctrPerdidasHint').textContent = ctrPerdidas > 0
-    ? `${ctrPerdidas} perdida${ctrPerdidas === 1 ? '' : 's'}` : 'nenhuma perdida';
-  document.getElementById('ctrCaptadas').textContent = ctrCaptadas;
-  document.getElementById('ctrCaptadasHint').textContent = ctrTotalIndicacoes ? `${ctrPctCaptacao}% das indicações viraram captação` : 'sem indicações ainda';
-  document.getElementById('ctrVendidas').textContent = ctrVendidas;
-  document.getElementById('ctrValorDevido').textContent = brl(ctrValorDevido);
-  document.getElementById('ctrVgvCaptado').textContent = brl(ctrVgvCaptado);
+    const devido = dele.reduce((s, x) => s + (x.valorDevido || 0), 0);
+    return { total: dele.length, captadas: captadas.length, vendidas: vendidas.length, vgv, devido, lista: dele };
+  }
 
-  const list = document.getElementById('conectaTRList');
-  const indicadoresCard = document.getElementById('ctrIndicadoresCard');
-  const indicadoresList = document.getElementById('conectaTRIndicadoresList');
-  const tituloEl = document.getElementById('ctrIndicacoesTitulo');
-  const itens = ctr.lista || [];
-  const indicadores = ctr.indicadoresLista || [];
-  const statusClass = { "Registrada": "novo", "Captada": "emdia", "Vendida": "emdia", "Encerrada": "atrasado" };
   let filtroAtivo = null; // null | "ativos" | "Registrada" | "Captada" | "Vendida"
 
   function waHrefCtr(tel) {
@@ -4444,7 +4441,12 @@ new Chart(document.getElementById('chartHistoricoAno'), {
         </div>
         <div class="ctr-linha-sub">
           <span>${esc(nomeInd)} <span class="ctr-seta">→</span> ${esc(it.proprietario || '—')}</span>
-          ${it.vinculadoId ? `<span class="ctr-mini-chip">🔗 ID ${it.vinculadoId}</span>` : ''}
+          ${(function () {
+            const im = imovelDaIndicacao(it);
+            if (im) return `<span class="ctr-mini-chip">🔗 ${esc(im.nome.replace(/\s*\(Cód\..*/, ''))}</span>`;
+            return it.imovelCarteira ? '<span class="ctr-mini-chip alerta">🔗 imóvel não encontrado na carteira</span>' : '';
+          })()}
+          ${indicacaoParada(it) ? `<span class="ctr-mini-chip alerta">⏳ parada há ${idadeIndicacao(it)}d</span>` : ''}
           ${it.valorDevido ? `<span class="ctr-mini-chip pagar">💰 ${brl(it.valorDevido)}</span>` : ''}
           ${it.motivoPerda ? `<span class="ctr-mini-chip motivo">🚫 ${esc(it.motivoPerda)}</span>` : ''}
         </div>
@@ -4516,9 +4518,17 @@ new Chart(document.getElementById('chartHistoricoAno'), {
         total: minhas.length,
         captadas: minhas.filter(x => x.status === 'Captada' || x.status === 'Vendida').length,
         vendidas: minhas.filter(x => x.status === 'Vendida').length,
-        aReceber: minhas.reduce((s, x) => s + (x.valorDevido || 0), 0)
+        aReceber: minhas.reduce((s, x) => s + (x.valorDevido || 0), 0),
+        // Quanto essa pessoa já colocou na sua carteira. O programa premia por
+        // VENDA, então o número que importa para ela é quanto do estoque veio
+        // dali — e é o que faz alguém indicar de novo.
+        vgv: minhas.reduce((s, x) => {
+          const im = (DATA.imoveis || []).find(i => i.nome === x.imovelCarteira);
+          return s + ((im && im.tipoOperacao !== 'Locação' && im.valor) || 0);
+        }, 0),
+        paradas: minhas.filter(indicacaoParada).length
       };
-    }).sort((a, b) => b.total - a.total || a.ind.nome.localeCompare(b.ind.nome, 'pt-BR'));
+    }).sort((a, b) => b.vgv - a.vgv || b.total - a.total || a.ind.nome.localeCompare(b.ind.nome, 'pt-BR'));
 
     const semIndicar = stats.filter(s => s.total === 0).length;
     const resumo = `<div class="ctr-resumo-ind">${stats.length} cadastrados · ${stats.length - semIndicar} já indicaram` +
@@ -4534,6 +4544,8 @@ new Chart(document.getElementById('chartHistoricoAno'), {
           ${s.total === 0 ? '<span class="ctr-ind-zero">sem indicações</span>' : `<span class="ctr-ind-num">${s.total}</span>`}
         </div>
         ${s.total > 0 ? `<div class="ctr-ind-meta">${s.captadas} captada(s) · ${s.vendidas} vendida(s)${s.aReceber > 0 ? ` · <b>${brl(s.aReceber)} a receber</b>` : ''}</div>` : ''}
+        ${s.vgv > 0 ? `<span class="ind-rendeu">🏗️ ${brl(s.vgv)} colocados na sua carteira</span>` : ''}
+        ${s.paradas > 0 ? `<span class="ind-rendeu" style="color:#8A5A14;">⏳ ${s.paradas} indicação${s.paradas === 1 ? '' : 'ões'} parada${s.paradas === 1 ? '' : 's'} esperando você</span>` : ''}
         ${wa ? `<a class="wa-link" href="${wa}" target="_blank" rel="noopener">💬 WhatsApp</a>` : ''}
         ${s.total > 0 ? '<div class="ctr-ind-dica">👆 ver indicações</div>' : ''}
       </div>`;
@@ -4562,6 +4574,82 @@ new Chart(document.getElementById('chartHistoricoAno'), {
       (it.indicadorId !== undefined && x.id === it.indicadorId) || x.nome === it.indicador) || null;
   }
 
+  // Contadores calculados ao vivo a partir de indicadoresLista/lista — nunca ficam dessincronizados.
+  const ctrIndicadoresAtivos = (ctr.indicadoresLista || []).filter(i => i.status === 'Ativo').length;
+  const ctrItens = ctr.lista || [];
+  const ctrRegistradas = ctrItens.filter(it => it.status === 'Registrada').length;
+  const ctrCaptadas = ctrItens.filter(it => it.status === 'Captada').length;
+  const ctrVendidas = ctrItens.filter(it => it.status === 'Vendida').length;
+  const ctrValorDevido = ctrItens.filter(it => it.status !== 'Encerrada' && it.status !== 'Perdida').reduce((s, it) => s + (it.valorDevido || 0), 0);
+  // V.G.V. dos imóveis que passaram de "Registrada" (ou seja, já foram captados de fato via indicação),
+  // somando o valor de venda do imóvel vinculado na aba Imóveis — exclui locações, igual ao V.G.V. da Home.
+  // Faz o match pelo "Cód. NNNNN" citado no campo "imovel" da indicação (a posição no array não é confiável,
+  // já que a ordem do array não segue o ID da planilha). Sem "Cód." no texto, não há como casar com segurança
+  // — melhor deixar de fora da soma do que arriscar somar o imóvel errado.
+  // Agora usa o vínculo direto (imovelCarteira). Antes tentava adivinhar pelo
+  // "Cód." citado no texto, o que deixava de fora toda indicação de imóvel sem
+  // código — que é justamente o rascunho recém-captado.
+  const ctrVgvCaptado = ctrItens
+    .filter(it => it.status === 'Captada' || it.status === 'Vendida' || it.status === 'Encerrada')
+    .reduce((s, it) => {
+      const imovel = (DATA.imoveis || []).find(i => i.nome === it.imovelCarteira);
+      if (!imovel || imovel.tipoOperacao === 'Locação') return s;
+      return s + (imovel.valor || 0);
+    }, 0);
+  // % de indicações que já saíram do estágio "Registrada" (viraram captação de fato) — enriquece o box de Captadas.
+  const ctrTotalIndicacoes = ctrItens.length;
+  const ctrAlemDeRegistrada = ctrItens.filter(it => it.status !== 'Registrada' && it.status !== 'Perdida').length;
+  const ctrPctCaptacao = ctrTotalIndicacoes ? Math.round((ctrAlemDeRegistrada / ctrTotalIndicacoes) * 100) : 0;
+  document.getElementById('ctrIndicadores').textContent = ctrIndicadoresAtivos;
+  document.getElementById('ctrRegistradas').textContent = ctrRegistradas;
+  const ctrPerdidas = ctrItens.filter(it => it.status === 'Perdida').length;
+  document.getElementById('ctrRegistradasHint').textContent = `de ${ctrTotalIndicacoes} indicações no total`;
+  document.getElementById('ctrPerdidasHint').textContent = ctrPerdidas > 0
+    ? `${ctrPerdidas} perdida${ctrPerdidas === 1 ? '' : 's'}` : 'nenhuma perdida';
+  document.getElementById('ctrCaptadas').textContent = ctrCaptadas;
+  document.getElementById('ctrCaptadasHint').textContent = ctrTotalIndicacoes ? `${ctrPctCaptacao}% das indicações viraram captação` : 'sem indicações ainda';
+  document.getElementById('ctrVendidas').textContent = ctrVendidas;
+  document.getElementById('ctrValorDevido').textContent = brl(ctrValorDevido);
+  document.getElementById('ctrVgvCaptado').textContent = brl(ctrVgvCaptado);
+  // R$0 devido não é o programa parado: é a regra. A bonificação só nasce
+  // quando o imóvel VENDE. Sem dizer isso, o zero parece defeito.
+  const hintDevido = document.getElementById('ctrValorDevidoHint');
+  if (hintDevido) {
+    hintDevido.textContent = ctrValorDevido > 0
+      ? 'a pagar aos indicadores'
+      : (ctrCaptadas > 0
+          ? `${ctrCaptadas} captada${ctrCaptadas === 1 ? '' : 's'} esperando virar venda — a bonificação só nasce aí`
+          : 'nenhuma indicação vendida ainda');
+  }
+  // Bônus de R$100 a cada 4 captações: existia na regra e não era medido.
+  const bonus = (ctr.bonusCaptacao) || null;
+  const elBonus = document.getElementById('ctrBonus');
+  if (elBonus && bonus) {
+    const captadasTotais = ctrItens.filter(it => it.status === 'Captada' || it.status === 'Vendida').length;
+    const ganhos = Math.floor(captadasTotais / bonus.aCada);
+    const faltam = bonus.aCada - (captadasTotais % bonus.aCada);
+    elBonus.innerHTML = `🎁 <b>Bônus por captação:</b> ${brl(bonus.valor)} a cada ${bonus.aCada} captações. ` +
+      `Você está em <b>${captadasTotais}</b> — ` +
+      (ganhos > 0 ? `${ganhos} bônus já alcançado${ganhos === 1 ? '' : 's'} e ` : '') +
+      `faltam <b>${faltam}</b> para o próximo.`;
+  }
+  // Indicação parada é indicação esquecida — e o indicador está esperando.
+  const paradas = ctrItens.filter(indicacaoParada);
+  const elParadas = document.getElementById('ctrParadas');
+  if (elParadas && paradas.length) {
+    elParadas.innerHTML = `⏳ <b>${paradas.length}</b> ${paradas.length === 1 ? 'indicação está parada' : 'indicações estão paradas'} há mais de ${CTR_LIMITE_PARADA} dias sem virar captação: ` +
+      paradas.map(it => `${esc(it.imovel)} (${idadeIndicacao(it)}d)`).join(' · ') + '.';
+    elParadas.style.display = '';
+  }
+
+  const list = document.getElementById('conectaTRList');
+  const indicadoresCard = document.getElementById('ctrIndicadoresCard');
+  const indicadoresList = document.getElementById('conectaTRIndicadoresList');
+  const tituloEl = document.getElementById('ctrIndicacoesTitulo');
+  const itens = ctr.lista || [];
+  const indicadores = ctr.indicadoresLista || [];
+  const statusClass = { "Registrada": "novo", "Captada": "emdia", "Vendida": "emdia", "Encerrada": "atrasado" };
+
   function abrirIndicacao(protocolo) {
     const it = itens.find(x => x.protocolo === protocolo);
     if (!it) return;
@@ -4579,7 +4667,13 @@ new Chart(document.getElementById('chartHistoricoAno'), {
         ${it.data ? `<span>Recebida em: <b>${String(it.data).split('-').reverse().join('/')}</b></span>` : ''}
         ${it.valorDevido ? `<span>💰 A pagar: <b>${brl(it.valorDevido)}</b></span>` : ''}
       </div>
-      ${it.vinculadoId ? `<div class="match-line" style="margin-top:8px;"><span class="match-chip">🔗 Vinculado à aba Imóveis (ID ${it.vinculadoId})</span></div>` : ''}
+      ${(function () {
+        const im = imovelDaIndicacao(it);
+        if (im) return `<div class="match-line" style="margin-top:8px;"><span class="match-chip">🔗 ${esc(im.nome)} · ${esc(im.status)}${im.valor ? ' · ' + brl(im.valor) : ''}</span></div>`;
+        if (it.imovelCarteira) return `<div class="ctr-motivo">⚠️ O imóvel <b>${esc(it.imovelCarteira)}</b> não está mais na carteira. Vínculo precisa ser refeito.</div>`;
+        return '';
+      })()}
+      ${indicacaoParada(it) ? `<div class="ctr-motivo" style="background:#FDF6E8;border-color:#EBD9A8;color:#8A5A14;">⏳ Registrada há <b>${idadeIndicacao(it)} dias</b> e ainda não virou captação. O indicador está esperando notícia.</div>` : ''}
       ${it.motivoPerda ? `<div class="ctr-motivo">🚫 <b>${esc(it.motivoPerda)}</b>${it.detalhePerda ? '<br>' + esc(it.detalhePerda) : ''}</div>` : ''}
       ${it.obs ? `<div class="pilar-desc" style="margin-top:8px;">${esc(it.obs)}</div>` : ''}
       ${(waInd || waProp) && it.status !== 'Perdida' ? `<div class="lead-actions" style="margin-top:12px;">
