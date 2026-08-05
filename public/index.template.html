@@ -1970,10 +1970,23 @@ function renderPrestesAFechar() {
   const titulo = document.getElementById('prestesTitulo');
   if (!card) return;
   const leads = (DATA.leads || []).filter(l => l.fase === 'Em Negociação' || l.fase === 'Proposta Enviada')
-    .map(l => ({ tipo: 'lead', nome: l.nome, detalhe: l.proximaAcao, valor: l.comissaoPrevista,
-                 quando: l.dataProximaAcao, sub: l.fase }));
-  const imoveis = (DATA.imoveis || []).filter(im => im.status === 'Reservado')
-    .map(im => ({ tipo: 'imovel', nome: im.nome, detalhe: im.corretorParceiro ? 'Parceria com ' + im.corretorParceiro : 'Em negociação',
+    .map(l => {
+      // Qual imóvel está em jogo: informado no lead ou descoberto pelo vínculo
+      // gravado no próprio imóvel reservado.
+      const im = l.imovelNegociado
+        ? (DATA.imoveis || []).find(x => x.nome === l.imovelNegociado)
+        : (DATA.imoveis || []).find(x => String(x.compradorLeadId) === String(l.id));
+      return { tipo: 'lead', nome: l.nome, detalhe: l.proximaAcao, valor: l.comissaoPrevista,
+               quando: l.dataProximaAcao, sub: l.fase + (im ? ' · ' + im.nome.replace(/\s*\(Cód\..*/, '') : '') };
+    });
+  // Imóvel reservado cujo comprador JÁ é lead é a mesma negociação — aparecia
+  // duas vezes, uma pelo lead e outra pelo imóvel, inflando a contagem.
+  const idsNaLista = new Set((DATA.leads || [])
+    .filter(l => l.fase === 'Em Negociação' || l.fase === 'Proposta Enviada')
+    .map(l => String(l.id)));
+  const imoveis = (DATA.imoveis || [])
+    .filter(im => im.status === 'Reservado' && !idsNaLista.has(String(im.compradorLeadId)))
+    .map(im => ({ tipo: 'imovel', nome: im.nome, detalhe: im.corretorParceiro ? 'Parceria com ' + im.corretorParceiro : 'Comprador fora do CRM',
                   valor: im.comissaoThulioVenda, quando: null, sub: 'Reservado' }));
   const itens = [...leads, ...imoveis];
   if (!itens.length) return;

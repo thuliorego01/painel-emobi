@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-05T13:30:00-03:00",
+  "ultimaAtualizacao": "2026-08-05T14:05:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -354,7 +354,8 @@
         "Cód. 7560"
       ],
       "interesse": "apartamento em Candelária — proposta no Cód. 7560",
-      "comissaoDetalhe": "R$ 390.000 × 5% = R$ 19.500,00 · venda sem parceria · sua parte 70% → R$ 13.650,00"
+      "comissaoDetalhe": "R$ 390.000 × 5% = R$ 19.500,00 · venda sem parceria · sua parte 70% → R$ 13.650,00",
+      "imovelNegociado": "Apartamento 3 Quartos Candelária 133m² (Cód. 7560)"
     },
     {
       "id": 12,
@@ -547,7 +548,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-13",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Aceita financiamento e permuta. Condomínio R$ 850,00 + IPTU R$ 2.510,00/ano. [30/07] Proposta recebida do cliente João Paulo de Paula: R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel e do comprador prontas — seguindo para solicitação de contrato."
+      "obs": "Aceita financiamento e permuta. Condomínio R$ 850,00 + IPTU R$ 2.510,00/ano. [30/07] Proposta recebida do cliente João Paulo de Paula: R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel e do comprador prontas — seguindo para solicitação de contrato.",
+      "compradorLeadId": 11
     },
     {
       "nome": "Casa em Condomínio 3 Quartos Cajupiranga 160m² (Cód. 10558)",
@@ -2310,6 +2312,13 @@
       "lead": "Cód. 10567 (Condomínio Luiz Marques, Lagoa Nova)",
       "tipo": "Outro",
       "resumo": "Proprietária cadastrada: Lenise Costa, (84) 99815-1774."
+    },
+    {
+      "data": "05/08/2026 14:00",
+      "leadId": 11,
+      "lead": "João Paulo de Paula",
+      "tipo": "Outro",
+      "resumo": "Vínculo registrado: o imóvel em negociação é o Cód. 7560 (Apartamento 3 Quartos Candelária 133m²), da própria carteira. Proposta de R$390.000 sobre tabela de R$419.990."
     }
   ]
 }

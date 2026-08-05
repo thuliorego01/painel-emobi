@@ -50,6 +50,21 @@ module.exports = { nome: 'Início: dinheiro real antes de estoque', rodar: async
     assert(compromissos.style.display === 'none', 'bloco de compromissos vazio precisa sumir');
   }
 
+  // Um imóvel reservado cujo comprador já é lead é a MESMA negociação — o
+  // bloco chegou a listar João Paulo e o Cód. 7560 como dois negócios.
+  const prestes = [...doc.querySelectorAll('.prestes-linha')].map(x => txt(x));
+  (DATA.imoveis || []).filter(im => im.status === 'Reservado' && im.compradorLeadId !== undefined)
+    .forEach(im => {
+      const lead = (DATA.leads || []).find(l => String(l.id) === String(im.compradorLeadId));
+      if (!lead || !['Em Negociação', 'Proposta Enviada'].includes(lead.fase)) return;
+      const linhasDoImovel = prestes.filter(l => l.includes(im.nome));
+      assert(linhasDoImovel.length <= 1,
+        `${im.nome} e ${lead.nome} são o mesmo negócio e aparecem separados`);
+      const linhaDoLead = prestes.find(l => l.startsWith(lead.nome));
+      assert(linhaDoLead && /Candelária|Lagoa Nova|Ponta Negra|Tirol|Parnamirim|Neópolis|Muriú|Extremoz/.test(linhaDoLead),
+        `a linha de ${lead.nome} precisa dizer qual imóvel está em jogo`);
+    });
+
   // O termômetro é análise: mora no BI, não na tela de abertura.
   assert(!doc.querySelector('#panel-inicio #termometroFunil'), 'o termômetro voltou para a Home');
   assert(doc.querySelector('#panel-bicomercial #termometroFunil'), 'o termômetro sumiu do BI');
