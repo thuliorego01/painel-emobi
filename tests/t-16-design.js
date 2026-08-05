@@ -35,6 +35,15 @@ module.exports = { nome: 'Design: uma escala só, sem px solto', rodar: async ()
   assert(base, 'as caixas de recado voltaram a ter regra própria cada uma');
   assert(/padding:\s*9px 12px/.test(base[0]), 'a base das caixas perdeu o padding único');
 
+  // Coluna de grade sem min-width:0 é empurrada por tabela larga de dentro —
+  // foi o que fez um card ficar visivelmente mais largo que o vizinho.
+  const grid2 = css.match(/\n  \.grid2 \{[^}]*\}/);
+  assert(grid2, 'regra .grid2 sumiu');
+  assert(/minmax\(0,\s*1fr\)/.test(grid2[0]),
+    '.grid2 precisa de minmax(0,1fr) para a tabela não estourar a coluna');
+  assert(/\.grid2 > \* \{[^}]*min-width:\s*0/.test(css), 'faltou min-width:0 nos filhos de .grid2');
+  assert(/\.pipeline-topo > \* \{[^}]*min-width:\s*0/.test(css), 'faltou min-width:0 nos filhos de .pipeline-topo');
+
   // Estado vazio é classe, não estilo escrito à mão 16 vezes.
   assert(!/style="font-size:[0-9.]+px;color:#8A9186;"/.test(corpo),
     'voltou a existir mensagem de "vazio" com estilo inline');
