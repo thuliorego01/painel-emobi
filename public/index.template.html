@@ -265,6 +265,9 @@
     .pr-aviso { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
     .lembrete-btn { background:#232A22; border-color:#39423577; color:#C3C9BC; }
     .prox-vencer { border-top-color:#2C342A; }
+    .prestes-resumo { background:#1E241D; border-color:#2C342A; color:#C3C9BC; }
+    .prestes-linha { border-bottom-color:#232A22; }
+    .kpi-group-item.kpi-clicavel:hover { background:#232A22; }
     .prox-linha { border-bottom-color:#232A22; }
     .pv-marco { background:#1E241D; border-color:#2C342A; color:#C3C9BC; }
     .pv-marco.vencido { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
@@ -634,6 +637,29 @@
   .pr-topo { display:flex; align-items:center; justify-content:space-between; gap:10px; }
   .pr-nome { font-size: var(--fs-sm); font-weight:700; color: var(--text-strong); }
   .pr-sub { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-top:5px; font-size: var(--fs-2xs); color:#8A9186; }
+  .ano-linha { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; }
+  .ano-item { display:flex; flex-direction:column; gap:2px; }
+  .ano-rot { font-size:9.5px; font-weight:800; text-transform:uppercase; letter-spacing:.7px; color:#8A9186; }
+  .ano-val { font-size:22px; font-weight:800; color: var(--text-strong); line-height:1.15; }
+  .ano-val.aguardando { color:#8A5A14; }
+  .ano-sub { font-size: var(--fs-2xs); color:#8A9186; line-height:1.4; }
+  .ano-barras { display:flex; flex-direction:column; gap:9px; margin-top:16px; }
+  .ano-barra-rot { display:flex; justify-content:space-between; font-size: var(--fs-2xs); color:#5C6155; margin-bottom:4px; }
+  .ano-barra-rot b { color: var(--text-strong); }
+  .ano-frase { margin-top:12px; font-size: var(--fs-sm); color:#5C6155; }
+  .ano-frase.atras b { color:#B4300F; }
+  .ano-frase.frente b { color:#2E7D32; }
+  .prestes-resumo { font-size: var(--fs-2xs); color:#5C6155; background:#F8F9F5; border:1px solid #EDEFE9;
+    border-radius:9px; padding:9px 12px; margin-bottom:10px; }
+  .prestes-linha { display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+    padding:9px 0; border-bottom:1px solid #F6F7F2; font-size: var(--fs-sm); color: var(--text-strong); }
+  .prestes-linha:last-child { border-bottom:none; }
+  .prestes-detalhe { display:block; font-size: var(--fs-2xs); color:#8A9186; margin-top:2px; line-height:1.45; }
+  .prestes-val { font-size: var(--fs-sm); font-weight:800; color:#2E7D32; white-space:nowrap; text-align:right; }
+  .prestes-quando { display:block; font-size: var(--fs-2xs); color:#8A9186; font-weight:600; margin-top:2px; }
+  .kpi-group-item.kpi-clicavel { cursor:pointer; border-radius:9px; transition:background .15s; }
+  .kpi-group-item.kpi-clicavel:hover { background:#F6F7F2; }
+  .kpi-group-item.kpi-clicavel:focus-visible { outline:2px solid var(--brand-gold); outline-offset:2px; }
   .tudo-em-dia { font-size: var(--fs-sm); color:#4C7A3A; font-weight:700; }
   .prox-vencer { margin-top:14px; padding-top:12px; border-top:1px solid #F1F2ED; }
   .prox-linha { display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
@@ -1053,16 +1079,17 @@
 
     <div class="tab-panel active" data-tab="inicio" id="panel-inicio" role="tabpanel">
       <div class="greeting-block" id="greetingBlock"></div>
-      <div class="kpis" id="homeKpis" style="margin-bottom:18px;"></div>
+      <div class="section-title"><span class="dot" aria-hidden="true"></span>💵 Como está o seu ano</div>
+      <div class="card" style="margin-bottom:18px;"><div id="anoResumo"></div></div>
       <div class="urgent-banner" id="urgentBanner"></div>
-      <div class="section-title"><span class="dot" aria-hidden="true"></span>🌡️ Termômetro do Funil <span class="titulo-escopo">— leads em acompanhamento ativo</span></div>
-      <div class="card" style="margin-bottom:18px;">
-        <div id="termometroFunil"></div>
-      </div>
+      <div class="section-title" id="prestesTitulo" style="display:none;"><span class="dot" aria-hidden="true"></span>✍️ Prestes a fechar</div>
+      <div class="card" id="prestesCard" style="margin-bottom:18px;display:none;"></div>
       <div class="section-title"><span class="dot" aria-hidden="true"></span>🌟 Compromissos de Destaque</div>
-      <div class="card" style="margin-bottom:18px;">
+      <div class="card" id="compromissosCard" style="margin-bottom:18px;">
         <div id="compromissosDestaqueList"></div>
       </div>
+      <div class="section-title"><span class="dot" aria-hidden="true"></span>📦 Sua carteira</div>
+      <div class="kpis" id="homeKpis" style="margin-bottom:18px;"></div>
     </div>
 
 
@@ -1230,6 +1257,10 @@
           <div id="clientesVoltam"></div>
         </div>
       </div>
+    </div>
+    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>🌡️ Termômetro do Funil <span class="titulo-escopo">— leads em acompanhamento ativo</span></div>
+    <div class="card" style="margin-bottom:18px;">
+      <div id="termometroFunil"></div>
     </div>
     <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>🕳️ Onde estou perdendo?</div>
     <div class="grid2">
@@ -1811,7 +1842,7 @@ function computeAcoesUrgentes() {
 
   function grupo(itens) {
     return `<div class="kpi-group">${itens.map(it => `
-      <div class="kpi-group-item">
+      <div class="kpi-group-item${it.click ? ' kpi-clicavel' : ''}"${it.click ? ` data-kpi="${it.click}" role="button" tabindex="0"` : ''}>
         <div class="kpi-group-label"><span class="icon">${it.icon}</span> ${it.label}</div>
         <div class="kpi-group-vals">
           <div class="kpi-group-value">${it.value}</div>
@@ -1828,27 +1859,140 @@ function computeAcoesUrgentes() {
     </div>`;
   }
 
+  // "Pipeline (Provável)" somava só quem tem valor preenchido e se apresentava
+  // como previsão. Metade dos leads ativos não tem valor — o número dobrava
+  // sozinho quando um campo era preenchido, sem nada mudar no negócio.
+  const ativos = (DATA.leads || []).filter(l => !fasesInativasLocal.includes(l.fase));
+  const comValor = ativos.filter(l => typeof l.valor === 'number' && l.valor > 0);
+  const semValor = ativos.length - comValor.length;
+
   el.innerHTML =
     grupo([
-      { icon: '🏠', label: 'Imóveis Ativos', value: imoveisAtivos },
-      { icon: '🤝', label: 'Leads Ativos', value: leadsAtivosCount },
-      { icon: '📋', label: 'Captações em Andamento', value: captacoesAndamento },
-      { icon: '🏆', label: 'Fechamentos no Mês', value: fechamentosMes },
+      { icon: '🏠', label: 'Imóveis Ativos', value: imoveisAtivos, click: 'imoveis-ativos' },
+      { icon: '🤝', label: 'Leads Ativos', value: leadsAtivosCount, click: 'leads-ativos' },
+      { icon: '📋', label: 'Captações em Andamento', value: captacoesAndamento, click: 'captacoes' },
+      { icon: '🏆', label: 'Fechamentos no Mês', value: fechamentosMes, click: 'fechamentos' },
     ]) +
     grupo([
-      { icon: '💰', label: 'Pipeline (Provável)', value: brl(valorPipeline), hint: 'Soma do valor dos leads ativos' },
-      { icon: '🏘️', label: 'V.G.V.', value: brl(valorVGV), hint: 'Imóveis disponíveis na carteira' },
-      { icon: '💵', label: 'V.G.C.', value: brl(vgcDireto), hint: 'Direto (70%) · Parceiro (35%): ' + brl(vgcParceria) },
+      { icon: '💰', label: 'Em negociação na mesa', value: brl(valorPipeline),
+        hint: `Valor dos imóveis de ${comValor.length} lead${comValor.length === 1 ? '' : 's'}` +
+              (semValor ? ` · ${semValor} sem valor informado` : '') },
+      { icon: '🏘️', label: 'V.G.V. da carteira', value: brl(valorVGV), hint: 'Imóveis disponíveis para venda' },
+      { icon: '💵', label: 'Potencial da carteira inteira', value: brl(vgcDireto),
+        hint: 'Se vender tudo sozinho. Em parceria: ' + brl(vgcParceria) + ' — é teto, não previsão.' },
     ]);
+
+  el.addEventListener('click', (e) => {
+    const item = alvoDe(e).closest('[data-kpi]');
+    if (!item) return;
+    const k = item.dataset.kpi;
+    if (k === 'leads-ativos') abrirBiModal('Leads ativos', ativos);
+    if (k === 'fechamentos') abrirBiModal('Fechamentos no mês',
+      (DATA.leads || []).filter(l => l.fase === 'Fechado Ganho'));
+    if (k === 'imoveis-ativos' || k === 'captacoes') {
+      const lista = (DATA.imoveis || []).filter(im => k === 'captacoes'
+        ? im.status === 'Em Captação'
+        : (im.status === 'Disponível' || im.status === 'Reservado'));
+      const over = document.getElementById('biModalOverlay');
+      document.getElementById('biModalTitulo').textContent = k === 'captacoes' ? 'Captações em andamento' : 'Imóveis ativos';
+      document.getElementById('biModalCorpo').innerHTML = lista.map(im =>
+        `<div class="bi-modal-lead"><span><b>${esc(im.nome)}</b> <span class="bi-fase">${esc(im.bairro || '')} · ${esc(im.status)}</span></span><b>${im.valor ? brl(im.valor) : '—'}</b></div>`).join('');
+      over.classList.add('open'); document.body.style.overflow = 'hidden';
+    }
+  });
 })();
+
+// ---- Como está o seu ano (Home) ----
+// A tela inicial mostrava estoque e potencial teórico, mas nenhum dinheiro
+// real: nem o que entrou, nem o que falta receber, nem o ritmo contra o
+// calendário. Era a resposta errada para a pergunta de quem abre o painel.
+function renderAnoResumo() {
+  const el = document.getElementById('anoResumo');
+  if (!el) return;
+  const meta = (DATA.metaComissao2026 && DATA.metaComissao2026.meta) || 0;
+  const recebido = FIN.comissaoPaga;
+  const areceber = FIN.comissaoAguardando;
+  const f = fracaoAnoDecorrida();
+  const pct = meta ? recebido / meta : 0;
+  const atrasado = pct < f;
+  const dif = Math.round(Math.abs(f - pct) * 100);
+  const falta = Math.max(0, meta - recebido);
+  const mesesRestantes = Math.max(1, 12 - new Date().getMonth());
+
+  el.innerHTML = `
+    <div class="ano-linha">
+      <div class="ano-item">
+        <span class="ano-rot">Recebido em ${new Date().getFullYear()}</span>
+        <span class="ano-val">${brl(recebido)}</span>
+        <span class="ano-sub">${Math.round(pct * 100)}% da meta de ${brl(meta)}</span>
+      </div>
+      <div class="ano-item">
+        <span class="ano-rot">Fechado, a receber</span>
+        <span class="ano-val ${areceber > 0 ? 'aguardando' : ''}">${brl(areceber)}</span>
+        <span class="ano-sub">${FIN.aguardando.length} ${FIN.aguardando.length === 1 ? 'negócio' : 'negócios'} esperando pagamento</span>
+      </div>
+      <div class="ano-item">
+        <span class="ano-rot">Falta para a meta</span>
+        <span class="ano-val">${brl(falta)}</span>
+        <span class="ano-sub">${brl(falta / mesesRestantes)}/mês nos ${mesesRestantes} meses restantes</span>
+      </div>
+    </div>
+    <div class="ano-barras">
+      <div class="ano-barra">
+        <div class="ano-barra-rot"><span>Ano decorrido</span><b>${Math.round(f * 100)}%</b></div>
+        <div class="ritmo-trilho"><span class="ritmo-preenche tempo" style="width:${Math.round(f * 100)}%"></span></div>
+      </div>
+      <div class="ano-barra">
+        <div class="ano-barra-rot"><span>Meta atingida</span><b>${Math.round(pct * 100)}%</b></div>
+        <div class="ritmo-trilho"><span class="ritmo-preenche ${atrasado ? 'atras' : 'frente'}" style="width:${Math.min(100, Math.round(pct * 100))}%"></span></div>
+      </div>
+    </div>
+    <div class="ano-frase ${atrasado ? 'atras' : 'frente'}">${atrasado
+      ? `Você está <b>${dif} pontos atrás</b> do calendário.`
+      : `Você está <b>${dif} pontos à frente</b> do calendário.`}</div>`;
+}
+
+// ---- Prestes a fechar (Home) ----
+// O Cód. 10567 assinava no dia seguinte, valia R$4.200 de comissão, e a tela
+// inicial não dizia nada. O que está a um passo do dinheiro merece destaque.
+function renderPrestesAFechar() {
+  const card = document.getElementById('prestesCard');
+  const titulo = document.getElementById('prestesTitulo');
+  if (!card) return;
+  const leads = (DATA.leads || []).filter(l => l.fase === 'Em Negociação' || l.fase === 'Proposta Enviada')
+    .map(l => ({ tipo: 'lead', nome: l.nome, detalhe: l.proximaAcao, valor: l.comissaoPrevista,
+                 quando: l.dataProximaAcao, sub: l.fase }));
+  const imoveis = (DATA.imoveis || []).filter(im => im.status === 'Reservado')
+    .map(im => ({ tipo: 'imovel', nome: im.nome, detalhe: im.corretorParceiro ? 'Parceria com ' + im.corretorParceiro : 'Em negociação',
+                  valor: im.comissaoThulioVenda, quando: null, sub: 'Reservado' }));
+  const itens = [...leads, ...imoveis];
+  if (!itens.length) return;
+  titulo.style.display = ''; card.style.display = '';
+  const somaConhecida = itens.reduce((s, i) => s + (i.valor || 0), 0);
+  const semValor = itens.filter(i => !i.valor).length;
+  card.innerHTML =
+    `<div class="prestes-resumo">${itens.length} ${itens.length === 1 ? 'negócio' : 'negócios'} a um passo do fechamento` +
+    (somaConhecida > 0 ? ` · <b>${brl(somaConhecida)}</b> de comissão` : '') +
+    (semValor ? ` (${semValor} sem valor informado)` : '') + `</div>` +
+    itens.map(i => `<div class="prestes-linha">
+      <span class="prestes-quem"><b>${esc(i.nome)}</b><span class="prestes-detalhe">${esc(i.sub)} · ${esc(i.detalhe || '—')}</span></span>
+      <span class="prestes-val">${i.valor ? brl(i.valor) : 'a definir'}${i.quando ? `<span class="prestes-quando">${i.quando.split('-').reverse().join('/')}</span>` : ''}</span>
+    </div>`).join('');
+}
 
 // ---- Compromissos de Destaque (Home) ----
 (function renderCompromissosDestaque() {
   const el = document.getElementById('compromissosDestaqueList');
   if (!el) return;
   const itens = [...AGENDA_DIA.hoje.map(a => ({ ...a, quando: 'Hoje' })), ...AGENDA_DIA.amanha.map(a => ({ ...a, quando: 'Amanhã' }))];
+  // Bloco vazio na tela de abertura é espaço morto — some junto com o título.
   if (itens.length === 0) {
-    el.innerHTML = '<div style="font-size:13px;color:#8A9186;">Nenhum compromisso em destaque no momento.</div>';
+    const card = document.getElementById('compromissosCard');
+    if (card) {
+      card.style.display = 'none';
+      const tit = card.previousElementSibling;
+      if (tit && tit.classList.contains('section-title')) tit.style.display = 'none';
+    }
     return;
   }
   function acharLead(texto) {
@@ -2027,6 +2171,10 @@ function projecaoAnualComissao() {
   const f = fracaoAnoDecorrida();
   return f > 0 ? FIN.comissaoPaga / f : 0;
 }
+
+// A Home depende de FIN: chamadas aqui, depois que ele existe.
+renderAnoResumo();
+renderPrestesAFechar();
 
 const pct = Math.min(100, (FIN.negociado / DATA.meta2026.meta) * 100);
 document.getElementById('metaPct').textContent = pct.toFixed(1) + '%';
