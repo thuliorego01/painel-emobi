@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-05T16:50:00-03:00",
+  "ultimaAtualizacao": "2026-08-05T17:05:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -121,9 +121,9 @@
       "valor": 575000,
       "comissao": 12075.0,
       "mes": "Agosto",
-      "status": "aguardando",
+      "status": "pago",
       "tipo": "Venda",
-      "nota": "Comissão de 6% (R$34.500) dividida com a corretora Célia Cristina; sua parte 70% da metade. Contrato assinado em 04/08 e sinal pago em 05/08 — falta o pagamento da comissão.",
+      "nota": "Comissão de 6% (R$34.500) dividida com a corretora Célia Cristina; sua parte 70% da metade. Contrato assinado em 04/08, sinal pago em 05/08 e comissão recebida em 05/08.",
       "compradorLeadId": 6,
       "ano": 2026,
       "mesNum": 8,
@@ -251,10 +251,10 @@
       "temperatura": "Quente",
       "valor": 575000,
       "comissaoPrevista": 12075.0,
-      "proximaAcao": "Cobrar o pagamento da comissão (R$12.075) — sinal já pago",
+      "proximaAcao": "Pós-venda: confirmar a documentação na primeira semana",
       "dataProximaAcao": "2026-08-11",
       "status": "Ganho",
-      "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Porto Arena do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607, bloco C, do Porto Arena. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar. [01/08] Valor do negócio: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento. [04/08] Entrou na fase de assinatura de contrato — assinatura prevista para hoje. [04/08] CONTRATO ASSINADO — apartamento 607, bloco C, do Porto Arena, R$575.000,00. Aguardando o sinal e o pagamento da comissão. [05/08] SINAL PAGO. Falta só o pagamento da comissão.",
+      "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. [19/07] Visita agendada e realizada no Porto Arena, unidade 607 — imóvel de corretor parceiro (não é o Porto Arena do nosso inventário). Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607, bloco C, do Porto Arena. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar. [01/08] Valor do negócio: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento. [04/08] Entrou na fase de assinatura de contrato — assinatura prevista para hoje. [04/08] CONTRATO ASSINADO — apartamento 607, bloco C, do Porto Arena, R$575.000,00. Aguardando o sinal e o pagamento da comissão. [05/08] SINAL PAGO. Falta só o pagamento da comissão. [05/08] COMISSÃO RECEBIDA (R$12.075). Negócio encerrado financeiramente.",
       "imoveisCompativeis": [
         "Cód. 5485"
       ],
@@ -1277,8 +1277,7 @@
         "telefoneProprietario": "84981822264",
         "motivoPerda": "Proprietário já tem corretor trabalhando o imóvel",
         "detalhePerda": "Captação recusada em 05/08/2026 — o imóvel já está com outro corretor. A indicação continua válida para a contagem do bônus.",
-        "dataPerda": "2026-08-05",
-        "contaParaBonus": true
+        "dataPerda": "2026-08-05"
       },
       {
         "protocolo": "IND-TR-2026-0008",
@@ -1292,8 +1291,7 @@
         "telefoneProprietario": "84996044000",
         "motivoPerda": "Proprietário já tem corretor trabalhando o imóvel",
         "detalhePerda": "Captação recusada em 05/08/2026 — o imóvel já está com outro corretor. A indicação continua válida para a contagem do bônus.",
-        "dataPerda": "2026-08-05",
-        "contaParaBonus": true
+        "dataPerda": "2026-08-05"
       },
       {
         "protocolo": "IND-TR-2026-0009",
@@ -1307,8 +1305,7 @@
         "telefoneProprietario": "84999224699",
         "motivoPerda": "Proprietário já tem corretor trabalhando o imóvel",
         "detalhePerda": "Captação recusada em 05/08/2026 — o imóvel já está com outro corretor. A indicação continua válida para a contagem do bônus.",
-        "dataPerda": "2026-08-05",
-        "contaParaBonus": true
+        "dataPerda": "2026-08-05"
       },
       {
         "protocolo": "IND-TR-2026-0010",
@@ -1382,8 +1379,8 @@
     "bonusCaptacao": {
       "aCada": 4,
       "valor": 100,
-      "base": "indicacoes",
-      "nota": "Na prática, Thúlio conta INDICAÇÕES recebidas, não captações fechadas — indicação que não vira captação por culpa do mercado continua valendo. O regulamento escrito na planilha ainda diz \"a cada 4 captações\": vale alinhar os dois."
+      "base": "captacoes",
+      "nota": "Vale a regra do regulamento: a indicação é registrada e o indicador é reconhecido, mas o bônus só é contabilizado quando a indicação vira captação."
     }
   },
   "logAtividades": [
@@ -2296,6 +2293,13 @@
       "lead": "Conecta TR",
       "tipo": "Outro",
       "resumo": "Indicações IND-TR-2026-0007, 0008 e 0009 encerradas: os proprietários já têm corretor e recusaram a captação. Os rascunhos correspondentes saíram da carteira. As três seguem contando para o bônus por indicação."
+    },
+    {
+      "data": "05/08/2026 17:00",
+      "leadId": 6,
+      "lead": "Diana Rêgo",
+      "tipo": "Outro",
+      "resumo": "Comissão de R$12.075,00 recebida. Negócio encerrado financeiramente — segue apenas o acompanhamento de pós-venda."
     }
   ]
 }

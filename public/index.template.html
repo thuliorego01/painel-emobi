@@ -4679,7 +4679,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
   if (elBonus && bonus) {
     const porIndicacao = bonus.base === 'indicacoes';
     const base = porIndicacao
-      ? ctrItens.filter(it => it.contaParaBonus !== false && !it.tipoIndicacao).length
+      ? ctrItens.filter(it => !it.tipoIndicacao).length
       : ctrItens.filter(it => it.status === 'Captada' || it.status === 'Vendida').length;
     const ganhos = Math.floor(base / bonus.aCada);
     const faltam = bonus.aCada - (base % bonus.aCada);
@@ -4688,7 +4688,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
       `Você está em <b>${base}</b> — ` +
       (ganhos > 0 ? `<b>${ganhos} bônus já alcançado${ganhos === 1 ? '' : 's'}</b> e ` : '') +
       `${faltam === bonus.aCada ? bonus.aCada : faltam} para o próximo.` +
-      (bonus.nota ? `<details class="fech-nota" style="margin-top:6px;"><summary>Atenção à regra escrita</summary>${esc(bonus.nota)}</details>` : '');
+      (bonus.nota ? `<details class="fech-nota" style="margin-top:6px;"><summary>Como o bônus é contado</summary>${esc(bonus.nota)}</details>` : '');
   }
   // Indicação parada é indicação esquecida — e o indicador está esperando.
   const paradas = ctrItens.filter(indicacaoParada);
