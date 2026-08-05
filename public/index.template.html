@@ -716,6 +716,7 @@
   .tbl-mini tr.linha-origem:hover td { background:#F6F7F2; }
   .tbl-mini tr.linha-origem:focus-visible { outline:2px solid var(--brand-gold); outline-offset:-2px; }
   .ctr-mini-chip.alerta { color:#8A5A14; background:#FDF6E8; border-color:#EBD9A8; }
+  .ctr-mini-chip.fora-regra { color:#5B3F8C; background:#F2EEFA; border-color:#DDD3F0; }
   .ind-rendeu { display:block; font-size: var(--fs-xs); color:#5B3F8C; margin-top:3px; }
   .prestes-linha { display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
     padding:9px 0; border-bottom:1px solid #F6F7F2; font-size: var(--fs-sm); color: var(--text-strong); }
@@ -4433,6 +4434,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
   }
   function indicacaoParada(it) {
     if (!it || it.status !== 'Registrada') return false;
+    if (it.tipoIndicacao) return false;   // não depende de captação para andar
     const d = idadeIndicacao(it);
     return d !== null && d >= CTR_LIMITE_PARADA;
   }
@@ -4493,6 +4495,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
             return it.imovelCarteira ? '<span class="ctr-mini-chip alerta">🔗 imóvel não encontrado na carteira</span>' : '';
           })()}
           ${indicacaoParada(it) ? `<span class="ctr-mini-chip alerta">⏳ parada há ${idadeIndicacao(it)}d</span>` : ''}
+          ${it.tipoIndicacao ? `<span class="ctr-mini-chip fora-regra">👤 ${esc(it.tipoIndicacao)}</span>` : ''}
           ${it.valorDevido ? `<span class="ctr-mini-chip pagar">💰 ${brl(it.valorDevido)}</span>` : ''}
           ${it.motivoPerda ? `<span class="ctr-mini-chip motivo">🚫 ${esc(it.motivoPerda)}</span>` : ''}
         </div>
@@ -4668,16 +4671,24 @@ new Chart(document.getElementById('chartHistoricoAno'), {
           : 'nenhuma indicação vendida ainda');
   }
   // Bônus de R$100 a cada 4 captações: existia na regra e não era medido.
+  // O bônus conta INDICAÇÕES recebidas, não captações fechadas: indicação que
+  // não vira captação porque o proprietário já tem corretor continua valendo
+  // para o indicador — ele fez a parte dele.
   const bonus = (ctr.bonusCaptacao) || null;
   const elBonus = document.getElementById('ctrBonus');
   if (elBonus && bonus) {
-    const captadasTotais = ctrItens.filter(it => it.status === 'Captada' || it.status === 'Vendida').length;
-    const ganhos = Math.floor(captadasTotais / bonus.aCada);
-    const faltam = bonus.aCada - (captadasTotais % bonus.aCada);
-    elBonus.innerHTML = `🎁 <b>Bônus por captação:</b> ${brl(bonus.valor)} a cada ${bonus.aCada} captações. ` +
-      `Você está em <b>${captadasTotais}</b> — ` +
-      (ganhos > 0 ? `${ganhos} bônus já alcançado${ganhos === 1 ? '' : 's'} e ` : '') +
-      `faltam <b>${faltam}</b> para o próximo.`;
+    const porIndicacao = bonus.base === 'indicacoes';
+    const base = porIndicacao
+      ? ctrItens.filter(it => it.contaParaBonus !== false && !it.tipoIndicacao).length
+      : ctrItens.filter(it => it.status === 'Captada' || it.status === 'Vendida').length;
+    const ganhos = Math.floor(base / bonus.aCada);
+    const faltam = bonus.aCada - (base % bonus.aCada);
+    const rotulo = porIndicacao ? 'indicações' : 'captações';
+    elBonus.innerHTML = `🎁 <b>Bônus:</b> ${brl(bonus.valor)} a cada ${bonus.aCada} ${rotulo}. ` +
+      `Você está em <b>${base}</b> — ` +
+      (ganhos > 0 ? `<b>${ganhos} bônus já alcançado${ganhos === 1 ? '' : 's'}</b> e ` : '') +
+      `${faltam === bonus.aCada ? bonus.aCada : faltam} para o próximo.` +
+      (bonus.nota ? `<details class="fech-nota" style="margin-top:6px;"><summary>Atenção à regra escrita</summary>${esc(bonus.nota)}</details>` : '');
   }
   // Indicação parada é indicação esquecida — e o indicador está esperando.
   const paradas = ctrItens.filter(indicacaoParada);
@@ -4720,6 +4731,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
         return '';
       })()}
       ${indicacaoParada(it) ? `<div class="ctr-motivo" style="background:#FDF6E8;border-color:#EBD9A8;color:#8A5A14;">⏳ Registrada há <b>${idadeIndicacao(it)} dias</b> e ainda não virou captação. O indicador está esperando notícia.</div>` : ''}
+      ${it.tipoIndicacao ? `<div class="ctr-motivo" style="background:#F2EEFA;border-color:#DDD3F0;color:#5B3F8C;">👤 <b>${esc(it.tipoIndicacao)}</b> — o programa foi desenhado para indicação de imóvel, e a bonificação depende da venda do imóvel indicado. Este caso não se encaixa na regra atual.</div>` : ''}
       ${it.motivoPerda ? `<div class="ctr-motivo">🚫 <b>${esc(it.motivoPerda)}</b>${it.detalhePerda ? '<br>' + esc(it.detalhePerda) : ''}</div>` : ''}
       ${it.obs ? `<div class="pilar-desc" style="margin-top:8px;">${esc(it.obs)}</div>` : ''}
       ${(waInd || waProp) && it.status !== 'Perdida' ? `<div class="lead-actions" style="margin-top:12px;">

@@ -42,7 +42,11 @@ module.exports = { nome: 'Conecta TR: vínculo estável e programa medido', roda
   // Bônus por captação: existia na regra e não era medido.
   if (ctr.bonusCaptacao) {
     const b = txt(doc.getElementById('ctrBonus'));
-    assert(/Bônus por captação/.test(b) && /faltam/.test(b), 'o bônus por captação não está sendo medido');
+    assert(/Bônus:/.test(b) && /a cada \d+ (indicações|captações)/.test(b),
+      'o bônus não está sendo medido');
+    // A base do bônus tem que estar escrita: contar indicação e escrever
+    // "captação" (ou o contrário) engana o indicador.
+    assert(new RegExp('Você está em').test(b), 'o bônus precisa dizer em quanto você está');
   }
 
   // Indicação parada precisa gritar: o indicador está esperando notícia.

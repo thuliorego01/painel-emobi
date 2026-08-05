@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-05T16:15:00-03:00",
+  "ultimaAtualizacao": "2026-08-05T16:50:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -832,58 +832,6 @@
       "obs": "Originado de indicação do Conecta TR — captação ainda em andamento, não confirmada. Indicador (Hudson Bezerra de Brito) pediu sigilo: o proprietário não pode saber que a indicação partiu dele, pode dizer que veio da administradora."
     },
     {
-      "nome": "Casa 02, Bosque dos Pássaros",
-      "tipo": null,
-      "bairro": null,
-      "cidade": null,
-      "endereco": null,
-      "valor": null,
-      "detalhes": null,
-      "proprietario": "Jairson",
-      "telefone": "84981822264",
-      "link": null,
-      "status": "Em Captação",
-      "pctComissao": null,
-      "dataCaptacao": "2026-07-23",
-      "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Originado de indicação do Conecta TR — captação ainda em andamento, não confirmada."
-    },
-    {
-      "nome": "Bosque dos Pássaros, casa 09",
-      "tipo": null,
-      "bairro": null,
-      "cidade": null,
-      "endereco": null,
-      "valor": null,
-      "detalhes": null,
-      "proprietario": "Emerson",
-      "telefone": "84996044000",
-      "link": null,
-      "status": "Em Captação",
-      "pctComissao": null,
-      "dataCaptacao": "2026-07-23",
-      "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Originado de indicação do Conecta TR — captação ainda em andamento, não confirmada."
-    },
-    {
-      "nome": "Condomínio Polinésia (804, Bloco B)",
-      "tipo": null,
-      "bairro": null,
-      "cidade": null,
-      "endereco": null,
-      "valor": null,
-      "detalhes": null,
-      "proprietario": "Isabele Brasil",
-      "telefone": "84999224699",
-      "link": null,
-      "status": "Em Captação",
-      "pctComissao": null,
-      "dataCaptacao": "2026-07-30",
-      "ultimaInteracaoProprietario": "2026-08-02",
-      "tipoOperacao": "Venda",
-      "obs": "Originado de indicação do Conecta TR (protocolo IND-TR-2026-0009, indicador Jorge Tomé De Paiva Filho) — captação ainda em andamento, não confirmada. Sem correspondência achada no inventário ativo; confirmar com Thúlio se é venda ou locação."
-    },
-    {
       "nome": "Apartamento 3 Quartos Lagoa Nova 101m² (Cód. 7768)",
       "tipo": "Apartamento",
       "bairro": "Lagoa Nova",
@@ -1322,36 +1270,58 @@
         "imovel": "Condomínio Bosque dos Pássaros",
         "indicador": "Flávia Costa Marinho",
         "proprietario": "Jairson",
-        "status": "Registrada",
+        "status": "Encerrada",
         "valorDevido": null,
         "indicadorId": 4,
         "data": "2026-07-22",
         "telefoneProprietario": "84981822264",
-        "imovelCarteira": "Casa 02, Bosque dos Pássaros"
+        "motivoPerda": "Proprietário já tem corretor trabalhando o imóvel",
+        "detalhePerda": "Captação recusada em 05/08/2026 — o imóvel já está com outro corretor. A indicação continua válida para a contagem do bônus.",
+        "dataPerda": "2026-08-05",
+        "contaParaBonus": true
       },
       {
         "protocolo": "IND-TR-2026-0008",
         "imovel": "Bosque dos Pássaros, casa 09",
         "indicador": "Flávia Costa Marinho",
         "proprietario": "Emerson",
-        "status": "Registrada",
+        "status": "Encerrada",
         "valorDevido": null,
         "indicadorId": 4,
         "data": "2026-07-22",
         "telefoneProprietario": "84996044000",
-        "imovelCarteira": "Bosque dos Pássaros, casa 09"
+        "motivoPerda": "Proprietário já tem corretor trabalhando o imóvel",
+        "detalhePerda": "Captação recusada em 05/08/2026 — o imóvel já está com outro corretor. A indicação continua válida para a contagem do bônus.",
+        "dataPerda": "2026-08-05",
+        "contaParaBonus": true
       },
       {
         "protocolo": "IND-TR-2026-0009",
         "imovel": "Condomínio Polinésia (804, Bloco B)",
         "indicador": "Jorge Tomé De Paiva Filho",
         "proprietario": "Isabele Brasil",
-        "status": "Registrada",
+        "status": "Encerrada",
         "valorDevido": null,
         "indicadorId": 6,
         "data": "2026-07-30",
         "telefoneProprietario": "84999224699",
-        "imovelCarteira": "Condomínio Polinésia (804, Bloco B)"
+        "motivoPerda": "Proprietário já tem corretor trabalhando o imóvel",
+        "detalhePerda": "Captação recusada em 05/08/2026 — o imóvel já está com outro corretor. A indicação continua válida para a contagem do bônus.",
+        "dataPerda": "2026-08-05",
+        "contaParaBonus": true
+      },
+      {
+        "protocolo": "IND-TR-2026-0010",
+        "imovel": "Condomínio Quatro Estações (Candelária) — locação",
+        "indicador": "Raul Lucas Damasceno de Moura",
+        "indicadorId": 7,
+        "proprietario": "Amanda Cristina",
+        "telefoneProprietario": "84991558141",
+        "status": "Registrada",
+        "valorDevido": null,
+        "data": "2026-08-05",
+        "tipoIndicacao": "Cliente procurando imóvel",
+        "obs": "Amanda Cristina PROCURA apartamento para alugar no Condomínio Quatro Estações, Candelária. Não é indicação de imóvel para captação — é indicação de cliente. A regra atual do programa (bonificação por venda do imóvel indicado) não cobre este caso."
       }
     ],
     "indicadoresLista": [
@@ -1390,6 +1360,13 @@
         "telefone": "84996744509",
         "status": "Ativo",
         "id": 6
+      },
+      {
+        "nome": "Raul Lucas Damasceno de Moura",
+        "telefone": "84996733668",
+        "status": "Ativo",
+        "id": 7,
+        "cadastradoEm": "2026-08-05"
       }
     ],
     "regraBonificacao": "A bonificação só vira valor devido quando o imóvel indicado é VENDIDO. Tabela: até R$500 mil = R$1.000 · R$500 mil a R$1 milhão = R$2.000 · acima de R$1 milhão = R$3.000. Bônus de R$100 a cada 4 captações.",
@@ -1404,7 +1381,9 @@
     ],
     "bonusCaptacao": {
       "aCada": 4,
-      "valor": 100
+      "valor": 100,
+      "base": "indicacoes",
+      "nota": "Na prática, Thúlio conta INDICAÇÕES recebidas, não captações fechadas — indicação que não vira captação por culpa do mercado continua valendo. O regulamento escrito na planilha ainda diz \"a cada 4 captações\": vale alinhar os dois."
     }
   },
   "logAtividades": [
@@ -2311,6 +2290,12 @@
       "lead": "João Paulo de Paula",
       "tipo": "Outro",
       "resumo": "Vínculo registrado: o imóvel em negociação é o Cód. 7560 (Apartamento 3 Quartos Candelária 133m²), da própria carteira. Proposta de R$390.000 sobre tabela de R$419.990."
+    },
+    {
+      "data": "05/08/2026 16:45",
+      "lead": "Conecta TR",
+      "tipo": "Outro",
+      "resumo": "Indicações IND-TR-2026-0007, 0008 e 0009 encerradas: os proprietários já têm corretor e recusaram a captação. Os rascunhos correspondentes saíram da carteira. As três seguem contando para o bônus por indicação."
     }
   ]
 }
