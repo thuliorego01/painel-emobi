@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-05T09:45:00-03:00",
+  "ultimaAtualizacao": "2026-08-05T09:55:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -574,8 +574,8 @@
       "endereco": "Rua Do Tório, Lagoa Nova - Natal/RN",
       "valor": 249990,
       "detalhes": "2 quartos (2 suítes), 2 banheiros, 1 vaga, 60m²",
-      "proprietario": "A definir",
-      "telefone": null,
+      "proprietario": "Lenise Costa",
+      "telefone": "84998151774",
       "link": "https://emobiimobiliaria.com.br/imovel/10567/apartamento-2-quartos-lagoa-nova-natal/",
       "status": "Reservado",
       "pctComissao": null,
@@ -2301,6 +2301,12 @@
       "lead": "Cód. 10567 (Condomínio Luiz Marques, Lagoa Nova)",
       "tipo": "Em Negociação",
       "resumo": "Fechamento acordado em R$240.000,00. Comprador trazido pelo corretor parceiro Ivanaldo Tavares (Emobi). Comissão total 5% = R$12.000,00, dividida meio a meio; parte de Thúlio R$4.200,00. Assinatura conclui em 06/08."
+    },
+    {
+      "data": "05/08/2026 09:50",
+      "lead": "Cód. 10567 (Condomínio Luiz Marques, Lagoa Nova)",
+      "tipo": "Outro",
+      "resumo": "Proprietária cadastrada: Lenise Costa, (84) 99815-1774."
     }
   ]
 }
