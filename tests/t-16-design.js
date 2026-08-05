@@ -11,7 +11,7 @@ module.exports = { nome: 'Design: uma escala só, sem px solto', rodar: async ()
   const corpo = html.slice(html.indexOf('</style>'));
 
   // Tamanho de fonte só pela escala. A exceção é a própria definição dos tokens.
-  const semTokens = css.replace(/--fs-[a-z0-9]+:\s*[^;]+;/g, '');
+  const semTokens = css.replace(/--(fs|ic)-[a-z0-9]+:\s*[^;]+;/g, '');
   const fontesSoltas = [...semTokens.matchAll(/font-size:\s*([0-9.]+px)/g)].map(m => m[1]);
   assert(fontesSoltas.length === 0,
     'font-size em pixel solto no CSS: ' + [...new Set(fontesSoltas)].join(', '));
@@ -23,6 +23,24 @@ module.exports = { nome: 'Design: uma escala só, sem px solto', rodar: async ()
   // Raio de borda idem.
   const raiosSoltos = [...css.matchAll(/border-radius:\s*([0-9.]+px)\s*[;}]/g)].map(m => m[1]);
   assert(raiosSoltos.length === 0, 'border-radius em pixel solto: ' + [...new Set(raiosSoltos)].join(', '));
+
+  // Micro (o menor degrau) é só para ETIQUETA: chip, selo, contador, rótulo em
+  // caixa alta. Frase para ler nunca entra aí — era o que dava o "carnaval".
+  const forasteiros = [];
+  for (const m of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    const sel = m[1].trim(), decl = m[2];
+    if (!/font-size:\s*var\(--fs-2xs\)/.test(decl)) continue;
+    const ehEtiqueta = /text-transform:\s*uppercase/.test(decl) ||
+      /(chip|badge|selo|-qtd|-num|tag|contagem|-rot|rotulo|titulo-escopo|kpi-group-label|hint|dica|idade|meta-tipo|mes|quando|feito|parcial|status-|ind-zero|sync-text|com-detalhe)/.test(sel);
+    if (!ehEtiqueta) forasteiros.push(sel.split('\n').pop().slice(0, 40));
+  }
+  assert(forasteiros.length === 0,
+    'texto para ler no tamanho de etiqueta: ' + forasteiros.join(' | '));
+
+  // Ícone não segue a escala de texto — se seguir, muda de tamanho junto com
+  // o corpo e desalinha tudo.
+  assert(!/\.kpi \.icon[^{]*\{[^}]*font-size:\s*var\(--fs-/.test(css),
+    'ícone de KPI não deve usar a escala tipográfica');
 
   // A escala existe e tem os sete degraus.
   ['--fs-2xs', '--fs-xs', '--fs-sm', '--fs-md', '--fs-lg', '--fs-xl', '--fs-2xl']
