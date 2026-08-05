@@ -1339,7 +1339,7 @@
     <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>⏱️ Ritmo de 2026</div>
     <div class="card"><div id="ritmoAno"></div></div>
     <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>📚 Histórico de Negociações (2020-2026)</div>
-    <div id="historicoNotas"></div>
+    <div id="historicoNotas" style="margin-bottom:10px;"></div>
     <div class="grid2" style="margin-top:10px;">
       <div class="card">
         <h3>💰 Comissão Total por Ano</h3>
@@ -4250,9 +4250,17 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
 }
 
 // ---- Historico de Negociacoes ----
-document.getElementById('historicoNotas').innerHTML =
-  `<div class="hist-nota">ℹ️ ${DATA.historico.notaAmostra}</div>
-   <div class="hist-nota">${DATA.historico.notaDivergencia}</div>`;
+// As notas do histórico saíram: uma explicava uma correção de 2021 já
+// incorporada aos totais, a outra descrevia a sazonalidade antiga (só do ano
+// vigente) e virou mentira quando ela passou a usar 4 anos. Nota de rodapé que
+// já cumpriu o papel vira ruído — e, pior, envelhece sem ninguém notar.
+(function renderHistoricoNotas() {
+  const el = document.getElementById('historicoNotas');
+  if (!el) return;
+  const notas = [DATA.historico.notaAmostra, DATA.historico.notaDivergencia].filter(Boolean);
+  if (!notas.length) { el.style.display = 'none'; return; }
+  el.innerHTML = notas.map(n => `<div class="hist-nota">${esc(n)}</div>`).join('');
+})();
 
 const historicoTabela = document.getElementById('historicoTabela');
 DATA.historico.anos.forEach(a => {

@@ -1,20 +1,14 @@
 {
-  "ultimaAtualizacao": "2026-08-05T15:50:00-03:00",
+  "ultimaAtualizacao": "2026-08-05T16:15:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
   "metaComissao2026": {
     "meta": 240000
   },
-  "metaMensal": {
-    "observacao": "Calculado ao vivo no painel a partir da data atual + listaNegociacoes (desde 01/08/2026). Campos mesesRestantes/metaMensalDinamica/tabela foram removidos porque envelheciam sozinhos."
-  },
-  "comissao": {
-    "observacao": "Pago, aguardando e previsto são calculados ao vivo a partir de listaNegociacoes e dos leads em negociação."
-  },
-  "negociacoes": {
-    "observacao": "Contagens e totais por tipo são calculados ao vivo a partir de listaNegociacoes."
-  },
+  "metaMensal": {},
+  "comissao": {},
+  "negociacoes": {},
   "listaNegociacoes": [
     {
       "imovel": "Casa Rua Maçaranduba",
@@ -1017,8 +1011,6 @@
         "comissao": 0
       }
     ],
-    "notaAmostra": "Sazonalidade só do ano vigente (2026) — recalcula sozinha ano a ano.",
-    "notaDivergencia": "✅ Comissão de vendas de 2021 revisada e confirmada com Thúlio: R$ 95.746,83 (a planilha original tinha R$ 83.746,83, que não incluía a venda do Edifício Ubatuba).",
     "sazonalidadeHistorica": {
       "anos": [
         2020,
