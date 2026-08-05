@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-05T09:10:00-03:00",
+  "ultimaAtualizacao": "2026-08-05T09:45:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -581,8 +581,12 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-06",
       "ultimaInteracaoProprietario": "2026-08-05",
-      "obs": "Condomínio Luiz Marques, sem área de lazer mas ótima localização. Imóvel quitado e escriturado. Condomínio R$ 425,00. Visita realizada hoje (22/07) às 13h30, com corretor parceiro Pedro Palitot. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [05/08] EM ASSINATURA DE CONTRATO — conclusão prevista para 06/08. Venda em parceria com Ivanaldo Tavares, corretor da própria Emobi.",
-      "corretorParceiro": "Ivanaldo Tavares (Emobi)"
+      "obs": "Condomínio Luiz Marques, sem área de lazer mas ótima localização. Imóvel quitado e escriturado. Condomínio R$ 425,00. Visita realizada hoje (22/07) às 13h30, com corretor parceiro Pedro Palitot. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [05/08] EM ASSINATURA DE CONTRATO — conclusão prevista para 06/08. Venda em parceria com Ivanaldo Tavares, corretor da própria Emobi. [05/08] Fechamento acordado em R$240.000,00 (tabela R$249.990,00). Comissão total 5% = R$12.000,00, dividida com Ivanaldo Tavares (R$6.000,00 cada); sua parte 70% = R$4.200,00. Vira \"Vendido\" quando a assinatura for concluída.",
+      "corretorParceiro": "Ivanaldo Tavares (Emobi) — trouxe o comprador",
+      "valorVendaAcordado": 240000,
+      "comissaoTotalVenda": 12000.0,
+      "comissaoThulioVenda": 4200.0,
+      "comissaoConfirmada": false
     },
     {
       "nome": "Casa em Condomínio 3 Quartos Extremoz 160m² (Cód. 10594)",
@@ -2291,6 +2295,12 @@
       "lead": "Diana Rêgo",
       "tipo": "Outro",
       "resumo": "Sinal pago. Restam apenas o repasse e o pagamento da comissão de R$12.075,00."
+    },
+    {
+      "data": "05/08/2026 09:40",
+      "lead": "Cód. 10567 (Condomínio Luiz Marques, Lagoa Nova)",
+      "tipo": "Em Negociação",
+      "resumo": "Fechamento acordado em R$240.000,00. Comprador trazido pelo corretor parceiro Ivanaldo Tavares (Emobi). Comissão total 5% = R$12.000,00, dividida meio a meio; parte de Thúlio R$4.200,00. Assinatura conclui em 06/08."
     }
   ]
 }
