@@ -36,8 +36,14 @@ module.exports = { nome: 'BI: ritmo, escopo do funil, fila e sazonalidade', roda
   const atual = saz.data.datasets.find(x => !/histórica/i.test(x.label));
   assert(atual.data.some(v => v === null), 'mês futuro tem que ser vazio, não zero');
 
-  const origem = doc.querySelector('#origemList .bi-clicavel');
-  origem.dispatchEvent(new dom.window.Event('click', { bubbles: true }));
+  // "Leads por Origem" e "Origem por Resultado" mostravam a mesma contagem em
+  // dois cards; o da esquerda deixava meia tela vazia. Viraram um só.
+  assert(!doc.getElementById('origemList'), 'o card duplicado de origem voltou');
+  assert(doc.querySelectorAll('#origemResultado .origem-barra').length > 0,
+    'a tabela de origem precisa herdar a barra visual do card removido');
+  const origem = doc.querySelector('#origemResultado [data-origem]');
+  assert(origem, 'a linha de origem precisa ser clicável');
+  origem.dispatchEvent(new dom.window.MouseEvent('click', { bubbles: true }));
   assert(doc.getElementById('biModalOverlay').classList.contains('open'), 'janela do BI não abriu');
   assert(txt(doc.getElementById('biModalCorpo')).length > 0, 'janela do BI vazia');
 

@@ -267,6 +267,8 @@
     .prox-vencer { border-top-color:#2C342A; }
     .prestes-resumo { background:#1E241D; border-color:#2C342A; color:#C3C9BC; }
     .ctr-parada { background:#2A2818; border-color:#4A4326; color:#D9C98A; }
+    .origem-barra { background:#2C342A; }
+    .tbl-mini tr.linha-origem:hover td { background:#232A22; }
     .ctr-bonus { background:#241E33; border-color:#3D3355; color:#C6BBDE; }
     .prestes-linha { border-bottom-color:#232A22; }
     .kpi-group-item.kpi-clicavel:hover { background:#232A22; }
@@ -651,6 +653,12 @@
   .ano-frase { margin-top:12px; font-size: var(--fs-sm); color:#5C6155; }
   .ano-frase.atras b { color:#B4300F; }
   .ano-frase.frente b { color:#2E7D32; }
+  .origem-nome { display:block; }
+  .origem-barra { display:block; height:4px; background:#F1F3EE; border-radius:3px; margin-top:4px; max-width:150px; overflow:hidden; }
+  .origem-barra span { display:block; height:100%; background:linear-gradient(90deg,#8C6D1F,#BF9D53); border-radius:3px; }
+  .tbl-mini tr.linha-origem { cursor:pointer; }
+  .tbl-mini tr.linha-origem:hover td { background:#F6F7F2; }
+  .tbl-mini tr.linha-origem:focus-visible { outline:2px solid var(--brand-gold); outline-offset:-2px; }
   .ctr-parada { font-size: var(--fs-2xs); color:#8A5A14; background:#FDF6E8; border:1px solid #EBD9A8;
     border-radius:9px; padding:9px 12px; margin-bottom:10px; line-height:1.55; }
   .ctr-bonus { font-size: var(--fs-2xs); color:#5B3F8C; background:#F6F3FC; border:1px solid #E4DCF3;
@@ -1249,21 +1257,13 @@
   <div class="tab-panel" data-tab="bicomercial" id="panel-bicomercial" role="tabpanel">
     <div class="section-title"><span class="dot" aria-hidden="true"></span>💡 De onde vem resultado?</div>
     <div class="grid2">
-      <div>
-        <div class="card">
-          <h3>🧭 Leads por Origem</h3>
-          <div id="origemList"></div>
-        </div>
+      <div class="card">
+        <h3>🧭 Origem dos leads e o que cada canal entrega</h3>
+        <div id="origemResultado"></div>
       </div>
-      <div>
-        <div class="card">
-          <h3>🏆 Origem por Resultado</h3>
-          <div id="origemResultado"></div>
-        </div>
-        <div class="card" style="margin-top:18px;">
-          <h3>↩ Clientes que voltam</h3>
-          <div id="clientesVoltam"></div>
-        </div>
+      <div class="card">
+        <h3>↩ Clientes que voltam</h3>
+        <div id="clientesVoltam"></div>
       </div>
     </div>
     <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>🌡️ Termômetro do Funil <span class="titulo-escopo">— leads em acompanhamento ativo</span></div>
@@ -2511,34 +2511,23 @@ funilCalculado.forEach(([label, count]) => {
     </details>`;
 })();
 
-const origemList = document.getElementById('origemList');
-const origemCounts = {};
-(DATA.leads || []).forEach(l => {
-  const o = l.origem || 'Não informado';
-  origemCounts[o] = (origemCounts[o] || 0) + 1;
-});
-const origemEntries = Object.entries(origemCounts).sort((a, b) => b[1] - a[1]);
-if (origemEntries.length === 0) {
-  origemList.innerHTML = '<div style="font-size:13px;color:#8A9186;">Sem leads cadastrados ainda.</div>';
-} else {
-  const maxOrigem = Math.max(1, ...origemEntries.map(e => e[1]));
-  origemEntries.forEach(([label, count]) => {
-    const w = Math.max(6, (count / maxOrigem) * 100);
-    const row = document.createElement('div');
-    row.className = 'origem-row bi-clicavel';
-    row.setAttribute('role', 'button');
-    row.setAttribute('tabindex', '0');
-    const abrir = () => abrirBiModal('Leads de origem: ' + label,
-      (DATA.leads || []).filter(l => (l.origem || 'Não informado') === label));
-    row.addEventListener('click', abrir);
-    row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(); } });
-    row.innerHTML = `
-      <div class="origem-label">${label}</div>
-      <div class="origem-track"><div class="origem-fill" style="width:${w}%"></div></div>
-      <div class="origem-count">${count}</div>`;
-    origemList.appendChild(row);
+// Clicar na origem abre quem veio por ela — comportamento que morava no card
+// "Leads por Origem", removido por dizer a mesma coisa que esta tabela.
+(function ligarOrigem() {
+  const el = document.getElementById('origemResultado');
+  if (!el) return;
+  const abrir = (origem) => abrirBiModal('Leads de origem: ' + origem,
+    (DATA.leads || []).filter(l => (l.origem || 'Não informada') === origem));
+  el.addEventListener('click', (e) => {
+    const tr = alvoDe(e).closest('[data-origem]');
+    if (tr) abrir(tr.dataset.origem);
   });
-}
+  el.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const tr = alvoDe(e).closest('[data-origem]');
+    if (tr) { e.preventDefault(); abrir(tr.dataset.origem); }
+  });
+})();
 
 // ---- Conversao entre fases ----
 // Calculado ao vivo a partir de DATA.leads[].maiorFaseIndex (maior fase já alcançada por cada lead),
@@ -5044,10 +5033,13 @@ function resumirEvento(titulo) {
     .sort((a, b) => b.media - a.media);
 
   const melhor = linhas[0];
+  // A barra veio do card "Leads por Origem", que foi removido: ele mostrava a
+  // mesma contagem que já existia aqui na coluna Leads, ocupando meia tela.
+  const maxN = Math.max(1, ...linhas.map(l => l.n));
   el.innerHTML = `<table class="tbl-mini">
     <thead><tr><th>Origem</th><th style="text-align:right">Leads</th><th style="text-align:right">Fase média</th><th style="text-align:right">Visitaram</th><th style="text-align:right">Propuseram</th></tr></thead>
-    <tbody>${linhas.map(l => `<tr class="${l.origem === melhor.origem && linhas.length > 1 ? 'destaque' : ''}">
-      <td>${l.origem}</td>
+    <tbody>${linhas.map(l => `<tr class="linha-origem${l.origem === melhor.origem && linhas.length > 1 ? ' destaque' : ''}" role="button" tabindex="0" data-origem="${esc(l.origem)}">
+      <td><span class="origem-nome">${esc(l.origem)}</span><span class="origem-barra"><span style="width:${Math.round(l.n / maxN * 100)}%"></span></span></td>
       <td class="num">${l.n}</td>
       <td class="num">${l.media.toFixed(1)}</td>
       <td class="num">${l.pctVisita}%</td>
