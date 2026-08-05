@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-04T20:50:00-03:00",
+  "ultimaAtualizacao": "2026-08-05T08:35:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -183,19 +183,21 @@
       "telefone": "84981761829",
       "origem": "CRM Emobi",
       "dataEntrada": "2026-07-01",
-      "fase": "Qualificado",
+      "fase": "Inativo",
       "maiorFaseIndex": 3,
-      "temperatura": "Morno",
+      "temperatura": "Frio",
       "valor": 380000,
       "comissaoPrevista": null,
-      "proximaAcao": "Sem resposta — se não responder até o fim da cadência (7 dias), enviar mensagem de encerramento (estilo \"demissão do cliente\")",
-      "dataProximaAcao": "2026-08-05",
-      "status": "Em dia",
-      "obs": "Referência de estilo: Cód. 9723 — casa em condomínio 3 quartos (1 suíte), 119m², Nova Parnamirim, R$380.000. Follow-up feito em 06/07. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada. [29/07] Sem resposta às últimas tentativas — cadência de 7 dias reiniciada. Mensagem de encerramento preparada para envio em 05/08 caso continue sem retorno.",
+      "proximaAcao": "Retomar em ~90 dias, se não houver retorno antes",
+      "dataProximaAcao": "2026-11-03",
+      "status": "Inativo",
+      "obs": "Referência de estilo: Cód. 9723 — casa em condomínio 3 quartos (1 suíte), 119m², Nova Parnamirim, R$380.000. Follow-up feito em 06/07. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada. [29/07] Sem resposta às últimas tentativas — cadência de 7 dias reiniciada. Mensagem de encerramento preparada para envio em 05/08 caso continue sem retorno. [05/08] Prazo cumprido sem retorno. Enviada mensagem de despedida — sem cobrança, com o perfil dela guardado para quando fizer sentido de novo. Retomada prevista para ~90 dias.",
       "imoveisCompativeis": [
         "Cód. 10594"
       ],
-      "interesse": "casa em condomínio em Nova Parnamirim"
+      "interesse": "casa em condomínio em Nova Parnamirim",
+      "motivoPerda": "Não é o momento",
+      "motivoDetalhe": "Sem retorno após a cadência completa. Encerrado o acompanhamento ativo com mensagem de despedida, deixando a porta aberta para retomada futura."
     },
     {
       "id": 4,
@@ -1196,12 +1198,6 @@
       "hora": "",
       "relacionado": "Cód. 9754 (Neópolis) — Vanessa Oliveira",
       "data": "2026-08-01"
-    },
-    {
-      "texto": "Se Maria Eduarda Revorêdo não responder, enviar mensagem de encerramento (\"demissão do cliente\")",
-      "hora": "",
-      "relacionado": "Maria Eduarda Revorêdo",
-      "data": "2026-08-05"
     },
     {
       "texto": "Ligação de retomada: apartamento no Bosque Tirol — tel. (84) 98820-2035",
@@ -2274,6 +2270,13 @@
       "lead": "Maria Matos",
       "tipo": "Visita Realizada",
       "resumo": "Visita realizada ao Residencial Ariane (Cód. 10650). Cliente reafirmou que quer Capim Macio; opção enviada, aguardando resposta."
+    },
+    {
+      "data": "05/08/2026 08:30",
+      "leadId": 3,
+      "lead": "Maria Eduarda Revorêdo",
+      "tipo": "Outro",
+      "resumo": "Prazo da cadência vencido sem retorno. Acompanhamento ativo encerrado com mensagem de despedida — sem cobrança, porta aberta para retomada futura. Perfil mantido: casa em condomínio em Nova Parnamirim, ~R$380 mil."
     }
   ]
 }
