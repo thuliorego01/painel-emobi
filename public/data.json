@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-05T17:05:00-03:00",
+  "ultimaAtualizacao": "2026-08-05T17:35:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -902,61 +902,7 @@
       },
       {
         "ano": 2026,
-        "nNegocios": 8,
-        "valorNegociado": 2359100,
-        "comissaoTotal": 66462.5,
-        "meta": 10000000,
-        "pctAtingido": 0.23591
-      }
-    ],
-    "sazonalidade": [
-      {
-        "mes": "Jan",
-        "comissao": 2475
-      },
-      {
-        "mes": "Fev",
-        "comissao": 14525
-      },
-      {
-        "mes": "Mar",
-        "comissao": 0
-      },
-      {
-        "mes": "Abr",
-        "comissao": 38387.5
-      },
-      {
-        "mes": "Mai",
-        "comissao": 11075
-      },
-      {
-        "mes": "Jun",
-        "comissao": 0
-      },
-      {
-        "mes": "Jul",
-        "comissao": 0
-      },
-      {
-        "mes": "Ago",
-        "comissao": 0
-      },
-      {
-        "mes": "Set",
-        "comissao": 0
-      },
-      {
-        "mes": "Out",
-        "comissao": 0
-      },
-      {
-        "mes": "Nov",
-        "comissao": 0
-      },
-      {
-        "mes": "Dez",
-        "comissao": 0
+        "meta": 10000000
       }
     ],
     "sazonalidadeHistorica": {

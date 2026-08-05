@@ -4263,8 +4263,29 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
   el.innerHTML = notas.map(n => `<div class="hist-nota">${esc(n)}</div>`).join('');
 })();
 
+// O ano corrente vivia congelado dentro de DATA.historico: uma venda de julho
+// e a comissão de agosto não apareciam nem no gráfico anual nem na
+// sazonalidade. Agora ele é recalculado de listaNegociacoes toda vez.
+// Base: MÊS DO FECHAMENTO — a mesma dos anos antigos, para poder comparar.
+// O recebimento pode cair depois; quem mostra caixa é o Faturamento.
+const ANOS_HISTORICO = (function montarAnos() {
+  const anoAtual = new Date().getFullYear();
+  const negs = DATA.listaNegociacoes || [];
+  const vivo = {
+    ano: anoAtual,
+    nNegocios: negs.length,
+    valorNegociado: negs.reduce((s, n) => s + (n.valor || 0), 0),
+    comissaoTotal: negs.reduce((s, n) => s + (n.comissao || 0), 0)
+  };
+  return (DATA.historico.anos || []).map(a => {
+    if (a.ano !== anoAtual) return a;
+    const meta = a.meta ?? null;
+    return { ...a, ...vivo, meta, pctAtingido: meta ? vivo.valorNegociado / meta : null };
+  });
+})();
+
 const historicoTabela = document.getElementById('historicoTabela');
-DATA.historico.anos.forEach(a => {
+ANOS_HISTORICO.forEach(a => {
   const meta = a.meta === null ? '—' : brl(a.meta);
   const pct = a.pctAtingido === null ? '—' : Math.round(a.pctAtingido * 100) + '%';
   const tr = document.createElement('tr');
@@ -4275,10 +4296,10 @@ DATA.historico.anos.forEach(a => {
 new Chart(document.getElementById('chartHistoricoAno'), {
   type: 'bar',
   data: {
-    labels: DATA.historico.anos.map(a => String(a.ano)),
+    labels: ANOS_HISTORICO.map(a => String(a.ano)),
     datasets: [{
       label: 'Comissão total',
-      data: DATA.historico.anos.map(a => a.comissaoTotal),
+      data: ANOS_HISTORICO.map(a => a.comissaoTotal),
       backgroundColor: BRAND.goldDeep,
       borderRadius: 4
     }]
@@ -4387,11 +4408,18 @@ new Chart(document.getElementById('chartHistoricoAno'), {
   // Meses futuros ficam null e não viram zero: uma linha despencando para o
   // fundo em setembro sugeriria queda, quando setembro nem chegou.
   const mesCorrente = new Date().getMonth();
-  const atual = (DATA.historico.sazonalidade || []).map((s, i) => i <= mesCorrente ? s.comissao : null);
+  // Do próprio listaNegociacoes, por mês de fechamento — era um array guardado
+  // que parava de acompanhar assim que um negócio novo entrava.
+  const porMes = new Array(12).fill(0);
+  (DATA.listaNegociacoes || []).forEach(n => {
+    if (n.mesNum) porMes[n.mesNum - 1] += (n.comissao || 0);
+  });
+  const atual = porMes.map((v, i) => i <= mesCorrente ? v : null);
   const melhor = sh.meses.reduce((a, b) => (b.mediaComissao > a.mediaComissao ? b : a), sh.meses[0]);
   const mesAgora = sh.meses[new Date().getMonth()];
   if (nota) {
-    nota.innerHTML = `Média de <b>${sh.totalNegocios}</b> negócios com mês registrado (${sh.anos.join(', ')}) — ${sh.nota}` +
+    nota.innerHTML = `Comissão pelo <b>mês em que o negócio fechou</b> — não pelo mês em que o dinheiro entrou (esse fica no Faturamento).<br>` +
+      `Média de <b>${sh.totalNegocios}</b> negócios com mês registrado (${sh.anos.join(', ')}) — ${sh.nota}` +
       `<br>Seu mês historicamente mais forte é <b>${melhor.mes}</b> (${brl(melhor.mediaComissao)} de média).` +
       (mesAgora ? ` Estamos em <b>${mesAgora.mes}</b>, que rende ${brl(mesAgora.mediaComissao)} em média.` : '');
   }

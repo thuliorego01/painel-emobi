@@ -1,8 +1,9 @@
 const assert = require('assert');
-const { montar, txt, porId } = require('./ambiente');
+const { montar, txt, porId, dados } = require('./ambiente');
 
 module.exports = { nome: 'BI: ritmo, escopo do funil, fila e sazonalidade', rodar: async () => {
   const { dom, doc, graficos } = await montar({ capturarCharts: true });
+  const DATA = dados(dom);
 
   const ritmo = porId(doc, 'ritmoAno');
   assert(/Ano decorrido/.test(ritmo), 'falta a barra de ano decorrido');
@@ -19,7 +20,6 @@ module.exports = { nome: 'BI: ritmo, escopo do funil, fila e sazonalidade', roda
   // Fase com 0% de conversão e gente parada dentro é FILA, não gargalo.
   // Só cobramos o rótulo quando essa situação existe — quando não existe
   // (todo mundo avançou), a ausência é o resultado certo.
-  const DATA = dom.window.eval('DATA');
   const FASES = ['Novo Lead','Primeiro Contato Feito','Qualificado','Visita Agendada',
                  'Visita Realizada','Proposta Enviada','Em Negociação','Fechado Ganho'];
   const alcancaram = FASES.map((_, i) => DATA.leads.filter(l => (l.maiorFaseIndex || 0) >= i + 1).length);
@@ -29,6 +29,21 @@ module.exports = { nome: 'BI: ritmo, escopo do funil, fila e sazonalidade', roda
     assert(/em andamento/.test(porId(doc, 'conversaoTabela')),
       'fase com 0% e gente dentro é fila, tem que dizer isso');
   }
+
+  // O ano corrente não pode viver congelado dentro de historico: uma venda de
+  // julho e a comissão de agosto ficaram invisíveis por dias.
+  const anoAtual = new Date().getFullYear();
+  const guardado = (DATA.historico.anos || []).find(a => a.ano === anoAtual) || {};
+  ['nNegocios', 'valorNegociado', 'comissaoTotal', 'pctAtingido'].forEach(k =>
+    assert(!(k in guardado), `historico.anos[${anoAtual}].${k} voltou a ser guardado — vai envelhecer`));
+  assert(!('sazonalidade' in DATA.historico),
+    'historico.sazonalidade voltou a ser guardada — deve sair de listaNegociacoes');
+
+  const totalVivo = (DATA.listaNegociacoes || []).reduce((s2, n) => s2 + (n.comissao || 0), 0);
+  const g = graficos['chartHistoricoAno'];
+  const idx = g.data.labels.indexOf(String(anoAtual));
+  assert(Math.abs(g.data.datasets[0].data[idx] - totalVivo) < 0.01,
+    `gráfico anual mostra ${g.data.datasets[0].data[idx]} para ${anoAtual}, mas as negociações somam ${totalVivo}`);
 
   const saz = graficos['chartHistoricoSazonalidade'];
   const hist = saz.data.datasets.find(x => /histórica/i.test(x.label));
