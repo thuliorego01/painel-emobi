@@ -12,7 +12,11 @@ module.exports = { nome: 'Vínculo com imóvel sobrevive a renomeio', rodar: asy
   // Todo imóvel precisa de id — sem ele, quem referencia inventa chave frágil.
   const semId = (DATA.imoveis || []).filter(i => i.id === undefined || i.id === null);
   assert(semId.length === 0, 'imóvel sem id: ' + semId.map(i => i.nome).join(', '));
-  const ids = (DATA.imoveis || []).map(i => String(i.id));
+  // Vínculo resolve contra a carteira INTEIRA, inclusive o que já saiu dela:
+  // uma indicação recusada ou um imóvel vendido pela concorrência somem da
+  // tela, mas o log e o Conecta TR continuam apontando para eles.
+  const TODOS = dom.window.eval('IMOVEIS_TODOS');
+  const ids = TODOS.map(i => String(i.id));
   assert(ids.length === new Set(ids).size, 'há id de imóvel duplicado');
 
   // Nome de imóvel não pode estar copiado em outro registro.

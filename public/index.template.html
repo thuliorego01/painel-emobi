@@ -1541,6 +1541,16 @@
 
 <script>
 const DATA = /*__PAINEL_DATA_PLACEHOLDER__*/{};
+
+// Imóvel que saiu da carteira é passado, não estoque. Vendido pela
+// concorrência ou captação recusada: em nenhum dos dois casos ele é seu, e
+// deixá-lo visível — mesmo marcado como indisponível — só cria a chance de
+// alguém oferecê-lo a um cliente. Some do inventário, do VGV, dos alertas de
+// follow-up e de qualquer sugestão. Fica no log, que é onde ele pertence.
+// A lista completa continua existindo para que log, Conecta TR, negociações
+// e comissões antigas resolvam suas referências e não fiquem órfãos.
+const IMOVEIS_TODOS = (DATA.imoveis || []).slice();
+DATA.imoveis = IMOVEIS_TODOS.filter(im => im && im.status !== 'Fora da carteira');
 const isDemo = false;
 const BRAND = { dark: '#10150F', dark2:'#1D2717', gold:'#BF9D53', goldLight:'#D9BE8B', goldDeep:'#8C6D1F', green:'#4C7A3A' };
 
@@ -2955,11 +2965,11 @@ function clientesQueVoltaram() {
 function imovelPorCodigoTexto(ref) {
   const cod = (String(ref || '').match(/(\d+)/) || [])[1];
   if (!cod) return null;
-  return (DATA.imoveis || []).find(im => new RegExp('Cód\\.\\s*' + cod + '\\b').test(im.nome || '')) || null;
+  return IMOVEIS_TODOS.find(im => new RegExp('Cód\\.\\s*' + cod + '\\b').test(im.nome || '')) || null;
 }
 function imovelPorId(id) {
   if (id === undefined || id === null) return null;
-  return (DATA.imoveis || []).find(im => String(im.id) === String(id)) || null;
+  return IMOVEIS_TODOS.find(im => String(im.id) === String(id)) || null;
 }
 
 function logDoLead(l) {

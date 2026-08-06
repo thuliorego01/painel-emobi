@@ -9,6 +9,25 @@ module.exports = {
   async rodar() {
     const { dom, doc } = await montar();
     const DATA = dados(dom);
+
+    // Quem saiu da carteira não pode aparecer em lugar nenhum da tela.
+    const TODOS = dom.window.eval('IMOVEIS_TODOS');
+    const fora = TODOS.filter(im => im.status === 'Fora da carteira');
+    assert(!(DATA.imoveis || []).some(im => im.status === 'Fora da carteira'),
+      'imóvel fora da carteira voltou para o estoque visível');
+    // No log ele PODE (e deve) aparecer — é lá que ele passa a viver.
+    // O que não pode é continuar no estoque ou numa sugestão de cliente.
+    const estoque = doc.getElementById('imoveisCard');
+    const sugestoes = Array.from(doc.querySelectorAll('.match-line')).map(e => e.textContent).join(' ');
+    fora.forEach(im => {
+      const cod = (String(im.nome).match(/Cód\.\s*(\d+)/) || [])[1];
+      if (!cod) return;
+      const re = new RegExp('Cód\\.\\s*' + cod + '\\b');
+      assert(!estoque || !re.test(estoque.textContent),
+        `${im.nome} saiu da carteira e continua no inventário`);
+      assert(!re.test(sugestoes),
+        `${im.nome} saiu da carteira e continua sendo sugerido a cliente`);
+    });
     const porCod = new Map();
     (DATA.imoveis || []).forEach(im => {
       const m = String(im.nome || '').match(/Cód\.\s*(\d+)/);

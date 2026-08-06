@@ -34,6 +34,11 @@ const idsImoveis = new Set(imoveis.map(i => String(i.id)).filter(v => v !== 'und
 const idsIndicadores = new Set(indicadores.map(i => String(i.id)));
 const codsImoveis = new Set(
   imoveis.map(i => (String(i.nome).match(/Cód\.\s*(\d+)/) || [])[1]).filter(Boolean));
+const imovelPorCod = new Map();
+imoveis.forEach(i => {
+  const c = (String(i.nome).match(/Cód\.\s*(\d+)/) || [])[1];
+  if (c) imovelPorCod.set(c, i);
+});
 
 function checa(nome, itens, campo, resolve, opts = {}) {
   let comValor = 0, quebrados = [];
@@ -79,7 +84,10 @@ checa('prospecção → imóvel captado', prospeccao, 'imovelCaptadoCod', v => c
     (l.imoveisCompativeis || []).forEach(ref => {
       comValor++;
       const cod = (String(ref).match(/(\d+)/) || [])[1];
-      if (!cod || !codsImoveis.has(cod)) quebrados.push(`${l.nome} → "${ref}"`);
+      if (!cod || !codsImoveis.has(cod)) quebrados.push(`${l.nome} → "${ref}" (não existe)`);
+      // Imóvel que saiu da carteira não é sugestão: o painel nem mostra mais.
+      else if (imovelPorCod.get(cod) && imovelPorCod.get(cod).status === 'Fora da carteira')
+        quebrados.push(`${l.nome} → "${ref}" (fora da carteira: ${imovelPorCod.get(cod).motivoSaida || 'sem motivo'})`);
     });
   });
   relatorio.push({ nome: 'lead → imóveis compatíveis', comValor, total: leads.length, quebrados: quebrados.length, tipo: 'texto' });
