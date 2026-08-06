@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-05T22:40:00-03:00",
+  "ultimaAtualizacao": "2026-08-05T23:05:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -422,6 +422,28 @@
       "visitaResumo": null,
       "visitaDetalhe": null,
       "interesse": "a definir"
+    },
+    {
+      "id": 16,
+      "nome": "Rubens Júnior",
+      "telefone": "84986858585",
+      "email": "atendimento@sosrastreamento.net",
+      "origem": "A definir",
+      "dataEntrada": "2026-08-05",
+      "fase": "Visita Agendada",
+      "maiorFaseIndex": 4,
+      "temperatura": "Morno",
+      "valor": 589990,
+      "comissaoPrevista": null,
+      "proximaAcao": "Visita ao Cód. 10652 (Muriú) amanhã, 06/08 às 16h",
+      "dataProximaAcao": "2026-08-06",
+      "status": "Em dia",
+      "imovelId": 28,
+      "obs": "Visita agendada para 06/08 às 16h na Casa em Condomínio Muriú (Cód. 10652), Ceará-Mirim. Imóvel da carteira, R$589.990.",
+      "imoveisCompativeis": [
+        "Cód. 10652"
+      ],
+      "interesse": "casa em condomínio em Muriú"
     }
   ],
   "imoveis": [
@@ -813,7 +835,7 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-22",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Residencial Ariane. 1 apartamento por andar, depósito privativo na garagem, área de serviço independente, dependência completa. Condomínio R$ 2.500,00 (água inclusa). IPTU R$ 6.440,08/ano. Captação concluída e publicada hoje (22/07) — proprietário Duarte.",
+      "obs": "Residencial Ariane. 1 apartamento por andar, depósito privativo na garagem, área de serviço independente, dependência completa. Condomínio R$ 2.500,00 (água inclusa). IPTU R$ 6.440,08/ano. Captação concluída e publicada hoje (22/07) — proprietário Duarte. Mesma proprietária do Cód. 10652 (Muriú).",
       "id": 24
     },
     {
@@ -841,17 +863,17 @@
       "tipoOperacao": "Venda",
       "bairro": "Muriú",
       "cidade": "Ceará-Mirim",
-      "endereco": "Rua Nova Segunda, Muriú - Ceará-Mirim/RN",
+      "endereco": "Rua Nova Segunda, 138, Muriú - Ceará-Mirim/RN",
       "valor": 589990,
       "detalhes": "4 quartos (4 suítes), 5 banheiros, terreno 540m², 200m² construídos, mobiliada, piscina privativa",
-      "proprietario": "A definir",
-      "telefone": null,
+      "proprietario": "Mariane Mororó",
+      "telefone": "84999879921",
       "link": "https://emobiimobiliaria.com.br/imovel/10652/casa-em-condominio-4-quartos-muriu-ceara-mirim/",
       "status": "Disponível",
       "pctComissao": null,
       "dataCaptacao": "2026-07-23",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Casa de praia beira-mar em condomínio exclusivo em Muriú (Ceará-Mirim, ~35min de Natal). Espaço gourmet, cozinha integrada à varanda, área verde com vista pro mar. Condomínio com piscina, churrasqueira, área verde e terraço para festas. Condomínio R$ 1.000,00 + IPTU R$ 700,00/ano. Pet friendly, mobiliado.",
+      "obs": "Casa de praia beira-mar em condomínio exclusivo em Muriú (Ceará-Mirim, ~35min de Natal). Espaço gourmet, cozinha integrada à varanda, área verde com vista pro mar. Condomínio com piscina, churrasqueira, área verde e terraço para festas. Condomínio R$ 1.000,00 + IPTU R$ 700,00/ano. Pet friendly, mobiliado. Mesma proprietária do Cód. 10650 (Mariane Mororó) — dois imóveis dela na carteira.",
       "id": 28
     },
     {
@@ -1083,9 +1105,34 @@
       "hora": "18:30",
       "titulo": "Visita – Condomínio Polinésia (804, Bloco B), Candelária — cliente Maria Teresa",
       "local": "Condomínio Polinésia, Candelária - Natal/RN"
+    },
+    {
+      "data": "2026-08-06",
+      "hora": "16:00",
+      "titulo": "Visita – Casa em Condomínio Muriú (Cód. 10652) — cliente Rubens Júnior",
+      "local": "Rua Nova Segunda, 138, Muriú - Ceará-Mirim/RN"
+    },
+    {
+      "data": "2026-08-06",
+      "hora": "14:45",
+      "horaFim": "17:00",
+      "titulo": "🔒 BLOQUEADO — deslocamento e visita em Muriú (Rubens Júnior)",
+      "local": "Saída: Rua Prof. Antônio Henrique de Melo, 2046 (Capim Macio)",
+      "bloqueado": true,
+      "obs": "Ida ~1h + visita ~45min. Volta não cabe antes das 18h30 em Candelária — ver conflito."
     }
   ],
-  "agendaProximos": [],
+  "agendaProximos": [
+    {
+      "data": "2026-08-08",
+      "hora": "08:00",
+      "horaFim": "11:00",
+      "titulo": "🔒 BLOQUEADO — Dia dos Pais na escola dos filhos",
+      "local": "Escola dos filhos",
+      "bloqueado": true,
+      "obs": "Compromisso inegociável. Não agendar visita nem ligação neste intervalo."
+    }
+  ],
   "lembretes": [
     {
       "texto": "Ativar clientes vendedores antigos",
@@ -2296,6 +2343,19 @@
       "lead": "Maria Teresa",
       "tipo": "Visita Agendada",
       "resumo": "Novo lead. Visita marcada para 06/08 às 18h30 no Condomínio Polinésia (804, Bloco B), Candelária — imóvel de terceiro, fora da carteira."
+    },
+    {
+      "data": "05/08/2026 22:45",
+      "lead": "Agenda",
+      "tipo": "Outro",
+      "resumo": "Agenda bloqueada no sábado 08/08, das 8h às 11h — Dia dos Pais na escola dos filhos. Compromisso inegociável."
+    },
+    {
+      "data": "05/08/2026 23:00",
+      "leadId": 16,
+      "lead": "Rubens Júnior",
+      "tipo": "Visita Agendada",
+      "resumo": "Novo lead. Visita marcada para 06/08 às 16h na Casa em Condomínio Muriú (Cód. 10652), Ceará-Mirim. Agenda bloqueada das 14h45 às 17h para o deslocamento."
     }
   ]
 }

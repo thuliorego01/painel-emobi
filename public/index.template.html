@@ -679,6 +679,11 @@
   /* Uma classe só para "não há nada aqui" — antes eram 16 estilos inline
      idênticos escritos à mão, cada um livre para divergir. */
   .estado-vazio { font-size: var(--fs-sm); color:#8A9186; line-height:1.5; }
+  /* Bloqueio de agenda não é compromisso de trabalho: é o oposto — um pedido
+     para não oferecer horário ali. Precisa se distinguir à primeira vista. */
+  .compromisso-card.bloqueado { background:#F6F3FC; border-color:#E4DCF3; }
+  .compromisso-card.bloqueado .cc-time { color:#5B3F8C; }
+  .semana-ev.bloqueado { background:#F2EEFA; border-color:#DDD3F0; color:#5B3F8C; }
 
   /* Caixa de recado: uma base só. Eram 11 regras quase idênticas, cada uma
      com seu próprio padding e sua própria linha de altura — a origem dos
@@ -2061,7 +2066,7 @@ function renderPrestesAFechar() {
     const lead = acharLead(a.titulo) || acharLead(a.local);
     const btn = lead ? `<button class="btn-abrir-cliente" type="button" data-lead="${lead.nome}">Abrir Cliente</button>` : '';
     return `
-      <div class="compromisso-card">
+      <div class="compromisso-card${a.bloqueado ? ' bloqueado' : ''}">
         <div class="cc-time">${a.quando}<br>${a.hora}</div>
         <div>
           <div class="cc-tag">🏠 Compromisso</div>
@@ -5180,7 +5185,9 @@ function resumirEvento(titulo) {
   function pushAll(arr, dataFallback) {
     (arr || []).forEach(ev => {
       const data = ev.data || dataFallback;
-      if (data) eventos.push({ data: String(data).slice(0, 10), hora: ev.hora || '', titulo: ev.titulo || '' });
+      // Carrega o resto do evento junto: o bloqueio de agenda precisa chegar
+      // aqui para a faixa da semana poder distingui-lo de um compromisso.
+      if (data) eventos.push({ ...ev, data: String(data).slice(0, 10), hora: ev.hora || '', titulo: ev.titulo || '' });
     });
   }
   const hoje = new Date();
@@ -5207,7 +5214,7 @@ function resumirEvento(titulo) {
       (doDia.length
         ? doDia.map(ev => {
             const completo = ((ev.hora ? ev.hora + ' ' : '') + ev.titulo).replace(/"/g, '&quot;');
-            return `<div class="semana-ev" title="${completo}">${ev.hora ? `<span class="semana-hora">${ev.hora}</span>` : ''}${resumirEvento(ev.titulo)}</div>`;
+            return `<div class="semana-ev${ev.bloqueado ? ' bloqueado' : ''}" title="${completo}">${ev.hora ? `<span class="semana-hora">${ev.hora}${ev.horaFim ? '–' + ev.horaFim : ''}</span>` : ''}${resumirEvento(ev.titulo)}</div>`;
           }).join('')
         : '<div class="semana-vazia-msg">livre</div>') +
     `</div>`;
@@ -5217,7 +5224,13 @@ function resumirEvento(titulo) {
     const diff = Math.floor((new Date(ev.data.slice(0,4), Number(ev.data.slice(5,7))-1, ev.data.slice(8,10)) - new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate())) / 86400000);
     return diff >= 0 && diff < 7;
   }).length;
-  html += `<div class="termo-nota">${totalSemana === 0 ? 'Nenhum compromisso nos próximos 7 dias.' : totalSemana + (totalSemana === 1 ? ' compromisso' : ' compromissos') + ' nos próximos 7 dias.'}</div>`;
+  // Bloqueio de agenda não é compromisso de trabalho: contá-lo junto faria a
+  // semana parecer mais cheia de cliente do que está.
+  const bloqueios = eventos.filter(ev => ev.bloqueado).length;
+  const trabalho = totalSemana - bloqueios;
+  const parteTrabalho = trabalho === 0 ? 'Nenhum compromisso' : trabalho + (trabalho === 1 ? ' compromisso' : ' compromissos');
+  const parteBloqueio = bloqueios ? ` · ${bloqueios} ${bloqueios === 1 ? 'horário bloqueado' : 'horários bloqueados'}` : '';
+  html += `<div class="termo-nota">${parteTrabalho} nos próximos 7 dias${parteBloqueio}.</div>`;
   el.innerHTML = html;
 })();
 
