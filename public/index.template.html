@@ -1526,7 +1526,7 @@
     <div class="nota-box">
       <label for="leadNotaTexto" class="modal-timeline-title" style="display:block;margin:0 0 8px;">📝 Anotar atualização</label>
       <div style="font-size:var(--fs-2xs);color:#8A9186;margin-bottom:8px;">
-        Escreva aqui qualquer novidade deste cliente. Fica salvo na nuvem e some depois que eu incorporar ao histórico no briefing das 7h.
+        Escreva aqui qualquer novidade deste cliente. Fica salvo na nuvem e some depois que eu incorporar ao histórico no briefing das 7h. <b>Enter</b> salva · <b>Shift+Enter</b> quebra a linha.
       </div>
       <textarea id="leadNotaTexto" placeholder="Ex: visitou o apartamento hoje e gostou, vai conversar com a esposa antes de decidir."></textarea>
       <div class="nota-actions">
@@ -3408,8 +3408,7 @@ if (leadsInativosArr.length === 0) {
     renderNotasPendentes(nome);
   }
 
-  if (notaSalvar) {
-    notaSalvar.addEventListener('click', async () => {
+  async function salvarNota() {
       const texto = (notaTexto && notaTexto.value || '').trim();
       if (!texto) { setNotaStatus('Escreva algo antes de salvar.', 'erro'); return; }
       if (!leadAtual) return;
@@ -3455,6 +3454,18 @@ if (leadsInativosArr.length === 0) {
       );
       renderNotasPendentes(leadAtual);
       notaSalvar.disabled = false;
+  }
+
+  if (notaSalvar) notaSalvar.addEventListener('click', salvarNota);
+
+  // Enter salva; Shift+Enter quebra linha. No celular NÃO: lá o Enter é a
+  // única tecla de nova linha e não existe Shift+Enter — salvaria a nota no
+  // meio da frase. No toque, o botão continua sendo o caminho.
+  if (notaTexto && window.matchMedia && window.matchMedia('(pointer: fine)').matches) {
+    notaTexto.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' || e.shiftKey || e.isComposing) return;
+      e.preventDefault();
+      if (!notaSalvar || !notaSalvar.disabled) salvarNota();
     });
   }
 

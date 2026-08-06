@@ -30,6 +30,13 @@ function montar({ quando = null, capturarCharts = false } = {}) {
       ChartFalso.register = function () {};
       ChartFalso.helpers = {};
       ChartFalso.defaults = { font: { family: 's', size: 12 }, color: '#000', plugins: { legend: { labels: {} } } };
+      // Nos testes o painel roda como desktop: (pointer: fine) casa. É o
+      // ambiente onde o Enter salva a nota — no toque, o botão é o caminho.
+      w.matchMedia = (q) => ({
+        media: q, matches: /pointer:\s*fine/.test(String(q)), onchange: null,
+        addListener() {}, removeListener() {},
+        addEventListener() {}, removeEventListener() {}, dispatchEvent() { return false; }
+      });
       w.Chart = ChartFalso;
     }
   });
