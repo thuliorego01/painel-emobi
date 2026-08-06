@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-05T23:05:00-03:00",
+  "ultimaAtualizacao": "2026-08-05T23:25:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -406,29 +406,30 @@
     {
       "id": 15,
       "nome": "Maria Teresa",
-      "telefone": null,
-      "origem": "A definir",
+      "telefone": "84996174403",
+      "origem": "Indicação",
       "dataEntrada": "2026-08-05",
       "fase": "Visita Agendada",
       "maiorFaseIndex": 4,
       "temperatura": "Morno",
       "valor": null,
       "comissaoPrevista": null,
-      "proximaAcao": "Visita ao Condomínio Polinésia (Candelária) amanhã, 06/08 às 18h30",
+      "proximaAcao": "Visita ao Condomínio Polinésia (Candelária) amanhã, 06/08 às 18h",
       "dataProximaAcao": "2026-08-06",
       "status": "Em dia",
-      "obs": "Visita agendada para 06/08 às 18h30 no Condomínio Polinésia (804, Bloco B), Candelária. Atenção: esse imóvel NÃO está na carteira — a captação foi recusada em 05/08 porque o proprietário já tem corretor. A visita é em imóvel de terceiro.",
+      "obs": "Visita agendada para 06/08 às 18h30 no Condomínio Polinésia (804, Bloco B), Candelária. Atenção: esse imóvel NÃO está na carteira — a captação foi recusada em 05/08 porque o proprietário já tem corretor. A visita é em imóvel de terceiro. Indicação de Carlos Henrique, (84) 98132-4060 — ele ainda não é cadastrado no Conecta TR.",
       "imoveisCompativeis": [],
       "visitaResumo": null,
       "visitaDetalhe": null,
-      "interesse": "a definir"
+      "interesse": "a definir",
+      "indicadoPor": "Carlos Henrique"
     },
     {
       "id": 16,
       "nome": "Rubens Júnior",
       "telefone": "84986858585",
       "email": "atendimento@sosrastreamento.net",
-      "origem": "A definir",
+      "origem": "Instagram",
       "dataEntrada": "2026-08-05",
       "fase": "Visita Agendada",
       "maiorFaseIndex": 4,
@@ -439,7 +440,7 @@
       "dataProximaAcao": "2026-08-06",
       "status": "Em dia",
       "imovelId": 28,
-      "obs": "Visita agendada para 06/08 às 16h na Casa em Condomínio Muriú (Cód. 10652), Ceará-Mirim. Imóvel da carteira, R$589.990.",
+      "obs": "Visita agendada para 06/08 às 16h na Casa em Condomínio Muriú (Cód. 10652), Ceará-Mirim. Imóvel da carteira, R$589.990. Origem: Instagram — chegou pela publicação do próprio imóvel que vai visitar (Cód. 10652).",
       "imoveisCompativeis": [
         "Cód. 10652"
       ],
@@ -1102,7 +1103,7 @@
   "agendaAmanha": [
     {
       "data": "2026-08-06",
-      "hora": "18:30",
+      "hora": "18:00",
       "titulo": "Visita – Condomínio Polinésia (804, Bloco B), Candelária — cliente Maria Teresa",
       "local": "Condomínio Polinésia, Candelária - Natal/RN"
     },
@@ -1355,6 +1356,19 @@
         "data": "2026-08-05",
         "tipoIndicacao": "Cliente procurando imóvel",
         "obs": "Amanda Cristina PROCURA apartamento para alugar no Condomínio Quatro Estações, Candelária. Não é indicação de imóvel para captação — é indicação de cliente. A regra atual do programa (bonificação por venda do imóvel indicado) não cobre este caso."
+      },
+      {
+        "protocolo": "IND-TR-2026-0011",
+        "imovel": "Maria Teresa (cliente compradora)",
+        "indicador": "Carlos Henrique",
+        "indicadorId": 8,
+        "proprietario": "Maria Teresa",
+        "telefoneProprietario": "84996174403",
+        "status": "Registrada",
+        "valorDevido": null,
+        "data": "2026-08-05",
+        "tipoIndicacao": "Cliente procurando imóvel",
+        "obs": "Indicação de CLIENTE compradora, não de imóvel. Carlos Henrique ainda não assinou o Termo de Adesão. Pela regra atual, indicação de cliente não gera bonificação."
       }
     ],
     "indicadoresLista": [
@@ -1400,6 +1414,13 @@
         "status": "Ativo",
         "id": 7,
         "cadastradoEm": "2026-08-05"
+      },
+      {
+        "nome": "Carlos Henrique",
+        "telefone": "84981324060",
+        "status": "Pendente cadastro",
+        "id": 8,
+        "obs": "Indicou a cliente Maria Teresa em 05/08. Ainda não preencheu o Termo de Adesão do Conecta TR."
       }
     ],
     "regraBonificacao": "A bonificação só vira valor devido quando o imóvel indicado é VENDIDO. Tabela: até R$500 mil = R$1.000 · R$500 mil a R$1 milhão = R$2.000 · acima de R$1 milhão = R$3.000. Bônus de R$100 a cada 4 captações.",
@@ -2356,6 +2377,20 @@
       "lead": "Rubens Júnior",
       "tipo": "Visita Agendada",
       "resumo": "Novo lead. Visita marcada para 06/08 às 16h na Casa em Condomínio Muriú (Cód. 10652), Ceará-Mirim. Agenda bloqueada das 14h45 às 17h para o deslocamento."
+    },
+    {
+      "data": "05/08/2026 23:20",
+      "leadId": 15,
+      "lead": "Maria Teresa",
+      "tipo": "Outro",
+      "resumo": "Telefone (84) 99617-4403. Visita remarcada para 18h. Origem: indicação de Carlos Henrique, (84) 98132-4060, ainda não cadastrado no Conecta TR."
+    },
+    {
+      "data": "05/08/2026 23:22",
+      "leadId": 16,
+      "lead": "Rubens Júnior",
+      "tipo": "Outro",
+      "resumo": "Origem confirmada: Instagram — chegou pela publicação do próprio Cód. 10652, que vai visitar."
     }
   ]
 }
