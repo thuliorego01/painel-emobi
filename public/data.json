@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-05T23:40:00-03:00",
+  "ultimaAtualizacao": "2026-08-05T23:55:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1117,7 +1117,7 @@
       "data": "2026-08-06",
       "hora": "14:45",
       "horaFim": "18:15",
-      "titulo": "🔒 BLOQUEADO — deslocamento e visita em Muriú (Rubens Júnior)",
+      "titulo": "BLOQUEADO — deslocamento e visita em Muriú (Rubens Júnior)",
       "local": "Saída: Rua Prof. Antônio Henrique de Melo, 2046 (Capim Macio)",
       "bloqueado": true,
       "obs": "Ida ~1h + visita ~45min + volta ~1h. Chega a Candelária com folga para a visita das 19h."
@@ -1128,7 +1128,7 @@
       "data": "2026-08-08",
       "hora": "08:00",
       "horaFim": "11:00",
-      "titulo": "🔒 BLOQUEADO — Dia dos Pais na escola dos filhos",
+      "titulo": "BLOQUEADO — Dia dos Pais na escola dos filhos",
       "local": "Escola dos filhos",
       "bloqueado": true,
       "obs": "Compromisso inegociável. Não agendar visita nem ligação neste intervalo."

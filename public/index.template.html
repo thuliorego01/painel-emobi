@@ -681,6 +681,11 @@
   .estado-vazio { font-size: var(--fs-sm); color:#8A9186; line-height:1.5; }
   /* Bloqueio de agenda não é compromisso de trabalho: é o oposto — um pedido
      para não oferecer horário ali. Precisa se distinguir à primeira vista. */
+  .agenda-dia-rotulo { font-size: var(--fs-xs); font-weight:700; color:#8C6D1F; text-transform:uppercase;
+    letter-spacing:.4px; margin:4px 4px 8px; }
+  .agenda-row.bloqueado { background:#F6F3FC; }
+  .agenda-row.bloqueado .agenda-time { background:#5B3F8C; }
+  .agenda-ate { display:block; font-size:var(--fs-xs); font-weight:600; opacity:.85; }
   .compromisso-card.bloqueado { background:#F6F3FC; border-color:#E4DCF3; }
   .compromisso-card.bloqueado .cc-time { color:#5B3F8C; }
   .semana-ev.bloqueado { background:#F2EEFA; border-color:#DDD3F0; color:#5B3F8C; }
@@ -2048,7 +2053,8 @@ function renderPrestesAFechar() {
 (function renderCompromissosDestaque() {
   const el = document.getElementById('compromissosDestaqueList');
   if (!el) return;
-  const itens = [...AGENDA_DIA.hoje.map(a => ({ ...a, quando: 'Hoje' })), ...AGENDA_DIA.amanha.map(a => ({ ...a, quando: 'Amanhã' }))];
+  const itens = [...ordenarPorHora(AGENDA_DIA.hoje).map(a => ({ ...a, quando: 'Hoje' })),
+                 ...ordenarPorHora(AGENDA_DIA.amanha).map(a => ({ ...a, quando: 'Amanhã' }))];
   // Bloco vazio na tela de abertura é espaço morto — some junto com o título.
   if (itens.length === 0) {
     const card = document.getElementById('compromissosCard');
@@ -2067,13 +2073,13 @@ function renderPrestesAFechar() {
     const btn = lead ? `<button class="btn-abrir-cliente" type="button" data-lead="${lead.nome}">Abrir Cliente</button>` : '';
     return `
       <div class="compromisso-card${a.bloqueado ? ' bloqueado' : ''}">
-        <div class="cc-time">${a.quando}<br>${a.hora}</div>
+        <div class="cc-time">${a.quando}<br>${a.hora}${a.horaFim ? '–' + a.horaFim : ''}</div>
         <div>
-          <div class="cc-tag">🏠 Compromisso</div>
-          <div class="cc-titulo">${a.titulo}</div>
-          <div class="cc-local">${a.local || ''}</div>
+          <div class="cc-tag">${a.bloqueado ? '🔒 Horário bloqueado' : '🏠 Compromisso'}</div>
+          <div class="cc-titulo">${esc(a.titulo)}</div>
+          <div class="cc-local">${esc(a.local || '')}</div>
         </div>
-        <div class="cc-action">${btn}</div>
+        <div class="cc-action">${a.bloqueado ? '' : btn}</div>
       </div>`;
   }).join('');
   el.querySelectorAll('.btn-abrir-cliente').forEach(btn => {
@@ -2085,25 +2091,40 @@ function renderPrestesAFechar() {
 })();
 
 const agendaList = document.getElementById('agendaList');
+// Compromisso sem hora vai para o fim do dia: ele não tem lugar definido na
+// linha do tempo, e jogá-lo no começo empurraria o que tem hora marcada.
+function minutosDoDia(a) {
+  const m = String(a.hora || '').match(/^(\d{1,2}):(\d{2})/);
+  if (m) return Number(m[1]) * 60 + Number(m[2]);
+  if (a.hora === 'Manhã') return 8 * 60;
+  if (a.hora === 'Tarde') return 14 * 60;
+  if (a.hora === 'Noite') return 19 * 60;
+  return 24 * 60;
+}
+function ordenarPorHora(list) {
+  return list.slice().sort((a, b) => minutosDoDia(a) - minutosDoDia(b));
+}
 function renderAgenda(list, label) {
   const heading = document.createElement('div');
-  heading.style.cssText = 'font-size:var(--fs-xs);font-weight:700;color:#8C6D1F;text-transform:uppercase;letter-spacing:.4px;margin:4px 4px 8px;';
+  heading.className = 'agenda-dia-rotulo';
   heading.textContent = label;
   agendaList.appendChild(heading);
-  list.forEach(a => {
+  ordenarPorHora(list).forEach(a => {
     const row = document.createElement('div');
-    row.className = 'agenda-row';
+    row.className = 'agenda-row' + (a.bloqueado ? ' bloqueado' : '');
     row.dataset.agId = agendaItemId(a);
+    // Bloqueio não é compromisso: não tem casinha nem "Realizada" — não há o
+    // que concluir num horário que existe justamente para ficar vazio.
     row.innerHTML = `
-      <div class="agenda-time">${esc(a.hora)}</div>
-      <div class="agenda-icon">🏠</div>
+      <div class="agenda-time">${esc(a.hora)}${a.horaFim ? `<span class="agenda-ate">até ${esc(a.horaFim)}</span>` : ''}</div>
+      <div class="agenda-icon">${a.bloqueado ? '🔒' : '🏠'}</div>
       <div class="agenda-info">
         <div class="titulo">${esc(a.titulo)}</div>
         <div class="local">${esc(a.local)}</div>
       </div>
-      <button type="button" class="agenda-feito" title="Marcar como realizado — some da agenda">✓ Realizada</button>`;
+      ${a.bloqueado ? '' : '<button type="button" class="agenda-feito" title="Marcar como realizado — some da agenda">✓ Realizada</button>'}`;
     const btn = row.querySelector('.agenda-feito');
-    btn.addEventListener('click', () => {
+    if (btn) btn.addEventListener('click', () => {
       btn.disabled = true;
       marcarAgendaRealizada(agendaItemId(a));
       row.style.transition = 'opacity .3s';
@@ -2153,7 +2174,8 @@ if (!temHoje && !temAmanha) {
 // ---- Próximos Compromissos (além de hoje/amanhã) ----
 (function renderAgendaProximos() {
   const container = document.getElementById('agendaProximosList');
-  const itens = AGENDA_DIA.proximos;
+  const itens = AGENDA_DIA.proximos.slice().sort((a, b) =>
+    String(a.data).localeCompare(String(b.data)) || minutosDoDia(a) - minutosDoDia(b));
   if (itens.length === 0) {
     container.innerHTML = '<div class="estado-vazio">Nada marcado além de hoje e amanhã, por enquanto.</div>';
     return;
