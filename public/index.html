@@ -4629,6 +4629,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
       indicadoresList.innerHTML = '<div class="estado-vazio">Nenhum indicador cadastrado ainda.</div>';
       return;
     }
+    const bonusACada = (ctr.bonusCaptacao && ctr.bonusCaptacao.aCada) || 0;
     // Desempenho por indicador — o programa vive dessas pessoas, e antes elas
     // só apareciam como nome solto dentro de cada indicação.
     const stats = indicadores.map(ind => {
@@ -4666,7 +4667,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
         </div>
         ${s.total > 0 ? `<div class="ctr-ind-meta">${s.captadas} captada(s) · ${s.vendidas} vendida(s)${s.aReceber > 0 ? ` · <b>${brl(s.aReceber)} a receber</b>` : ''}</div>` : ''}
         ${s.vgv > 0 ? `<span class="ind-rendeu">🏗️ ${brl(s.vgv)} colocados na sua carteira</span>` : ''}
-        ${s.captadas > 0 ? `<span class="ind-rendeu">🎁 ${s.captadas} de 4 captações para o bônus</span>` : ''}
+        ${bonusACada && s.captadas >= bonusACada - 1 ? `<span class="ind-rendeu">🎁 ${s.captadas} de ${bonusACada} captações para o bônus</span>` : ''}
         ${s.paradas > 0 ? `<span class="ind-rendeu" style="color:#8A5A14;">⏳ ${s.paradas} indicação${s.paradas === 1 ? '' : 'ões'} parada${s.paradas === 1 ? '' : 's'} esperando você</span>` : ''}
         ${wa ? `<a class="wa-link" href="${wa}" target="_blank" rel="noopener">💬 WhatsApp</a>` : ''}
         ${s.total > 0 ? '<div class="ctr-ind-dica">👆 ver indicações</div>' : ''}
@@ -4743,28 +4744,34 @@ new Chart(document.getElementById('chartHistoricoAno'), {
           ? `${ctrCaptadas} captada${ctrCaptadas === 1 ? '' : 's'} esperando virar venda — a bonificação só nasce aí`
           : 'nenhuma indicação vendida ainda');
   }
-  // Bônus de R$100 a cada 4 captações: existia na regra e não era medido.
-  // O bônus é por INDICADOR: 4 captações da mesma pessoa. Contar no total do
-  // programa somava gente diferente e prometia um bônus que ninguém alcançou.
+  // O bônus só é notícia quando está perto de acontecer. Enquanto ninguém
+  // passa da metade do caminho, a caixa era duas coisas ruins ao mesmo tempo:
+  // um lembrete da regra para um público de uma pessoa, que já sabe a regra;
+  // e, com vários indicadores empatados, eleger "quem está mais perto" era
+  // escolher um no desempate e apresentar isso como fato. Agora ela só
+  // aparece quando há bônus a pagar ou alguém a uma captação de ganhar.
   const bonus = (ctr.bonusCaptacao) || null;
   const elBonus = document.getElementById('ctrBonus');
-  if (elBonus && bonus) {
-    const captadasDe = (ind) => ctrItens.filter(it =>
-      String(it.indicadorId) === String(ind.id) && (it.status === 'Captada' || it.status === 'Vendida')).length;
-    const placar = (ctr.indicadoresLista || [])
-      .map(ind => ({ ind, n: captadasDe(ind) }))
-      .filter(x => x.n > 0)
-      .sort((a, b) => b.n - a.n);
-    const comBonus = placar.filter(x => x.n >= bonus.aCada);
-    const lider = placar[0];
-    elBonus.innerHTML = `🎁 <b>Bônus:</b> ${brl(bonus.valor)} a cada ${bonus.aCada} captações <b>do mesmo indicador</b>. ` +
-      (comBonus.length
-        ? `${comBonus.map(x => esc(x.ind.nome.split(' ')[0]) + ' (' + Math.floor(x.n / bonus.aCada) + ')').join(', ')} já alcançou. `
-        : 'Ninguém alcançou ainda. ') +
-      (lider
-        ? `Quem está mais perto: <b>${esc(lider.ind.nome.split(' ')[0])}</b>, com ${lider.n} de ${bonus.aCada}.`
-        : 'Nenhuma captação por indicação até agora.') +
-      (bonus.nota ? `<details class="fech-nota" style="margin-top:6px;"><summary>Como o bônus é contado</summary>${esc(bonus.nota)}</details>` : '');
+  if (elBonus) {
+    let htmlBonus = '';
+    if (bonus) {
+      const captadasDe = (ind) => ctrItens.filter(it =>
+        String(it.indicadorId) === String(ind.id) && (it.status === 'Captada' || it.status === 'Vendida')).length;
+      const placar = (ctr.indicadoresLista || [])
+        .map(ind => ({ ind, n: captadasDe(ind) }))
+        .filter(x => x.n >= bonus.aCada - 1);
+      const primeiro = (nome) => esc(String(nome || '—').split(' ')[0]);
+      const alcancaram = placar.filter(x => x.n >= bonus.aCada).sort((a, b) => b.n - a.n);
+      const quase = placar.filter(x => x.n === bonus.aCada - 1);
+      const partes = [];
+      if (alcancaram.length) partes.push('💰 <b>Bônus a pagar:</b> ' + alcancaram.map(x =>
+        primeiro(x.ind.nome) + ' — ' + brl(Math.floor(x.n / bonus.aCada) * bonus.valor)).join(' · ') + '.');
+      if (quase.length) partes.push('🎁 A <b>uma captação</b> do bônus de ' + brl(bonus.valor) + ': ' +
+        quase.map(x => primeiro(x.ind.nome)).join(' · ') + '.');
+      htmlBonus = partes.join(' ');
+    }
+    elBonus.innerHTML = htmlBonus;
+    elBonus.style.display = htmlBonus ? '' : 'none';
   }
   // Indicação parada é indicação esquecida — e o indicador está esperando.
   const paradas = ctrItens.filter(indicacaoParada);

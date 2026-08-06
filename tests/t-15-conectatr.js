@@ -39,17 +39,21 @@ module.exports = { nome: 'Conecta TR: vínculo estável e programa medido', roda
   const hint = txt(doc.getElementById('ctrValorDevidoHint'));
   assert(hint && hint !== '—', 'o "Valor Devido" precisa explicar por que está no valor que está');
 
-  // Bônus por captação: existia na regra e não era medido.
+  // Bônus: a caixa só existe quando é notícia. Antes ela ficava fixa
+  // explicando a regra para o único usuário do CRM — que já sabe a regra —
+  // e, com indicadores empatados, elegia "quem está mais perto" no desempate
+  // e apresentava o sorteio como fato.
   if (ctr.bonusCaptacao) {
-    const b = txt(doc.getElementById('ctrBonus'));
-    assert(/Bônus:/.test(b) && /a cada \d+ captações/.test(b), 'o bônus não está sendo medido');
-    // A contagem é por INDICADOR, não do programa: somar gente diferente
-    // prometeria um bônus que ninguém alcançou.
-    assert(/do mesmo indicador/.test(b), 'o bônus precisa dizer que a contagem é por indicador');
+    const aCada = ctr.bonusCaptacao.aCada;
     const maior = Math.max(0, ...(ctr.indicadoresLista || []).map(i =>
       itens.filter(x => String(x.indicadorId) === String(i.id) && ['Captada','Vendida'].includes(x.status)).length));
-    if (maior < (ctr.bonusCaptacao ? ctr.bonusCaptacao.aCada : 4))
-      assert(/Ninguém alcançou/.test(b), 'ninguém tem 4 captações, mas o painel não diz isso');
+    const b = (txt(doc.getElementById('ctrBonus')) || '').trim();
+    if (maior >= aCada)
+      assert(/Bônus a pagar/.test(b), 'alguém bateu o bônus e o painel não avisa');
+    else if (maior === aCada - 1)
+      assert(/uma captação/.test(b), 'alguém está a uma captação do bônus e o painel não avisa');
+    else
+      assert(b === '', `ninguém está perto do bônus, a caixa não devia aparecer — apareceu: "${b}"`);
   }
 
   // Indicação parada precisa gritar: o indicador está esperando notícia.
