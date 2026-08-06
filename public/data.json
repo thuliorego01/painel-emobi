@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-06T08:05:00-03:00",
+  "ultimaAtualizacao": "2026-08-05T23:10:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1372,30 +1372,17 @@
         "aguardandoFormulario": true
       },
       {
-        "protocolo": "IND-TR-2026-0014",
-        "imovel": "Apartamento 3 Quartos Candelária 74m² (Cód. 7726)",
+        "protocolo": "IND-TR-2026-0011",
+        "imovel": "Apartamento 3 Quartos Candelária 74m² (Cód. 7726) — Residencial Polinésia",
         "indicador": "Carlos Henrique",
         "indicadorId": 8,
         "proprietario": "Naira Lee",
         "telefoneProprietario": "61998653500",
-        "imovelId": 27,
         "status": "Captada",
         "valorDevido": null,
         "data": "2026-08-05",
-        "aguardandoFormulario": true,
-        "obs": "Informado por Thúlio antes do formulário. Quando o Carlos enviar pelo Forms, o protocolo definitivo substitui este — NÃO criar um segundo registro."
-      },
-      {
-        "protocolo": "IND-TR-2026-0011",
-        "imovel": "Condomínio Polinésia (Candelária)",
-        "indicador": "Carlos Henrique",
-        "indicadorId": 8,
-        "proprietario": "Nayra",
-        "telefoneProprietario": "55619865350",
-        "status": "Registrada",
-        "valorDevido": null,
-        "data": "2026-08-05",
-        "obs": "Recebida pelo formulário às 22:40 de 05/08. O campo \"Seu nome\" veio preenchido como Maria Teresa por engano — o indicador é Carlos Henrique."
+        "obs": "Recebida pelo formulário às 22h40 de 05/08. Duas correções: o campo \"Seu nome\" veio como Maria Teresa (o indicador é Carlos Henrique) e o telefone da proprietária veio embaralhado — o correto é (61) 99865-3500. É o Cód. 7726, no Residencial Polinésia, já captado.",
+        "imovelId": 27
       },
       {
         "protocolo": "IND-TR-2026-0012",
@@ -2455,6 +2442,12 @@
       "lead": "Conecta TR",
       "tipo": "Outro",
       "resumo": "Duas indicações novas do Condomínio Polinésia (proprietárias Nayra e Lindeza), ambas de Carlos Henrique — o formulário veio com o nome da Maria Teresa por engano. Protocolos provisórios renumerados para 0013 e 0014."
+    },
+    {
+      "data": "05/08/2026 23:05",
+      "lead": "Conecta TR",
+      "tipo": "Outro",
+      "resumo": "IND-TR-2026-0011 e o provisório 0014 eram a mesma indicação: o Cód. 7726 fica no Residencial Polinésia e \"Nayra\" é a proprietária Naira Lee. Registro unificado no protocolo oficial 0011, já como Captada."
     }
   ]
 }
