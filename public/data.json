@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-05T23:25:00-03:00",
+  "ultimaAtualizacao": "2026-08-05T23:40:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -414,7 +414,7 @@
       "temperatura": "Morno",
       "valor": null,
       "comissaoPrevista": null,
-      "proximaAcao": "Visita ao Condomínio Polinésia (Candelária) amanhã, 06/08 às 18h",
+      "proximaAcao": "Visita ao Condomínio Polinésia (Candelária) amanhã, 06/08 às 19h",
       "dataProximaAcao": "2026-08-06",
       "status": "Em dia",
       "obs": "Visita agendada para 06/08 às 18h30 no Condomínio Polinésia (804, Bloco B), Candelária. Atenção: esse imóvel NÃO está na carteira — a captação foi recusada em 05/08 porque o proprietário já tem corretor. A visita é em imóvel de terceiro. Indicação de Carlos Henrique, (84) 98132-4060 — ele ainda não é cadastrado no Conecta TR.",
@@ -1103,7 +1103,7 @@
   "agendaAmanha": [
     {
       "data": "2026-08-06",
-      "hora": "18:00",
+      "hora": "19:00",
       "titulo": "Visita – Condomínio Polinésia (804, Bloco B), Candelária — cliente Maria Teresa",
       "local": "Condomínio Polinésia, Candelária - Natal/RN"
     },
@@ -1116,11 +1116,11 @@
     {
       "data": "2026-08-06",
       "hora": "14:45",
-      "horaFim": "17:00",
+      "horaFim": "18:15",
       "titulo": "🔒 BLOQUEADO — deslocamento e visita em Muriú (Rubens Júnior)",
       "local": "Saída: Rua Prof. Antônio Henrique de Melo, 2046 (Capim Macio)",
       "bloqueado": true,
-      "obs": "Ida ~1h + visita ~45min. Volta não cabe antes das 18h30 em Candelária — ver conflito."
+      "obs": "Ida ~1h + visita ~45min + volta ~1h. Chega a Candelária com folga para a visita das 19h."
     }
   ],
   "agendaProximos": [
@@ -2391,6 +2391,13 @@
       "lead": "Rubens Júnior",
       "tipo": "Outro",
       "resumo": "Origem confirmada: Instagram — chegou pela publicação do próprio Cód. 10652, que vai visitar."
+    },
+    {
+      "data": "05/08/2026 23:35",
+      "leadId": 15,
+      "lead": "Maria Teresa",
+      "tipo": "Outro",
+      "resumo": "Visita remarcada para 19h — dá folga para a volta de Muriú, onde a visita anterior é às 16h."
     }
   ]
 }
