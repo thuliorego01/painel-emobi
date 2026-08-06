@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-05T22:20:00-03:00",
+  "ultimaAtualizacao": "2026-08-05T22:40:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -402,6 +402,26 @@
       "obs": "Cliente de relacionamento: foi a VENDEDORA do Maria Bernadete (803), vendido em abril/2026 por R$635.000. Agora volta como COMPRADORA. Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já visitou 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta.",
       "imoveisCompativeis": [],
       "interesse": "lote plano no Alphaville para construir casa térrea"
+    },
+    {
+      "id": 15,
+      "nome": "Maria Teresa",
+      "telefone": null,
+      "origem": "A definir",
+      "dataEntrada": "2026-08-05",
+      "fase": "Visita Agendada",
+      "maiorFaseIndex": 4,
+      "temperatura": "Morno",
+      "valor": null,
+      "comissaoPrevista": null,
+      "proximaAcao": "Visita ao Condomínio Polinésia (Candelária) amanhã, 06/08 às 18h30",
+      "dataProximaAcao": "2026-08-06",
+      "status": "Em dia",
+      "obs": "Visita agendada para 06/08 às 18h30 no Condomínio Polinésia (804, Bloco B), Candelária. Atenção: esse imóvel NÃO está na carteira — a captação foi recusada em 05/08 porque o proprietário já tem corretor. A visita é em imóvel de terceiro.",
+      "imoveisCompativeis": [],
+      "visitaResumo": null,
+      "visitaDetalhe": null,
+      "interesse": "a definir"
     }
   ],
   "imoveis": [
@@ -1057,7 +1077,14 @@
       "local": "Rua Lúcia Viveiros, Neópolis - Natal/RN"
     }
   ],
-  "agendaAmanha": [],
+  "agendaAmanha": [
+    {
+      "data": "2026-08-06",
+      "hora": "18:30",
+      "titulo": "Visita – Condomínio Polinésia (804, Bloco B), Candelária — cliente Maria Teresa",
+      "local": "Condomínio Polinésia, Candelária - Natal/RN"
+    }
+  ],
   "agendaProximos": [],
   "lembretes": [
     {
@@ -2262,6 +2289,13 @@
       "lead": "Diana Rêgo",
       "tipo": "Outro",
       "resumo": "Comissão de R$12.075,00 recebida. Negócio encerrado financeiramente — segue apenas o acompanhamento de pós-venda."
+    },
+    {
+      "data": "05/08/2026 22:30",
+      "leadId": 15,
+      "lead": "Maria Teresa",
+      "tipo": "Visita Agendada",
+      "resumo": "Novo lead. Visita marcada para 06/08 às 18h30 no Condomínio Polinésia (804, Bloco B), Candelária — imóvel de terceiro, fora da carteira."
     }
   ]
 }
