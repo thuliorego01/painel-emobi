@@ -42,11 +42,14 @@ module.exports = { nome: 'Conecta TR: vínculo estável e programa medido', roda
   // Bônus por captação: existia na regra e não era medido.
   if (ctr.bonusCaptacao) {
     const b = txt(doc.getElementById('ctrBonus'));
-    assert(/Bônus:/.test(b) && /a cada \d+ (indicações|captações)/.test(b),
-      'o bônus não está sendo medido');
-    // A base do bônus tem que estar escrita: contar indicação e escrever
-    // "captação" (ou o contrário) engana o indicador.
-    assert(new RegExp('Você está em').test(b), 'o bônus precisa dizer em quanto você está');
+    assert(/Bônus:/.test(b) && /a cada \d+ captações/.test(b), 'o bônus não está sendo medido');
+    // A contagem é por INDICADOR, não do programa: somar gente diferente
+    // prometeria um bônus que ninguém alcançou.
+    assert(/do mesmo indicador/.test(b), 'o bônus precisa dizer que a contagem é por indicador');
+    const maior = Math.max(0, ...(ctr.indicadoresLista || []).map(i =>
+      itens.filter(x => String(x.indicadorId) === String(i.id) && ['Captada','Vendida'].includes(x.status)).length));
+    if (maior < (ctr.bonusCaptacao ? ctr.bonusCaptacao.aCada : 4))
+      assert(/Ninguém alcançou/.test(b), 'ninguém tem 4 captações, mas o painel não diz isso');
   }
 
   // Indicação parada precisa gritar: o indicador está esperando notícia.

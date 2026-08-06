@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-05T23:10:00-03:00",
+  "ultimaAtualizacao": "2026-08-05T23:25:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1463,7 +1463,8 @@
       "aCada": 4,
       "valor": 100,
       "base": "captacoes",
-      "nota": "Vale a regra do regulamento: a indicação é registrada e o indicador é reconhecido, mas o bônus só é contabilizado quando a indicação vira captação."
+      "porIndicador": true,
+      "nota": "A contagem é por indicador: são 4 captações da MESMA pessoa. Contar no total do programa inflaria o número e prometeria um bônus que ninguém alcançou."
     }
   },
   "logAtividades": [

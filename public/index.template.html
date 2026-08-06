@@ -4666,6 +4666,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
         </div>
         ${s.total > 0 ? `<div class="ctr-ind-meta">${s.captadas} captada(s) · ${s.vendidas} vendida(s)${s.aReceber > 0 ? ` · <b>${brl(s.aReceber)} a receber</b>` : ''}</div>` : ''}
         ${s.vgv > 0 ? `<span class="ind-rendeu">🏗️ ${brl(s.vgv)} colocados na sua carteira</span>` : ''}
+        ${s.captadas > 0 ? `<span class="ind-rendeu">🎁 ${s.captadas} de 4 captações para o bônus</span>` : ''}
         ${s.paradas > 0 ? `<span class="ind-rendeu" style="color:#8A5A14;">⏳ ${s.paradas} indicação${s.paradas === 1 ? '' : 'ões'} parada${s.paradas === 1 ? '' : 's'} esperando você</span>` : ''}
         ${wa ? `<a class="wa-link" href="${wa}" target="_blank" rel="noopener">💬 WhatsApp</a>` : ''}
         ${s.total > 0 ? '<div class="ctr-ind-dica">👆 ver indicações</div>' : ''}
@@ -4743,23 +4744,26 @@ new Chart(document.getElementById('chartHistoricoAno'), {
           : 'nenhuma indicação vendida ainda');
   }
   // Bônus de R$100 a cada 4 captações: existia na regra e não era medido.
-  // O bônus conta INDICAÇÕES recebidas, não captações fechadas: indicação que
-  // não vira captação porque o proprietário já tem corretor continua valendo
-  // para o indicador — ele fez a parte dele.
+  // O bônus é por INDICADOR: 4 captações da mesma pessoa. Contar no total do
+  // programa somava gente diferente e prometia um bônus que ninguém alcançou.
   const bonus = (ctr.bonusCaptacao) || null;
   const elBonus = document.getElementById('ctrBonus');
   if (elBonus && bonus) {
-    const porIndicacao = bonus.base === 'indicacoes';
-    const base = porIndicacao
-      ? ctrItens.filter(it => !it.tipoIndicacao).length
-      : ctrItens.filter(it => it.status === 'Captada' || it.status === 'Vendida').length;
-    const ganhos = Math.floor(base / bonus.aCada);
-    const faltam = bonus.aCada - (base % bonus.aCada);
-    const rotulo = porIndicacao ? 'indicações' : 'captações';
-    elBonus.innerHTML = `🎁 <b>Bônus:</b> ${brl(bonus.valor)} a cada ${bonus.aCada} ${rotulo}. ` +
-      `Você está em <b>${base}</b> — ` +
-      (ganhos > 0 ? `<b>${ganhos} bônus já alcançado${ganhos === 1 ? '' : 's'}</b> e ` : '') +
-      `${faltam === bonus.aCada ? bonus.aCada : faltam} para o próximo.` +
+    const captadasDe = (ind) => ctrItens.filter(it =>
+      String(it.indicadorId) === String(ind.id) && (it.status === 'Captada' || it.status === 'Vendida')).length;
+    const placar = (ctr.indicadoresLista || [])
+      .map(ind => ({ ind, n: captadasDe(ind) }))
+      .filter(x => x.n > 0)
+      .sort((a, b) => b.n - a.n);
+    const comBonus = placar.filter(x => x.n >= bonus.aCada);
+    const lider = placar[0];
+    elBonus.innerHTML = `🎁 <b>Bônus:</b> ${brl(bonus.valor)} a cada ${bonus.aCada} captações <b>do mesmo indicador</b>. ` +
+      (comBonus.length
+        ? `${comBonus.map(x => esc(x.ind.nome.split(' ')[0]) + ' (' + Math.floor(x.n / bonus.aCada) + ')').join(', ')} já alcançou. `
+        : 'Ninguém alcançou ainda. ') +
+      (lider
+        ? `Quem está mais perto: <b>${esc(lider.ind.nome.split(' ')[0])}</b>, com ${lider.n} de ${bonus.aCada}.`
+        : 'Nenhuma captação por indicação até agora.') +
       (bonus.nota ? `<details class="fech-nota" style="margin-top:6px;"><summary>Como o bônus é contado</summary>${esc(bonus.nota)}</details>` : '');
   }
   // Indicação parada é indicação esquecida — e o indicador está esperando.
