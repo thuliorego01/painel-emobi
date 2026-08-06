@@ -28,7 +28,10 @@ module.exports = { nome: 'Agenda: um lugar só, com data viva', rodar: async () 
   // "Depois" só carrega o que ainda não venceu.
   depois.forEach(t => {
     const l = (DATA.lembretes || []).find(x => x.texto === t);
-    if (l && l.data) assert(l.data > new Date().toISOString().slice(0, 10),
+    // Data local, não UTC: às 21h o toISOString já devolve o dia seguinte.
+    const hj = new Date();
+    const hojeLocal = hj.getFullYear() + '-' + String(hj.getMonth()+1).padStart(2,'0') + '-' + String(hj.getDate()).padStart(2,'0');
+    if (l && l.data) assert(l.data > hojeLocal,
       `"${t.slice(0,40)}" já venceu e não devia estar em Depois`);
   });
 

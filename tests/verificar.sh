@@ -27,4 +27,5 @@ c=C(); c.feed(open('public/index.html',encoding='utf-8').read())
 assert not c.st, 'tags HTML desbalanceadas: %r' % c.st
 print('  tags HTML      ok')
 PY
+node tests/integridade.js
 node tests/rodar.js

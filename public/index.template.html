@@ -2790,6 +2790,15 @@ const diasDesde = diasDesdeISO;
 // Módulo único de datas: TODA conta de "dias desde" passa por aqui.
 // Antes havia duas cópias idênticas de diasSemContato em módulos diferentes —
 // funcionava, mas um ajuste em uma e não na outra criaria alertas divergentes.
+// Data local em AAAA-MM-DD. NUNCA use toISOString() para isso: ele devolve
+// UTC, e a partir das 21h (fuso -03:00) já virou o dia seguinte — um adiamento
+// de 7 dias vira 8, e um lembrete de amanhã aparece como vencido.
+function dataLocalISO(d) {
+  const x = d || new Date();
+  const p2 = (n) => String(n).padStart(2, '0');
+  return `${x.getFullYear()}-${p2(x.getMonth() + 1)}-${p2(x.getDate())}`;
+}
+
 function diasDesdeISO(dataStr) {
   if (!dataStr) return null;
   const m = String(dataStr).match(/^(\d{4})-(\d{2})-(\d{2})/);
@@ -3670,7 +3679,7 @@ function linhaLembrete(l, concluidos) {
   });
   row.querySelector('[data-adiar]').addEventListener('click', () => {
     const d = new Date(); d.setDate(d.getDate() + 7);
-    gravar('sn:' + id + ':' + d.toISOString().slice(0, 10));
+    gravar('sn:' + id + ':' + dataLocalISO(d));
     sumir();
   });
   row.querySelector('[data-arquivar]').addEventListener('click', () => {

@@ -62,6 +62,12 @@ module.exports = { nome: 'Design: uma escala só, sem px solto', rodar: async ()
   assert(/\.grid2 > \* \{[^}]*min-width:\s*0/.test(css), 'faltou min-width:0 nos filhos de .grid2');
   assert(/\.pipeline-topo > \* \{[^}]*min-width:\s*0/.test(css), 'faltou min-width:0 nos filhos de .pipeline-topo');
 
+  // toISOString() devolve UTC: das 21h em diante já é o dia seguinte. Usar
+  // isso para "que dia é hoje" fez um adiamento de 7 dias virar 8.
+  const usosUTC = [...corpo.matchAll(/toISOString\(\)\.slice\(0,\s*10\)/g)];
+  assert(usosUTC.length === 0,
+    'toISOString().slice(0,10) usado para data local — use dataLocalISO()');
+
   // Estado vazio é classe, não estilo escrito à mão 16 vezes.
   assert(!/style="font-size:[0-9.]+px;color:#8A9186;"/.test(corpo),
     'voltou a existir mensagem de "vazio" com estilo inline');
