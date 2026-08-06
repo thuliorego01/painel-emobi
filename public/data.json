@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-06T00:15:00-03:00",
+  "ultimaAtualizacao": "2026-08-06T08:05:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1358,7 +1358,7 @@
         "obs": "Amanda Cristina PROCURA apartamento para alugar no Condomínio Quatro Estações, Candelária. Não é indicação de imóvel para captação — é indicação de cliente. A regra atual do programa (bonificação por venda do imóvel indicado) não cobre este caso."
       },
       {
-        "protocolo": "IND-TR-2026-0011 (provisório)",
+        "protocolo": "IND-TR-2026-0013",
         "imovel": "Maria Teresa (cliente compradora)",
         "indicador": "Carlos Henrique",
         "indicadorId": 8,
@@ -1372,7 +1372,7 @@
         "aguardandoFormulario": true
       },
       {
-        "protocolo": "IND-TR-2026-0012 (provisório)",
+        "protocolo": "IND-TR-2026-0014",
         "imovel": "Apartamento 3 Quartos Candelária 74m² (Cód. 7726)",
         "indicador": "Carlos Henrique",
         "indicadorId": 8,
@@ -1384,6 +1384,30 @@
         "data": "2026-08-05",
         "aguardandoFormulario": true,
         "obs": "Informado por Thúlio antes do formulário. Quando o Carlos enviar pelo Forms, o protocolo definitivo substitui este — NÃO criar um segundo registro."
+      },
+      {
+        "protocolo": "IND-TR-2026-0011",
+        "imovel": "Condomínio Polinésia (Candelária)",
+        "indicador": "Carlos Henrique",
+        "indicadorId": 8,
+        "proprietario": "Nayra",
+        "telefoneProprietario": "55619865350",
+        "status": "Registrada",
+        "valorDevido": null,
+        "data": "2026-08-05",
+        "obs": "Recebida pelo formulário às 22:40 de 05/08. O campo \"Seu nome\" veio preenchido como Maria Teresa por engano — o indicador é Carlos Henrique."
+      },
+      {
+        "protocolo": "IND-TR-2026-0012",
+        "imovel": "Condomínio Polinésia (Candelária)",
+        "indicador": "Carlos Henrique",
+        "indicadorId": 8,
+        "proprietario": "Lindeza",
+        "telefoneProprietario": "84987030858",
+        "status": "Registrada",
+        "valorDevido": null,
+        "data": "2026-08-05",
+        "obs": "Recebida pelo formulário às 22:42 de 05/08. O campo \"Seu nome\" veio preenchido como Maria Teresa por engano — o indicador é Carlos Henrique."
       }
     ],
     "indicadoresLista": [
@@ -2425,6 +2449,12 @@
       "lead": "Conecta TR",
       "tipo": "Outro",
       "resumo": "Cód. 7726 (Candelária, Naira Lee) registrado como indicação de Carlos Henrique — captação já concluída. Aguardando o envio pelo formulário para receber o protocolo definitivo."
+    },
+    {
+      "data": "06/08/2026 08:00",
+      "lead": "Conecta TR",
+      "tipo": "Outro",
+      "resumo": "Duas indicações novas do Condomínio Polinésia (proprietárias Nayra e Lindeza), ambas de Carlos Henrique — o formulário veio com o nome da Maria Teresa por engano. Protocolos provisórios renumerados para 0013 e 0014."
     }
   ]
 }
