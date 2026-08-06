@@ -30,6 +30,7 @@ const log = DATA.logAtividades || [];
 const idsLeads = new Set(leads.map(l => String(l.id)));
 const nomesLeads = new Set(leads.map(l => l.nome));
 const nomesImoveis = new Set(imoveis.map(i => i.nome));
+const idsImoveis = new Set(imoveis.map(i => String(i.id)).filter(v => v !== 'undefined'));
 const idsIndicadores = new Set(indicadores.map(i => String(i.id)));
 const codsImoveis = new Set(
   imoveis.map(i => (String(i.nome).match(/Cód\.\s*(\d+)/) || [])[1]).filter(Boolean));
@@ -64,10 +65,10 @@ checa('indicação → indicador', indicacoes, 'indicadorId', v => idsIndicadore
   { rotulo: x => x.protocolo });
 
 // --- relações por nome/código (as frágeis, mas verificáveis) ---
-checa('indicação → imóvel na carteira', indicacoes, 'imovelCarteira', v => nomesImoveis.has(v),
-  { rotulo: x => x.protocolo, tipo: 'texto', porQue: 'nome do imóvel' });
-checa('lead → imóvel negociado', leads, 'imovelNegociado', v => nomesImoveis.has(v),
-  { rotulo: l => l.nome, tipo: 'texto', porQue: 'nome do imóvel' });
+checa('indicação → imóvel', indicacoes, 'imovelId', v => idsImoveis.has(String(v)),
+  { rotulo: x => x.protocolo });
+checa('lead → imóvel negociado', leads, 'imovelId', v => idsImoveis.has(String(v)),
+  { rotulo: l => l.nome });
 checa('prospecção → imóvel captado', prospeccao, 'imovelCaptadoCod', v => codsImoveis.has(String(v)),
   { rotulo: p => p.nome, tipo: 'texto', porQue: 'código do imóvel' });
 
@@ -135,6 +136,19 @@ const MORTOS = [
   ['meta2026.realizado', 'realizado' in (DATA.meta2026 || {})],
   ['comissao.paga', 'paga' in (DATA.comissao || {})]
 ];
+// Nome de imóvel copiado para outro registro é a semente do bug #2: a cópia
+// dessincroniza quando o original muda.
+const COPIAS = [
+  ['conectaTR.lista[].imovelCarteira', indicacoes.some(x => 'imovelCarteira' in x)],
+  ['leads[].imovelNegociado', leads.some(l => 'imovelNegociado' in l)]
+];
+COPIAS.filter(([, existe]) => existe).forEach(([nome]) =>
+  problemas.push(`${nome} guarda o NOME do imóvel — use imovelId e calcule o nome na hora`));
+// Todo imóvel precisa de id: sem ele, quem quiser referenciá-lo vai inventar
+// uma chave frágil (foi o que produziu o índice posicional).
+const semId = imoveis.filter(i => i.id === undefined || i.id === null).map(i => i.nome);
+if (semId.length) problemas.push(`${semId.length} imóvel(is) sem id estável:\n      ` + semId.join('\n      '));
+
 MORTOS.filter(([, existe]) => existe).forEach(([nome]) =>
   problemas.push(`${nome} ressuscitou — esse campo virou cálculo ao vivo e vai envelhecer se ficar guardado`));
 

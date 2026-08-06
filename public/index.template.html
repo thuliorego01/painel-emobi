@@ -2010,9 +2010,8 @@ function renderPrestesAFechar() {
     .map(l => {
       // Qual imóvel está em jogo: informado no lead ou descoberto pelo vínculo
       // gravado no próprio imóvel reservado.
-      const im = l.imovelNegociado
-        ? (DATA.imoveis || []).find(x => x.nome === l.imovelNegociado)
-        : (DATA.imoveis || []).find(x => String(x.compradorLeadId) === String(l.id));
+      const im = imovelPorId(l.imovelId)
+        || (DATA.imoveis || []).find(x => String(x.compradorLeadId) === String(l.id));
       return { tipo: 'lead', nome: l.nome, detalhe: l.proximaAcao, valor: l.comissaoPrevista,
                quando: l.dataProximaAcao, sub: l.fase + (im ? ' · ' + im.nome.replace(/\s*\(Cód\..*/, '') : '') };
     });
@@ -2918,6 +2917,14 @@ function linhaRecorrente(l) {
 
 function clientesQueVoltaram() {
   return (DATA.leads || []).filter(l => negociosAnteriores(l).length > 0);
+}
+
+// Imóvel resolvido por ID. O nome NUNCA é guardado como cópia em outro
+// registro: cópia dessincroniza — foi assim que o vínculo do Conecta TR passou
+// a apontar para o imóvel errado. Aqui o nome é sempre calculado na hora.
+function imovelPorId(id) {
+  if (id === undefined || id === null) return null;
+  return (DATA.imoveis || []).find(im => String(im.id) === String(id)) || null;
 }
 
 function logDoLead(l) {
@@ -4460,8 +4467,8 @@ new Chart(document.getElementById('chartHistoricoAno'), {
   // imóveis para 4 de 6 indicações passarem a apontar para o imóvel errado, e
   // uma para o vazio — em silêncio, porque a tela mostrava só "ID 25".
   function imovelDaIndicacao(it) {
-    if (!it || !it.imovelCarteira) return null;
-    return (DATA.imoveis || []).find(im => im.nome === it.imovelCarteira) || null;
+    if (!it) return null;
+    return imovelPorId(it.imovelId);
   }
   // Indicação registrada há muito tempo é indicação esquecida: ela depende de
   // um contato seu com o proprietário, e o indicador está esperando notícia.
@@ -4529,7 +4536,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
           ${(function () {
             const im = imovelDaIndicacao(it);
             if (im) return `<span class="ctr-mini-chip">🔗 ${esc(im.nome.replace(/\s*\(Cód\..*/, ''))}</span>`;
-            return it.imovelCarteira ? '<span class="ctr-mini-chip alerta">🔗 imóvel não encontrado na carteira</span>' : '';
+            return it.imovelId !== undefined ? '<span class="ctr-mini-chip alerta">🔗 imóvel não encontrado na carteira</span>' : '';
           })()}
           ${indicacaoParada(it) ? `<span class="ctr-mini-chip alerta">⏳ parada há ${idadeIndicacao(it)}d</span>` : ''}
           ${it.tipoIndicacao ? `<span class="ctr-mini-chip fora-regra">👤 ${esc(it.tipoIndicacao)}</span>` : ''}
@@ -4609,7 +4616,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
         // VENDA, então o número que importa para ela é quanto do estoque veio
         // dali — e é o que faz alguém indicar de novo.
         vgv: minhas.reduce((s, x) => {
-          const im = (DATA.imoveis || []).find(i => i.nome === x.imovelCarteira);
+          const im = imovelPorId(x.imovelId);
           return s + ((im && im.tipoOperacao !== 'Locação' && im.valor) || 0);
         }, 0),
         paradas: minhas.filter(indicacaoParada).length
@@ -4672,13 +4679,13 @@ new Chart(document.getElementById('chartHistoricoAno'), {
   // Faz o match pelo "Cód. NNNNN" citado no campo "imovel" da indicação (a posição no array não é confiável,
   // já que a ordem do array não segue o ID da planilha). Sem "Cód." no texto, não há como casar com segurança
   // — melhor deixar de fora da soma do que arriscar somar o imóvel errado.
-  // Agora usa o vínculo direto (imovelCarteira). Antes tentava adivinhar pelo
+  // Agora usa o vínculo direto por ID. Antes tentava adivinhar pelo
   // "Cód." citado no texto, o que deixava de fora toda indicação de imóvel sem
   // código — que é justamente o rascunho recém-captado.
   const ctrVgvCaptado = ctrItens
     .filter(it => it.status === 'Captada' || it.status === 'Vendida' || it.status === 'Encerrada')
     .reduce((s, it) => {
-      const imovel = (DATA.imoveis || []).find(i => i.nome === it.imovelCarteira);
+      const imovel = imovelPorId(it.imovelId);
       if (!imovel || imovel.tipoOperacao === 'Locação') return s;
       return s + (imovel.valor || 0);
     }, 0);
@@ -4764,7 +4771,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
       ${(function () {
         const im = imovelDaIndicacao(it);
         if (im) return `<div class="match-line" style="margin-top:8px;"><span class="match-chip">🔗 ${esc(im.nome)} · ${esc(im.status)}${im.valor ? ' · ' + brl(im.valor) : ''}</span></div>`;
-        if (it.imovelCarteira) return `<div class="ctr-motivo">⚠️ O imóvel <b>${esc(it.imovelCarteira)}</b> não está mais na carteira. Vínculo precisa ser refeito.</div>`;
+        if (it.imovelId !== undefined) return `<div class="ctr-motivo">⚠️ O imóvel de ID ${esc(String(it.imovelId))} não está mais na carteira. Vínculo precisa ser refeito.</div>`;
         return '';
       })()}
       ${indicacaoParada(it) ? `<div class="ctr-motivo" style="background:#FDF6E8;border-color:#EBD9A8;color:#8A5A14;">⏳ Registrada há <b>${idadeIndicacao(it)} dias</b> e ainda não virou captação. O indicador está esperando notícia.</div>` : ''}

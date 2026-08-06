@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-05T21:15:00-03:00",
+  "ultimaAtualizacao": "2026-08-05T22:20:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -346,7 +346,7 @@
       ],
       "interesse": "apartamento em Candelária — proposta no Cód. 7560",
       "comissaoDetalhe": "R$ 390.000 × 5% = R$ 19.500,00 · venda sem parceria · sua parte 70% → R$ 13.650,00",
-      "imovelNegociado": "Apartamento 3 Quartos Candelária 133m² (Cód. 7560)"
+      "imovelId": 8
     },
     {
       "id": 12,
@@ -420,7 +420,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-02",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Condomínio Vila Verde. Condomínio R$ 540,00 + IPTU R$ 120,00."
+      "obs": "Condomínio Vila Verde. Condomínio R$ 540,00 + IPTU R$ 120,00.",
+      "id": 1
     },
     {
       "nome": "Apartamento 3 Quartos Lagoa Nova 140m² (Cód. 9272)",
@@ -437,7 +438,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-02",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Andar alto, vaga com carregador de carro elétrico. Condomínio R$ 1.611,27."
+      "obs": "Andar alto, vaga com carregador de carro elétrico. Condomínio R$ 1.611,27.",
+      "id": 2
     },
     {
       "nome": "Apartamento 2 Quartos Lagoa Nova 94m² (Cód. 8024)",
@@ -454,7 +456,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-02",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Condomínio Therra Mater. Em processo de escrituração. Condomínio R$ 850,00 + IPTU R$ 210,00."
+      "obs": "Condomínio Therra Mater. Em processo de escrituração. Condomínio R$ 850,00 + IPTU R$ 210,00.",
+      "id": 3
     },
     {
       "nome": "Apartamento 3 Quartos Tirol 115m² (Cód. 9995)",
@@ -471,7 +474,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-02",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Potencial de reforma/valorização. Condomínio R$ 650,00 + IPTU R$ 223,00."
+      "obs": "Potencial de reforma/valorização. Condomínio R$ 650,00 + IPTU R$ 223,00.",
+      "id": 5
     },
     {
       "nome": "Apartamento 3 Quartos Candelária 96m² (Cód. 5485)",
@@ -488,7 +492,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-02",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Condomínio Porto Arena, exclusividade. Condomínio R$ 945,00 + IPTU R$ 299,00."
+      "obs": "Condomínio Porto Arena, exclusividade. Condomínio R$ 945,00 + IPTU R$ 299,00.",
+      "id": 22
     },
     {
       "nome": "Casa 4 Quartos Lagoa Nova 300m² (Cód. 7570)",
@@ -505,7 +510,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-02",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Escritório, lavabo, despensa, quintal. Sem condomínio (casa)."
+      "obs": "Escritório, lavabo, despensa, quintal. Sem condomínio (casa).",
+      "id": 6
     },
     {
       "nome": "Apartamento 3 Quartos Neópolis 75m² (Cód. 9754)",
@@ -522,7 +528,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-02",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Condomínio Central Park Condomínio Club. Condomínio R$ 650,00 + IPTU R$ 200,00. [30/07] Visita em 31/07 com cliente da corretora parceira Vanessa Oliveira — ela conduz a visita sozinha (parceira de confiança). Cobrar o feedback depois."
+      "obs": "Condomínio Central Park Condomínio Club. Condomínio R$ 650,00 + IPTU R$ 200,00. [30/07] Visita em 31/07 com cliente da corretora parceira Vanessa Oliveira — ela conduz a visita sozinha (parceira de confiança). Cobrar o feedback depois.",
+      "id": 7
     },
     {
       "nome": "Apartamento 3 Quartos Candelária 133m² (Cód. 7560)",
@@ -540,7 +547,8 @@
       "dataCaptacao": "2026-07-13",
       "ultimaInteracaoProprietario": "2026-08-02",
       "obs": "Aceita financiamento e permuta. Condomínio R$ 850,00 + IPTU R$ 2.510,00/ano. [30/07] Proposta recebida do cliente João Paulo de Paula: R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel e do comprador prontas — seguindo para solicitação de contrato.",
-      "compradorLeadId": 11
+      "compradorLeadId": 11,
+      "id": 8
     },
     {
       "nome": "Casa em Condomínio 3 Quartos Cajupiranga 160m² (Cód. 10558)",
@@ -557,7 +565,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-06",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Condomínio Ecoville 2 — casa duplex, espaço gourmet, pet friendly. Condomínio R$ 310,00. Aceita financiamento."
+      "obs": "Condomínio Ecoville 2 — casa duplex, espaço gourmet, pet friendly. Condomínio R$ 310,00. Aceita financiamento.",
+      "id": 9
     },
     {
       "nome": "Apartamento 2 Quartos Lagoa Nova 60m² (Cód. 10567)",
@@ -579,7 +588,8 @@
       "valorVendaAcordado": 240000,
       "comissaoTotalVenda": 12000.0,
       "comissaoThulioVenda": 4200.0,
-      "comissaoConfirmada": false
+      "comissaoConfirmada": false,
+      "id": 10
     },
     {
       "nome": "Casa em Condomínio 3 Quartos Extremoz 160m² (Cód. 10594)",
@@ -596,7 +606,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-13",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Casa de praia no Condomínio Oásis de Graçandu, litoral norte (Extremoz). Pet friendly. Infraestrutura: piscina, academia, quadras, salão de jogos, portaria 24h. Condomínio R$ 650,00."
+      "obs": "Casa de praia no Condomínio Oásis de Graçandu, litoral norte (Extremoz). Pet friendly. Infraestrutura: piscina, academia, quadras, salão de jogos, portaria 24h. Condomínio R$ 650,00.",
+      "id": 11
     },
     {
       "nome": "Casa em Condomínio 4 Quartos Nova Parnamirim 198m² (Cód. 9098)",
@@ -613,7 +624,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-13",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Condomínio Residencial Jardins, pet friendly. Condomínio R$ 820,00."
+      "obs": "Condomínio Residencial Jardins, pet friendly. Condomínio R$ 820,00.",
+      "id": 12
     },
     {
       "nome": "Apartamento 3 Quartos Lagoa Nova 112m² (Cód. 7454)",
@@ -630,7 +642,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-13",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Condomínio Ville D'Artigny. Escriturado, aceita financiamento e permuta, desocupado. Condomínio R$ 1.200,00 (água e gás inclusos)."
+      "obs": "Condomínio Ville D'Artigny. Escriturado, aceita financiamento e permuta, desocupado. Condomínio R$ 1.200,00 (água e gás inclusos).",
+      "id": 13
     },
     {
       "nome": "Lote em Condomínio Parque das Nações 390m² (Cód. 7442)",
@@ -647,7 +660,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-13",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Condomínio Reserva YBY Natureza — 1º condomínio reserva do RN, fiação subterrânea, club house completo. Aceita negociação à vista. Condomínio R$ 470,00 + IPTU R$ 190,00."
+      "obs": "Condomínio Reserva YBY Natureza — 1º condomínio reserva do RN, fiação subterrânea, club house completo. Aceita negociação à vista. Condomínio R$ 470,00 + IPTU R$ 190,00.",
+      "id": 14
     },
     {
       "nome": "Apartamento 3 Quartos Nova Parnamirim 140m² (Cód. 5519)",
@@ -664,7 +678,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-13",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Condomínio Natal River. Preço baixou de R$519.990 para R$469.990. Pet friendly. Condomínio R$ 465,00."
+      "obs": "Condomínio Natal River. Preço baixou de R$519.990 para R$469.990. Pet friendly. Condomínio R$ 465,00.",
+      "id": 15
     },
     {
       "nome": "Apartamento 1 Quarto Ponta Negra 56m² (Cód. 5463)",
@@ -681,7 +696,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-13",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Condomínio Malbec, pronto para morar, vista para o mar. Perfil residencial (baixa rotatividade). Condomínio R$ 830,00 (água, gás, internet e TV inclusos). IPTU R$ 2.425,00."
+      "obs": "Condomínio Malbec, pronto para morar, vista para o mar. Perfil residencial (baixa rotatividade). Condomínio R$ 830,00 (água, gás, internet e TV inclusos). IPTU R$ 2.425,00.",
+      "id": 16
     },
     {
       "nome": "Apartamento 3 Quartos Nova Parnamirim 71m² (Cód. 10627)",
@@ -698,7 +714,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-13",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Condomínio California Gardens. Potencial de reforma/modernização. Condomínio R$ 530,00 + IPTU R$ 1.100,00/ano. Visita realizada hoje (22/07) às 9h, com corretor parceiro Ranniere Araújo (levando cliente próprio). Nova visita em 24/07 às 14h com a corretora parceira Katyanne Layse — clientes gostaram, cogitam uma segunda visita. Nova visita agendada para sexta-feira (31/07) às 14h — clientes Monique e Caio, com o corretor Madson Oliveira (CRECI/RN 3385)."
+      "obs": "Condomínio California Gardens. Potencial de reforma/modernização. Condomínio R$ 530,00 + IPTU R$ 1.100,00/ano. Visita realizada hoje (22/07) às 9h, com corretor parceiro Ranniere Araújo (levando cliente próprio). Nova visita em 24/07 às 14h com a corretora parceira Katyanne Layse — clientes gostaram, cogitam uma segunda visita. Nova visita agendada para sexta-feira (31/07) às 14h — clientes Monique e Caio, com o corretor Madson Oliveira (CRECI/RN 3385).",
+      "id": 17
     },
     {
       "nome": "Apartamento 3 Quartos Ponta Negra 101m² (Cód. 10641 — Portamaris)",
@@ -715,7 +732,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-18",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Condomínio Portamaris Club Condominium. Porteira fechada, totalmente mobiliado e reformado, pronto para morar, vista panorâmica para Ponta Negra. Pet friendly. Condomínio R$ 900,00. IPTU R$ 3.900,00. Estrutura completa de lazer (piscinas, academia, quadra, salão de festas). Originado de indicação do Conecta TR (protocolo IND-TR-2026-0005). Indicador: Klevisson Ranniere Meira de Araújo."
+      "obs": "Condomínio Portamaris Club Condominium. Porteira fechada, totalmente mobiliado e reformado, pronto para morar, vista panorâmica para Ponta Negra. Pet friendly. Condomínio R$ 900,00. IPTU R$ 3.900,00. Estrutura completa de lazer (piscinas, academia, quadra, salão de festas). Originado de indicação do Conecta TR (protocolo IND-TR-2026-0005). Indicador: Klevisson Ranniere Meira de Araújo.",
+      "id": 18
     },
     {
       "nome": "Casa Comercial 3 Quartos Lagoa Nova 256m² (Cód. 7731)",
@@ -732,7 +750,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-19",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Terreno de 416m² (450m² segundo o anúncio), potencial para uso comercial (clínicas, escritórios, comércio, alimentação) — vizinho à CEASA, próximo a Av. Capitão-Mor Gouveia, Av. Salgado Filho e BR-101. Documentação em fase de inventário extrajudicial. Pet friendly."
+      "obs": "Terreno de 416m² (450m² segundo o anúncio), potencial para uso comercial (clínicas, escritórios, comércio, alimentação) — vizinho à CEASA, próximo a Av. Capitão-Mor Gouveia, Av. Salgado Filho e BR-101. Documentação em fase de inventário extrajudicial. Pet friendly.",
+      "id": 19
     },
     {
       "nome": "Apartamento 2 Quartos Candelária 50m² (Cód. 10638)",
@@ -755,7 +774,8 @@
       "dataVenda": "2026-07-29",
       "dataCaptacao": "2026-07-20",
       "ultimaInteracaoProprietario": "2026-07-29",
-      "obs": "Condomínio Mirante dos Eucaliptos. Reformado, parcialmente mobiliado, pronto para morar. Pet friendly. Condomínio R$ 400,00 (água e gás inclusos). IPTU R$ 1.000,00/ano. Próximo à UFRN, Natal Shopping, BR-101 e Av. Prudente de Morais. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [29/07] Entrou em processo de assinatura de contrato — negociado por R$265.000,00 (tabela R$269.990,00). Venda em parceria com o corretor Ricardo Pantoja, da própria Emobi. [29/07] Contrato assinado e sinal pago — venda concluída. Agora em processo de financiamento. Comissão total: R$13.250,00; parte de Thúlio: R$4.637,50 — paga quando o vendedor receber o valor do financiamento. Origem da captação: anúncio no Instagram — o proprietário chegou por lá."
+      "obs": "Condomínio Mirante dos Eucaliptos. Reformado, parcialmente mobiliado, pronto para morar. Pet friendly. Condomínio R$ 400,00 (água e gás inclusos). IPTU R$ 1.000,00/ano. Próximo à UFRN, Natal Shopping, BR-101 e Av. Prudente de Morais. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [29/07] Entrou em processo de assinatura de contrato — negociado por R$265.000,00 (tabela R$269.990,00). Venda em parceria com o corretor Ricardo Pantoja, da própria Emobi. [29/07] Contrato assinado e sinal pago — venda concluída. Agora em processo de financiamento. Comissão total: R$13.250,00; parte de Thúlio: R$4.637,50 — paga quando o vendedor receber o valor do financiamento. Origem da captação: anúncio no Instagram — o proprietário chegou por lá.",
+      "id": 20
     },
     {
       "nome": "Apartamento 4 Quartos Tirol 240m² (Cód. 10650)",
@@ -773,7 +793,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-22",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Residencial Ariane. 1 apartamento por andar, depósito privativo na garagem, área de serviço independente, dependência completa. Condomínio R$ 2.500,00 (água inclusa). IPTU R$ 6.440,08/ano. Captação concluída e publicada hoje (22/07) — proprietário Duarte."
+      "obs": "Residencial Ariane. 1 apartamento por andar, depósito privativo na garagem, área de serviço independente, dependência completa. Condomínio R$ 2.500,00 (água inclusa). IPTU R$ 6.440,08/ano. Captação concluída e publicada hoje (22/07) — proprietário Duarte.",
+      "id": 24
     },
     {
       "nome": "Apartamento 3 Quartos Candelária 74m² (Cód. 7726)",
@@ -791,7 +812,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-23",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Residencial Polinésia. Condomínio R$ 680,00 + IPTU R$ 158,00. Preço baixou de R$ 279.990,00 para R$ 269.990,00. Pet friendly. Sol da manhã. Lazer: churrasqueira, salão de festas, playground, quadra poliesportiva, portaria com controle de acesso."
+      "obs": "Residencial Polinésia. Condomínio R$ 680,00 + IPTU R$ 158,00. Preço baixou de R$ 279.990,00 para R$ 269.990,00. Pet friendly. Sol da manhã. Lazer: churrasqueira, salão de festas, playground, quadra poliesportiva, portaria com controle de acesso.",
+      "id": 27
     },
     {
       "nome": "Casa em Condomínio 4 Quartos Muriú 200m² (Cód. 10652)",
@@ -809,7 +831,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-23",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Casa de praia beira-mar em condomínio exclusivo em Muriú (Ceará-Mirim, ~35min de Natal). Espaço gourmet, cozinha integrada à varanda, área verde com vista pro mar. Condomínio com piscina, churrasqueira, área verde e terraço para festas. Condomínio R$ 1.000,00 + IPTU R$ 700,00/ano. Pet friendly, mobiliado."
+      "obs": "Casa de praia beira-mar em condomínio exclusivo em Muriú (Ceará-Mirim, ~35min de Natal). Espaço gourmet, cozinha integrada à varanda, área verde com vista pro mar. Condomínio com piscina, churrasqueira, área verde e terraço para festas. Condomínio R$ 1.000,00 + IPTU R$ 700,00/ano. Pet friendly, mobiliado.",
+      "id": 28
     },
     {
       "nome": "Condomínio Villaggio Di Roma",
@@ -826,7 +849,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-22",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Originado de indicação do Conecta TR — captação ainda em andamento, não confirmada. Indicador (Hudson Bezerra de Brito) pediu sigilo: o proprietário não pode saber que a indicação partiu dele, pode dizer que veio da administradora."
+      "obs": "Originado de indicação do Conecta TR — captação ainda em andamento, não confirmada. Indicador (Hudson Bezerra de Brito) pediu sigilo: o proprietário não pode saber que a indicação partiu dele, pode dizer que veio da administradora.",
+      "id": 23
     },
     {
       "nome": "Apartamento 3 Quartos Lagoa Nova 101m² (Cód. 7768)",
@@ -844,7 +868,8 @@
       "pctComissao": null,
       "dataCaptacao": "2026-08-04",
       "ultimaInteracaoProprietario": "2026-08-04",
-      "obs": "Edifício Bacara, 11º andar. Locação por R$4.500,00 com todas as taxas inclusas. Captação com EXCLUSIVIDADE. Pet friendly. 3 suítes com móveis planejados, escritório montado, cozinha planejada, varanda, área e banheiro de serviço, banheiro social. Condomínio com piscina adulto e infantil, deck molhado, academia, salão de festas com área gourmet, salão de jogos, portaria 24h e controle de acesso. O texto do anúncio citava \"Capim Macio\" por engano — corrigido no sistema em 04/08, o imóvel é em Lagoa Nova."
+      "obs": "Edifício Bacara, 11º andar. Locação por R$4.500,00 com todas as taxas inclusas. Captação com EXCLUSIVIDADE. Pet friendly. 3 suítes com móveis planejados, escritório montado, cozinha planejada, varanda, área e banheiro de serviço, banheiro social. Condomínio com piscina adulto e infantil, deck molhado, academia, salão de festas com área gourmet, salão de jogos, portaria 24h e controle de acesso. O texto do anúncio citava \"Capim Macio\" por engano — corrigido no sistema em 04/08, o imóvel é em Lagoa Nova.",
+      "id": 4
     }
   ],
   "historico": {
@@ -1176,7 +1201,7 @@
         "indicadorId": 2,
         "data": "2026-07-18",
         "telefoneProprietario": "8498002220",
-        "imovelCarteira": "Apartamento 3 Quartos Nova Parnamirim 71m² (Cód. 10627)"
+        "imovelId": 17
       },
       {
         "protocolo": "IND-TR-2026-0005",
@@ -1188,7 +1213,7 @@
         "indicadorId": 3,
         "data": "2026-07-18",
         "telefoneProprietario": "84999810266",
-        "imovelCarteira": "Apartamento 3 Quartos Ponta Negra 101m² (Cód. 10641 — Portamaris)"
+        "imovelId": 18
       },
       {
         "protocolo": "IND-TR-2026-0006",
@@ -1200,7 +1225,7 @@
         "indicadorId": 5,
         "data": "2026-07-21",
         "telefoneProprietario": "8499839625",
-        "imovelCarteira": "Condomínio Villaggio Di Roma"
+        "imovelId": 23
       },
       {
         "protocolo": "IND-TR-2026-0007",
