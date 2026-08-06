@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-06T09:31:00-03:00",
+  "ultimaAtualizacao": "2026-08-06T10:00:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -730,12 +730,14 @@
       "proprietario": "A definir",
       "telefone": null,
       "link": "https://emobiimobiliaria.com.br/imovel/5519/apartamento-3-quartos-nova-parnamirim-parnamirim/",
-      "status": "Disponível",
+      "status": "Fora da carteira",
       "pctComissao": null,
       "dataCaptacao": "2026-07-13",
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Condomínio Natal River. Preço baixou de R$519.990 para R$469.990. Pet friendly. Condomínio R$ 465,00.",
-      "tipoOperacao": "Venda"
+      "obs": "Condomínio Natal River. Preço baixou de R$519.990 para R$469.990. Pet friendly. Condomínio R$ 465,00. [06/08] Vendido pela concorrência — captação perdida, fora da carteira.",
+      "tipoOperacao": "Venda",
+      "motivoSaida": "Vendido pela concorrência",
+      "dataSaida": "2026-08-06"
     },
     {
       "id": 16,
@@ -2393,6 +2395,12 @@
       "lead": "Lenise Costa",
       "tipo": "Outro",
       "resumo": "Cód. 10567: o lead comprador pertence ao Ivanaldo Tavares, corretor parceiro. Não existe ficha desse comprador no meu CRM."
+    },
+    {
+      "data": "06/08/2026 10:00",
+      "lead": "Cód. 5519",
+      "tipo": "Outro",
+      "resumo": "Cód. 5519 (Natal River, Nova Parnamirim, R$ 469.990) vendido pela concorrência. Captação perdida, imóvel fora da carteira. Segunda perda para a concorrência no mesmo dia, junto com o Cód. 7454."
     }
   ]
 }
