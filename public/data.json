@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-06T09:00:00-03:00",
+  "ultimaAtualizacao": "2026-08-06T09:31:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -80,7 +80,7 @@
       "tipo": "Venda"
     },
     {
-      "imovel": "Apartamento 607, Bloco C — Porto Arena (Candelária)",
+      "imovel": "Apartamento 607, Bloco C — Porto Arena, Candelária (Cód. 8038)",
       "cliente": "Diana Rêgo",
       "valor": 575000,
       "comissao": 12075,
@@ -89,7 +89,8 @@
       "ano": 2026,
       "status": "pago",
       "tipo": "Venda",
-      "compradorLeadId": 6
+      "compradorLeadId": 6,
+      "parceria": "Célia Cristina — captação dela"
     },
     {
       "imovel": "João Mendonça",
@@ -261,13 +262,13 @@
       "proximaAcao": "Pós-venda: confirmar a documentação na primeira semana",
       "dataProximaAcao": "2026-08-11",
       "status": "Ganho",
-      "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. Cliente quente. [19/07] Visita agendada para hoje às 10h no Porto Arena, unidade 607 (imóvel de corretor parceiro — não é o Porto Arena do nosso inventário). [19/07] Visita realizada no Porto Arena. Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607, bloco C, do Porto Arena — aguardando validação do vendedor. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar. [01/08] Valor do negócio: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento. Comissão: 6% sobre R$575.000 = R$34.500, dividido com a corretora Célia Cristina (R$17.250), sua parte 70% = R$12.075. [04/08] Entrou na fase de assinatura de contrato — assinatura prevista para hoje. [04/08] CONTRATO ASSINADO — apartamento 607, bloco C, do Porto Arena, R$575.000,00. Aguardando o sinal e o pagamento da comissão. [05/08] SINAL PAGO. Falta só o pagamento da comissão. [05/08] COMISSÃO RECEBIDA (R$12.075). Negócio encerrado financeiramente.",
+      "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. Cliente quente. [19/07] Visita agendada para hoje às 10h no Porto Arena, unidade 607 (imóvel de corretor parceiro — não é o Porto Arena do nosso inventário). [19/07] Visita realizada no Porto Arena. Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607, bloco C, do Porto Arena — aguardando validação do vendedor. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar. [01/08] Valor do negócio: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento. Comissão: 6% sobre R$575.000 = R$34.500, dividido com a corretora Célia Cristina (R$17.250), sua parte 70% = R$12.075. [04/08] Entrou na fase de assinatura de contrato — assinatura prevista para hoje. [04/08] CONTRATO ASSINADO — apartamento 607, bloco C, do Porto Arena, R$575.000,00. Aguardando o sinal e o pagamento da comissão. [05/08] SINAL PAGO. Falta só o pagamento da comissão. [05/08] COMISSÃO RECEBIDA (R$12.075). Negócio encerrado financeiramente. [06/08] O imóvel é o Cód. 8038, captação da corretora parceira Célia Cristina — por isso não está na minha carteira.",
       "imoveisCompativeis": [
         "Cód. 5485"
       ],
       "visitaResumo": null,
       "visitaDetalhe": null,
-      "interesse": "apartamento 607, Porto Arena — R$575 mil, contrato em leitura",
+      "interesse": "apartamento 607, Porto Arena (Cód. 8038) — comprado",
       "dataFechamento": "2026-08-04",
       "comissaoDetalhe": "6% sobre R$575.000 = R$34.500, dividido com a corretora Célia Cristina (R$17.250), sua parte 70% = R$12.075."
     },
@@ -636,7 +637,7 @@
       "pctComissao": null,
       "dataCaptacao": "2026-07-06",
       "ultimaInteracaoProprietario": "2026-08-05",
-      "obs": "Condomínio Luiz Marques, sem área de lazer mas ótima localização. Imóvel quitado e escriturado. Condomínio R$ 425,00. Visita realizada hoje (22/07) às 13h30, com corretor parceiro Pedro Palitot. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [05/08] EM ASSINATURA DE CONTRATO — conclusão prevista para 06/08. Venda em parceria com Ivanaldo Tavares, corretor da própria Emobi. [05/08] Fechamento acordado em R$240.000,00 (tabela R$249.990,00). Comissão total 5% = R$12.000,00, dividida com Ivanaldo Tavares (R$6.000,00 cada); parte de Thúlio 70% = R$4.200,00. Vira \"Vendido\" quando a assinatura for concluída.",
+      "obs": "Condomínio Luiz Marques, sem área de lazer mas ótima localização. Imóvel quitado e escriturado. Condomínio R$ 425,00. Visita realizada hoje (22/07) às 13h30, com corretor parceiro Pedro Palitot. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [05/08] EM ASSINATURA DE CONTRATO — conclusão prevista para 06/08. Venda em parceria com Ivanaldo Tavares, corretor da própria Emobi. [05/08] Fechamento acordado em R$240.000,00 (tabela R$249.990,00). Comissão total 5% = R$12.000,00, dividida com Ivanaldo Tavares (R$6.000,00 cada); parte de Thúlio 70% = R$4.200,00. Vira \"Vendido\" quando a assinatura for concluída. [06/08] O lead comprador é do Ivanaldo Tavares — não há ficha dele no meu CRM, então este imóvel nunca terá compradorLeadId.",
       "tipoOperacao": "Venda"
     },
     {
@@ -2379,6 +2380,19 @@
       "lead": "Bruno Macedo",
       "tipo": "Outro",
       "resumo": "Cód. 7454 (Ville D'Artigny, Lagoa Nova, R$ 779.900) vendido pela concorrência. Captação perdida, imóvel fora da carteira. Era uma das opções da Daianne."
+    },
+    {
+      "data": "06/08/2026 09:30",
+      "lead": "Diana Rêgo",
+      "tipo": "Outro",
+      "leadId": 6,
+      "resumo": "Correção: o imóvel comprado é o Cód. 8038 (Porto Arena 607, bloco C), captação da corretora parceira Célia Cristina — não é captação minha e não entra na carteira."
+    },
+    {
+      "data": "06/08/2026 09:31",
+      "lead": "Lenise Costa",
+      "tipo": "Outro",
+      "resumo": "Cód. 10567: o lead comprador pertence ao Ivanaldo Tavares, corretor parceiro. Não existe ficha desse comprador no meu CRM."
     }
   ]
 }

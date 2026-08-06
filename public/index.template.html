@@ -821,7 +821,7 @@
   .match-line { font-size:var(--fs-xs); color:#5C6157; margin-top:6px; display:flex; align-items:flex-start; gap:6px; flex-wrap:wrap; }
   .match-chip { background:#E4F3EA; color:#1F7A4D; font-weight:700; padding:3px 9px; border-radius:var(--r-pill); font-size:var(--fs-xs); white-space:nowrap; }
   .match-chip.zero { background:#F1F2ED; color:#8A9186; }
-  .match-chip.zero.morto { background:#FAF0F0; color:#9B5A5A; text-decoration:line-through; text-decoration-color:#D9B3B3; }
+  .match-chip.negociando { background:#FDF6E8; color:#8A5A14; border:1px solid #EBD9A8; }
 
   /* ---- Conecta TR ---- */
   .ctr-idade { font-size:var(--fs-2xs); font-weight:700; color:#8A9186; background:#F1F3EE; border:1px solid #E4E7DF;
@@ -3051,24 +3051,28 @@ function renderLeadCard(l, container) {
     if (l.imoveisCompativeis.length === 0) {
       matchHtml = `<div class="match-line"><span class="match-chip zero">🏠 Nenhum imóvel compatível no momento</span></div>`;
     } else {
-      // Opção que já saiu do ar não pode se esconder no meio da lista: um
-      // código reservado ou vendido pela concorrência parece oferta viva, e
-      // você só descobre na hora de mandar para o cliente. O status é lido do
-      // imóvel ao vivo — nunca copiado para dentro do lead.
-      const refs = l.imoveisCompativeis.map(c => {
-        const im = imovelPorCodigoTexto(c);
-        return { ref: String(c), im, vivo: !!im && im.status === 'Disponível' };
-      });
-      const vivos = refs.filter(r => r.vivo).length;
-      const chips = refs.map(r => {
-        const sufixo = !r.im ? ' · não existe mais'
-          : (r.vivo ? '' : ' · ' + String(r.im.status).toLowerCase());
-        return `<span class="match-chip zero${r.vivo ? '' : ' morto'}">${esc(r.ref)}${sufixo}</span>`;
-      }).join('');
-      const cabeca = vivos === refs.length
-        ? `🏠 ${refs.length} imóvel(is) compatível(is)`
-        : `🏠 ${vivos} de ${refs.length} ainda disponível(is)`;
-      matchHtml = `<div class="match-line"><span class="match-chip${vivos === 0 ? ' zero' : ''}">${cabeca}</span>` + chips + `</div>`;
+      // O que acabou some; o que está preso fica em destaque. Vendido ou fora
+      // da carteira não é opção — mostrar só cria a chance de você mandar para
+      // o cliente um imóvel que não existe mais. Reservado é diferente: a
+      // proposta pode cair, e aí ele volta a valer. O status vem do imóvel ao
+      // vivo — nunca é copiado para dentro do lead.
+      const ACABOU = ['Vendido', 'Fora da carteira'];
+      const refs = l.imoveisCompativeis
+        .map(c => ({ ref: String(c), im: imovelPorCodigoTexto(c) }))
+        .filter(r => r.im && ACABOU.indexOf(r.im.status) === -1);
+      const livres = refs.filter(r => r.im.status === 'Disponível');
+      const presos = refs.filter(r => r.im.status !== 'Disponível');
+      if (refs.length === 0) {
+        matchHtml = `<div class="match-line"><span class="match-chip zero">🏠 Nenhum imóvel compatível no momento</span></div>`;
+      } else {
+        const chips = livres.map(r => `<span class="match-chip zero">${esc(r.ref)}</span>`)
+          .concat(presos.map(r => `<span class="match-chip negociando">${esc(r.ref)} · em negociação</span>`))
+          .join('');
+        const cabeca = presos.length === 0
+          ? `🏠 ${livres.length} imóvel(is) compatível(is)`
+          : `🏠 ${livres.length} livre(s) · ${presos.length} em negociação`;
+        matchHtml = `<div class="match-line"><span class="match-chip${livres.length === 0 ? ' zero' : ''}">${cabeca}</span>` + chips + `</div>`;
+      }
     }
   }
   function truncar(txt, max) {

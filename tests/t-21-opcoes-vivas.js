@@ -28,6 +28,12 @@ module.exports = {
       assert(!re.test(sugestoes),
         `${im.nome} saiu da carteira e continua sendo sugerido a cliente`);
     });
+    // Vendido também não é opção: acabou, não volta.
+    TODOS.filter(im => im.status === 'Vendido').forEach(im => {
+      const cod = (String(im.nome).match(/Cód\.\s*(\d+)/) || [])[1];
+      if (cod) assert(!new RegExp('Cód\\.\\s*' + cod + '\\b').test(sugestoes),
+        `${im.nome} está vendido e continua sendo sugerido a cliente`);
+    });
     const porCod = new Map();
     (DATA.imoveis || []).forEach(im => {
       const m = String(im.nome || '').match(/Cód\.\s*(\d+)/);
@@ -48,17 +54,17 @@ module.exports = {
     const alvo = (DATA.leads || []).find(l =>
       (l.imoveisCompativeis || []).some(ref => {
         const im = porCod.get((String(ref).match(/(\d+)/) || [])[1]);
-        return im && im.status !== 'Disponível';
+        return im && im.status === 'Reservado';
       }));
     if (alvo) {
       const card = doc.querySelector(`[data-lead-ref="${alvo.id}"], [data-lead-nome="${alvo.nome}"]`);
       assert(card, `card do lead ${alvo.nome} não encontrado`);
       const linha = card.querySelector('.match-line');
       assert(linha, `${alvo.nome}: sem a linha de imóveis compatíveis`);
-      assert(linha.querySelector('.match-chip.morto'),
-        `${alvo.nome} tem opção indisponível, mas nada na tela diz isso`);
-      assert(/ainda disponível/.test(linha.textContent),
-        `${alvo.nome}: a contagem devia separar o que ainda está disponível`);
+      assert(linha.querySelector('.match-chip.negociando'),
+        `${alvo.nome} tem opção presa em negociação, mas nada na tela diz isso`);
+      assert(/em negociação/.test(linha.textContent),
+        `${alvo.nome}: a contagem devia separar o que está livre do que está em negociação`);
     }
   }
 };
