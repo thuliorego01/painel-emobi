@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-07T07:30:00-03:00",
+  "ultimaAtualizacao": "2026-08-07T09:35:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -153,7 +153,6 @@
       "comissaoPrevista": null,
       "proximaAcao": "Agendar a visita ao Francisco de Goya",
       "dataProximaAcao": "2026-08-05",
-      "status": "Vence hoje",
       "obs": "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso entre os dois, mas prefere condomínios mais novos — sugerido o Vivant (Lagoa Nova). Agendando visita para até o final da semana (10/07). Parceria: 5% dividido, sua parte 2,5%. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M. Retomada em 02/08: enviada opção no Francisco de Goya, aguardando retorno. [04/08] REATIVADO: gostou do Francisco de Goya e quer visitar. Saiu da inatividade, temperatura para Quente.",
       "imoveisCompativeis": null,
       "visitaResumo": null,
@@ -175,7 +174,6 @@
       "comissaoPrevista": null,
       "proximaAcao": "Ligação de retomada sobre unidade no Bosque do Tirol",
       "dataProximaAcao": "2026-08-28",
-      "status": "Inativo",
       "obs": "Quer apartamento no Edifício Bosque do Tirol, Av. Alm. Alexandrino de Alencar 1362-1366, Tirol, Natal-RN, 59015-350, média de 100m². Retomada agendada p/ 28/08. Monitoramento automático de portais a cada ~10 dias buscando unidade à venda no prédio. ATENÇÃO (22/07): cliente reforçou que NÃO quer receber opções de outros condomínios — somente unidades no próprio Edifício Bosque do Tirol. Não oferecer alternativas em outros prédios/bairros.",
       "imoveisCompativeis": null,
       "interesse": "apartamento no Edifício Bosque do Tirol"
@@ -193,7 +191,6 @@
       "comissaoPrevista": null,
       "proximaAcao": "Retomar em ~90 dias, se não houver retorno antes",
       "dataProximaAcao": "2026-11-03",
-      "status": "Inativo",
       "obs": "Referência de estilo: Cód. 9723 (emobiimobiliaria.com.br) — Casa em condomínio, 3 quartos (1 suíte), 2 banheiros, 119m² privativos, 200m² terreno, Av. Maria Lacerda Montenegro, Nova Parnamirim/Parnamirim-RN, R$380.000. Link: https://emobiimobiliaria.com.br/imovel/9723/casa-em-condominio-3-quartos-nova-parnamirim-parnamirim/ [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada. [29/07] Sem resposta às últimas tentativas — cadência de 7 dias reiniciada. Mensagem de encerramento (\"demissão do cliente\") preparada para envio em 05/08 caso continue sem retorno. [05/08] Prazo cumprido sem retorno. Enviada mensagem de despedida — sem cobrança, com o perfil dela guardado. Retomada prevista para ~90 dias.",
       "imoveisCompativeis": [
         "Cód. 10594"
@@ -217,7 +214,6 @@
       "comissaoPrevista": null,
       "proximaAcao": "Retomar contato (cadência de 7 em 7 dias) — verificar se a mãe já deu retorno",
       "dataProximaAcao": "2026-08-01",
-      "status": "Inativo",
       "obs": "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente quer levar a mãe numa segunda visita antes de decidir. 2ª visita agendada para quarta-feira, 08/07, às 16h. [18/07] Cliente pediu que Thúlio entre em contato diretamente com a mãe dela. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada.",
       "imoveisCompativeis": [],
       "visitaResumo": null,
@@ -235,18 +231,16 @@
       "temperatura": "Morno",
       "valor": null,
       "comissaoPrevista": null,
-      "proximaAcao": "Enviar opções em Candelária/Lagoa Nova até R$630 mil e marcar visita",
-      "dataProximaAcao": "2026-08-11",
-      "status": "Vence hoje",
-      "obs": "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08. [04/08] Clientes voltaram de viagem e o contato foi retomado. Temperatura de Frio para Morno. [06/08] Cód. 7454 saiu das opções — vendido pela concorrência.",
+      "proximaAcao": "Enviar a nova seleção dentro do raio de 2 km do IFRN Central",
+      "dataProximaAcao": "2026-08-08",
+      "obs": "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08. [04/08] Clientes voltaram de viagem e o contato foi retomado. Temperatura de Frio para Morno. [06/08] Cód. 7454 saiu das opções — vendido pela concorrência. [06/08] Descartou as opções do Tirol. Critério estreitado: Candelária, no máximo Lagoa Nova, num raio de 2 km do IFRN Central.",
       "imoveisCompativeis": [
-        "Cód. 9272",
         "Cód. 8024",
         "Cód. 5485",
         "Cód. 7560",
         "Cód. 10567"
       ],
-      "interesse": "apartamento em Candelária ou Lagoa Nova"
+      "interesse": "apartamento em Candelária (no máximo Lagoa Nova), até R$630 mil, raio de 2 km do IFRN Central"
     },
     {
       "id": 6,
@@ -261,7 +255,6 @@
       "comissaoPrevista": 12075,
       "proximaAcao": "Pós-venda: confirmar a documentação na primeira semana",
       "dataProximaAcao": "2026-08-11",
-      "status": "Ganho",
       "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. Cliente quente. [19/07] Visita agendada para hoje às 10h no Porto Arena, unidade 607 (imóvel de corretor parceiro — não é o Porto Arena do nosso inventário). [19/07] Visita realizada no Porto Arena. Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607, bloco C, do Porto Arena — aguardando validação do vendedor. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar. [01/08] Valor do negócio: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento. Comissão: 6% sobre R$575.000 = R$34.500, dividido com a corretora Célia Cristina (R$17.250), sua parte 70% = R$12.075. [04/08] Entrou na fase de assinatura de contrato — assinatura prevista para hoje. [04/08] CONTRATO ASSINADO — apartamento 607, bloco C, do Porto Arena, R$575.000,00. Aguardando o sinal e o pagamento da comissão. [05/08] SINAL PAGO. Falta só o pagamento da comissão. [05/08] COMISSÃO RECEBIDA (R$12.075). Negócio encerrado financeiramente. [06/08] O imóvel é o Cód. 8038, captação da corretora parceira Célia Cristina — por isso não está na minha carteira.",
       "imoveisCompativeis": [
         "Cód. 5485"
@@ -278,15 +271,14 @@
       "telefone": "84981319709",
       "origem": "Instagram",
       "dataEntrada": "2026-07-21",
-      "fase": "Qualificado",
+      "fase": "Visita Agendada",
       "maiorFaseIndex": 4,
       "temperatura": "Morno",
       "valor": null,
       "comissaoPrevista": null,
-      "proximaAcao": "Remarcar a visita com o corretor parceiro André Brito — cliente pediu para reagendar durante a semana",
-      "dataProximaAcao": "2026-08-03",
-      "status": "Atrasado",
-      "obs": "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [31/07] Contato feito via WhatsApp. [31/07] Visita agendada para 01/08 às 10h, com o corretor parceiro André Brito. [01/08] Contato feito via WhatsApp. [01/08] A visita das 10h com o corretor André Brito NÃO aconteceu — cliente vai remarcar durante a semana.",
+      "proximaAcao": "Colher o retorno das 2 visitas de hoje com o André Brito",
+      "dataProximaAcao": "2026-08-10",
+      "obs": "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [31/07] Contato feito via WhatsApp. [31/07] Visita agendada para 01/08 às 10h, com o corretor parceiro André Brito. [01/08] Contato feito via WhatsApp. [01/08] A visita das 10h com o corretor André Brito NÃO aconteceu — cliente vai remarcar durante a semana. [07/08] Visita remarcada: 2 imóveis hoje, das 14h às 15h30, com o corretor parceiro André Brito da Abreu.",
       "imoveisCompativeis": [
         "Cód. 9995"
       ],
@@ -303,10 +295,9 @@
       "temperatura": "Morno",
       "valor": null,
       "comissaoPrevista": null,
-      "proximaAcao": "Cobrar a resposta sobre a opção enviada em Capim Macio",
-      "dataProximaAcao": "2026-08-06",
-      "status": "Atrasado",
-      "obs": "[01/08] Contato feito via WhatsApp. [04/08] Visita realizada ao Residencial Ariane (Cód. 10650). Cliente confirmou que quer Capim Macio — opção enviada, aguardando resposta.",
+      "proximaAcao": "Enviar novas opções em Capim Macio, acima de 150m²",
+      "dataProximaAcao": "2026-08-08",
+      "obs": "[01/08] Contato feito via WhatsApp. [04/08] Visita realizada ao Residencial Ariane (Cód. 10650). Cliente confirmou que quer Capim Macio — opção enviada, aguardando resposta. [07/08] Descartou a opção do Mar de Corais. Pediu outras opções.",
       "imoveisCompativeis": [],
       "interesse": "Apartamento acima de 150m², Capim Macio, condomínio até ~R$2.000"
     },
@@ -325,7 +316,6 @@
       "comissaoPrevista": null,
       "proximaAcao": "Retomar contato em ~30 dias — verificar se já organizou/vendeu a casa de praia com as irmãs",
       "dataProximaAcao": "2026-08-28",
-      "status": "Inativo",
       "obs": " [29/07] Cliente suspendeu a busca — cadência de 30 dias. Motivo (nas palavras dele): \"Vou organizar a casa de praia que tenho com minhas irmãs e depois vendê-la. Só então voltarei a procurar apartamento. Aí comprarei algo melhor sem financiamento.\"",
       "imoveisCompativeis": [
         "Cód. 7726",
@@ -344,10 +334,9 @@
       "temperatura": "Quente",
       "valor": 390000,
       "comissaoPrevista": 13650,
-      "proximaAcao": "Aguardar a solicitação de engenharia — inteiro teor já com o correspondente",
-      "dataProximaAcao": "2026-08-07",
-      "status": "Atrasado",
-      "obs": "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 - Corais de Ponta Negra R$525.000; Cód. 10572 - Corais Enseada de Ponta Negra R$420.000; Cód. 6830 - Corais da Enseada R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra (Cód. 9266, 10572, 6830) — descartou todas. Nova visita encaixada hoje às 11h30 no Cód. 7726 (Candelária). [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel (Cód. 7560) e do comprador prontas — liberado para solicitação de contrato. [31/07] Contato feito via WhatsApp. [01/08] Inteiro teor solicitado e já pago pelo comprador. Comissão: 5% sobre R$390.000 = R$19.500, venda sem parceria, sua parte 70% = R$13.650. [04/08] Contato via WhatsApp. Inteiro teor enviado ao correspondente; aguardando a solicitação de engenharia.",
+      "proximaAcao": "Acompanhar a engenharia e a elaboração do contrato",
+      "dataProximaAcao": "2026-08-10",
+      "obs": "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 - Corais de Ponta Negra R$525.000; Cód. 10572 - Corais Enseada de Ponta Negra R$420.000; Cód. 6830 - Corais da Enseada R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra (Cód. 9266, 10572, 6830) — descartou todas. Nova visita encaixada hoje às 11h30 no Cód. 7726 (Candelária). [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel (Cód. 7560) e do comprador prontas — liberado para solicitação de contrato. [31/07] Contato feito via WhatsApp. [01/08] Inteiro teor solicitado e já pago pelo comprador. Comissão: 5% sobre R$390.000 = R$19.500, venda sem parceria, sua parte 70% = R$13.650. [04/08] Contato via WhatsApp. Inteiro teor enviado ao correspondente; aguardando a solicitação de engenharia. [07/08] Aguardando a engenharia acontecer. Contrato em fase de elaboração.",
       "imoveisCompativeis": [
         "Cód. 7726",
         "Cód. 7560"
@@ -367,7 +356,6 @@
       "comissaoPrevista": null,
       "proximaAcao": "Estudar nova proposta no Corais Alto da Candelária (apto 103) — a de R$530 mil foi recusada",
       "dataProximaAcao": "2026-08-07",
-      "status": "Vence hoje",
       "obs": "Veio de um anúncio no Instagram como cliente VENDEDOR: captei o Cód. 10638 (Candelária) com ele e vendi em 29/07. Hoje é lead COMPRADOR — mesma pessoa, segunda jornada. Visita hoje às 18h a um apartamento no Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Cliente quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h. [30/07] Visitou o Residencial Cabugi: gostou da disposição e da metragem, mas NÃO aprovou a posição — apartamento quente. Quer ver outras unidades no mesmo condomínio. [31/07] Contato feito via WhatsApp. [04/08] Contato via WhatsApp. Proposta de R$530.000 no Corais Alto da Candelária, apartamento 103 — RECUSADA pela vendedora. Estudando nova proposta.",
       "imoveisCompativeis": [],
       "interesse": "outras unidades no Residencial Cabugi (posição melhor)"
@@ -384,9 +372,8 @@
       "valor": 122500,
       "comissaoPrevista": 2143.75,
       "proximaAcao": "Acompanhar a leitura do contrato do apto 404 (bloco 11, Jardim Satélite) até a assinatura",
-      "dataProximaAcao": "2026-08-06",
-      "status": "Atrasado",
-      "obs": "Cliente de relacionamento: foi a VENDEDORA do João Mendonça (301), vendido em maio/2026 por R$380.000. Agora volta como COMPRADORA. [30/07] Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista. [31/07] Contato feito via WhatsApp. [01/08] Negócio sendo fechado por R$122.500,00 (proposta inicial era R$120.000,00), em parceria com a corretora Natália Barbosa. Comissão: 5% sobre R$122.500 = R$6.125, dividido com a corretora Natália Barbosa (R$3.062,50), sua parte 70% = R$2.143,75. [04/08] Em fase de LEITURA DE CONTRATO. [04/08] Contato via WhatsApp.",
+      "dataProximaAcao": "2026-08-10",
+      "obs": "Cliente de relacionamento: foi a VENDEDORA do João Mendonça (301), vendido em maio/2026 por R$380.000. Agora volta como COMPRADORA. [30/07] Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista. [31/07] Contato feito via WhatsApp. [01/08] Negócio sendo fechado por R$122.500,00 (proposta inicial era R$120.000,00), em parceria com a corretora Natália Barbosa. Comissão: 5% sobre R$122.500 = R$6.125, dividido com a corretora Natália Barbosa (R$3.062,50), sua parte 70% = R$2.143,75. [04/08] Em fase de LEITURA DE CONTRATO. [04/08] Contato via WhatsApp. [07/08] Segue em fase de leitura de contrato. Contato feito.",
       "imoveisCompativeis": [],
       "interesse": "apto 404, Jardim Satélite — fechando por R$122.500"
     },
@@ -401,10 +388,9 @@
       "temperatura": "Quente",
       "valor": null,
       "comissaoPrevista": null,
-      "proximaAcao": "Destravar a questão do lote e avançar para a proposta no N2-17 (Alphaville Pium)",
-      "dataProximaAcao": "2026-08-06",
-      "status": "Atrasado",
-      "obs": "Cliente de relacionamento: foi a VENDEDORA do Maria Bernadete (803), vendido em abril/2026 por R$635.000. Agora volta como COMPRADORA. Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já visitou 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta.",
+      "proximaAcao": "Formalizar a proposta no N2-17 (Alphaville Pium)",
+      "dataProximaAcao": "2026-08-10",
+      "obs": "Cliente de relacionamento: foi a VENDEDORA do Maria Bernadete (803), vendido em abril/2026 por R$635.000. Agora volta como COMPRADORA. Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já visitou 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta. [07/08] Trabalhando a formalização da proposta no N2-17.",
       "interesse": "lote plano no Alphaville para construir casa térrea — inclinada ao N2-17 (Alphaville Pium)",
       "imoveisCompativeis": []
     },
@@ -414,15 +400,14 @@
       "telefone": "84996174403",
       "origem": "Indicação",
       "dataEntrada": "2026-08-05",
-      "fase": "Visita Agendada",
+      "fase": "Qualificado",
       "maiorFaseIndex": 4,
       "temperatura": "Morno",
       "valor": null,
       "comissaoPrevista": null,
-      "proximaAcao": "Visita ao Condomínio Polinésia (Candelária) em 06/08 às 19h",
-      "dataProximaAcao": "2026-08-06",
-      "status": "Atrasado",
-      "obs": "Visita agendada para 06/08 às 19h no Condomínio Polinésia (804, Bloco B), Candelária. Atenção: o imóvel NÃO está na carteira — captação recusada em 05/08 (proprietário já tem corretor). Indicação de Carlos Henrique, (84) 98132-4060 — ainda não cadastrado no Conecta TR.",
+      "proximaAcao": "Remarcar a visita ao Condomínio Polinésia",
+      "dataProximaAcao": "2026-08-08",
+      "obs": "Visita agendada para 06/08 às 19h no Condomínio Polinésia (804, Bloco B), Candelária. Atenção: o imóvel NÃO está na carteira — captação recusada em 05/08 (proprietário já tem corretor). Indicação de Carlos Henrique, (84) 98132-4060 — ainda não cadastrado no Conecta TR. [07/08] A cliente desmarcou a visita de ontem (06/08) em cima da hora. Remarcar.",
       "interesse": "apartamento no Condomínio Polinésia (804, Bloco B), Candelária — imóvel de terceiro",
       "visitaResumo": "Visita ao Condomínio Polinésia, 804 Bloco B",
       "imoveisCompativeis": []
@@ -433,17 +418,16 @@
       "telefone": "84986858585",
       "origem": "Instagram",
       "dataEntrada": "2026-08-05",
-      "fase": "Visita Agendada",
-      "maiorFaseIndex": 4,
-      "temperatura": "Morno",
+      "fase": "Visita Realizada",
+      "maiorFaseIndex": 5,
+      "temperatura": "Quente",
       "valor": 589990,
       "comissaoPrevista": null,
-      "proximaAcao": "Visita ao Cód. 10652 (Muriú) em 06/08 às 16h",
-      "dataProximaAcao": "2026-08-06",
-      "status": "Atrasado",
-      "obs": "Visita agendada para 06/08 às 16h. E-mail: atendimento@sosrastreamento.net. Agenda bloqueada das 14h45 às 17h para o deslocamento (saída de Capim Macio). Origem: Instagram — chegou pela publicação do próprio Cód. 10652.",
+      "proximaAcao": "Cobrar a proposta do Cód. 10652",
+      "dataProximaAcao": "2026-08-10",
+      "obs": "Visita agendada para 06/08 às 16h. E-mail: atendimento@sosrastreamento.net. Agenda bloqueada das 14h45 às 17h para o deslocamento (saída de Capim Macio). Origem: Instagram — chegou pela publicação do próprio Cód. 10652. [07/08] Visita realizada no Cód. 10652 (Muriú). Cliente deve apresentar proposta.",
       "interesse": "Casa em Condomínio 4 Quartos Muriú 200m² (Cód. 10652) — R$589.990",
-      "visitaResumo": "Visita à casa em condomínio em Muriú (Cód. 10652)",
+      "visitaResumo": "Visitou o Cód. 10652 em Muriú — gostou e deve fazer proposta",
       "imoveisCompativeis": [
         "Cód. 10652"
       ]
@@ -1166,8 +1150,17 @@
       "nota": "apenas os anos com mês de fechamento registrado na planilha original."
     }
   },
-  "agendaHoje": [],
-  "agendaAmanha": [
+  "agendaHoje": [
+    {
+      "data": "2026-08-07",
+      "hora": "14:00",
+      "horaFim": "15:30",
+      "titulo": "2 visitas — Heber Lima, com o corretor parceiro André Brito da Abreu",
+      "local": "A confirmar com o André Brito"
+    }
+  ],
+  "agendaAmanha": [],
+  "agendaProximos": [
     {
       "data": "2026-08-08",
       "hora": "08:00",
@@ -1175,7 +1168,6 @@
       "local": "Compromisso pessoal — não agendar nada neste intervalo (até 11h)"
     }
   ],
-  "agendaProximos": [],
   "lembretes": [
     {
       "texto": "Falar com Filipe Ideli sobre chegada da irmã e procura de apartamento em Tirol ou Petrópolis",
@@ -2445,6 +2437,62 @@
       "lead": "Cód. 5519",
       "tipo": "Outro",
       "resumo": "Cód. 5519 (Natal River, Nova Parnamirim, R$ 469.990) vendido pela concorrência. Captação perdida, imóvel fora da carteira. Segunda perda para a concorrência no mesmo dia, junto com o Cód. 7454."
+    },
+    {
+      "data": "06/08/2026 18:00",
+      "lead": "Daianne",
+      "tipo": "WhatsApp",
+      "leadId": 5,
+      "resumo": "Descartou as opções do Tirol. Pediu para estreitar em Candelária, no máximo Lagoa Nova, num raio de 2 km do IFRN Central. Cód. 9272 saiu da lista: R$1.299.990 contra teto de R$630 mil."
+    },
+    {
+      "data": "07/08/2026 09:00",
+      "lead": "Camilla Natasha",
+      "tipo": "WhatsApp",
+      "resumo": "Segue em fase de leitura de contrato. Contato feito.",
+      "leadId": 13
+    },
+    {
+      "data": "07/08/2026 09:05",
+      "lead": "Heber Lima",
+      "tipo": "Visita",
+      "resumo": "Visita remarcada e confirmada: 2 imóveis hoje, das 14h às 15h30, com o corretor parceiro André Brito da Abreu.",
+      "leadId": 7
+    },
+    {
+      "data": "07/08/2026 09:10",
+      "lead": "João Paulo de Paula",
+      "tipo": "Outro",
+      "resumo": "Aguardando a engenharia acontecer. Contrato em fase de elaboração.",
+      "leadId": 11
+    },
+    {
+      "data": "07/08/2026 09:15",
+      "lead": "Caroline Evelin",
+      "tipo": "Outro",
+      "resumo": "Tentando a formalização da proposta no N2-17 (Alphaville Pium).",
+      "leadId": 14
+    },
+    {
+      "data": "07/08/2026 09:20",
+      "lead": "Maria Teresa",
+      "tipo": "Outro",
+      "resumo": "Desmarcou em cima da hora a visita de 06/08 às 19h no Condomínio Polinésia. A remarcar.",
+      "leadId": 15
+    },
+    {
+      "data": "07/08/2026 09:25",
+      "lead": "Rubens Júnior",
+      "tipo": "Visita",
+      "resumo": "Visita realizada no Cód. 10652 (Muriú). Cliente deve apresentar proposta.",
+      "leadId": 16
+    },
+    {
+      "data": "07/08/2026 09:30",
+      "lead": "Maria Matos",
+      "tipo": "WhatsApp",
+      "resumo": "Descartou a opção do Mar de Corais e pediu outras opções em Capim Macio.",
+      "leadId": 9
     }
   ]
 }

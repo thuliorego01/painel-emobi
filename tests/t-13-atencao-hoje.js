@@ -8,7 +8,12 @@ module.exports = { nome: 'Atenção Hoje não fica vazia em dia bom', rodar: asy
   const { dom, doc } = await montar();
   const DATA = dados(dom);
   const card = doc.getElementById('alertCard');
-  const atrasados = (DATA.leads || []).filter(l => l.status === 'Atrasado');
+  // A situação do prazo é calculada, não guardada — o teste tem que usar a
+  // mesma conta do painel, senão testa um campo que não existe mais.
+  const situacao = (l) => dom.window.eval('situacaoLead')(l);
+  assert(!(DATA.leads || []).some(l => 'status' in l),
+    'o campo status voltou para o lead: prazo é cálculo, não valor guardado');
+  const atrasados = (DATA.leads || []).filter(l => situacao(l) === 'Atrasado');
   const conteudo = txt(card);
   assert(conteudo.length > 0, 'o card de atenção não pode ficar vazio');
 

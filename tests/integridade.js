@@ -136,6 +136,7 @@ imoveis.filter(i => i.status === 'Vendido').forEach(i => {
 // campos que viraram cálculo ao vivo não podem ressuscitar
 const MORTOS = [
   ['leads[].statusReativacao', leads.some(l => 'statusReativacao' in l)],
+  ['leads[].status', leads.some(l => 'status' in l)],
   ['lembretes[].quando', lembretes.some(l => 'quando' in l)],
   ['lembretes[].dataFmt', lembretes.some(l => 'dataFmt' in l)],
   ['prospeccao[].statusPrazo', prospeccao.some(p => 'statusPrazo' in p)],

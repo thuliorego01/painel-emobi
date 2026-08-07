@@ -1759,7 +1759,7 @@ function imovelDaProspeccao(pr) {
 
 function computeAcoesUrgentes() {
   const diasSemContato = diasDesdeISO;
-  const leadsAtrasados = (DATA.leads || []).filter(l => l.status === 'Atrasado');
+  const leadsAtrasados = (DATA.leads || []).filter(l => situacaoLead(l) === 'Atrasado');
   const leadsReativar = leadsParaReativar();
   const imoveisAtrasados = (DATA.imoveis || []).filter(im =>
     im.status === 'Disponível' && im.ultimaInteracaoProprietario && diasSemContato(im.ultimaInteracaoProprietario) > 30
@@ -1867,7 +1867,7 @@ function computeAcoesUrgentes() {
   const { leadsAtrasados, leadsReativar, total } = computeAcoesUrgentes();
   const contatosPendentes = leadsAtrasados.length + leadsReativar.length;
   const visitasHoje = AGENDA_DIA.hoje.length;
-  const propostasVencidas = (DATA.leads || []).filter(l => l.fase === 'Proposta Enviada' && l.status === 'Atrasado').length;
+  const propostasVencidas = (DATA.leads || []).filter(l => l.fase === 'Proposta Enviada' && situacaoLead(l) === 'Atrasado').length;
 
   const itens = [];
   itens.push(`<span>${contatosPendentes > 0 ? contatosPendentes + ' contato' + (contatosPendentes === 1 ? '' : 's') + ' para realizar' : 'Nenhum contato pendente'}</span>`);
@@ -2716,13 +2716,13 @@ reativacaoCard.innerHTML = rTemps.map(t => {
 // calcularUrgencia, que são declarados adiante no script.
 function renderAtencaoHoje() {
   const alertCard = document.getElementById('alertCard');
-const atrasados = DATA.leads.filter(l => l.status === 'Atrasado');
+const atrasados = DATA.leads.filter(l => situacaoLead(l) === 'Atrasado');
 // Sem atrasados, o card virava uma linha só ao lado de uma coluna cheia —
 // espaço morto num dos pontos mais nobres da tela. Em dia bom ele passa a
 // responder a pergunta seguinte: quem vence primeiro.
 function proximosAVencer(qtd) {
   return (DATA.leads || [])
-    .filter(l => !FASES_INATIVAS.includes(l.fase) && l.status !== 'Atrasado')
+    .filter(l => !FASES_INATIVAS.includes(l.fase) && situacaoLead(l) !== 'Atrasado')
     .map(l => {
       const u = calcularUrgencia(l);
       if (u.parado === null || !u.limite) return null;
@@ -2967,6 +2967,21 @@ function imovelPorCodigoTexto(ref) {
   if (!cod) return null;
   return IMOVEIS_TODOS.find(im => new RegExp('Cód\\.\\s*' + cod + '\\b').test(im.nome || '')) || null;
 }
+// Situação do prazo é conta, não campo guardado. Enquanto era campo, o
+// briefing das 7h gravava "Atrasado" lendo a planilha; às 9h o prazo era
+// remarcado na conversa e o painel continuava dizendo atrasado até o dia
+// seguinte. Mesma regra da coluna Q da planilha, calculada na hora.
+function situacaoLead(l) {
+  if (!l) return '';
+  if (l.fase === 'Fechado Ganho') return 'Ganho';
+  if (l.fase === 'Fechado Perdido') return 'Perdido';
+  if (l.fase === 'Inativo') return 'Inativo';
+  if (!l.dataProximaAcao) return 'Sem 1o contato';
+  const hoje = dataLocalISO();
+  if (hoje > l.dataProximaAcao) return 'Atrasado';
+  if (hoje === l.dataProximaAcao) return 'Vence hoje';
+  return 'Em dia';
+}
 function imovelPorId(id) {
   if (id === undefined || id === null) return null;
   return IMOVEIS_TODOS.find(im => String(im.id) === String(id)) || null;
@@ -3021,7 +3036,8 @@ function calcularUrgencia(l) {
 }
 
 function renderLeadCard(l, container) {
-  const badgeClass = l.status === 'Atrasado' ? 'atrasado' : (l.status === 'Em dia' ? 'emdia' : 'novo');
+  const situacao = situacaoLead(l);
+  const badgeClass = situacao === 'Atrasado' ? 'atrasado' : (situacao === 'Em dia' ? 'emdia' : 'novo');
   const tempClass = l.temperatura === 'Quente' ? 'quente' : (l.temperatura === 'Morno' ? 'morno' : 'frio');
   const valorTxt = (l.valor === null || l.valor === undefined) ? 'a definir' : brl(l.valor);
   const comissaoTxt = (l.comissaoPrevista === null || l.comissaoPrevista === undefined) ? 'a definir' : brl(l.comissaoPrevista);
@@ -3115,7 +3131,7 @@ function renderLeadCard(l, container) {
   card.innerHTML = `
     <div class="lead-top">
       <span class="lead-name">${l.nome}${chipHtml}${seloRecorrente(l)}</span>
-      <span><span class="temp ${tempClass}">${l.temperatura}</span> <span class="badge ${badgeClass}">${l.status}</span></span>
+      <span><span class="temp ${tempClass}">${l.temperatura}</span> <span class="badge ${badgeClass}">${situacao}</span></span>
     </div>
     <div class="lead-meta">
       <span>${l.fase}</span>
@@ -3274,9 +3290,10 @@ if (leadsInativosArr.length === 0) {
     if (!l) return;
     const nome = l.nome;
     const tempClass = l.temperatura === 'Quente' ? 'quente' : (l.temperatura === 'Morno' ? 'morno' : 'frio');
-    const badgeClass = l.status === 'Atrasado' ? 'atrasado' : (l.status === 'Em dia' ? 'emdia' : 'novo');
+    const situacao = situacaoLead(l);
+    const badgeClass = situacao === 'Atrasado' ? 'atrasado' : (situacao === 'Em dia' ? 'emdia' : 'novo');
     elNome.textContent = l.nome;
-    elBadges.innerHTML = `<span class="badge ${badgeClass}">${l.status}</span> <span class="temp ${tempClass}">${l.temperatura}</span> <span class="badge novo">${l.fase}</span>`;
+    elBadges.innerHTML = `<span class="badge ${badgeClass}">${situacao}</span> <span class="temp ${tempClass}">${l.temperatura}</span> <span class="badge novo">${l.fase}</span>`;
     const valorTxt = (l.valor === null || l.valor === undefined) ? 'a definir' : brl(l.valor);
     elInfo.innerHTML = `<span>Valor: <b>${valorTxt}</b></span><span>Origem: <b>${l.origem || '—'}</b></span><span>Próxima ação: <b>${l.proximaAcao || '—'}</b></span>`;
     elObs.textContent = l.obs || '';
