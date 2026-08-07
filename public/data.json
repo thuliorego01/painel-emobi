@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-06T10:00:00-03:00",
+  "ultimaAtualizacao": "2026-08-07T07:30:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -153,11 +153,11 @@
       "comissaoPrevista": null,
       "proximaAcao": "Agendar a visita ao Francisco de Goya",
       "dataProximaAcao": "2026-08-05",
-      "status": "Em dia",
+      "status": "Vence hoje",
       "obs": "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso entre os dois, mas prefere condomínios mais novos — sugerido o Vivant (Lagoa Nova). Agendando visita para até o final da semana (10/07). Parceria: 5% dividido, sua parte 2,5%. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M. Retomada em 02/08: enviada opção no Francisco de Goya, aguardando retorno. [04/08] REATIVADO: gostou do Francisco de Goya e quer visitar. Saiu da inatividade, temperatura para Quente.",
       "imoveisCompativeis": null,
       "visitaResumo": null,
-      "visitaDetalhe": null,
+      "visitaDetalhe": "o mais novo que você tava procurando",
       "interesse": "apartamento ~150m² em Lagoa Nova, até R$1,3M"
     },
     {
@@ -237,7 +237,7 @@
       "comissaoPrevista": null,
       "proximaAcao": "Enviar opções em Candelária/Lagoa Nova até R$630 mil e marcar visita",
       "dataProximaAcao": "2026-08-11",
-      "status": "Em dia",
+      "status": "Vence hoje",
       "obs": "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08. [04/08] Clientes voltaram de viagem e o contato foi retomado. Temperatura de Frio para Morno. [06/08] Cód. 7454 saiu das opções — vendido pela concorrência.",
       "imoveisCompativeis": [
         "Cód. 9272",
@@ -305,7 +305,7 @@
       "comissaoPrevista": null,
       "proximaAcao": "Cobrar a resposta sobre a opção enviada em Capim Macio",
       "dataProximaAcao": "2026-08-06",
-      "status": "Em dia",
+      "status": "Atrasado",
       "obs": "[01/08] Contato feito via WhatsApp. [04/08] Visita realizada ao Residencial Ariane (Cód. 10650). Cliente confirmou que quer Capim Macio — opção enviada, aguardando resposta.",
       "imoveisCompativeis": [],
       "interesse": "Apartamento acima de 150m², Capim Macio, condomínio até ~R$2.000"
@@ -346,7 +346,7 @@
       "comissaoPrevista": 13650,
       "proximaAcao": "Aguardar a solicitação de engenharia — inteiro teor já com o correspondente",
       "dataProximaAcao": "2026-08-07",
-      "status": "Em dia",
+      "status": "Atrasado",
       "obs": "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 - Corais de Ponta Negra R$525.000; Cód. 10572 - Corais Enseada de Ponta Negra R$420.000; Cód. 6830 - Corais da Enseada R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra (Cód. 9266, 10572, 6830) — descartou todas. Nova visita encaixada hoje às 11h30 no Cód. 7726 (Candelária). [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel (Cód. 7560) e do comprador prontas — liberado para solicitação de contrato. [31/07] Contato feito via WhatsApp. [01/08] Inteiro teor solicitado e já pago pelo comprador. Comissão: 5% sobre R$390.000 = R$19.500, venda sem parceria, sua parte 70% = R$13.650. [04/08] Contato via WhatsApp. Inteiro teor enviado ao correspondente; aguardando a solicitação de engenharia.",
       "imoveisCompativeis": [
         "Cód. 7726",
@@ -367,7 +367,7 @@
       "comissaoPrevista": null,
       "proximaAcao": "Estudar nova proposta no Corais Alto da Candelária (apto 103) — a de R$530 mil foi recusada",
       "dataProximaAcao": "2026-08-07",
-      "status": "Em dia",
+      "status": "Vence hoje",
       "obs": "Veio de um anúncio no Instagram como cliente VENDEDOR: captei o Cód. 10638 (Candelária) com ele e vendi em 29/07. Hoje é lead COMPRADOR — mesma pessoa, segunda jornada. Visita hoje às 18h a um apartamento no Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Cliente quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h. [30/07] Visitou o Residencial Cabugi: gostou da disposição e da metragem, mas NÃO aprovou a posição — apartamento quente. Quer ver outras unidades no mesmo condomínio. [31/07] Contato feito via WhatsApp. [04/08] Contato via WhatsApp. Proposta de R$530.000 no Corais Alto da Candelária, apartamento 103 — RECUSADA pela vendedora. Estudando nova proposta.",
       "imoveisCompativeis": [],
       "interesse": "outras unidades no Residencial Cabugi (posição melhor)"
@@ -385,7 +385,7 @@
       "comissaoPrevista": 2143.75,
       "proximaAcao": "Acompanhar a leitura do contrato do apto 404 (bloco 11, Jardim Satélite) até a assinatura",
       "dataProximaAcao": "2026-08-06",
-      "status": "Em dia",
+      "status": "Atrasado",
       "obs": "Cliente de relacionamento: foi a VENDEDORA do João Mendonça (301), vendido em maio/2026 por R$380.000. Agora volta como COMPRADORA. [30/07] Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista. [31/07] Contato feito via WhatsApp. [01/08] Negócio sendo fechado por R$122.500,00 (proposta inicial era R$120.000,00), em parceria com a corretora Natália Barbosa. Comissão: 5% sobre R$122.500 = R$6.125, dividido com a corretora Natália Barbosa (R$3.062,50), sua parte 70% = R$2.143,75. [04/08] Em fase de LEITURA DE CONTRATO. [04/08] Contato via WhatsApp.",
       "imoveisCompativeis": [],
       "interesse": "apto 404, Jardim Satélite — fechando por R$122.500"
@@ -403,7 +403,7 @@
       "comissaoPrevista": null,
       "proximaAcao": "Destravar a questão do lote e avançar para a proposta no N2-17 (Alphaville Pium)",
       "dataProximaAcao": "2026-08-06",
-      "status": "Em dia",
+      "status": "Atrasado",
       "obs": "Cliente de relacionamento: foi a VENDEDORA do Maria Bernadete (803), vendido em abril/2026 por R$635.000. Agora volta como COMPRADORA. Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já visitou 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta.",
       "interesse": "lote plano no Alphaville para construir casa térrea — inclinada ao N2-17 (Alphaville Pium)",
       "imoveisCompativeis": []
@@ -421,7 +421,7 @@
       "comissaoPrevista": null,
       "proximaAcao": "Visita ao Condomínio Polinésia (Candelária) em 06/08 às 19h",
       "dataProximaAcao": "2026-08-06",
-      "status": "Em dia",
+      "status": "Atrasado",
       "obs": "Visita agendada para 06/08 às 19h no Condomínio Polinésia (804, Bloco B), Candelária. Atenção: o imóvel NÃO está na carteira — captação recusada em 05/08 (proprietário já tem corretor). Indicação de Carlos Henrique, (84) 98132-4060 — ainda não cadastrado no Conecta TR.",
       "interesse": "apartamento no Condomínio Polinésia (804, Bloco B), Candelária — imóvel de terceiro",
       "visitaResumo": "Visita ao Condomínio Polinésia, 804 Bloco B",
@@ -440,7 +440,7 @@
       "comissaoPrevista": null,
       "proximaAcao": "Visita ao Cód. 10652 (Muriú) em 06/08 às 16h",
       "dataProximaAcao": "2026-08-06",
-      "status": "Em dia",
+      "status": "Atrasado",
       "obs": "Visita agendada para 06/08 às 16h. E-mail: atendimento@sosrastreamento.net. Agenda bloqueada das 14h45 às 17h para o deslocamento (saída de Capim Macio). Origem: Instagram — chegou pela publicação do próprio Cód. 10652.",
       "interesse": "Casa em Condomínio 4 Quartos Muriú 200m² (Cód. 10652) — R$589.990",
       "visitaResumo": "Visita à casa em condomínio em Muriú (Cód. 10652)",
@@ -989,6 +989,63 @@
       "ultimaInteracaoProprietario": "2026-08-02",
       "obs": "Originado de indicação do Conecta TR — captação ainda em andamento, não confirmada. [05/08] Captação recusada — proprietário já tem corretor. Fora da carteira.",
       "tipoOperacao": "Venda"
+    },
+    {
+      "id": 29,
+      "nome": "Apartamento 3 Quartos Ponta Negra 98m² (Cód. 9266)",
+      "tipo": "Apartamento",
+      "bairro": "Ponta Negra",
+      "cidade": null,
+      "endereco": "Rua Da Lagosta, Ponta Negra - Natal/RN",
+      "valor": 525000,
+      "detalhes": "3 quartos (1 suíte), 3 banheiros, 2 vagas, 98m² privativos, closet",
+      "proprietario": "A definir",
+      "telefone": null,
+      "link": "https://emobiimobiliaria.com.br/imovel/9266/apartamento-3-quartos-ponta-negra-natal/",
+      "status": "Fora da carteira",
+      "pctComissao": null,
+      "dataCaptacao": "2026-07-29",
+      "ultimaInteracaoProprietario": "2026-08-02",
+      "obs": "Condomínio Corais de Ponta Negra, 5º andar, sala ampliada, boa ventilação. Aceita permuta. Condomínio R$1.032,57. Lazer: academia, piscina, sauna, churrasqueira, playground, salão de festas, salão de jogos, quadra esportiva, quadra de tênis, espaço gourmet. Cliente João Paulo de Paula visitando em 29/07. [02/08/2026] Retirado da carteira: imóvel da Emobi, não é captação de Thúlio.",
+      "tipoOperacao": "Venda"
+    },
+    {
+      "id": 30,
+      "nome": "Apartamento 3 Quartos Ponta Negra 94m² (Cód. 10572)",
+      "tipo": "Apartamento",
+      "bairro": "Ponta Negra",
+      "cidade": null,
+      "endereco": "Rua Francisco Simplício, Ponta Negra - Natal/RN",
+      "valor": 420000,
+      "detalhes": "3 quartos (1 suíte), sala 2 ambientes, varanda, cozinha americana, 2 vagas, 94m² privativos",
+      "proprietario": "A definir",
+      "telefone": null,
+      "link": "https://emobiimobiliaria.com.br/imovel/10572/apartamento-3-quartos-ponta-negra-natal/",
+      "status": "Fora da carteira",
+      "pctComissao": null,
+      "dataCaptacao": "2026-07-29",
+      "ultimaInteracaoProprietario": "2026-08-02",
+      "obs": "Residencial Corais Enseada de Ponta Negra. Condomínio R$750, IPTU R$2.750/ano. Lazer: 2 piscinas adultos, 2 piscinas infantis, 2 salões de festas, 2 quadras esportivas, academia, churrasqueira, playground, portaria 24h, espaço gourmet. Cliente João Paulo de Paula visitando em 29/07. [02/08/2026] Retirado da carteira: imóvel da Emobi, não é captação de Thúlio.",
+      "tipoOperacao": "Venda"
+    },
+    {
+      "id": 31,
+      "nome": "Apartamento 3 Quartos Ponta Negra 95m² (Cód. 6830)",
+      "tipo": "Apartamento",
+      "bairro": "Ponta Negra",
+      "cidade": null,
+      "endereco": "Rua Francisco Simplício, Ponta Negra - Natal/RN",
+      "valor": 500000,
+      "detalhes": "3 quartos (1 suíte com banheira), 3 banheiros, 2 vagas (1 presa), 95m² privativos, varanda integrada, móveis projetados e eletros fixos inclusos",
+      "proprietario": "A definir",
+      "telefone": null,
+      "link": "https://emobiimobiliaria.com.br/imovel/6830/apartamento-3-quartos-ponta-negra-natal/",
+      "status": "Fora da carteira",
+      "pctComissao": null,
+      "dataCaptacao": "2026-07-29",
+      "ultimaInteracaoProprietario": "2026-08-02",
+      "obs": "Condomínio Corais da Enseada. Pet friendly, sol da manhã, financiável. Condomínio R$800. Lazer: piscina, academia, salão de festas, espaço pet, quadra poliesportiva, salão de jogos, portaria 24h. Cliente João Paulo de Paula visitando em 29/07. [02/08/2026] Retirado da carteira: imóvel da Emobi, não é captação de Thúlio.",
+      "tipoOperacao": "Venda"
     }
   ],
   "historico": {
@@ -1109,22 +1166,8 @@
       "nota": "apenas os anos com mês de fechamento registrado na planilha original."
     }
   },
-  "agendaHoje": [
-    {
-      "data": "2026-08-06",
-      "hora": "14:45",
-      "titulo": "Deslocamento + Visita — Muriú, Cód. 10652 (Rubens Júnior)",
-      "local": "Casa em Condomínio Muriú, Cód. 10652 — Ceará-Mirim/RN"
-    },
-    {
-      "data": "2026-08-06",
-      "hora": "19:00",
-      "titulo": "Visita — Maria Teresa · Condomínio Polinésia (804, Bloco B)",
-      "local": "Condomínio Polinésia, Candelária - Natal/RN"
-    }
-  ],
-  "agendaAmanha": [],
-  "agendaProximos": [
+  "agendaHoje": [],
+  "agendaAmanha": [
     {
       "data": "2026-08-08",
       "hora": "08:00",
@@ -1132,6 +1175,7 @@
       "local": "Compromisso pessoal — não agendar nada neste intervalo (até 11h)"
     }
   ],
+  "agendaProximos": [],
   "lembretes": [
     {
       "texto": "Falar com Filipe Ideli sobre chegada da irmã e procura de apartamento em Tirol ou Petrópolis",
