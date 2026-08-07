@@ -2043,7 +2043,7 @@ function renderPrestesAFechar() {
     .map(l => String(l.id)));
   const imoveis = (DATA.imoveis || [])
     .filter(im => im.status === 'Reservado' && !idsNaLista.has(String(im.compradorLeadId)))
-    .map(im => ({ tipo: 'imovel', nome: im.nome, detalhe: im.corretorParceiro ? 'Parceria com ' + im.corretorParceiro : 'Comprador fora do CRM',
+    .map(im => ({ tipo: 'imovel', nome: im.nome, detalhe: im.corretorParceiro ? 'Parceria com ' + im.corretorParceiro : 'Comprador ainda não vinculado',
                   valor: im.comissaoThulioVenda, quando: null, sub: 'Reservado' }));
   const itens = [...leads, ...imoveis];
   if (!itens.length) return;

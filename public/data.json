@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-07T09:35:00-03:00",
+  "ultimaAtualizacao": "2026-08-07T10:31:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -349,16 +349,16 @@
       "telefone": "84999885255",
       "origem": "Instagram",
       "dataEntrada": "2026-07-30",
-      "fase": "Proposta Enviada",
+      "fase": "Qualificado",
       "maiorFaseIndex": 6,
       "temperatura": "Quente",
       "valor": 530000,
       "comissaoPrevista": null,
-      "proximaAcao": "Estudar nova proposta no Corais Alto da Candelária (apto 103) — a de R$530 mil foi recusada",
-      "dataProximaAcao": "2026-08-07",
-      "obs": "Veio de um anúncio no Instagram como cliente VENDEDOR: captei o Cód. 10638 (Candelária) com ele e vendi em 29/07. Hoje é lead COMPRADOR — mesma pessoa, segunda jornada. Visita hoje às 18h a um apartamento no Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Cliente quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h. [30/07] Visitou o Residencial Cabugi: gostou da disposição e da metragem, mas NÃO aprovou a posição — apartamento quente. Quer ver outras unidades no mesmo condomínio. [31/07] Contato feito via WhatsApp. [04/08] Contato via WhatsApp. Proposta de R$530.000 no Corais Alto da Candelária, apartamento 103 — RECUSADA pela vendedora. Estudando nova proposta.",
+      "proximaAcao": "Levantar e enviar novas opções — perfil até ~R$530 mil, Candelária",
+      "dataProximaAcao": "2026-08-10",
+      "obs": "Veio de um anúncio no Instagram como cliente VENDEDOR: captei o Cód. 10638 (Candelária) com ele e vendi em 29/07. Hoje é lead COMPRADOR — mesma pessoa, segunda jornada. Visita hoje às 18h a um apartamento no Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Cliente quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h. [30/07] Visitou o Residencial Cabugi: gostou da disposição e da metragem, mas NÃO aprovou a posição — apartamento quente. Quer ver outras unidades no mesmo condomínio. [31/07] Contato feito via WhatsApp. [04/08] Contato via WhatsApp. Proposta de R$530.000 no Corais Alto da Candelária, apartamento 103 — RECUSADA pela vendedora. Estudando nova proposta. [07/08] Desistiu por enquanto da proposta no Corais Alto da Candelária (apto 103). Procurando outras opções.",
       "imoveisCompativeis": [],
-      "interesse": "outras unidades no Residencial Cabugi (posição melhor)"
+      "interesse": "outras opções em Candelária, até ~R$530 mil — desistiu do Corais Alto da Candelária"
     },
     {
       "id": 13,
@@ -583,8 +583,9 @@
       "pctComissao": null,
       "dataCaptacao": null,
       "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Aceita financiamento e permuta. Condomínio R$ 850,00 + IPTU R$ 2.510,00/ano. [30/07] Proposta recebida do cliente João Paulo de Paula: R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel e do comprador (João Paulo de Paula) prontas — seguindo para solicitação de contrato.",
-      "tipoOperacao": "Venda"
+      "obs": "Aceita financiamento e permuta. Condomínio R$ 850,00 + IPTU R$ 2.510,00/ano. [30/07] Proposta recebida do cliente João Paulo de Paula: R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel e do comprador (João Paulo de Paula) prontas — seguindo para solicitação de contrato. [07/08] Comprador vinculado ao lead João Paulo de Paula (id 11).",
+      "tipoOperacao": "Venda",
+      "compradorLeadId": 11
     },
     {
       "id": 9,
@@ -622,7 +623,10 @@
       "dataCaptacao": "2026-07-06",
       "ultimaInteracaoProprietario": "2026-08-05",
       "obs": "Condomínio Luiz Marques, sem área de lazer mas ótima localização. Imóvel quitado e escriturado. Condomínio R$ 425,00. Visita realizada hoje (22/07) às 13h30, com corretor parceiro Pedro Palitot. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [05/08] EM ASSINATURA DE CONTRATO — conclusão prevista para 06/08. Venda em parceria com Ivanaldo Tavares, corretor da própria Emobi. [05/08] Fechamento acordado em R$240.000,00 (tabela R$249.990,00). Comissão total 5% = R$12.000,00, dividida com Ivanaldo Tavares (R$6.000,00 cada); parte de Thúlio 70% = R$4.200,00. Vira \"Vendido\" quando a assinatura for concluída. [06/08] O lead comprador é do Ivanaldo Tavares — não há ficha dele no meu CRM, então este imóvel nunca terá compradorLeadId.",
-      "tipoOperacao": "Venda"
+      "tipoOperacao": "Venda",
+      "corretorParceiro": "Ivanaldo Tavares",
+      "comissaoTotalVenda": 12000,
+      "comissaoThulioVenda": 4200
     },
     {
       "id": 11,
@@ -820,7 +824,8 @@
       "dataVenda": "2026-07-29",
       "comissaoTotalVenda": 13250,
       "comissaoThulioVenda": 4637.5,
-      "comissaoConfirmada": false
+      "comissaoConfirmada": false,
+      "corretorParceiro": "Ricardo Pantoja"
     },
     {
       "id": 22,
@@ -2493,6 +2498,20 @@
       "tipo": "WhatsApp",
       "resumo": "Descartou a opção do Mar de Corais e pediu outras opções em Capim Macio.",
       "leadId": 9
+    },
+    {
+      "data": "07/08/2026 10:30",
+      "lead": "Renato Cássio",
+      "tipo": "WhatsApp",
+      "leadId": 12,
+      "resumo": "Desistiu por enquanto da proposta no Corais Alto da Candelária (apto 103). Em busca de outras opções."
+    },
+    {
+      "data": "07/08/2026 10:31",
+      "lead": "João Paulo de Paula",
+      "tipo": "Outro",
+      "leadId": 11,
+      "resumo": "Cód. 7560 vinculado a ele como comprador — antes o imóvel aparecia como negócio separado, contando a mesma negociação duas vezes."
     }
   ]
 }
