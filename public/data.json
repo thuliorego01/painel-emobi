@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-08T07:00:00-03:00",
+  "ultimaAtualizacao": "2026-08-08T16:55:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -151,7 +151,7 @@
       "tipo": "Venda",
       "compradorLeadId": 13,
       "parceria": "Natália Barbosa — 50% da comissão total",
-      "data": "2026-08-07"
+      "data": "2026-08-08"
     }
   ],
   "leads": [
@@ -388,10 +388,10 @@
       "comissaoPrevista": 2143.75,
       "proximaAcao": "Cobrar o sinal e o pagamento da comissão",
       "dataProximaAcao": "2026-08-10",
-      "obs": "Cliente de relacionamento: foi a VENDEDORA do João Mendonça (301), vendido em maio/2026 por R$380.000. Agora volta como COMPRADORA. [30/07] Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista. [31/07] Contato feito via WhatsApp. [01/08] Negócio sendo fechado por R$122.500,00 (proposta inicial era R$120.000,00), em parceria com a corretora Natália Barbosa. Comissão: 5% sobre R$122.500 = R$6.125, dividido com a corretora Natália Barbosa (R$3.062,50), sua parte 70% = R$2.143,75. [04/08] Em fase de LEITURA DE CONTRATO. [04/08] Contato via WhatsApp. [07/08] Segue em fase de leitura de contrato. Contato feito. [07/08] CONTRATO ASSINADO — apto 404, bloco 11, Jardim Satélite, R$122.500,00. Aguardando o pagamento do sinal e o recebimento da comissão. [07/08] O apto 404 do Jardim Satélite é imóvel da corretora parceira Natália Barbosa — não é captação minha e não entra na carteira.",
+      "obs": "Cliente de relacionamento: foi a VENDEDORA do João Mendonça (301), vendido em maio/2026 por R$380.000. Agora volta como COMPRADORA. [30/07] Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista. [31/07] Contato feito via WhatsApp. [01/08] Negócio sendo fechado por R$122.500,00 (proposta inicial era R$120.000,00), em parceria com a corretora Natália Barbosa. Comissão: 5% sobre R$122.500 = R$6.125, dividido com a corretora Natália Barbosa (R$3.062,50), sua parte 70% = R$2.143,75. [04/08] Em fase de LEITURA DE CONTRATO. [04/08] Contato via WhatsApp. [07/08] Segue em fase de leitura de contrato. Contato feito. [08/08] CONTRATO ASSINADO — apto 404, bloco 11, Jardim Satélite, R$122.500,00. Aguardando o pagamento do sinal e o recebimento da comissão. [08/08] O apto 404 do Jardim Satélite é imóvel da corretora parceira Natália Barbosa — não é captação minha e não entra na carteira.",
       "imoveisCompativeis": [],
       "interesse": "apto 404, bloco 11, Jardim Satélite — contrato assinado por R$122.500",
-      "dataFechamento": "2026-08-07",
+      "dataFechamento": "2026-08-08",
       "comissaoDetalhe": "5% sobre R$122.500 = R$6.125, dividido com a corretora Natália Barbosa (R$3.062,50), sua parte 70% = R$2.143,75."
     },
     {
@@ -2550,14 +2550,14 @@
       "resumo": "Cód. 7560 vinculado a ele como comprador — antes o imóvel aparecia como negócio separado, contando a mesma negociação duas vezes."
     },
     {
-      "data": "07/08/2026 11:00",
+      "data": "08/08/2026 15:38",
       "lead": "Camilla Natasha",
       "tipo": "Outro",
       "leadId": 13,
       "resumo": "CONTRATO ASSINADO — apto 404, bloco 11, Jardim Satélite, R$122.500,00. Aguardando o sinal e o recebimento da comissão (sua parte R$2.143,75)."
     },
     {
-      "data": "07/08/2026 11:20",
+      "data": "08/08/2026 16:17",
       "lead": "Camilla Natasha",
       "tipo": "Outro",
       "leadId": 13,

@@ -12,7 +12,7 @@ module.exports = {
     const DATA = dados(dom);
     const texto = doc.querySelector('.sidebar-sync-text').textContent.replace(/\s+/g, ' ').trim();
 
-    assert(/Última mudança/i.test(texto), 'o rótulo precisa dizer que é a última mudança');
+    assert(/Última atualização/i.test(texto), 'o rótulo precisa dizer Última atualização');
 
     // Tem que bater com a entrada mais recente do histórico.
     const u = dom.window.eval('ultimaMudancaReal')();
@@ -27,12 +27,10 @@ module.exports = {
       const grav = new Date(DATA.ultimaAtualizacao);
       const gravFmt = `${p2(grav.getDate())}/${p2(grav.getMonth() + 1)}`;
       if (gravFmt !== esperado) {
-        const antes = texto.slice(0, texto.indexOf('sincronizado') >= 0 ? texto.indexOf('sincronizado') : texto.length);
+        const antes = texto;
         assert(!antes.includes(gravFmt),
           'a manchete continua sendo a hora da gravação, não a da mudança');
       }
-      // A sincronização não some: saber que o celular está com cópia velha vale.
-      assert(/sincronizado/i.test(texto), 'a hora da sincronização precisa continuar visível');
     }
   }
 };

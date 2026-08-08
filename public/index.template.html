@@ -63,7 +63,6 @@
   .header .today { text-align: right; font-size: var(--fs-sm); opacity: 0.85; }
   .header .today b { font-size:var(--fs-lg); display:block; color: var(--brand-gold-light); }
   .header .sync-info { font-size: var(--fs-xs); opacity: 0.75; margin-top: 4px; }
-  .sync-sub { display:block; font-size: var(--fs-xs); opacity:.7; font-weight:400; margin-top:2px; }
   .header .sync-info b { color: var(--brand-gold-light); font-weight: 700; }
 
   .acao-group { margin-bottom: 14px; }
@@ -1125,9 +1124,8 @@
     </nav>
     <div class="sidebar-footer">
       <div class="sidebar-sync-text">
-        <span class="sync-rotulo">Última mudança</span><br>
+        <span class="sync-rotulo">Última atualização</span><br>
         <b id="syncTimestamp">—</b>
-        <span class="sync-sub" id="syncSub"></span>
       </div>
       <button class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Recolher menu" title="Recolher/expandir menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
     </div>
@@ -1580,22 +1578,15 @@ function ultimaMudancaReal() {
 }
 (function mostrarUltimaMudanca() {
   const alvo = document.getElementById('syncTimestamp');
-  const sub = document.getElementById('syncSub');
   if (!alvo) return;
   const dd = (d) => d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
   const hh = (d) => d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   const u = ultimaMudancaReal();
   if (u) {
     alvo.textContent = dd(u.quando) + ' às ' + hh(u.quando);
-    if (sub) sub.textContent = u.entrada.lead ? '· ' + u.entrada.lead : '';
   } else if (DATA.ultimaAtualizacao) {
     const su = new Date(DATA.ultimaAtualizacao);
     alvo.textContent = dd(su) + ' às ' + hh(su);
-  }
-  // A sincronização continua sendo um fato útil — só não é a manchete.
-  if (sub && DATA.ultimaAtualizacao) {
-    const su = new Date(DATA.ultimaAtualizacao);
-    sub.textContent = (sub.textContent ? sub.textContent + ' ' : '') + '· sincronizado ' + dd(su) + ' ' + hh(su);
   }
 })();
 
