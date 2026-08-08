@@ -63,6 +63,7 @@
   .header .today { text-align: right; font-size: var(--fs-sm); opacity: 0.85; }
   .header .today b { font-size:var(--fs-lg); display:block; color: var(--brand-gold-light); }
   .header .sync-info { font-size: var(--fs-xs); opacity: 0.75; margin-top: 4px; }
+  .sync-sub { display:block; font-size: var(--fs-xs); opacity:.7; font-weight:400; margin-top:2px; }
   .header .sync-info b { color: var(--brand-gold-light); font-weight: 700; }
 
   .acao-group { margin-bottom: 14px; }
@@ -1124,8 +1125,9 @@
     </nav>
     <div class="sidebar-footer">
       <div class="sidebar-sync-text">
-        <span class="sync-rotulo">Sincronizado</span><br>
+        <span class="sync-rotulo">Última mudança</span><br>
         <b id="syncTimestamp">—</b>
+        <span class="sync-sub" id="syncSub"></span>
       </div>
       <button class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Recolher menu" title="Recolher/expandir menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
     </div>
@@ -1558,12 +1560,44 @@ function brl(v) {
   return (v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
 }
 
-// A data por extenso quebrava em duas linhas na largura do menu — e ainda
-// repetia o dia que já aparece no timestamp de sincronização.
-if (DATA.ultimaAtualizacao) {
-  const su = new Date(DATA.ultimaAtualizacao);
-  document.getElementById('syncTimestamp').textContent = su.toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit' }) + ' às ' + su.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+// Antes isto mostrava `ultimaAtualizacao`: a hora em que ALGUM processo
+// gravou o arquivo. O briefing das 7h roda todo dia e grava mesmo quando não
+// muda nada de verdade — então o rótulo dizia "07:00" enquanto a última
+// mudança real (o fechamento da Camilla) tinha sido na véspera às 11:20.
+// Medindo escrita, não mudança, ele respondia a pergunta errada.
+// Agora sai da última entrada do histórico, que é o registro do que de fato
+// aconteceu — e diz o que foi.
+function ultimaMudancaReal() {
+  const log = DATA.logAtividades || [];
+  let melhor = null;
+  log.forEach(e => {
+    const m = String(e.data || '').match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2}))?/);
+    if (!m) return;
+    const d = new Date(+m[3], +m[2] - 1, +m[1], +(m[4] || 0), +(m[5] || 0));
+    if (!melhor || d > melhor.quando) melhor = { quando: d, entrada: e };
+  });
+  return melhor;
 }
+(function mostrarUltimaMudanca() {
+  const alvo = document.getElementById('syncTimestamp');
+  const sub = document.getElementById('syncSub');
+  if (!alvo) return;
+  const dd = (d) => d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+  const hh = (d) => d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  const u = ultimaMudancaReal();
+  if (u) {
+    alvo.textContent = dd(u.quando) + ' às ' + hh(u.quando);
+    if (sub) sub.textContent = u.entrada.lead ? '· ' + u.entrada.lead : '';
+  } else if (DATA.ultimaAtualizacao) {
+    const su = new Date(DATA.ultimaAtualizacao);
+    alvo.textContent = dd(su) + ' às ' + hh(su);
+  }
+  // A sincronização continua sendo um fato útil — só não é a manchete.
+  if (sub && DATA.ultimaAtualizacao) {
+    const su = new Date(DATA.ultimaAtualizacao);
+    sub.textContent = (sub.textContent ? sub.textContent + ' ' : '') + '· sincronizado ' + dd(su) + ' ' + hh(su);
+  }
+})();
 
 // ---- Banner: proxima acao mais urgente ----
 // A agenda gravada em DATA rotula os compromissos como "hoje"/"amanhã" no
