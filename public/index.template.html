@@ -5486,9 +5486,14 @@ function resumirEvento(titulo) {
 
   const linha = (x) => {
     const { l, est } = x;
-    const neg = (DATA.listaNegociacoes || []).find(n =>
+    // Cliente que voltou tem MAIS DE UM negócio. Pegar "o primeiro que casa"
+    // escondia a comissão pendente atrás de uma venda antiga já paga — foi o
+    // que aconteceu com a Camilla: o negócio de maio, pago, tapava o de agosto.
+    const seusNegocios = (DATA.listaNegociacoes || []).filter(n =>
       String(n.compradorLeadId) === String(l.id) || String(n.vendedorLeadId) === String(l.id));
-    const pendente = neg && neg.status !== 'pago' ? neg : null;
+    const pendente = seusNegocios
+      .filter(n => n.status !== 'pago')
+      .sort((a, b) => ((b.ano || 0) * 100 + (b.mesNum || 0)) - ((a.ano || 0) * 100 + (a.mesNum || 0)))[0] || null;
     const chip = est
       ? (est.vencido
           ? `<span class="fu-chip atrasado">${esc(est.marco.rotulo)} · ${est.atraso}d de atraso</span>`
@@ -5496,9 +5501,10 @@ function resumirEvento(titulo) {
       : '<span class="fu-chip sem-tel">sem data de fechamento</span>';
     return `<div class="pv-linha bi-clicavel" role="button" tabindex="0" data-posvenda="${l.id}">
       <div class="pv-topo">
-        <span class="pv-nome">${esc(l.nome)}</span>
+        <span class="pv-nome">${esc(l.nome)}${seloRecorrente(l)}</span>
         <span class="pv-dias">${l.dataFechamento ? 'fechou há ' + diasDesdeISO(l.dataFechamento) + 'd' : ''}</span>
       </div>
+      ${linhaRecorrente(l)}
       <div class="pv-selos">
         ${chip}
         ${pendente ? `<span class="fu-chip comissao">⏳ ${brl(pendente.comissao)} a receber</span>` : ''}
