@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-07T11:20:00-03:00",
+  "ultimaAtualizacao": "2026-08-08T07:00:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1052,6 +1052,25 @@
       "ultimaInteracaoProprietario": "2026-08-02",
       "obs": "Condomínio Corais da Enseada. Pet friendly, sol da manhã, financiável. Condomínio R$800. Lazer: piscina, academia, salão de festas, espaço pet, quadra poliesportiva, salão de jogos, portaria 24h. Cliente João Paulo de Paula visitando em 29/07. [02/08/2026] Retirado da carteira: imóvel da Emobi, não é captação de Thúlio.",
       "tipoOperacao": "Venda"
+    },
+    {
+      "id": 33,
+      "nome": "Condomínio Polinésia (Candelária) — indicação Carlos Henrique/Lindeza",
+      "tipo": null,
+      "bairro": "Candelária",
+      "cidade": "Natal",
+      "endereco": null,
+      "valor": null,
+      "detalhes": null,
+      "proprietario": "Lindeza",
+      "telefone": "84987030858",
+      "link": null,
+      "status": "Em Captação",
+      "pctComissao": null,
+      "dataCaptacao": "2026-08-05",
+      "ultimaInteracaoProprietario": "2026-08-05",
+      "obs": "Originado de indicação do Conecta TR (IND-TR-2026-0012, indicador Carlos Henrique) — captação ainda em andamento, não confirmada.",
+      "tipoOperacao": "Venda"
     }
   ],
   "historico": {
@@ -1174,22 +1193,15 @@
   },
   "agendaHoje": [
     {
-      "data": "2026-08-07",
-      "hora": "14:00",
-      "horaFim": "15:30",
-      "titulo": "2 visitas — Heber Lima, com o corretor parceiro André Brito da Abreu",
-      "local": "A confirmar com o André Brito"
+      "data": "2026-08-08",
+      "hora": "08:00",
+      "horaFim": "11:00",
+      "titulo": "🔒 Dia dos Pais na escola — INEGOCIÁVEL",
+      "local": "Compromisso pessoal — não agendar visita nem ligação neste intervalo"
     }
   ],
   "agendaAmanha": [],
-  "agendaProximos": [
-    {
-      "data": "2026-08-08",
-      "hora": "08:00",
-      "titulo": "🔒 Dia dos Pais na escola — INEGOCIÁVEL",
-      "local": "Compromisso pessoal — não agendar nada neste intervalo (até 11h)"
-    }
-  ],
+  "agendaProximos": [],
   "lembretes": [
     {
       "texto": "Falar com Filipe Ideli sobre chegada da irmã e procura de apartamento em Tirol ou Petrópolis",
@@ -1422,7 +1434,8 @@
         "proprietario": "Lindeza",
         "status": "Registrada",
         "valorDevido": 0,
-        "indicador": "Carlos Henrique"
+        "indicador": "Carlos Henrique",
+        "imovelId": 33
       }
     ],
     "indicadoresLista": [
