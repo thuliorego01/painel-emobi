@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-08T16:55:00-03:00",
+  "ultimaAtualizacao": "2026-08-09T11:00:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1191,15 +1191,7 @@
       "nota": "apenas os anos com mês de fechamento registrado na planilha original."
     }
   },
-  "agendaHoje": [
-    {
-      "data": "2026-08-08",
-      "hora": "08:00",
-      "horaFim": "11:00",
-      "titulo": "🔒 Dia dos Pais na escola — INEGOCIÁVEL",
-      "local": "Compromisso pessoal — não agendar visita nem ligação neste intervalo"
-    }
-  ],
+  "agendaHoje": [],
   "agendaAmanha": [],
   "agendaProximos": [],
   "lembretes": [
@@ -1268,12 +1260,6 @@
       "data": "2026-08-06",
       "hora": "",
       "relacionado": "Cód. 10567 (Condomínio Luiz Marques, Lagoa Nova)"
-    },
-    {
-      "data": "2026-08-10",
-      "texto": "Cobrar o sinal e o pagamento da comissão da Camilla Natasha (apto 404, Jardim Satélite) — R$2.143,75",
-      "relacionado": "Camilla Natasha",
-      "status": "Pendente"
     }
   ],
   "prospeccaoCaptacao": [
