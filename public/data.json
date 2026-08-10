@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-10T11:50:00-03:00",
+  "ultimaAtualizacao": "2026-08-10T12:05:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1105,6 +1105,25 @@
       "ultimaInteracaoProprietario": "2026-08-05",
       "obs": "Originado de indicação do Conecta TR (IND-TR-2026-0012, indicador Carlos Henrique) — captação ainda em andamento, não confirmada.",
       "tipoOperacao": "Venda"
+    },
+    {
+      "id": 34,
+      "nome": "Apartamento 2 Quartos Capim Macio 67m² (Cód. 10700)",
+      "tipo": "Apartamento",
+      "bairro": "Capim Macio",
+      "cidade": "Natal",
+      "endereco": "Rua Antônio Madruga, Capim Macio - Natal/RN",
+      "valor": 499000,
+      "detalhes": "2 quartos (1 suíte), 2 banheiros, 2 vagas, 67m² privativos, andar alto, varanda ampliada, mobiliado",
+      "proprietario": "Roberto Fischer",
+      "telefone": "84999982167",
+      "link": "https://emobiimobiliaria.com.br/imovel/10700/apartamento-2-quartos-capim-macio-natal/",
+      "status": "Disponível",
+      "pctComissao": null,
+      "dataCaptacao": "2026-08-10",
+      "ultimaInteracaoProprietario": "2026-08-10",
+      "obs": "Condomínio Paradise Village. Móveis planejados na sala, cozinha, suíte e banheiros; 2 ar-condicionados, cooktop, forno, coifa e geladeira. Pet friendly. Lazer completo. Condomínio R$ 635,00 · IPTU R$ 1.970,00 · taxa extra de R$ 198,02 até dezembro de 2027. [10/08] Captação com visita hoje às 15h.",
+      "tipoOperacao": "Venda"
     }
   ],
   "historico": {
@@ -1230,8 +1249,8 @@
       "data": "2026-08-10",
       "hora": "15:00",
       "horaFim": "16:00",
-      "titulo": "Captação — Paradise Village",
-      "local": "Paradise Village"
+      "titulo": "Captação — Cód. 10700, Paradise Village (Roberto Fischer)",
+      "local": "Rua Antônio Madruga, Capim Macio - Natal/RN"
     }
   ],
   "agendaAmanha": [
@@ -1280,12 +1299,6 @@
       "data": "2026-07-23",
       "hora": "16:00",
       "relacionado": "Flávia"
-    },
-    {
-      "texto": "Estudo de mercado — Roberto (Paradise Village)",
-      "data": "2026-07-24",
-      "hora": "",
-      "relacionado": "Roberto"
     },
     {
       "texto": "Captação Jairson — Casa 02, Bosque dos Pássaros",
@@ -2729,6 +2742,12 @@
       "lead": "Lenise Costa",
       "tipo": "Outro",
       "resumo": "Cód. 10567 VENDIDO — contrato assinado por R$240.000,00 (tabela R$249.990,00), em parceria com Ivanaldo Tavares. Comissão total 5% = R$12.000, sua parte R$4.200. Aguardando sinal e repasse."
+    },
+    {
+      "data": "10/08/2026 12:05",
+      "lead": "Roberto Fischer",
+      "tipo": "Outro",
+      "resumo": "CAPTAÇÃO Cód. 10700 — Apartamento 2 quartos, 67m², Paradise Village (Capim Macio), R$ 499.000. Proprietário Roberto Fischer, (84) 99998-2167. Fecha o estudo de mercado aberto em 24/07."
     }
   ]
 }
