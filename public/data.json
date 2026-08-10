@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-10T09:45:00-03:00",
+  "ultimaAtualizacao": "2026-08-10T11:30:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -349,9 +349,9 @@
       "temperatura": "Quente",
       "valor": 390000,
       "comissaoPrevista": 13650,
-      "proximaAcao": "Acompanhar a engenharia e a elaboração do contrato",
-      "dataProximaAcao": "2026-08-13",
-      "obs": "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 - Corais de Ponta Negra R$525.000; Cód. 10572 - Corais Enseada de Ponta Negra R$420.000; Cód. 6830 - Corais da Enseada R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra (Cód. 9266, 10572, 6830) — descartou todas. Nova visita encaixada hoje às 11h30 no Cód. 7726 (Candelária). [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel (Cód. 7560) e do comprador prontas — liberado para solicitação de contrato. [31/07] Contato feito via WhatsApp. [01/08] Inteiro teor solicitado e já pago pelo comprador. Comissão: 5% sobre R$390.000 = R$19.500, venda sem parceria, sua parte 70% = R$13.650. [04/08] Contato via WhatsApp. Inteiro teor enviado ao correspondente; aguardando a solicitação de engenharia. [07/08] Aguardando a engenharia acontecer. Contrato em fase de elaboração. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel).",
+      "proximaAcao": "Acompanhar a vistoria da engenharia (11/08, 16h15) e a elaboração do contrato",
+      "dataProximaAcao": "2026-08-11",
+      "obs": "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 - Corais de Ponta Negra R$525.000; Cód. 10572 - Corais Enseada de Ponta Negra R$420.000; Cód. 6830 - Corais da Enseada R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra (Cód. 9266, 10572, 6830) — descartou todas. Nova visita encaixada hoje às 11h30 no Cód. 7726 (Candelária). [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel (Cód. 7560) e do comprador prontas — liberado para solicitação de contrato. [31/07] Contato feito via WhatsApp. [01/08] Inteiro teor solicitado e já pago pelo comprador. Comissão: 5% sobre R$390.000 = R$19.500, venda sem parceria, sua parte 70% = R$13.650. [04/08] Contato via WhatsApp. Inteiro teor enviado ao correspondente; aguardando a solicitação de engenharia. [07/08] Aguardando a engenharia acontecer. Contrato em fase de elaboração. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [10/08] Vistoria da engenharia marcada para 11/08 às 16h15 no Residencial Apollo.",
       "imoveisCompativeis": [
         "Cód. 7726",
         "Cód. 7560"
@@ -1210,8 +1210,24 @@
       "nota": "apenas os anos com mês de fechamento registrado na planilha original."
     }
   },
-  "agendaHoje": [],
-  "agendaAmanha": [],
+  "agendaHoje": [
+    {
+      "data": "2026-08-10",
+      "hora": "15:00",
+      "horaFim": "16:00",
+      "titulo": "Captação — Paradise Village",
+      "local": "Paradise Village"
+    }
+  ],
+  "agendaAmanha": [
+    {
+      "data": "2026-08-11",
+      "hora": "16:15",
+      "horaFim": "17:15",
+      "titulo": "Vistoria da engenharia — Residencial Apollo (João Paulo de Paula)",
+      "local": "Residencial Apollo"
+    }
+  ],
   "agendaProximos": [],
   "lembretes": [
     {
@@ -2679,6 +2695,19 @@
       "lead": "Conecta TR",
       "tipo": "Outro",
       "resumo": "IND-TR-2026-0010 (Raul Lucas → Amanda Cristina) reclassificada como indicação de CLIENTE e encerrada: era procura de locação e você decidiu não abrir lead. A indicação continua registrada no nome do Raul."
+    },
+    {
+      "data": "10/08/2026 11:15",
+      "lead": "João Paulo de Paula",
+      "tipo": "Outro",
+      "leadId": 11,
+      "resumo": "Vistoria da engenharia agendada para 11/08 às 16h15 no Residencial Apollo — é a etapa que estava travando o contrato."
+    },
+    {
+      "data": "10/08/2026 11:16",
+      "lead": "Roberto",
+      "tipo": "Outro",
+      "resumo": "Captação no Paradise Village agendada para hoje, 10/08, às 15h."
     }
   ]
 }

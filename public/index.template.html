@@ -620,6 +620,8 @@
   .ritmo-barras { display:flex; flex-direction:column; gap:11px; }
   .ritmo-rot { display:flex; justify-content:space-between; font-size: var(--fs-2xs); color:#5C6155; margin-bottom:4px; }
   .ritmo-rot b { color: var(--text-strong); font-size: var(--fs-sm); }
+  .agenda-fonte { font-size: var(--fs-xs); color:#8A9186; margin-bottom:10px; }
+  .agenda-fonte.velha { color:#8A5A14; background:#FDF6E8; border:1px solid #EBD9A8; border-radius:var(--r-md); padding:6px 10px; }
   .ritmo-trilho { height:9px; background:#F1F3EE; border-radius:var(--r-sm); overflow:hidden; display:flex; }
   .ritmo-preenche.fechado { background:#E8B461; }
   .ritmo-preenche.encaminhado { background:#EBD9A8; }
@@ -1169,6 +1171,7 @@
     <div class="section-title"><span class="dot" aria-hidden="true"></span>🎯 Hoje</div>
     <div class="card" style="margin-bottom:18px;">
       <div class="bloco-rotulo">📅 Compromissos de hoje</div>
+      <div id="agendaFonte" class="agenda-fonte"></div>
       <div id="agendaList"></div>
       <div class="bloco-rotulo" style="margin-top:16px;">✅ O que fazer</div>
       <div id="acoesAgoraList"></div>
@@ -2201,6 +2204,23 @@ function renderAgenda(list, label) {
     agendaList.appendChild(row);
   });
 }
+// A agenda aqui é uma CÓPIA do Google, tirada na última sincronização. Se
+// você marcar uma visita às 11h, ela só entra na próxima leitura — e um
+// compromisso invisível é pior do que uma agenda vazia, porque a tela parece
+// atualizada. Enquanto a leitura não for ao vivo, pelo menos a idade da cópia
+// fica escrita.
+(function avisarIdadeDaAgenda() {
+  const el = document.getElementById('agendaFonte');
+  if (!el || !DATA.ultimaAtualizacao) return;
+  const lida = new Date(DATA.ultimaAtualizacao);
+  const horas = Math.floor((Date.now() - lida.getTime()) / 3600000);
+  const quando = lida.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) +
+    ' às ' + lida.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  el.textContent = `Lida do Google Agenda em ${quando}` +
+    (horas >= 1 ? ` · há ${horas}h` : '') +
+    (horas >= 6 ? ' — o que você marcou depois disso ainda não está aqui.' : '');
+  el.className = 'agenda-fonte' + (horas >= 6 ? ' velha' : '');
+})();
 const temHoje = AGENDA_DIA.hoje.length > 0;
 const temAmanha = AGENDA_DIA.amanha.length > 0;
 if (!temHoje && !temAmanha) {
