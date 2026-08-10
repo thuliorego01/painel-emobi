@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-10T09:20:00-03:00",
+  "ultimaAtualizacao": "2026-08-10T09:45:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -386,9 +386,9 @@
       "temperatura": "Quente",
       "valor": 122500,
       "comissaoPrevista": 2143.75,
-      "proximaAcao": "Cobrar o sinal e o pagamento da comissão",
-      "dataProximaAcao": "2026-08-10",
-      "obs": "Cliente de relacionamento: foi a VENDEDORA do João Mendonça (301), vendido em maio/2026 por R$380.000. Agora volta como COMPRADORA. [30/07] Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista. [31/07] Contato feito via WhatsApp. [01/08] Negócio sendo fechado por R$122.500,00 (proposta inicial era R$120.000,00), em parceria com a corretora Natália Barbosa. Comissão: 5% sobre R$122.500 = R$6.125, dividido com a corretora Natália Barbosa (R$3.062,50), sua parte 70% = R$2.143,75. [04/08] Em fase de LEITURA DE CONTRATO. [04/08] Contato via WhatsApp. [07/08] Segue em fase de leitura de contrato. Contato feito. [08/08] CONTRATO ASSINADO — apto 404, bloco 11, Jardim Satélite, R$122.500,00. Aguardando o pagamento do sinal e o recebimento da comissão. [08/08] O apto 404 do Jardim Satélite é imóvel da corretora parceira Natália Barbosa — não é captação minha e não entra na carteira.",
+      "proximaAcao": "Cobrar do vendedor o pagamento da comissão (R$2.143,75)",
+      "dataProximaAcao": "2026-08-13",
+      "obs": "Cliente de relacionamento: foi a VENDEDORA do João Mendonça (301), vendido em maio/2026 por R$380.000. Agora volta como COMPRADORA. [30/07] Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista. [31/07] Contato feito via WhatsApp. [01/08] Negócio sendo fechado por R$122.500,00 (proposta inicial era R$120.000,00), em parceria com a corretora Natália Barbosa. Comissão: 5% sobre R$122.500 = R$6.125, dividido com a corretora Natália Barbosa (R$3.062,50), sua parte 70% = R$2.143,75. [04/08] Em fase de LEITURA DE CONTRATO. [04/08] Contato via WhatsApp. [07/08] Segue em fase de leitura de contrato. Contato feito. [08/08] CONTRATO ASSINADO — apto 404, bloco 11, Jardim Satélite, R$122.500,00. Aguardando o pagamento do sinal e o recebimento da comissão. [08/08] O apto 404 do Jardim Satélite é imóvel da corretora parceira Natália Barbosa — não é captação minha e não entra na carteira. [10/08] SINAL PAGO. Falta só o vendedor pagar a comissão.",
       "imoveisCompativeis": [],
       "interesse": "apto 404, bloco 11, Jardim Satélite — contrato assinado por R$122.500",
       "dataFechamento": "2026-08-08",
@@ -448,6 +448,23 @@
       "imoveisCompativeis": [
         "Cód. 10652"
       ]
+    },
+    {
+      "id": 17,
+      "nome": "Aminadabe Pereira da Silva",
+      "telefone": "84994509581",
+      "origem": "Conecta TR",
+      "dataEntrada": "2026-08-10",
+      "fase": "Novo Lead",
+      "maiorFaseIndex": 1,
+      "temperatura": "Morno",
+      "valor": null,
+      "comissaoPrevista": null,
+      "proximaAcao": "Fazer o primeiro contato e qualificar o perfil de busca",
+      "dataProximaAcao": "2026-08-11",
+      "obs": "Indicado por Ricardo Magnos pelo Conecta TR em 10/08 como cliente COMPRADOR. Perfil de busca ainda não levantado.",
+      "imoveisCompativeis": [],
+      "interesse": null
     }
   ],
   "imoveis": [
@@ -1307,7 +1324,8 @@
         "proprietario": "Natasha Ferreira",
         "status": "Perdida",
         "valorDevido": 0,
-        "indicador": "Jozimar Alves de Lima Júnior"
+        "indicador": "Jozimar Alves de Lima Júnior",
+        "tipo": "Imóvel"
       },
       {
         "protocolo": "IND-TR-2026-0004",
@@ -1318,7 +1336,8 @@
         "status": "Captada",
         "valorDevido": 0,
         "imovelId": 17,
-        "indicador": "Nisia Raquel Gadelha de Lima"
+        "indicador": "Nisia Raquel Gadelha de Lima",
+        "tipo": "Imóvel"
       },
       {
         "protocolo": "IND-TR-2026-0005",
@@ -1329,7 +1348,8 @@
         "status": "Captada",
         "valorDevido": 0,
         "imovelId": 18,
-        "indicador": "Klevisson Ranniere Meira de Araújo"
+        "indicador": "Klevisson Ranniere Meira de Araújo",
+        "tipo": "Imóvel"
       },
       {
         "protocolo": "IND-TR-2026-0006",
@@ -1342,7 +1362,8 @@
         "imovelId": 23,
         "indicador": "Hudson Bezerra de Brito",
         "motivoEncerramento": "Imóvel já em negociação com outro corretor — captação inviável",
-        "dataEncerramento": "2026-08-10"
+        "dataEncerramento": "2026-08-10",
+        "tipo": "Imóvel"
       },
       {
         "protocolo": "IND-TR-2026-0007",
@@ -1353,7 +1374,8 @@
         "status": "Encerrada",
         "valorDevido": 0,
         "imovelId": 25,
-        "indicador": "Flávia Costa Marinho"
+        "indicador": "Flávia Costa Marinho",
+        "tipo": "Imóvel"
       },
       {
         "protocolo": "IND-TR-2026-0008",
@@ -1364,7 +1386,8 @@
         "status": "Encerrada",
         "valorDevido": 0,
         "imovelId": 26,
-        "indicador": "Flávia Costa Marinho"
+        "indicador": "Flávia Costa Marinho",
+        "tipo": "Imóvel"
       },
       {
         "protocolo": "IND-TR-2026-0009",
@@ -1375,29 +1398,32 @@
         "status": "Encerrada",
         "valorDevido": 0,
         "imovelId": 32,
-        "indicador": "Jorge Tomé De Paiva Filho"
+        "indicador": "Jorge Tomé De Paiva Filho",
+        "tipo": "Imóvel"
       },
       {
         "protocolo": "IND-TR-2026-0010",
         "data": "2026-08-05",
         "indicadorId": 7,
-        "imovel": "Condomínio Quatro Estações (Candelária) — locação",
-        "proprietario": "Amanda Cristina",
-        "status": "Registrada",
+        "status": "Encerrada",
         "valorDevido": 0,
-        "tipoIndicacao": "cliente procurando aluguel (fora da regra do programa)",
-        "indicador": "Raul Lucas Damasceno de Moura"
+        "indicador": "Raul Lucas Damasceno de Moura",
+        "tipo": "Cliente",
+        "cliente": "Amanda Cristina",
+        "telefoneCliente": "84991558141",
+        "motivoEncerramento": "Cliente procurando LOCAÇÃO no Quatro Estações — você decidiu não abrir lead"
       },
       {
         "protocolo": "IND-TR-2026-0013",
         "data": "2026-08-05",
         "indicadorId": 8,
-        "imovel": "Maria Teresa (cliente compradora)",
-        "proprietario": "Maria Teresa",
-        "status": "Registrada",
+        "status": "Virou Lead",
         "valorDevido": 0,
-        "tipoIndicacao": "indicação de cliente (não gera bonificação)",
-        "indicador": "Carlos Henrique"
+        "indicador": "Carlos Henrique",
+        "tipo": "Cliente",
+        "leadId": 15,
+        "cliente": "Maria Teresa",
+        "telefoneCliente": "84996174403"
       },
       {
         "protocolo": "IND-TR-2026-0011",
@@ -1408,7 +1434,8 @@
         "status": "Captada",
         "valorDevido": 0,
         "imovelId": 27,
-        "indicador": "Carlos Henrique"
+        "indicador": "Carlos Henrique",
+        "tipo": "Imóvel"
       },
       {
         "protocolo": "IND-TR-2026-0012",
@@ -1419,7 +1446,20 @@
         "status": "Registrada",
         "valorDevido": 0,
         "indicador": "Carlos Henrique",
-        "imovelId": 33
+        "imovelId": 33,
+        "tipo": "Imóvel"
+      },
+      {
+        "protocolo": "IND-TR-2026-0015",
+        "data": "2026-08-10",
+        "indicadorId": 9,
+        "tipo": "Cliente",
+        "cliente": "Aminadabe Pereira da Silva",
+        "telefoneCliente": "84994509581",
+        "status": "Virou Lead",
+        "leadId": 17,
+        "valorDevido": 0,
+        "indicador": "Ricardo Magnos"
       }
     ],
     "indicadoresLista": [
@@ -1469,6 +1509,12 @@
         "id": 8,
         "nome": "Carlos Henrique",
         "telefone": "84981324060",
+        "status": "Ativo"
+      },
+      {
+        "id": 9,
+        "nome": "Ricardo Magnos",
+        "telefone": null,
         "status": "Ativo"
       }
     ]
@@ -2601,6 +2647,38 @@
       "lead": "Conecta TR",
       "tipo": "Outro",
       "resumo": "IND-TR-2026-0006 (Hudson Bezerra de Brito → Condomínio Villaggio Di Roma, Januncio) ENCERRADA: o proprietário informou que o imóvel já está em negociação com outro corretor. A indicação continua contando para o bônus por indicador; não gera bonificação, que só nasce na venda."
+    },
+    {
+      "data": "10/08/2026 09:40",
+      "lead": "Conecta TR",
+      "tipo": "Outro",
+      "resumo": "Novo indicador cadastrado: Ricardo Magnos. Primeira indicação dele é de CLIENTE COMPRADOR — Aminadabe Pereira da Silva, (84) 99450-9581 — protocolo IND-TR-2026-0015."
+    },
+    {
+      "data": "10/08/2026 09:41",
+      "lead": "Aminadabe Pereira da Silva",
+      "tipo": "Outro",
+      "leadId": 17,
+      "resumo": "Entrou como lead comprador por indicação de Ricardo Magnos (Conecta TR). Perfil de busca a levantar no primeiro contato."
+    },
+    {
+      "data": "10/08/2026 09:42",
+      "lead": "Conecta TR",
+      "tipo": "Outro",
+      "resumo": "Criado o tipo 'Cliente' para indicação de comprador: ela nunca vira captação, então tem ciclo próprio (Registrada → Virou Lead → Comprou) e não entra na contagem do bônus, que é por captação. IND-TR-2026-0013 (Maria Teresa, de Carlos Henrique) reclassificada."
+    },
+    {
+      "data": "10/08/2026 09:45",
+      "lead": "Camilla Natasha",
+      "tipo": "Outro",
+      "leadId": 13,
+      "resumo": "SINAL PAGO. Falta apenas o vendedor efetuar o pagamento da comissão (sua parte R$2.143,75)."
+    },
+    {
+      "data": "10/08/2026 09:50",
+      "lead": "Conecta TR",
+      "tipo": "Outro",
+      "resumo": "IND-TR-2026-0010 (Raul Lucas → Amanda Cristina) reclassificada como indicação de CLIENTE e encerrada: era procura de locação e você decidiu não abrir lead. A indicação continua registrada no nome do Raul."
     }
   ]
 }

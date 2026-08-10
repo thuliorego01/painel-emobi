@@ -2996,6 +2996,14 @@ function imovelPorCodigoTexto(ref) {
 // briefing das 7h gravava "Atrasado" lendo a planilha; às 9h o prazo era
 // remarcado na conversa e o painel continuava dizendo atrasado até o dia
 // seguinte. Mesma regra da coluna Q da planilha, calculada na hora.
+// Indicação de CLIENTE comprador não é indicação de imóvel: ela nunca vira
+// captação. Enquanto as duas moravam na mesma lista, a do cliente ficava
+// eternamente em "aguardando captação", disparando alerta de indicação parada
+// para uma coisa que não tem para onde andar. Ciclo próprio:
+// Registrada → Virou Lead → Comprou (ou Encerrada).
+function ehIndicacaoDeCliente(it) {
+  return !!it && it.tipo === 'Cliente';
+}
 function situacaoLead(l) {
   if (!l) return '';
   if (l.fase === 'Fechado Ganho') return 'Ganho';
@@ -4595,7 +4603,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
     return it && it.data ? diasDesdeISO(it.data) : null;
   }
   function indicacaoParada(it) {
-    if (!it || it.status !== 'Registrada') return false;
+    if (!it || ehIndicacaoDeCliente(it) || it.status !== 'Registrada') return false;
     if (it.tipoIndicacao) return false;   // não depende de captação para andar
     const d = idadeIndicacao(it);
     return d !== null && d >= CTR_LIMITE_PARADA;
@@ -4626,7 +4634,8 @@ new Chart(document.getElementById('chartHistoricoAno'), {
   const GRUPOS_CTR = [
     { status: 'Registrada', titulo: '📋 Aguardando captação', nota: 'precisam de contato com o proprietário' },
     { status: 'Captada',    titulo: '🏠 Captadas',            nota: 'já viraram imóvel na carteira' },
-    { status: 'Vendida',    titulo: '✅ Vendidas',            nota: 'bonificação devida ao indicador' }
+    { status: 'Vendida',    titulo: '✅ Vendidas',            nota: 'bonificação devida ao indicador' },
+    { tipo: 'Cliente',      titulo: '👤 Clientes indicados',  nota: 'compradores que chegaram por indicação — viram lead, não captação' }
   ];
 
   function cardIndicacao(it) {
@@ -4645,19 +4654,25 @@ new Chart(document.getElementById('chartHistoricoAno'), {
       return `
       <div class="ctr-linha${parada ? ' ctr-parada' : ''}" role="button" tabindex="0" data-ctr-indicacao="${esc(it.protocolo)}">
         <div class="ctr-linha-topo">
-          <span class="ctr-linha-nome">${esc(it.protocolo || '—')} · ${esc(it.imovel || '')}</span>
+          <span class="ctr-linha-nome">${esc(it.protocolo || '—')} · ${esc(ehIndicacaoDeCliente(it) ? (it.cliente || '') : (it.imovel || ''))}</span>
           <span class="ctr-linha-selos">${parada ? `<span class="ctr-idade alerta">⚠️ ${dias}d</span>` : (dias !== null ? `<span class="ctr-idade${atencao ? ' atencao' : ''}">${dias === 0 ? 'hoje' : dias + 'd'}</span>` : '')}
             <span class="badge ${statusClass[it.status] || 'novo'}">${esc(it.status || '—')}</span></span>
         </div>
         <div class="ctr-linha-sub">
-          <span>${esc(nomeInd)} <span class="ctr-seta">→</span> ${esc(it.proprietario || '—')}</span>
+          <span>${esc(nomeInd)} <span class="ctr-seta">→</span> ${esc(ehIndicacaoDeCliente(it) ? (it.cliente || '—') : (it.proprietario || '—'))}</span>
           ${(function () {
+            // Indicação de cliente vincula a um LEAD; a de imóvel, à carteira.
+            if (ehIndicacaoDeCliente(it)) {
+              const lead = (DATA.leads || []).find(l => String(l.id) === String(it.leadId));
+              if (lead) return `<span class="ctr-mini-chip">👤 ${esc(lead.nome)} · ${esc(lead.fase)}</span>`;
+              return it.leadId !== undefined ? '<span class="ctr-mini-chip alerta">👤 lead não encontrado</span>' : '<span class="ctr-mini-chip alerta">👤 ainda não virou lead</span>';
+            }
             const im = imovelDaIndicacao(it);
             if (im) return `<span class="ctr-mini-chip">🔗 ${esc(im.nome.replace(/\s*\(Cód\..*/, ''))}</span>`;
             return it.imovelId !== undefined ? '<span class="ctr-mini-chip alerta">🔗 imóvel não encontrado na carteira</span>' : '';
           })()}
           ${indicacaoParada(it) ? `<span class="ctr-mini-chip alerta">⏳ parada há ${idadeIndicacao(it)}d</span>` : ''}
-          ${it.tipoIndicacao ? `<span class="ctr-mini-chip fora-regra">👤 ${esc(it.tipoIndicacao)}</span>` : ''}
+          ${ehIndicacaoDeCliente(it) ? '<span class="ctr-mini-chip fora-regra">👤 indicação de cliente — não conta para o bônus de captação</span>' : ''}
           ${it.aguardandoFormulario ? '<span class="ctr-mini-chip alerta">📝 aguardando o formulário</span>' : ''}
           ${it.valorDevido ? `<span class="ctr-mini-chip pagar">💰 ${brl(it.valorDevido)}</span>` : ''}
           ${it.motivoPerda ? `<span class="ctr-mini-chip motivo">🚫 ${esc(it.motivoPerda)}</span>` : ''}
@@ -4683,7 +4698,9 @@ new Chart(document.getElementById('chartHistoricoAno'), {
 
     let html = '';
     GRUPOS_CTR.forEach(g => {
-      const doGrupo = itens.filter(it => it.status === g.status);
+      const doGrupo = g.tipo
+        ? itens.filter(it => it.tipo === g.tipo)
+        : itens.filter(it => it.status === g.status && !ehIndicacaoDeCliente(it));
       if (doGrupo.length === 0) return;
       // Grupo recolhível, mesmo padrão dos bairros na aba Imóveis. Fechado por
       // padrão — mas o cabeçalho carrega o alerta de quem está envelhecendo,
@@ -4791,9 +4808,14 @@ new Chart(document.getElementById('chartHistoricoAno'), {
   // Contadores calculados ao vivo a partir de indicadoresLista/lista — nunca ficam dessincronizados.
   const ctrIndicadoresAtivos = (ctr.indicadoresLista || []).filter(i => i.status === 'Ativo').length;
   const ctrItens = ctr.lista || [];
-  const ctrRegistradas = ctrItens.filter(it => it.status === 'Registrada').length;
-  const ctrCaptadas = ctrItens.filter(it => it.status === 'Captada').length;
-  const ctrVendidas = ctrItens.filter(it => it.status === 'Vendida').length;
+  // As contas de captação só valem para indicação de IMÓVEL. A de cliente não
+  // tem proprietário para contatar nem imóvel para captar — somá-la aqui
+  // inflava o denominador e derrubava a taxa de captação sem motivo.
+  const ctrImoveis = ctrItens.filter(it => !ehIndicacaoDeCliente(it));
+  const ctrClientes = ctrItens.filter(ehIndicacaoDeCliente);
+  const ctrRegistradas = ctrImoveis.filter(it => it.status === 'Registrada').length;
+  const ctrCaptadas = ctrImoveis.filter(it => it.status === 'Captada').length;
+  const ctrVendidas = ctrImoveis.filter(it => it.status === 'Vendida').length;
   const ctrValorDevido = ctrItens.filter(it => it.status !== 'Encerrada' && it.status !== 'Perdida').reduce((s, it) => s + (it.valorDevido || 0), 0);
   // V.G.V. dos imóveis que passaram de "Registrada" (ou seja, já foram captados de fato via indicação),
   // somando o valor de venda do imóvel vinculado na aba Imóveis — exclui locações, igual ao V.G.V. da Home.
@@ -4803,7 +4825,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
   // Agora usa o vínculo direto por ID. Antes tentava adivinhar pelo
   // "Cód." citado no texto, o que deixava de fora toda indicação de imóvel sem
   // código — que é justamente o rascunho recém-captado.
-  const ctrVgvCaptado = ctrItens
+  const ctrVgvCaptado = ctrImoveis
     .filter(it => it.status === 'Captada' || it.status === 'Vendida' || it.status === 'Encerrada')
     .reduce((s, it) => {
       const imovel = imovelPorId(it.imovelId);
@@ -4811,12 +4833,12 @@ new Chart(document.getElementById('chartHistoricoAno'), {
       return s + (imovel.valor || 0);
     }, 0);
   // % de indicações que já saíram do estágio "Registrada" (viraram captação de fato) — enriquece o box de Captadas.
-  const ctrTotalIndicacoes = ctrItens.length;
-  const ctrAlemDeRegistrada = ctrItens.filter(it => it.status !== 'Registrada' && it.status !== 'Perdida').length;
+  const ctrTotalIndicacoes = ctrImoveis.length;
+  const ctrAlemDeRegistrada = ctrImoveis.filter(it => it.status !== 'Registrada' && it.status !== 'Perdida').length;
   const ctrPctCaptacao = ctrTotalIndicacoes ? Math.round((ctrAlemDeRegistrada / ctrTotalIndicacoes) * 100) : 0;
   document.getElementById('ctrIndicadores').textContent = ctrIndicadoresAtivos;
   document.getElementById('ctrRegistradas').textContent = ctrRegistradas;
-  const ctrPerdidas = ctrItens.filter(it => it.status === 'Perdida').length;
+  const ctrPerdidas = ctrImoveis.filter(it => it.status === 'Perdida').length;
   document.getElementById('ctrRegistradasHint').textContent = `de ${ctrTotalIndicacoes} indicações no total`;
   document.getElementById('ctrPerdidasHint').textContent = ctrPerdidas > 0
     ? `${ctrPerdidas} perdida${ctrPerdidas === 1 ? '' : 's'}` : 'nenhuma perdida';
@@ -4847,6 +4869,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
     let htmlBonus = '';
     if (bonus) {
       const captadasDe = (ind) => ctrItens.filter(it =>
+        !ehIndicacaoDeCliente(it) &&
         String(it.indicadorId) === String(ind.id) && (it.status === 'Captada' || it.status === 'Vendida')).length;
       const placar = (ctr.indicadoresLista || [])
         .map(ind => ({ ind, n: captadasDe(ind) }))
@@ -4879,7 +4902,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
   const tituloEl = document.getElementById('ctrIndicacoesTitulo');
   const itens = ctr.lista || [];
   const indicadores = ctr.indicadoresLista || [];
-  const statusClass = { "Registrada": "novo", "Captada": "emdia", "Vendida": "emdia", "Encerrada": "atrasado" };
+  const statusClass = { "Registrada": "novo", "Captada": "emdia", "Vendida": "emdia", "Encerrada": "atrasado", "Virou Lead": "novo", "Comprou": "emdia" };
 
   function abrirIndicacao(protocolo) {
     const it = itens.find(x => x.protocolo === protocolo);
