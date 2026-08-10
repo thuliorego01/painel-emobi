@@ -620,7 +620,15 @@
   .ritmo-barras { display:flex; flex-direction:column; gap:11px; }
   .ritmo-rot { display:flex; justify-content:space-between; font-size: var(--fs-2xs); color:#5C6155; margin-bottom:4px; }
   .ritmo-rot b { color: var(--text-strong); font-size: var(--fs-sm); }
-  .ritmo-trilho { height:9px; background:#F1F3EE; border-radius:var(--r-sm); overflow:hidden; }
+  .ritmo-trilho { height:9px; background:#F1F3EE; border-radius:var(--r-sm); overflow:hidden; display:flex; }
+  .ritmo-preenche.fechado { background:#E8B461; }
+  .ritmo-preenche.encaminhado { background:#EBD9A8; }
+  .ano-legenda { display:flex; flex-wrap:wrap; gap:12px; margin-top:6px; font-size: var(--fs-xs); color:#5C6155; }
+  .ano-legenda i.leg { display:inline-block; width:9px; height:9px; border-radius:var(--r-sm); margin-right:5px; vertical-align:middle; }
+  .ano-legenda i.leg.atras { background:#C4571F; }
+  .ano-legenda i.leg.frente { background:#2C3A24; }
+  .ano-legenda i.leg.fechado { background:#E8B461; }
+  .ano-legenda i.leg.encaminhado { background:#EBD9A8; }
   .ritmo-preenche { display:block; height:100%; border-radius:var(--r-sm); transition:width .5s ease; }
   .ritmo-preenche.tempo { background:#B6BBB0; }
   .ritmo-preenche.atras { background:linear-gradient(90deg,#C4571F,#E0813F); }
@@ -2009,6 +2017,17 @@ function renderAnoResumo() {
   const pct = meta ? recebido / meta : 0;
   const atrasado = pct < f;
   const dif = Math.round(Math.abs(f - pct) * 100);
+  // A barra mostrava só o caixa. Estava certa e contava metade da história:
+  // a Camilla assinou e a barra não se mexeu, porque o dinheiro ainda não
+  // entrou. Agora são três camadas na MESMA barra — recebido, fechado a
+  // receber, proposta aceita. O "pontos atrás" continua sendo calculado
+  // sobre o recebido: caixa é caixa, e o resto ainda pode não acontecer.
+  const previsto = FIN.comissaoPrevista || 0;
+  const pctTotal = meta ? (recebido + areceber + previsto) / meta : 0;
+  const teto = (v) => meta ? Math.max(0, Math.min(100, Math.round(v / meta * 100))) : 0;
+  const pctRecebido = teto(recebido);
+  const pctFechado = Math.max(0, Math.min(100 - pctRecebido, teto(areceber)));
+  const pctPrevisto = Math.max(0, Math.min(100 - pctRecebido - pctFechado, teto(previsto)));
   const falta = Math.max(0, meta - recebido);
   const mesesRestantes = Math.max(1, 12 - new Date().getMonth());
 
@@ -2037,12 +2056,24 @@ function renderAnoResumo() {
       </div>
       <div class="ano-barra">
         <div class="ano-barra-rot"><span>Meta atingida</span><b>${Math.round(pct * 100)}%</b></div>
-        <div class="ritmo-trilho"><span class="ritmo-preenche ${atrasado ? 'atras' : 'frente'}" style="width:${Math.min(100, Math.round(pct * 100))}%"></span></div>
+        <div class="ritmo-trilho">
+          <span class="ritmo-preenche ${atrasado ? 'atras' : 'frente'}" style="width:${pctRecebido}%"></span>
+          <span class="ritmo-preenche fechado" style="width:${pctFechado}%"></span>
+          <span class="ritmo-preenche encaminhado" style="width:${pctPrevisto}%"></span>
+        </div>
+        ${(pctFechado + pctPrevisto) > 0 ? `<div class="ano-legenda">
+          <span><i class="leg ${atrasado ? 'atras' : 'frente'}"></i>recebido ${Math.round(pct * 100)}%</span>
+          ${pctFechado > 0 ? `<span><i class="leg fechado"></i>fechado, a receber ${brl(areceber)}</span>` : ''}
+          ${pctPrevisto > 0 ? `<span><i class="leg encaminhado"></i>proposta aceita ${brl(previsto)}</span>` : ''}
+        </div>` : ''}
       </div>
     </div>
     <div class="ano-frase ${atrasado ? 'atras' : 'frente'}">${atrasado
       ? `Você está <b>${dif} pontos atrás</b> do calendário.`
-      : `Você está <b>${dif} pontos à frente</b> do calendário.`}</div>`;
+      : `Você está <b>${dif} pontos à frente</b> do calendário.`}${
+      (areceber + previsto) > 0
+        ? ` Contando o que já está fechado e o que tem proposta aceita, são ${brl(recebido + areceber + previsto)} — <b>${Math.round(pctTotal * 100)}%</b> da meta.`
+        : ''}</div>`;
 }
 
 // ---- Prestes a fechar (Home) ----
