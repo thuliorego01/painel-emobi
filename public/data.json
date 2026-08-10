@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-10T11:30:00-03:00",
+  "ultimaAtualizacao": "2026-08-10T11:50:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -152,6 +152,19 @@
       "compradorLeadId": 13,
       "parceria": "Natália Barbosa — 50% da comissão total",
       "data": "2026-08-08"
+    },
+    {
+      "imovel": "Apartamento 2 Quartos Lagoa Nova 60m² (Cód. 10567)",
+      "cliente": "Comprador do corretor parceiro Ivanaldo Tavares",
+      "valor": 240000,
+      "comissao": 4200,
+      "mes": "Agosto",
+      "mesNum": 8,
+      "ano": 2026,
+      "data": "2026-08-10",
+      "status": "aguardando",
+      "tipo": "Venda",
+      "parceria": "Ivanaldo Tavares — 50% da comissão total (R$12.000)"
     }
   ],
   "leads": [
@@ -652,15 +665,17 @@
       "proprietario": "Lenise Costa",
       "telefone": "84998151774",
       "link": "https://emobiimobiliaria.com.br/imovel/10567/apartamento-2-quartos-lagoa-nova-natal/",
-      "status": "Reservado",
+      "status": "Vendido",
       "pctComissao": null,
       "dataCaptacao": "2026-07-06",
       "ultimaInteracaoProprietario": "2026-08-05",
-      "obs": "Condomínio Luiz Marques, sem área de lazer mas ótima localização. Imóvel quitado e escriturado. Condomínio R$ 425,00. Visita realizada hoje (22/07) às 13h30, com corretor parceiro Pedro Palitot. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [05/08] EM ASSINATURA DE CONTRATO — conclusão prevista para 06/08. Venda em parceria com Ivanaldo Tavares, corretor da própria Emobi. [05/08] Fechamento acordado em R$240.000,00 (tabela R$249.990,00). Comissão total 5% = R$12.000,00, dividida com Ivanaldo Tavares (R$6.000,00 cada); parte de Thúlio 70% = R$4.200,00. Vira \"Vendido\" quando a assinatura for concluída. [06/08] O lead comprador é do Ivanaldo Tavares — não há ficha dele no meu CRM, então este imóvel nunca terá compradorLeadId.",
+      "obs": "Condomínio Luiz Marques, sem área de lazer mas ótima localização. Imóvel quitado e escriturado. Condomínio R$ 425,00. Visita realizada hoje (22/07) às 13h30, com corretor parceiro Pedro Palitot. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [05/08] EM ASSINATURA DE CONTRATO — conclusão prevista para 06/08. Venda em parceria com Ivanaldo Tavares, corretor da própria Emobi. [05/08] Fechamento acordado em R$240.000,00 (tabela R$249.990,00). Comissão total 5% = R$12.000,00, dividida com Ivanaldo Tavares (R$6.000,00 cada); parte de Thúlio 70% = R$4.200,00. Vira \"Vendido\" quando a assinatura for concluída. [06/08] O lead comprador é do Ivanaldo Tavares — não há ficha dele no meu CRM, então este imóvel nunca terá compradorLeadId. [10/08] CONTRATO ASSINADO por R$240.000,00. Aguardando o pagamento do sinal e o repasse da comissão.",
       "tipoOperacao": "Venda",
       "corretorParceiro": "Ivanaldo Tavares",
       "comissaoTotalVenda": 12000,
-      "comissaoThulioVenda": 4200
+      "comissaoThulioVenda": 4200,
+      "dataVenda": "2026-08-10",
+      "comissaoConfirmada": false
     },
     {
       "id": 11,
@@ -1285,10 +1300,10 @@
       "relacionado": "Cód. 9754 (Neópolis) — Vanessa Oliveira"
     },
     {
-      "texto": "Confirmar a assinatura do contrato do Cód. 10567 (Luiz Marques) — parceria com Ivanaldo Tavares",
-      "data": "2026-08-06",
-      "hora": "",
-      "relacionado": "Cód. 10567 (Condomínio Luiz Marques, Lagoa Nova)"
+      "data": "2026-08-13",
+      "texto": "Cobrar o sinal e o repasse da comissão do Cód. 10567 (parceria Ivanaldo Tavares) — R$4.200",
+      "relacionado": "Cód. 10567 (Condomínio Luiz Marques, Lagoa Nova)",
+      "status": "Pendente"
     }
   ],
   "prospeccaoCaptacao": [
@@ -2708,6 +2723,12 @@
       "lead": "Roberto",
       "tipo": "Outro",
       "resumo": "Captação no Paradise Village agendada para hoje, 10/08, às 15h."
+    },
+    {
+      "data": "10/08/2026 11:50",
+      "lead": "Lenise Costa",
+      "tipo": "Outro",
+      "resumo": "Cód. 10567 VENDIDO — contrato assinado por R$240.000,00 (tabela R$249.990,00), em parceria com Ivanaldo Tavares. Comissão total 5% = R$12.000, sua parte R$4.200. Aguardando sinal e repasse."
     }
   ]
 }
