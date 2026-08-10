@@ -3055,6 +3055,18 @@ function imovelPorCodigoTexto(ref) {
 function ehIndicacaoDeCliente(it) {
   return !!it && it.tipo === 'Cliente';
 }
+// Comissão esperada de um imóvel, pela regra do negócio — não por um campo
+// guardado em cada imóvel. Antes existia um `pctComissao` por imóvel, vazio
+// nos 24 e lido por ninguém; um campo assim é convite a preencher com o
+// número errado (já aconteceu: percentual de venda gravado onde era captação).
+function comissaoEsperada(im) {
+  const regra = DATA.regraComissao;
+  if (!regra || !im || !im.valor || im.tipoOperacao === 'Locação') return null;
+  const total = im.valor * regra.pctVenda;
+  const sozinho = total * regra.suaParte;
+  const parceria = total * (regra.divideEmParceria ? 0.5 : 1) * regra.suaParte;
+  return { total, sozinho, parceria };
+}
 function situacaoLead(l) {
   if (!l) return '';
   if (l.fase === 'Fechado Ganho') return 'Ganho';
@@ -4121,6 +4133,11 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
         ${locacao ? '<span class="fu-chip locacao">Locação</span>' : ''}
         ${fu ? `<span class="fu-chip ${fu.cls}">${esc(fu.label.replace(/Follow-up /, ''))}</span>` : ''}
         ${semTel ? '<span class="fu-chip sem-tel">☎ sem telefone</span>' : ''}
+        ${(function () {
+          // Quanto esse imóvel vale para você, pela regra: sozinho e em parceria.
+          const c = im.status === 'Disponível' ? comissaoEsperada(im) : null;
+          return c ? `<span class="fu-chip comissao">💰 ${brl(c.sozinho)} sozinho · ${brl(c.parceria)} em parceria</span>` : '';
+        })()}
       </div>`;
     return card;
   }
