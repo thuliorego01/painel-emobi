@@ -1684,6 +1684,18 @@ const AGENDA_DIA = agendaPorDia();
 //      Quente 3 dias · Morno 7 · Frio 30.
 // Escopo: só fases inativas. Lead ativo que passou do prazo já é contado como
 // "Atrasado" — contar nos dois lugares inflaria o banner de urgência.
+// Cadência de pós-venda. Declarada aqui em cima, e não junto do render, porque
+// computeAcoesUrgentes a consulta antes — const lido antes da inicialização foi
+// o erro que derrubou 20 suítes de uma vez.
+const POS_VENDA_MARCOS = [
+  { dias: 7,   rotulo: 'Primeira semana', acao: 'Confirmar que a documentação está andando — é a fase de maior ansiedade do cliente.' },
+  { dias: 30,  rotulo: '1 mês',           acao: 'Perguntar como foi a mudança e PEDIR INDICAÇÃO — a satisfação está no pico.', indicacao: true },
+  { dias: 90,  rotulo: '3 meses',         acao: 'Check-in: oferecer ajuda com reforma, decoração ou serviços do bairro.' },
+  { dias: 180, rotulo: '6 meses',         acao: 'Enviar algo útil: valorização do bairro, obras próximas, mercado da região.' },
+  { dias: 365, rotulo: '1 ano',           acao: 'Aniversário da compra: mandar a valorização do imóvel e lembrar da declaração do IR.', indicacao: true },
+  { dias: 730, rotulo: '2 anos',          acao: 'Reavaliar o momento do cliente — pode ser hora de trocar, investir ou indicar.', indicacao: true }
+];
+
 const FASES_PARA_REATIVAR = ['Inativo'];
 
 // Lead inativo NÃO tem temperatura. Temperatura mede o calor de uma conversa
@@ -1845,9 +1857,13 @@ function computeAcoesUrgentes() {
   // Somar os dois inflava o banner: 15 pendências quando existiam 13.
   const nomesProsp = new Set(prospeccoesAtrasadas.map(p => p.nome));
   const lembretesNaoRepetidos = lembretesUrgentes.filter(x => !nomesProsp.has(x.relacionado));
+  // Pós-venda vencido aparecia na lista de ações e ficava FORA da contagem do
+  // banner: o banner dizia 8 e a lista somava 9. Cliente que comprou e está
+  // esperando um toque é pendência igual às outras.
+  const posVendaAbertos = (typeof posVendaVencidos === 'function' ? posVendaVencidos() : []);
   const total = leadsAtrasados.length + leadsReativar.length + imoveisAtrasados.length +
-                lembretesNaoRepetidos.length + prospeccoesAtrasadas.length;
-  return { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes: lembretesNaoRepetidos, prospeccoesAtrasadas, total };
+                lembretesNaoRepetidos.length + prospeccoesAtrasadas.length + posVendaAbertos.length;
+  return { leadsAtrasados, leadsReativar, imoveisAtrasados, lembretesUrgentes: lembretesNaoRepetidos, prospeccoesAtrasadas, posVendaAbertos, total };
 }
 
 (function renderUrgentBanner() {
@@ -3027,14 +3043,6 @@ function formatarTel(t) {
 // contrário: 3 dos 13 leads de hoje são gente que já comprou e voltou. Este é
 // o grupo mais valioso da base, e precisa de cadência própria.
 // Os marcos são contados a partir da data de fechamento.
-const POS_VENDA_MARCOS = [
-  { dias: 7,   rotulo: 'Primeira semana', acao: 'Confirmar que a documentação está andando — é a fase de maior ansiedade do cliente.' },
-  { dias: 30,  rotulo: '1 mês',           acao: 'Perguntar como foi a mudança e PEDIR INDICAÇÃO — a satisfação está no pico.', indicacao: true },
-  { dias: 90,  rotulo: '3 meses',         acao: 'Check-in: oferecer ajuda com reforma, decoração ou serviços do bairro.' },
-  { dias: 180, rotulo: '6 meses',         acao: 'Enviar algo útil: valorização do bairro, obras próximas, mercado da região.' },
-  { dias: 365, rotulo: '1 ano',           acao: 'Aniversário da compra: mandar a valorização do imóvel e lembrar da declaração do IR.', indicacao: true },
-  { dias: 730, rotulo: '2 anos',          acao: 'Reavaliar o momento do cliente — pode ser hora de trocar, investir ou indicar.', indicacao: true }
-];
 const POS_VENDA_SCRIPTS = {
   7:   (n) => `${n}, tudo certo por aí? Passando pra confirmar que a documentação está caminhando bem e pra dizer que qualquer dúvida no processo é só me chamar — mesmo que pareça bobagem.`,
   30:  (n) => `${n}, já faz um mês! Como foi a mudança, deu tudo certo? Fico feliz de ter participado dessa etapa com você. E se conhecer alguém procurando imóvel, pode me indicar — cuido da pessoa do mesmo jeito que cuidei de você.`,
