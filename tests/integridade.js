@@ -138,6 +138,8 @@ const MORTOS = [
   ['leads[].statusReativacao', leads.some(l => 'statusReativacao' in l)],
   ['leads[].status', leads.some(l => 'status' in l)],
   ['imoveis[].pctComissao', imoveis.some(i => 'pctComissao' in i)],
+  // Inativo não tem temperatura: ela vira temperaturaAoInativar quando o lead para.
+  ['leads inativos com temperatura', leads.some(l => l.fase === 'Inativo' && l.temperatura)],
   // A nota de 2021 (Ubatuba) já está somada aos totais desde 30/07. Ela voltou
   // sozinha em 09/08 porque a planilha continuava sendo a fonte dela.
   ['historico.notaDivergencia', 'notaDivergencia' in (DATA.historico || {})],

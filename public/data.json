@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-10T14:10:00-03:00",
+  "ultimaAtualizacao": "2026-08-10T14:55:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -222,14 +222,16 @@
       "motivoDetalhe": "Só aceita unidade no Edifício Bosque do Tirol; nenhuma à venda no momento. Monitoramento ativo.",
       "fase": "Inativo",
       "maiorFaseIndex": 1,
-      "temperatura": "Morno",
+      "temperatura": null,
       "valor": null,
       "comissaoPrevista": null,
       "proximaAcao": "Ligação de retomada sobre unidade no Bosque do Tirol",
       "dataProximaAcao": "2026-08-28",
       "obs": "Quer apartamento no Edifício Bosque do Tirol, Av. Alm. Alexandrino de Alencar 1362-1366, Tirol, Natal-RN, 59015-350, média de 100m². Retomada agendada p/ 28/08. Monitoramento automático de portais a cada ~10 dias buscando unidade à venda no prédio. ATENÇÃO (22/07): cliente reforçou que NÃO quer receber opções de outros condomínios — somente unidades no próprio Edifício Bosque do Tirol. Não oferecer alternativas em outros prédios/bairros.",
       "imoveisCompativeis": null,
-      "interesse": "apartamento no Edifício Bosque do Tirol"
+      "interesse": "apartamento no Edifício Bosque do Tirol",
+      "temperaturaAoInativar": "Morno",
+      "dataInativacao": "2026-07-29"
     },
     {
       "id": 3,
@@ -239,7 +241,7 @@
       "dataEntrada": "2026-07-01",
       "fase": "Inativo",
       "maiorFaseIndex": 3,
-      "temperatura": "Frio",
+      "temperatura": null,
       "valor": 380000,
       "comissaoPrevista": null,
       "proximaAcao": "Retomar em ~90 dias, se não houver retorno antes",
@@ -250,7 +252,9 @@
       ],
       "interesse": "casa em condomínio em Nova Parnamirim",
       "motivoPerda": "Não é o momento",
-      "motivoDetalhe": "Sem retorno após a cadência completa. Encerrado o acompanhamento ativo com mensagem de despedida, deixando a porta aberta para retomada futura."
+      "motivoDetalhe": "Sem retorno após a cadência completa. Encerrado o acompanhamento ativo com mensagem de despedida, deixando a porta aberta para retomada futura.",
+      "temperaturaAoInativar": "Frio",
+      "dataInativacao": "2026-08-05"
     },
     {
       "id": 4,
@@ -262,16 +266,18 @@
       "motivoDetalhe": "Pediu para falar com a mãe antes de decidir; a mãe não retorna os contatos.",
       "fase": "Inativo",
       "maiorFaseIndex": 5,
-      "temperatura": "Morno",
+      "temperatura": null,
       "valor": 500000,
       "comissaoPrevista": null,
-      "proximaAcao": "Retomar contato (cadência de 7 em 7 dias) — verificar se a mãe já deu retorno",
-      "dataProximaAcao": "2026-08-01",
+      "proximaAcao": "Retomada pela escada: 1º toque em 24/08",
+      "dataProximaAcao": null,
       "obs": "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente quer levar a mãe numa segunda visita antes de decidir. 2ª visita agendada para quarta-feira, 08/07, às 16h. [18/07] Cliente pediu que Thúlio entre em contato diretamente com a mãe dela. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada.",
       "imoveisCompativeis": [],
       "visitaResumo": null,
       "visitaDetalhe": "pra você trazer sua mãe dessa vez",
-      "interesse": "casa em Capim Macio"
+      "interesse": "casa em Capim Macio",
+      "temperaturaAoInativar": "Morno",
+      "dataInativacao": "2026-07-25"
     },
     {
       "id": 5,
@@ -364,7 +370,7 @@
       "motivoDetalhe": "Vai organizar e vender a casa de praia que tem com as irmãs; só depois volta a procurar, para comprar sem financiamento.",
       "fase": "Inativo",
       "maiorFaseIndex": 1,
-      "temperatura": "Morno",
+      "temperatura": null,
       "valor": null,
       "comissaoPrevista": null,
       "proximaAcao": "Retomar contato em ~30 dias — verificar se já organizou/vendeu a casa de praia com as irmãs",
@@ -374,7 +380,9 @@
         "Cód. 7726",
         "Cód. 7560"
       ],
-      "interesse": "apartamento em Candelária, 3 dormitórios (1 suíte), até R$400 mil"
+      "interesse": "apartamento em Candelária, 3 dormitórios (1 suíte), até R$400 mil",
+      "temperaturaAoInativar": "Morno",
+      "dataInativacao": "2026-07-29"
     },
     {
       "id": 11,
@@ -2774,6 +2782,19 @@
       "lead": "Conecta TR",
       "tipo": "Outro",
       "resumo": "WhatsApp do indicador Ricardo Magnos cadastrado: (84) 98856-6793."
+    },
+    {
+      "data": "10/08/2026 14:40",
+      "lead": "Sistema",
+      "tipo": "Outro",
+      "resumo": "Lead inativo deixou de ter temperatura. A temperatura de quando ele parou virou histórico (temperaturaAoInativar) e a retomada passou a seguir a escada de 30/60/90 dias da aba Cadencia, contada da data em que ele parou. Antes, três inativos marcados como Morno herdavam a cadência de 7 dias de cliente ativo."
+    },
+    {
+      "data": "10/08/2026 14:55",
+      "lead": "Kamylla Gadelha",
+      "tipo": "Outro",
+      "leadId": 4,
+      "resumo": "Removida a data de retomada de 01/08: ela era resíduo da cadência por temperatura (7 dias de 'Morno'), não um combinado com a cliente. Passa a seguir a escada de reativação — 1º toque em 24/08."
     }
   ],
   "regraComissao": {
@@ -2781,5 +2802,13 @@
     "divideEmParceria": true,
     "suaParte": 0.7,
     "nota": "5% sobre o valor de venda. Havendo corretor parceiro, divide ao meio. Sua parte é 70% do que couber a você."
+  },
+  "cadenciaReativacao": {
+    "degraus": [
+      30,
+      60,
+      90
+    ],
+    "nota": "Lead inativo não tem temperatura: a retomada segue a escada de 30, 60 e 90 dias contados da data em que ele parou. Passado o terceiro toque sem resposta, o acompanhamento se encerra."
   }
 }

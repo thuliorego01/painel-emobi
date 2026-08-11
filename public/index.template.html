@@ -623,6 +623,7 @@
   .agenda-fonte { font-size: var(--fs-xs); color:#8A9186; margin-bottom:10px; }
   .agenda-fonte.velha { color:#8A5A14; background:#FDF6E8; border:1px solid #EBD9A8; border-radius:var(--r-md); padding:6px 10px; }
   .ajustes-comissao { margin-bottom:18px; }
+  .temp.parado { background:#F1F2ED; color:#8A9186; font-weight:600; }
   .ritmo-trilho { height:9px; background:#F1F3EE; border-radius:var(--r-sm); overflow:hidden; display:flex; }
   .ritmo-preenche.fechado { background:#E8B461; }
   .ritmo-preenche.encaminhado { background:#EBD9A8; }
@@ -1684,7 +1685,29 @@ const AGENDA_DIA = agendaPorDia();
 // Escopo: só fases inativas. Lead ativo que passou do prazo já é contado como
 // "Atrasado" — contar nos dois lugares inflaria o banner de urgência.
 const FASES_PARA_REATIVAR = ['Inativo'];
-const CADENCIA_TEMPERATURA = { 'Quente': 3, 'Morno': 7, 'Frio': 30 };
+
+// Lead inativo NÃO tem temperatura. Temperatura mede o calor de uma conversa
+// em andamento; sem conversa ela não existe, e enquanto existia três inativos
+// marcados como "Morno" herdavam a cadência de 7 dias de cliente ativo —
+// urgência inventada em cima de gente dormente. A retomada de quem parou é a
+// escada da aba Cadencia: 30, 60 e 90 dias contados do dia em que ele parou.
+// A temperatura de quando parou continua guardada, como história: quem estava
+// Quente e sumiu se reaborda diferente de quem nunca passou de Frio.
+const DEGRAUS_REATIVACAO = (DATA.cadenciaReativacao && DATA.cadenciaReativacao.degraus) || [30, 60, 90];
+
+// Em qual degrau da escada o lead está hoje, e há quanto tempo ele venceu.
+function degrauReativacao(l) {
+  if (!l || !l.dataInativacao) return null;
+  const parado = diasDesdeISO(l.dataInativacao);
+  if (parado === null) return null;
+  let vencido = null, ordem = 0;
+  DEGRAUS_REATIVACAO.forEach((dias, i) => {
+    if (parado >= dias) { vencido = dias; ordem = i + 1; }
+  });
+  const proximo = DEGRAUS_REATIVACAO.find(dias => parado < dias) || null;
+  const esgotou = vencido !== null && proximo === null;
+  return { parado, vencido, ordem, proximo, esgotou, total: DEGRAUS_REATIVACAO.length };
+}
 
 function motivoReativacao(l) {
   if (!l || FASES_PARA_REATIVAR.indexOf(l.fase) === -1) return null;
@@ -1695,10 +1718,14 @@ function motivoReativacao(l) {
     }
     return null; // há data combinada e ela ainda não chegou
   }
-  const parado = diasSemMovimento(l.id !== undefined ? l.id : l.nome);
-  const limite = CADENCIA_TEMPERATURA[l.temperatura] || 7;
-  if (parado !== null && parado > limite) {
-    return { dias: parado - limite, regra: 'cadencia', texto: parado + 'd parado (limite ' + limite + 'd)' };
+  const d = degrauReativacao(l);
+  if (d && d.vencido !== null) {
+    return {
+      dias: d.parado - d.vencido, regra: 'escada', degrau: d,
+      texto: d.esgotou
+        ? `${d.parado}d parado — escada de reativação esgotada`
+        : `${d.ordem}º toque (${d.vencido}d) vencido há ${d.parado - d.vencido}d`
+    };
   }
   return null;
 }
@@ -2792,21 +2819,41 @@ function renderReativacaoBox() {
 const reativacaoCard = document.getElementById('reativacaoCard');
 if (!reativacaoCard) return;
 const leadsReativarAgora = leadsParaReativar();
-const rTemps = [
-  { temp: 'Quente', label: '🔥 Quente' },
-  { temp: 'Morno',  label: '🟠 Morno' },
-  { temp: 'Frio',   label: '❄️ Frio' }
-];
-reativacaoCard.innerHTML = rTemps.map(t => {
-  const doTipo = leadsReativarAgora.filter(l => l.temperatura === t.temp);
+// Agrupado pelo degrau da escada, não por temperatura: inativo não tem
+// temperatura, e o que importa aqui é há quanto tempo a pessoa parou.
+const rDegraus = DEGRAUS_REATIVACAO.map((dias, i) => ({
+  dias, ordem: i + 1, label: `${i + 1}º toque · ${dias} dias`
+})).concat([{ dias: null, ordem: 0, label: '⏹️ Escada esgotada — encerrar ou arquivar' }]);
+reativacaoCard.innerHTML = rDegraus.map(t => {
+  const doTipo = leadsReativarAgora.filter(l => {
+    const d = degrauReativacao(l);
+    if (!d || d.vencido === null) return false;
+    return t.dias === null ? d.esgotou : (!d.esgotou && d.vencido === t.dias);
+  });
+  if (doTipo.length === 0) return '';
   return `
   <div class="reativa-row">
-    <span>${t.label} — para reativar agora
+    <span>${t.label}
       ${doTipo.length ? `<span class="reativa-quem">${doTipo.map(l => esc(l.nome.split(' ')[0])).join(', ')}</span>` : ''}
     </span>
     <span class="reativa-count ${doTipo.length === 0 ? 'zero' : ''}">${doTipo.length}</span>
   </div>`;
 }).join('') + `
+  ${(function proximoDaEscada() {
+    // Nenhum degrau vencido não é "nada a fazer": é "ainda não". Dizer quem
+    // vence a seguir evita a leitura de que a fila está vazia.
+    const espera = (DATA.leads || [])
+      .filter(l => FASES_PARA_REATIVAR.indexOf(l.fase) !== -1 && !motivoReativacao(l))
+      .map(l => ({ l, d: degrauReativacao(l) }))
+      .filter(x => x.d && x.d.proximo !== null)
+      .sort((a, b) => (a.d.proximo - a.d.parado) - (b.d.proximo - b.d.parado));
+    if (!espera.length) return '';
+    const { l, d } = espera[0];
+    const faltam = d.proximo - d.parado;
+    return `<div class="reativa-row"><span>⏳ Próximo da escada —
+      <span class="reativa-quem">${esc(l.nome.split(' ')[0])}, ${faltam === 0 ? 'hoje' : 'em ' + faltam + 'd'}</span></span>
+      <span class="reativa-count zero">${espera.length}</span></div>`;
+  })()}
   <div class="reativa-row">
     <span><b>🔔 Total para reativar agora</b></span>
     <span class="reativa-count ${leadsReativarAgora.length === 0 ? 'zero' : ''}">${leadsReativarAgora.length}</span>
@@ -2818,7 +2865,9 @@ reativacaoCard.innerHTML = rTemps.map(t => {
   }).join('') + `</div>` : '') + `
   <details class="reativa-regra"><summary>Como esta conta é feita</summary>
     Entram só os leads em fase <b>Inativo</b> — lead ativo fora do prazo já aparece como “Atrasado”, contar duas vezes inflaria o alerta.
-    Se existe data combinada de retomada, vale ela. Sem data, vale a cadência por temperatura da planilha: Quente 3 dias · Morno 7 · Frio 30.
+    Se existe data combinada de retomada, vale ela. Sem data, vale a escada de reativação da planilha:
+    <b>${DEGRAUS_REATIVACAO.join(', ')} dias</b> contados do dia em que o cliente parou.
+    Inativo não tem temperatura — a que ele tinha quando parou fica guardada como história, para você saber como reabordar.
   </details>`;
 }
 
@@ -2889,7 +2938,10 @@ const REATIVACAO_TEMPLATES = {
 };
 function buildReativacaoMsg(l) {
   const nomeCurto = (l.nome || '').split(' ')[0];
-  const tpl = REATIVACAO_TEMPLATES[l.temperatura] || REATIVACAO_TEMPLATES.Morno;
+  // Inativo não tem temperatura, mas tem a que tinha quando parou — e é ela
+  // que diz o tom: quem estava Quente e sumiu merece abordagem diferente de
+  // quem nunca passou de Frio.
+  const tpl = REATIVACAO_TEMPLATES[l.temperatura || l.temperaturaAoInativar] || REATIVACAO_TEMPLATES.Morno;
   return tpl(nomeCurto, l.interesse || 'o imóvel que você buscava');
 }
 
@@ -3172,6 +3224,18 @@ function renderLeadCard(l, container) {
   const situacao = situacaoLead(l);
   const badgeClass = situacao === 'Atrasado' ? 'atrasado' : (situacao === 'Em dia' ? 'emdia' : 'novo');
   const tempClass = l.temperatura === 'Quente' ? 'quente' : (l.temperatura === 'Morno' ? 'morno' : 'frio');
+  // Inativo não exibe temperatura: dizer "Morno" de quem parou há três semanas
+  // afirma uma coisa que não é verdade hoje. O que ele era fica como história.
+  const seloTemp = l.temperatura
+    ? `<span class="temp ${tempClass}">${l.temperatura}</span>`
+    : (l.temperaturaAoInativar ? `<span class="temp parado">estava ${esc(l.temperaturaAoInativar)}</span>` : '');
+  const escada = (function () {
+    const d = degrauReativacao(l);
+    if (!d) return '';
+    if (d.esgotou) return `<span class="temp parado">⏹️ ${d.parado}d parado · escada esgotada</span>`;
+    if (d.vencido !== null) return `<span class="temp parado">🔔 ${d.ordem}º toque vencido há ${d.parado - d.vencido}d</span>`;
+    return `<span class="temp parado">⏳ ${d.ordem + 1}º toque em ${d.proximo - d.parado}d</span>`;
+  })();
   const valorTxt = (l.valor === null || l.valor === undefined) ? 'a definir' : brl(l.valor);
   const comissaoTxt = (l.comissaoPrevista === null || l.comissaoPrevista === undefined) ? 'a definir' : brl(l.comissaoPrevista);
   let waHtml = '';
@@ -3264,7 +3328,7 @@ function renderLeadCard(l, container) {
   card.innerHTML = `
     <div class="lead-top">
       <span class="lead-name">${l.nome}${chipHtml}${seloRecorrente(l)}</span>
-      <span><span class="temp ${tempClass}">${l.temperatura}</span> <span class="badge ${badgeClass}">${situacao}</span></span>
+      <span>${seloTemp} ${escada} ${situacao === l.fase ? '' : `<span class="badge ${badgeClass}">${situacao}</span>`}</span>
     </div>
     <div class="lead-meta">
       <span>${l.fase}</span>
@@ -3325,7 +3389,7 @@ function blocoTemperatura(t, doGrupo, container) {
     const u = calcularUrgencia(l);
     return u.nivel === 'alta' || u.nivel === 'critica';
   }).length;
-  const limite = LIMITE_PARADO[t.chave];
+  const limite = LIMITE_PARADO[t.chave];  // só existe nas três temperaturas ativas
 
   const secao = document.createElement('section');
   secao.className = 'temp-secao ' + t.classe;
@@ -3392,11 +3456,33 @@ if (leadsAtivosArr.length === 0) {
 const inativosToggle = document.getElementById('inativosToggle');
 const inativosWrap = document.getElementById('inativosWrap');
 const inativosLabel = document.getElementById('inativosToggleLabel');
+// Inativo agrupado pela escada de reativação, não por temperatura: sem
+// conversa não há temperatura, e o que você precisa saber aqui é quem está
+// vencido em qual toque.
+function renderGrupoReativacao(lista, container) {
+  const grupos = DEGRAUS_REATIVACAO.map((dias, i) => ({
+    chave: 'd' + dias, rotulo: `${i + 1}º toque · ${dias} dias`, icone: '🔔', classe: 't-morno',
+    filtro: (l) => { const d = degrauReativacao(l); return !!d && !d.esgotou && d.vencido === dias; }
+  }));
+  grupos.push({ chave: 'esgotou', rotulo: 'Escada esgotada — encerrar ou arquivar', icone: '⏹️', classe: 't-frio',
+    filtro: (l) => { const d = degrauReativacao(l); return !!d && d.esgotou; } });
+  grupos.push({ chave: 'noprazo', rotulo: 'Ainda dentro do prazo', icone: '⏳', classe: 't-neutro',
+    filtro: (l) => { const d = degrauReativacao(l); return !d || d.vencido === null; } });
+  const usados = new Set();
+  grupos.forEach(g => {
+    const doGrupo = lista.filter(l => !usados.has(l) && g.filtro(l));
+    doGrupo.forEach(l => usados.add(l));
+    if (doGrupo.length > 0) blocoTemperatura(g, doGrupo, container);
+  });
+  const resto = lista.filter(l => !usados.has(l));
+  if (resto.length > 0) blocoTemperatura({ chave: null, rotulo: 'Sem data de inativação', icone: '⚪', classe: 't-neutro' }, resto, container);
+}
+
 if (leadsInativosArr.length === 0) {
   inativosToggle.style.display = 'none';
 } else {
   inativosLabel.textContent = `Leads Inativos (${leadsInativosArr.length})`;
-  renderGrupoTemperatura(leadsInativosArr, leadsInativosCard);
+  renderGrupoReativacao(leadsInativosArr, leadsInativosCard);
   function toggleInativos() {
     const open = inativosWrap.classList.toggle('open');
     inativosToggle.classList.toggle('open', open);
@@ -3423,10 +3509,13 @@ if (leadsInativosArr.length === 0) {
     if (!l) return;
     const nome = l.nome;
     const tempClass = l.temperatura === 'Quente' ? 'quente' : (l.temperatura === 'Morno' ? 'morno' : 'frio');
+    const seloTemp = l.temperatura
+      ? `<span class="temp ${tempClass}">${l.temperatura}</span>`
+      : (l.temperaturaAoInativar ? `<span class="temp parado">estava ${esc(l.temperaturaAoInativar)}</span>` : '');
     const situacao = situacaoLead(l);
     const badgeClass = situacao === 'Atrasado' ? 'atrasado' : (situacao === 'Em dia' ? 'emdia' : 'novo');
     elNome.textContent = l.nome;
-    elBadges.innerHTML = `<span class="badge ${badgeClass}">${situacao}</span> <span class="temp ${tempClass}">${l.temperatura}</span> <span class="badge novo">${l.fase}</span>`;
+    elBadges.innerHTML = `<span class="badge ${badgeClass}">${situacao}</span> ${seloTemp} <span class="badge novo">${l.fase}</span>`;
     const valorTxt = (l.valor === null || l.valor === undefined) ? 'a definir' : brl(l.valor);
     elInfo.innerHTML = `<span>Valor: <b>${valorTxt}</b></span><span>Origem: <b>${l.origem || '—'}</b></span><span>Próxima ação: <b>${l.proximaAcao || '—'}</b></span>`;
     elObs.textContent = l.obs || '';
