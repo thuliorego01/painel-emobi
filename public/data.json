@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-10T13:40:00-03:00",
+  "ultimaAtualizacao": "2026-08-10T13:55:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -34,7 +34,9 @@
       "status": "pago",
       "tipo": "Venda",
       "pctVenda": 0.05,
-      "parceriaDesconhecida": true
+      "parceria": "Célia Cristina — 50% da comissão total",
+      "comissaoPelaRegra": 4112.5,
+      "ajusteComissao": -1637.5
     },
     {
       "imovel": "Natture 1501 Algaroba",
@@ -2760,6 +2762,12 @@
       "lead": "Sistema",
       "tipo": "Outro",
       "resumo": "Correção: o percentual sempre foi 5% em todos os negócios. O que variou foi o valor fechado na negociação. Cada venda agora guarda os 5% como regra e, quando o recebido difere, o ajuste fica registrado — em vez de inventar um percentual que ninguém combinou. Parceiros registrados: Guilherme Marinho (Bairro Latino), Alon Nunes (Central Park), Ângelo Andrade (João Mendonça)."
+    },
+    {
+      "data": "10/08/2026 13:55",
+      "lead": "Sistema",
+      "tipo": "Outro",
+      "resumo": "Casa Rua Maçaranduba: parceria com Célia Cristina, 5%, com ajuste de -R$1.637,50 no fechamento. Com isso os 10 negócios de 2026 estão com percentual e parceria fechados."
     }
   ],
   "regraComissao": {
