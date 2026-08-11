@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-10T13:55:00-03:00",
+  "ultimaAtualizacao": "2026-08-10T14:10:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1548,7 +1548,7 @@
       {
         "id": 9,
         "nome": "Ricardo Magnos",
-        "telefone": null,
+        "telefone": "84988566793",
         "status": "Ativo"
       }
     ]
@@ -2768,6 +2768,12 @@
       "lead": "Sistema",
       "tipo": "Outro",
       "resumo": "Casa Rua Maçaranduba: parceria com Célia Cristina, 5%, com ajuste de -R$1.637,50 no fechamento. Com isso os 10 negócios de 2026 estão com percentual e parceria fechados."
+    },
+    {
+      "data": "10/08/2026 14:10",
+      "lead": "Conecta TR",
+      "tipo": "Outro",
+      "resumo": "WhatsApp do indicador Ricardo Magnos cadastrado: (84) 98856-6793."
     }
   ],
   "regraComissao": {
