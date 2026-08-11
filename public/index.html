@@ -622,6 +622,7 @@
   .ritmo-rot b { color: var(--text-strong); font-size: var(--fs-sm); }
   .agenda-fonte { font-size: var(--fs-xs); color:#8A9186; margin-bottom:10px; }
   .agenda-fonte.velha { color:#8A5A14; background:#FDF6E8; border:1px solid #EBD9A8; border-radius:var(--r-md); padding:6px 10px; }
+  .ajustes-comissao { margin-bottom:18px; }
   .ritmo-trilho { height:9px; background:#F1F3EE; border-radius:var(--r-sm); overflow:hidden; display:flex; }
   .ritmo-preenche.fechado { background:#E8B461; }
   .ritmo-preenche.encaminhado { background:#EBD9A8; }
@@ -2096,17 +2097,20 @@ function renderAnoResumo() {
       <span><b>${esc(n.imovel)}</b> <span class="prox-fase">${esc(n.mes)}/${n.ano} · ${brl(n.valor)}${n.parceria ? ' · parceria com ' + esc(String(n.parceria).split(' —')[0]) : ' · sozinho'}</span></span>
       <span class="prox-prazo ${n.ajusteComissao < 0 ? 'hoje' : ''}">${brl(n.comissaoPelaRegra)} pela regra → <b>${brl(n.comissao)}</b> (${n.ajusteComissao > 0 ? '+' : ''}${brl(n.ajusteComissao)})</span>
     </div>`;
-  el.innerHTML = `<div class="card" style="margin-bottom:18px;">
-    <div class="bloco-rotulo">⚖️ Ajustes de comissão na negociação</div>
-    <div style="font-size:var(--fs-xs);color:#5C6155;margin-bottom:10px;">
-      O percentual combinado é sempre o mesmo. Estes são os negócios em que o valor fechado
-      saiu diferente do que a regra daria — no ano, <b>${brl(soma)}</b> de diferença.
-    </div>` +
-    negs.map(linha).join('') +
-    (semParceria.length ? `<div style="font-size:var(--fs-xs);color:#8A5A14;margin-top:10px;">
-      ${semParceria.map(n => esc(n.imovel) + ' (' + esc(n.mes) + '/' + n.ano + ')').join(' · ')} —
-      falta saber se houve parceria para calcular o ajuste.</div>` : '') +
-    '</div>';
+  // Recolhido por padrão: é conferência, não operação. O número do ano fica no
+  // resumo, que é o que responde a pergunta sem ocupar meia tela.
+  el.innerHTML = `<details class="ctr-encerradas ajustes-comissao">
+    <summary>⚖️ Ajustes de comissão na negociação · <b>${brl(soma)}</b> no ano, em ${negs.length} ${negs.length === 1 ? 'negócio' : 'negócios'}${semParceria.length ? ` · ${semParceria.length} a apurar` : ''}</summary>
+    <div class="ctr-encerradas-corpo">
+      <div style="font-size:var(--fs-xs);color:#5C6155;margin-bottom:10px;">
+        O percentual combinado é sempre o mesmo. Estes são os negócios em que o valor fechado
+        saiu diferente do que a regra daria.
+      </div>` +
+      negs.map(linha).join('') +
+      (semParceria.length ? `<div style="font-size:var(--fs-xs);color:#8A5A14;margin-top:10px;">
+        ${semParceria.map(n => esc(n.imovel) + ' (' + esc(n.mes) + '/' + n.ano + ')').join(' · ')} —
+        falta saber se houve parceria para calcular o ajuste.</div>` : '') +
+    '</div></details>';
 })();
 
 // ---- Prestes a fechar (Home) ----
