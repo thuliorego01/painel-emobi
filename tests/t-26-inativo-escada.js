@@ -33,7 +33,10 @@ module.exports = {
     inativos.forEach(l => {
       const d = degrau(l);
       assert(d, `${l.nome}: não consegui calcular o degrau`);
-      const esperado = degraus.filter(x => d.parado >= x).pop();
+      // A escada pode ser própria do lead: cadência é acordo, não dogma.
+      const escada = (typeof l.cadenciaDias === 'number' && l.cadenciaDias > 0)
+        ? [1, 2, 3].map(i => l.cadenciaDias * i) : degraus;
+      const esperado = escada.filter(x => d.parado >= x).pop();
       assert((esperado === undefined ? null : esperado) === d.vencido,
         `${l.nome}: degrau vencido devia ser ${esperado} e veio ${d.vencido}`);
     });

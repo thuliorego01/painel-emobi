@@ -1712,13 +1712,18 @@ function degrauReativacao(l) {
   if (!l || !l.dataInativacao) return null;
   const parado = diasDesdeISO(l.dataInativacao);
   if (parado === null) return null;
+  // A escada padrão é 30/60/90, mas um combinado específico com o cliente
+  // manda sobre ela — cadência é acordo, não dogma.
+  const escada = (typeof l.cadenciaDias === 'number' && l.cadenciaDias > 0)
+    ? [1, 2, 3].map(i => l.cadenciaDias * i)
+    : DEGRAUS_REATIVACAO;
   let vencido = null, ordem = 0;
-  DEGRAUS_REATIVACAO.forEach((dias, i) => {
+  escada.forEach((dias, i) => {
     if (parado >= dias) { vencido = dias; ordem = i + 1; }
   });
-  const proximo = DEGRAUS_REATIVACAO.find(dias => parado < dias) || null;
+  const proximo = escada.find(dias => parado < dias) || null;
   const esgotou = vencido !== null && proximo === null;
-  return { parado, vencido, ordem, proximo, esgotou, total: DEGRAUS_REATIVACAO.length };
+  return { parado, vencido, ordem, proximo, esgotou, total: escada.length, escada };
 }
 
 function motivoReativacao(l) {

@@ -9,14 +9,16 @@ module.exports = { nome: 'Reativação: viva, nunca zerada por regra', rodar: as
 
   // A regra antiga excluía a fase Inativo — justamente quem precisa de reativação.
   // Logo: se existe lead inativo com retomada vencida, o quadro não pode dar zero.
+  // Duas portas de entrada, e as duas contam: data combinada vencida OU degrau
+  // da escada de reativação vencido. Antes só a data contava, e quem não tinha
+  // data nenhuma ficava invisível para sempre.
   const DATA = dados(dom);
-  const hoje = new Date();
-  const vencidos = (DATA.leads || []).filter(l =>
-    l.fase === 'Inativo' && l.dataProximaAcao && new Date(l.dataProximaAcao + 'T00:00:00') <= hoje);
+  const motivo = dom.window.eval('motivoReativacao');
+  const vencidos = (DATA.leads || []).filter(l => l.fase === 'Inativo' && motivo(l));
   const total = box.querySelectorAll('.reativa-item').length;
   assert(total === vencidos.length,
     `esperava ${vencidos.length} para reativar, o quadro mostra ${total}`);
   if (vencidos.length) {
-    assert(/retomada combinada|parado/.test(txt(box)), 'faltou dizer POR QUE cada um entrou');
+    assert(/retomada combinada|toque|parado/.test(txt(box)), 'faltou dizer POR QUE cada um entrou');
   }
 }};

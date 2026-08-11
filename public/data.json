@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-11T18:50:00-03:00",
+  "ultimaAtualizacao": "2026-08-11T19:00:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -286,15 +286,16 @@
       "temperatura": null,
       "valor": 500000,
       "comissaoPrevista": null,
-      "proximaAcao": "Retomada pela escada: 1º toque em 24/08",
+      "proximaAcao": "Retomada a cada 15 dias — avaliar encerrar se não houver resposta",
       "dataProximaAcao": null,
-      "obs": "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente quer levar a mãe numa segunda visita antes de decidir. 2ª visita agendada para quarta-feira, 08/07, às 16h. [18/07] Cliente pediu que Thúlio entre em contato diretamente com a mãe dela. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada.",
+      "obs": "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente quer levar a mãe numa segunda visita antes de decidir. 2ª visita agendada para quarta-feira, 08/07, às 16h. [18/07] Cliente pediu que Thúlio entre em contato diretamente com a mãe dela. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada. [10/08] Cadência de reativação ajustada para 15 dias. Leitura do Thúlio: provavelmente é lead perdido.",
       "imoveisCompativeis": [],
       "visitaResumo": null,
       "visitaDetalhe": "pra você trazer sua mãe dessa vez",
       "interesse": "casa em Capim Macio",
       "temperaturaAoInativar": "Morno",
-      "dataInativacao": "2026-07-25"
+      "dataInativacao": "2026-07-25",
+      "cadenciaDias": 15
     },
     {
       "id": 5,
@@ -352,9 +353,9 @@
       "temperatura": "Morno",
       "valor": null,
       "comissaoPrevista": null,
-      "proximaAcao": "Colher o retorno das 2 visitas de hoje com o André Brito",
-      "dataProximaAcao": "2026-08-10",
-      "obs": "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [31/07] Contato feito via WhatsApp. [31/07] Visita agendada para 01/08 às 10h, com o corretor parceiro André Brito. [01/08] Contato feito via WhatsApp. [01/08] A visita das 10h com o corretor André Brito NÃO aconteceu — cliente vai remarcar durante a semana. [07/08] Visita remarcada: 2 imóveis hoje, das 14h às 15h30, com o corretor parceiro André Brito da Abreu.",
+      "proximaAcao": "Cobrar o retorno das 2 opções do Alto da Boa Vista",
+      "dataProximaAcao": "2026-08-14",
+      "obs": "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [31/07] Contato feito via WhatsApp. [31/07] Visita agendada para 01/08 às 10h, com o corretor parceiro André Brito. [01/08] Contato feito via WhatsApp. [01/08] A visita das 10h com o corretor André Brito NÃO aconteceu — cliente vai remarcar durante a semana. [07/08] Visita remarcada: 2 imóveis hoje, das 14h às 15h30, com o corretor parceiro André Brito da Abreu. [11/08] Enviadas 2 opções no Alto da Boa Vista — uma reformada e uma não reformada.",
       "imoveisCompativeis": [
         "Cód. 9995"
       ],
@@ -500,12 +501,12 @@
       "dataEntrada": "2026-08-05",
       "fase": "Visita Realizada",
       "maiorFaseIndex": 5,
-      "temperatura": "Quente",
+      "temperatura": "Morno",
       "valor": 589990,
       "comissaoPrevista": null,
-      "proximaAcao": "Cobrar a proposta do Cód. 10652",
-      "dataProximaAcao": "2026-08-10",
-      "obs": "Visita agendada para 06/08 às 16h. E-mail: atendimento@sosrastreamento.net. Agenda bloqueada das 14h45 às 17h para o deslocamento (saída de Capim Macio). Origem: Instagram — chegou pela publicação do próprio Cód. 10652. [07/08] Visita realizada no Cód. 10652 (Muriú). Cliente deve apresentar proposta.",
+      "proximaAcao": "Última cobrança do retorno do Cód. 10652 — sem resposta, esfriar",
+      "dataProximaAcao": "2026-08-14",
+      "obs": "Visita agendada para 06/08 às 16h. E-mail: atendimento@sosrastreamento.net. Agenda bloqueada das 14h45 às 17h para o deslocamento (saída de Capim Macio). Origem: Instagram — chegou pela publicação do próprio Cód. 10652. [07/08] Visita realizada no Cód. 10652 (Muriú). Cliente deve apresentar proposta. [11/08] Enviada mais uma mensagem de feedback. Leitura do Thúlio: provavelmente ficará sem resposta.",
       "interesse": "Casa em Condomínio 4 Quartos Muriú 200m² (Cód. 10652) — R$589.990",
       "visitaResumo": "Visitou o Cód. 10652 em Muriú — gostou e deve fazer proposta",
       "imoveisCompativeis": [
@@ -2875,6 +2876,27 @@
       "tipo": "Outro",
       "leadId": 18,
       "resumo": "Detalhes: Casa 24, Condomínio Quatro Estações, Emaús/Parnamirim, Cód. 8081 — captação de Talison Cavalcanti, não entra na minha carteira. Cliente originada pelo CRM da Emobi."
+    },
+    {
+      "data": "10/08/2026 16:00",
+      "lead": "Kamylla Gadelha",
+      "tipo": "Outro",
+      "leadId": 4,
+      "resumo": "Cadência de reativação ajustada para 15 dias (a padrão é 30/60/90). Leitura do Thúlio: provavelmente é lead perdido."
+    },
+    {
+      "data": "11/08/2026 17:00",
+      "lead": "Heber Lima",
+      "tipo": "WhatsApp",
+      "leadId": 7,
+      "resumo": "Enviadas 2 opções no Alto da Boa Vista: uma reformada e uma não reformada."
+    },
+    {
+      "data": "11/08/2026 17:05",
+      "lead": "Rubens Júnior",
+      "tipo": "WhatsApp",
+      "leadId": 16,
+      "resumo": "Enviada mais uma mensagem de feedback sobre o Cód. 10652. Leitura do Thúlio: provavelmente ficará sem resposta. Temperatura de Quente para Morno."
     }
   ],
   "regraComissao": {
