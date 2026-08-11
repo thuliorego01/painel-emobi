@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-10T15:10:00-03:00",
+  "ultimaAtualizacao": "2026-08-10T15:31:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1281,18 +1281,6 @@
       "relacionado": "Clientes vendedores antigos"
     },
     {
-      "texto": "Retomar contato com Cláudia Montenegro (Natal Brisa)",
-      "data": "2026-07-27",
-      "hora": "",
-      "relacionado": "Cláudia Montenegro"
-    },
-    {
-      "texto": "Tentar novo contato com Taciana (Smile Village - Indicação Anísio) — não respondeu às últimas tentativas",
-      "data": "2026-07-24",
-      "hora": "",
-      "relacionado": "Taciana"
-    },
-    {
       "texto": "Ligação Jairson (Indicação Flávia — Condomínio Bosque dos Pássaros) — reagendada",
       "data": "2026-07-23",
       "hora": "16:00",
@@ -1315,6 +1303,12 @@
       "texto": "Cobrar o sinal e o repasse da comissão do Cód. 10567 (parceria Ivanaldo Tavares) — R$4.200",
       "relacionado": "Cód. 10567 (Condomínio Luiz Marques, Lagoa Nova)",
       "status": "Pendente"
+    },
+    {
+      "data": "2026-08-17",
+      "texto": "Decidir sobre Taciana (Smile Village) e Cláudia Montenegro (Natal Brisa): sem resposta, descartar as duas prospecções",
+      "relacionado": "Prospecção de captação",
+      "status": "Pendente"
     }
   ],
   "prospeccaoCaptacao": [
@@ -1327,8 +1321,8 @@
       "indicadorNome": "Anísio",
       "indicadorCadastrado": false,
       "status": "Aguardando Retorno",
-      "proximaAcao": "Tentar 1 último contato (ligação/WhatsApp), sem muita expectativa",
-      "dataProximaAcao": "2026-07-24",
+      "proximaAcao": "Última tentativa feita — descartar se não responder",
+      "dataProximaAcao": "2026-08-17",
       "historico": [
         {
           "data": "2026-07-24",
@@ -1337,9 +1331,14 @@
         {
           "data": "2026-07-25",
           "texto": "Thúlio percebe que não deve vingar."
+        },
+        {
+          "data": "2026-08-10",
+          "texto": "Contato feito. Combinado: se não houver resposta até 17/08, a prospecção é descartada."
         }
       ],
-      "imovelCaptadoCod": null
+      "imovelCaptadoCod": null,
+      "decisaoNoPrazo": "Descartar"
     },
     {
       "id": 2,
@@ -1349,11 +1348,17 @@
       "indicacao": "A definir",
       "indicadorNome": null,
       "indicadorCadastrado": null,
-      "status": "Contato Inicial",
-      "proximaAcao": "Retomar contato",
-      "dataProximaAcao": "2026-07-27",
-      "historico": [],
-      "imovelCaptadoCod": null
+      "status": "Aguardando Retorno",
+      "proximaAcao": "Última tentativa feita — descartar se não responder",
+      "dataProximaAcao": "2026-08-17",
+      "historico": [
+        {
+          "data": "2026-08-10",
+          "texto": "Contato feito. Combinado: se não houver resposta até 17/08, a prospecção é descartada."
+        }
+      ],
+      "imovelCaptadoCod": null,
+      "decisaoNoPrazo": "Descartar"
     }
   ],
   "conectaTR": {
@@ -2802,6 +2807,18 @@
       "tipo": "Outro",
       "leadId": 13,
       "resumo": "COMISSÃO RECEBIDA (R$2.143,75) — apto 404, bloco 11, Jardim Satélite. Negócio encerrado financeiramente; ela segue na cadência de pós-venda."
+    },
+    {
+      "data": "10/08/2026 15:30",
+      "lead": "Taciana",
+      "tipo": "WhatsApp",
+      "resumo": "Contato feito. Última tentativa: sem resposta até 17/08, a prospecção do Smile Village é descartada."
+    },
+    {
+      "data": "10/08/2026 15:31",
+      "lead": "Cláudia Montenegro",
+      "tipo": "WhatsApp",
+      "resumo": "Contato feito. Última tentativa: sem resposta até 17/08, a prospecção do Natal Brisa é descartada."
     }
   ],
   "regraComissao": {

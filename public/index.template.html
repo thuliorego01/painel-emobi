@@ -1805,9 +1805,11 @@ function prospeccaoPrazo(pr) {
   if (!pr.dataProximaAcao) return { cls: 'sem-prazo', texto: 'Sem prazo definido' };
   const dias = diasDesdeISO(pr.dataProximaAcao);
   if (dias === null) return { cls: 'sem-prazo', texto: 'Sem prazo definido' };
-  if (dias > 0) return { cls: 'atrasado', texto: `🔴 ${dias}d de atraso`, dias };
-  if (dias === 0) return { cls: 'hoje', texto: '🟡 Vence hoje' };
-  return { cls: 'em-dia', texto: `🟢 Em dia · faltam ${-dias}d` };
+  if (dias > 0) return pr.decisaoNoPrazo
+    ? { cls: 'atrasado', texto: `🔴 prazo vencido há ${dias}d — combinado: ${pr.decisaoNoPrazo.toLowerCase()}`, dias, decisao: pr.decisaoNoPrazo }
+    : { cls: 'atrasado', texto: `🔴 ${dias}d de atraso`, dias };
+  if (dias === 0) return { cls: 'hoje', texto: pr.decisaoNoPrazo ? `🟡 Vence hoje — combinado: ${pr.decisaoNoPrazo.toLowerCase()} se não responder` : '🟡 Vence hoje' };
+  return { cls: 'em-dia', texto: pr.decisaoNoPrazo ? `🟢 faltam ${-dias}d — depois disso, ${pr.decisaoNoPrazo.toLowerCase()}` : `🟢 Em dia · faltam ${-dias}d` };
 }
 function prospeccoesAtivas() {
   return (DATA.prospeccaoCaptacao || []).filter(pr => !PROSPECCAO_ENCERRADAS.includes(pr.status));
