@@ -30,6 +30,35 @@ module.exports = {
     const loc = (DATA.imoveis || []).find(i => i.tipoOperacao === 'Locação');
     if (loc) assert(calc(loc) === null, 'locação não pode usar o percentual de venda');
 
+    // Exceção por negócio manda sobre a regra.
+    // Simula um acordo fora do padrão: o mecanismo tem que valer mesmo quando
+    // nenhum imóvel usa exceção hoje.
+    const simulado = calc(Object.assign({}, im, { pctVendaAcordado: 0.03 }));
+    assert(simulado && Math.abs(simulado.pct - 0.03) < 1e-9 && simulado.excecao,
+      'o percentual acordado no imóvel não prevalece sobre a regra');
+    assert(Math.abs(simulado.total - im.valor * 0.03) < 0.01,
+      'a exceção não foi aplicada no cálculo da comissão');
+
+    const comExcecao = (DATA.imoveis || []).find(i => typeof i.pctVendaAcordado === 'number');
+    if (comExcecao) {
+      const ce = calc(comExcecao);
+      assert(ce && Math.abs(ce.pct - comExcecao.pctVendaAcordado) < 1e-9,
+        `${comExcecao.nome}: o percentual acordado não prevaleceu sobre a regra`);
+      if (comExcecao.pctVendaAcordado !== regra.pctVenda)
+        assert(ce.excecao, 'exceção não está marcada como exceção');
+    }
+
+    // Negócio cujo percentual não se sabe não pode fingir que segue a regra.
+    const pend = (DATA.listaNegociacoes || []).filter(n => n.pctVendaAConfirmar);
+    pend.forEach(n => assert(n.pctVenda === undefined,
+      `${n.imovel} está marcado como "a confirmar" e ao mesmo tempo tem percentual gravado`));
+    if (pend.length) {
+      const bloco = (doc.getElementById('pctAConfirmar') || {}).textContent || '';
+      assert(/a confirmar/i.test(bloco), 'os negócios de percentual desconhecido não aparecem no Faturamento');
+      pend.forEach(n => assert(bloco.includes(n.imovel),
+        `${n.imovel} não está na lista de percentual a confirmar`));
+    }
+
     // E precisa estar na tela de quem está disponível.
     const tela = doc.getElementById('imoveisCard').textContent;
     assert(/sozinho/.test(tela) && /em parceria/.test(tela),

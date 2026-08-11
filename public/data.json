@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-10T12:30:00-03:00",
+  "ultimaAtualizacao": "2026-08-10T12:50:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -32,7 +32,8 @@
       "mesNum": 1,
       "ano": 2026,
       "status": "pago",
-      "tipo": "Venda"
+      "tipo": "Venda",
+      "pctVendaAConfirmar": true
     },
     {
       "imovel": "Natture 1501 Algaroba",
@@ -43,7 +44,8 @@
       "mesNum": 2,
       "ano": 2026,
       "status": "pago",
-      "tipo": "Venda"
+      "tipo": "Venda",
+      "pctVendaAConfirmar": true
     },
     {
       "imovel": "Bairro Latino",
@@ -54,7 +56,8 @@
       "mesNum": 5,
       "ano": 2026,
       "status": "pago",
-      "tipo": "Venda"
+      "tipo": "Venda",
+      "pctVendaAConfirmar": true
     },
     {
       "imovel": "Maria Bernadete (803)",
@@ -66,7 +69,8 @@
       "ano": 2026,
       "status": "pago",
       "tipo": "Venda",
-      "vendedorLeadId": 14
+      "vendedorLeadId": 14,
+      "pctVendaAConfirmar": true
     },
     {
       "imovel": "Central Park (3-803)",
@@ -77,7 +81,8 @@
       "mesNum": 4,
       "ano": 2026,
       "status": "pago",
-      "tipo": "Venda"
+      "tipo": "Venda",
+      "pctVendaAConfirmar": true
     },
     {
       "imovel": "Apartamento 607, Bloco C — Porto Arena, Candelária (Cód. 8038)",
@@ -91,7 +96,8 @@
       "tipo": "Venda",
       "compradorLeadId": 6,
       "parceria": "Célia Cristina — captação dela",
-      "data": "2026-08-04"
+      "data": "2026-08-04",
+      "pctVenda": 0.06
     },
     {
       "imovel": "João Mendonça",
@@ -103,7 +109,8 @@
       "ano": 2026,
       "status": "pago",
       "tipo": "Venda",
-      "vendedorLeadId": 13
+      "vendedorLeadId": 13,
+      "pctVendaAConfirmar": true
     },
     {
       "imovel": "Apartamento Cód. 10638 (Mirante dos Eucaliptos, Candelária)",
@@ -115,7 +122,9 @@
       "ano": 2026,
       "status": "aguardando",
       "tipo": "Venda",
-      "vendedorLeadId": 12
+      "vendedorLeadId": 12,
+      "parceria": "Ricardo Pantoja — 50% da comissão total",
+      "pctVenda": 0.05
     },
     {
       "imovel": "Bacara 1102",
@@ -151,7 +160,8 @@
       "tipo": "Venda",
       "compradorLeadId": 13,
       "parceria": "Natália Barbosa — 50% da comissão total",
-      "data": "2026-08-08"
+      "data": "2026-08-08",
+      "pctVenda": 0.05
     },
     {
       "imovel": "Apartamento 2 Quartos Lagoa Nova 60m² (Cód. 10567)",
@@ -164,7 +174,8 @@
       "data": "2026-08-10",
       "status": "aguardando",
       "tipo": "Venda",
-      "parceria": "Ivanaldo Tavares — 50% da comissão total (R$12.000)"
+      "parceria": "Ivanaldo Tavares — 50% da comissão total (R$12.000)",
+      "pctVenda": 0.05
     }
   ],
   "leads": [
