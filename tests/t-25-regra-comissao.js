@@ -48,15 +48,30 @@ module.exports = {
         assert(ce.excecao, 'exceção não está marcada como exceção');
     }
 
-    // Negócio cujo percentual não se sabe não pode fingir que segue a regra.
-    const pend = (DATA.listaNegociacoes || []).filter(n => n.pctVendaAConfirmar);
-    pend.forEach(n => assert(n.pctVenda === undefined,
-      `${n.imovel} está marcado como "a confirmar" e ao mesmo tempo tem percentual gravado`));
-    if (pend.length) {
+    // O percentual combinado é sempre o mesmo; o que varia é o valor fechado.
+    // Percentual "quebrado" gravado num negócio é sinal de que alguém tentou
+    // esconder um ajuste de negociação dentro de uma casa decimal.
+    (DATA.listaNegociacoes || []).filter(n => n.tipo === 'Venda' && n.pctVenda).forEach(n => {
+      const bp = Math.round(n.pctVenda * 10000);
+      assert(bp % 50 === 0,
+        `${n.imovel} tem percentual quebrado (${(n.pctVenda * 100).toFixed(4)}%) — ajuste de negociação não é percentual`);
+    });
+    assert(!(DATA.listaNegociacoes || []).some(n => 'pctVendaAConfirmar' in n),
+      'ainda há negócio com percentual "a confirmar"');
+
+    // Todo ajuste precisa dizer de quanto foi e contra qual valor.
+    const ajustados = (DATA.listaNegociacoes || []).filter(n => n.ajusteComissao);
+    ajustados.forEach(n => {
+      assert(typeof n.comissaoPelaRegra === 'number',
+        `${n.imovel} tem ajuste sem o valor que a regra daria`);
+      assert(Math.abs((n.comissaoPelaRegra + n.ajusteComissao) - n.comissao) < 0.02,
+        `${n.imovel}: regra + ajuste não fecha com a comissão recebida`);
+    });
+    if (ajustados.length) {
       const bloco = (doc.getElementById('pctAConfirmar') || {}).textContent || '';
-      assert(/a confirmar/i.test(bloco), 'os negócios de percentual desconhecido não aparecem no Faturamento');
-      pend.forEach(n => assert(bloco.includes(n.imovel),
-        `${n.imovel} não está na lista de percentual a confirmar`));
+      assert(/Ajustes de comissão/i.test(bloco), 'os ajustes de comissão não aparecem no Faturamento');
+      ajustados.forEach(n => assert(bloco.includes(n.imovel),
+        `${n.imovel} não está na lista de ajustes`));
     }
 
     // E precisa estar na tela de quem está disponível.
