@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-10T15:31:00-03:00",
+  "ultimaAtualizacao": "2026-08-11T18:45:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -190,6 +190,23 @@
       "tipo": "Venda",
       "parceria": "Ivanaldo Tavares — 50% da comissão total (R$12.000)",
       "pctVenda": 0.05
+    },
+    {
+      "imovel": "Imóvel da parceria com o corretor Talison (código a identificar)",
+      "cliente": "Patrícia de Paiva Marinho Melo",
+      "valor": 350000,
+      "comissao": 5250.0,
+      "mes": "Agosto",
+      "mesNum": 8,
+      "ano": 2026,
+      "data": "2026-08-11",
+      "status": "aguardando",
+      "tipo": "Venda",
+      "compradorLeadId": 18,
+      "parceria": "Talison — 50% da comissão total (R$15.000)",
+      "pctVenda": 0.05,
+      "comissaoPelaRegra": 6125.0,
+      "ajusteComissao": -875.0
     }
   ],
   "leads": [
@@ -511,6 +528,25 @@
       "obs": "Indicado por Ricardo Magnos pelo Conecta TR em 10/08 como cliente COMPRADOR. Perfil de busca ainda não levantado.",
       "imoveisCompativeis": [],
       "interesse": null
+    },
+    {
+      "id": 18,
+      "nome": "Patrícia de Paiva Marinho Melo",
+      "telefone": "84988812472",
+      "origem": "Parceria",
+      "dataEntrada": "2026-08-11",
+      "fase": "Fechado Ganho",
+      "maiorFaseIndex": 8,
+      "temperatura": "Quente",
+      "valor": 350000,
+      "comissaoPrevista": 5250.0,
+      "comissaoDetalhe": "Comissão total combinada de R$15.000,00 (a regra de 5% daria R$17.500,00), dividida com o corretor Talison (R$7.500,00 cada); sua parte 70% = R$5.250,00.",
+      "proximaAcao": "Cobrar o pagamento da comissão",
+      "dataProximaAcao": "2026-08-14",
+      "obs": "Negócio em parceria com o corretor Talison. O contrato já estava assinado, com cláusula suspensiva: a transação só valeria se a engenharia aprovasse o imóvel. [11/08] LAUDO DE ENGENHARIA APROVADO — a condição foi cumprida e o negócio segue. Valor R$350.000,00.",
+      "imoveisCompativeis": [],
+      "interesse": "compra concluída — R$350.000, parceria com o corretor Talison",
+      "dataFechamento": "2026-08-11"
     }
   ],
   "imoveis": [
@@ -1308,6 +1344,12 @@
       "data": "2026-08-17",
       "texto": "Decidir sobre Taciana (Smile Village) e Cláudia Montenegro (Natal Brisa): sem resposta, descartar as duas prospecções",
       "relacionado": "Prospecção de captação",
+      "status": "Pendente"
+    },
+    {
+      "data": "2026-08-14",
+      "texto": "Cobrar a comissão da venda da Patrícia (parceria com o corretor Talison) — R$5.250",
+      "relacionado": "Patrícia de Paiva Marinho Melo",
       "status": "Pendente"
     }
   ],
@@ -2819,6 +2861,13 @@
       "lead": "Cláudia Montenegro",
       "tipo": "WhatsApp",
       "resumo": "Contato feito. Última tentativa: sem resposta até 17/08, a prospecção do Natal Brisa é descartada."
+    },
+    {
+      "data": "11/08/2026 15:50",
+      "lead": "Patrícia de Paiva Marinho Melo",
+      "tipo": "Outro",
+      "leadId": 18,
+      "resumo": "LAUDO DE ENGENHARIA APROVADO — a cláusula suspensiva do contrato foi cumprida e o negócio segue. Venda de R$350.000,00 em parceria com o corretor Talison. Comissão total R$15.000,00, R$7.500,00 para cada, sua parte 70% = R$5.250,00. Negócio ainda não estava registrado."
     }
   ],
   "regraComissao": {
