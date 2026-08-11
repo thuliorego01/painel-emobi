@@ -2545,10 +2545,19 @@ document.getElementById('comissaoAguardando').textContent = brl(FIN.comissaoAgua
 })();
 const totalNeg = FIN.negociado;
 document.getElementById('totalNegociado').textContent = brl(totalNeg);
-document.getElementById('totalNegociadoHint').textContent =
-  ['Venda', 'Locação', 'Diversos'].filter(t => FIN.porTipo[t])
-    .map(t => FIN.porTipo[t].qtd + ' ' + (t === 'Venda' ? (FIN.porTipo[t].qtd === 1 ? 'venda' : 'vendas')
-              : t === 'Locação' ? (FIN.porTipo[t].qtd === 1 ? 'locação' : 'locações') : 'diversos')).join(' + ');
+// A dica listava "11 vendas + 1 locação + 1 diversos" para um valor que
+// NÃO inclui os diversos — descrevia uma composição diferente da soma. Agora
+// lista só o que está no número, e cita o resto como o que ficou de fora.
+document.getElementById('totalNegociadoHint').textContent = (function () {
+  const rot = (t) => {
+    const q = FIN.porTipo[t].qtd;
+    return q + ' ' + (t === 'Venda' ? (q === 1 ? 'venda' : 'vendas')
+      : t === 'Locação' ? (q === 1 ? 'locação' : 'locações') : (q === 1 ? 'diverso' : 'diversos'));
+  };
+  const dentro = ['Venda', 'Locação'].filter(t => FIN.porTipo[t]).map(rot).join(' + ');
+  const fora = FIN.porTipo['Diversos'] ? ` · ${rot('Diversos')} fora do volume, mas na comissão` : '';
+  return dentro + fora;
+})();
 
 // Negociações agrupadas por mês, com subtotal: uma lista corrida de 9 linhas
 // não responde "quanto entrou em abril?" sem somar de cabeça. Cada linha abre
