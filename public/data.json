@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-10T12:50:00-03:00",
+  "ultimaAtualizacao": "2026-08-10T13:12:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -57,7 +57,9 @@
       "ano": 2026,
       "status": "pago",
       "tipo": "Venda",
-      "pctVendaAConfirmar": true
+      "parceria": "Guilherme Marinho — 50% da comissão total",
+      "pctVenda": 0.048626,
+      "pctVendaObservacao": "Ajuste particular no fechamento — percentual fora do padrão de 5%."
     },
     {
       "imovel": "Maria Bernadete (803)",
@@ -82,7 +84,9 @@
       "ano": 2026,
       "status": "pago",
       "tipo": "Venda",
-      "pctVendaAConfirmar": true
+      "parceria": "Alon Nunes — 50% da comissão total",
+      "pctVenda": 0.046429,
+      "pctVendaObservacao": "Ajuste particular no fechamento — percentual fora do padrão de 5%."
     },
     {
       "imovel": "Apartamento 607, Bloco C — Porto Arena, Candelária (Cód. 8038)",
@@ -1159,8 +1163,6 @@
         "meta": 10000000
       }
     ],
-    "notaAmostra": "Sazonalidade só do ano vigente (2026) — recalcula sozinha ano a ano.",
-    "notaDivergencia": "✅ Comissão de vendas de 2021 revisada e confirmada com Thúlio: R$ 95.746,83 (a planilha original tinha R$ 83.746,83, que não incluía a venda do Edifício Ubatuba).",
     "sazonalidadeHistorica": {
       "meses": [
         {
@@ -2732,6 +2734,18 @@
       "lead": "Sistema",
       "tipo": "Outro",
       "resumo": "Regra de comissão registrada em um lugar só: 5% sobre a venda, metade em caso de parceria, sua parte 70%. O campo pctComissao (percentual de CAPTAÇÃO) foi removido dos 24 imóveis — estava vazio em todos, não era lido em lugar nenhum e o nome convidava justamente ao erro de confundir captação com venda."
+    },
+    {
+      "data": "10/08/2026 13:10",
+      "lead": "Sistema",
+      "tipo": "Outro",
+      "resumo": "Percentuais fechados: Bairro Latino (parceria Guilherme Marinho) e Central Park (parceria Alon Nunes) tiveram ajuste particular no fechamento — o percentual foi deduzido da comissão efetivamente recebida, não do padrão de 5%."
+    },
+    {
+      "data": "10/08/2026 13:12",
+      "lead": "Sistema",
+      "tipo": "Outro",
+      "resumo": "A nota sobre a comissão de 2021 (Edifício Ubatuba) foi removida da fonte: o valor revisado de R$95.746,83 já está somado no histórico desde 30/07. Ela voltava a cada briefing porque continuava escrita na aba Histórico da planilha."
     }
   ],
   "regraComissao": {

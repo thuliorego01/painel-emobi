@@ -4498,7 +4498,7 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
 (function renderHistoricoNotas() {
   const el = document.getElementById('historicoNotas');
   if (!el) return;
-  const notas = [DATA.historico.notaAmostra, DATA.historico.notaDivergencia].filter(Boolean);
+  const notas = [];
   if (!notas.length) { el.style.display = 'none'; return; }
   el.innerHTML = notas.map(n => `<div class="hist-nota">${esc(n)}</div>`).join('');
 })();
