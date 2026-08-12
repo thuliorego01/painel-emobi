@@ -141,4 +141,24 @@ module.exports = { nome: 'Design: uma escala só, sem px solto', rodar: async ()
     assert(dicas === 0, 'a dica visível "Clique para ver o histórico" voltou ao card — ela é afordância de hover');
   })();
 
+
+  // ---- Densidade e hierarquia -------------------------------------------
+  // O card do lead chegou a carregar 15 informações e 6 selos, e a tela de
+  // abertura tinha 41 números do mesmo tamanho — sem protagonista, o olho não
+  // sabe onde pousar. Duas regras: campo sem valor não ocupa linha, e a
+  // abertura tem UM número herói.
+  (function densidadeEHierarquia() {
+    assert(!/Valor: <b>\$\{valorTxt\}<\/b><\/span>\s*\n\s*<span>Comiss/.test(corpo),
+      'o card voltou a imprimir Valor e Comissão mesmo quando não há valor');
+    assert(/l\.valor !== null && l\.valor !== undefined \?/.test(corpo),
+      'campo sem valor precisa sumir do card, não virar "a definir"');
+    assert(/--fs-3xl/.test(css), 'falta o degrau do número herói');
+    // O herói é UM. Se aparecer em mais de um lugar, deixa de ser herói.
+    const usos = (css.match(/var\(--fs-3xl\)/g) || []).length;
+    assert(usos === 1, `--fs-3xl usado ${usos} vezes — o número herói é um por tela`);
+    // E a saudação não pode repetir o que o herói já diz.
+    assert(!/greet-list/.test(corpo),
+      'a saudação voltou a listar as pendências que o banner já mostra em tamanho grande');
+  })();
+
 }};

@@ -89,6 +89,7 @@
     --fs-lg: 17px;     /* título de janela */
     --fs-xl: 21px;     /* número de KPI */
     --fs-2xl: 26px;    /* número grande, só na Home */
+    --fs-3xl: 44px;    /* número HERÓI: um por tela, e só na abertura */
     /* Ícones não são tipografia: escala própria, para não crescerem junto
        com o corpo do texto e desalinharem as linhas. */
     --ic-sm: 15px;
@@ -567,6 +568,12 @@
   .urgent-banner .u-icon { font-size:var(--ic-lg); flex-shrink:0; }
   .urgent-banner .u-label { font-size:var(--fs-2xs); text-transform:uppercase; letter-spacing:1.5px; color: var(--brand-gold-light); font-weight:700; }
   .urgent-banner .u-title { font-size:var(--fs-md); font-weight:700; margin-top:2px; }
+  .urgent-banner .u-herói { display:flex; align-items:baseline; gap:10px; margin-top:2px; }
+  .urgent-banner .u-herói b { font-size:var(--fs-3xl); font-weight:800; line-height:1; letter-spacing:-1px; }
+  .urgent-banner .u-herói span { font-size:var(--fs-md); font-weight:600; }
+  .urgent-banner .u-herói i { font-style:normal; font-size:var(--fs-xs); color:var(--brand-gold-light); font-weight:700; }
+  .urgent-banner .u-detalhe { font-size:var(--fs-xs); opacity:.82; margin-top:6px; line-height:1.6; }
+  .urgent-banner .u-detalhe em { font-style:normal; opacity:.45; margin:0 2px; }
   .urgent-banner .u-sub { font-size:var(--fs-sm); opacity:.8; margin-top:2px; }
   .urgent-banner.ok { background: linear-gradient(120deg, var(--ok-txt), var(--ok-txt)); border-left-color:var(--ok-txt); }
   .urgent-banner.clickable { cursor: pointer; transition: transform .12s, box-shadow .12s; }
@@ -1190,9 +1197,9 @@
 
     <div class="tab-panel active" data-tab="inicio" id="panel-inicio" role="tabpanel">
       <div class="greeting-block" id="greetingBlock"></div>
+      <div class="urgent-banner" id="urgentBanner"></div>
       <div class="section-title"><span class="dot" aria-hidden="true"></span>Como está o seu ano</div>
       <div class="card" style="margin-bottom:18px;"><div id="anoResumo"></div></div>
-      <div class="urgent-banner" id="urgentBanner"></div>
       <div class="section-title" id="prestesTitulo" style="display:none;"><span class="dot" aria-hidden="true"></span>Prestes a fechar</div>
       <div class="card" id="prestesCard" style="margin-bottom:18px;display:none;"></div>
       <div class="section-title"><span class="dot" aria-hidden="true"></span>Compromissos de Destaque</div>
@@ -1969,7 +1976,6 @@ function computeAcoesUrgentes() {
   banner.setAttribute('tabindex', '0');
 
   const linhas = [];
-  if (total > 0) linhas.push(`<span>🔴 <b>${total}</b> pendência${total === 1 ? '' : 's'}${novasDesdeUltimaVisita > 0 ? ' <b style="color:var(--aviso-txt);">(+' + novasDesdeUltimaVisita + ' nova' + (novasDesdeUltimaVisita === 1 ? '' : 's') + ')</b>' : ''}</span>`);
   if (visitasHoje > 0) linhas.push(`<span><b>${visitasHoje}</b> visita${visitasHoje === 1 ? '' : 's'} agendada${visitasHoje === 1 ? '' : 's'}</span>`);
   if (clientesAguardandoRetorno > 0) linhas.push(`<span><b>${clientesAguardandoRetorno}</b> cliente${clientesAguardandoRetorno === 1 ? '' : 's'} aguardando retorno</span>`);
   if (propostasEmNegociacao > 0) linhas.push(`<span><b>${propostasEmNegociacao}</b> proposta${propostasEmNegociacao === 1 ? '' : 's'} em negociação</span>`);
@@ -1981,8 +1987,15 @@ function computeAcoesUrgentes() {
 
   let title, breakdownHtml;
   if (linhas.length > 0) {
-    title = 'Hoje você tem:';
-    breakdownHtml = `<div class="foco-resumo">${linhas.map(l => `<div class="foco-resumo-item">${l}</div>`).join('')}</div>`;
+    // Antes eram seis linhas do mesmo tamanho e o olho não sabia onde pousar.
+    // Agora um número manda na tela e o resto é rodapé dele — a pergunta da
+    // abertura é "o que eu faço agora", e ela merece uma resposta só.
+    title = '';
+    breakdownHtml =
+      `<div class="u-herói"><b>${total}</b><span>${total === 1 ? 'pendência' : 'pendências'}` +
+      (novasDesdeUltimaVisita > 0 ? ` <i>+${novasDesdeUltimaVisita} nova${novasDesdeUltimaVisita === 1 ? '' : 's'}</i>` : '') +
+      `</span></div>` +
+      `<div class="u-detalhe">${linhas.map(l => l.replace(/<\/?span>/g, '')).join(' <em>·</em> ')}</div>`;
   } else if (compromissoHoje) {
     title = 'Nenhuma pendência — próximo compromisso hoje:';
     breakdownHtml = `<div class="u-sub">${compromissoHoje.hora} · ${compromissoHoje.titulo}</div>`;
@@ -2018,14 +2031,10 @@ function computeAcoesUrgentes() {
   const visitasHoje = AGENDA_DIA.hoje.length;
   const propostasVencidas = (DATA.leads || []).filter(l => l.fase === 'Proposta Enviada' && situacaoLead(l) === 'Atrasado').length;
 
-  const itens = [];
-  itens.push(`<span>${contatosPendentes > 0 ? contatosPendentes + ' contato' + (contatosPendentes === 1 ? '' : 's') + ' para realizar' : 'Nenhum contato pendente'}</span>`);
-  itens.push(`<span>${visitasHoje > 0 ? visitasHoje + ' visita' + (visitasHoje === 1 ? '' : 's') + ' agendada' + (visitasHoje === 1 ? '' : 's') : 'Nenhuma visita agendada hoje'}</span>`);
-  itens.push(`<span>${propostasVencidas > 0 ? propostasVencidas + ' proposta' + (propostasVencidas === 1 ? '' : 's') + ' vencida' + (propostasVencidas === 1 ? '' : 's') : 'Nenhuma proposta vencida'}</span>`);
-
-  el.innerHTML = `
-    <div class="greet-title">${saudacao}, Thúlio!</div>
-    <div class="greet-list">${itens.join('')}</div>`;
+  // A saudação listava contatos, visitas e propostas — os MESMOS números que o
+  // banner logo abaixo repete, agora em tamanho grande. Dizer duas vezes não
+  // reforça: divide a atenção e faz o número herói valer menos.
+  el.innerHTML = `<div class="greet-title">${saudacao}, Thúlio!</div>`;
 })();
 
 // ---- KPIs estratégicos (Home) ----
@@ -3424,9 +3433,8 @@ function renderLeadCard(l, container) {
     </div>
     <div class="lead-meta">
       <span>${l.fase}</span>
-      <span>Valor: <b>${valorTxt}</b></span>
-      <span>Comissão prevista: <b>${comissaoTxt}</b>${l.comissaoDetalhe ? `<details class="com-detalhe"><summary>como se chega nesse valor</summary>${esc(l.comissaoDetalhe)}</details>` : ''}</span>
-      ${l.origem ? '<span>Origem: <b>' + l.origem + '</b></span>' : ''}
+      ${l.valor !== null && l.valor !== undefined ? `<span>Valor: <b>${valorTxt}</b></span>` : ''}
+      ${l.comissaoPrevista !== null && l.comissaoPrevista !== undefined ? `<span>Comissão: <b>${comissaoTxt}</b>${l.comissaoDetalhe ? `<details class="com-detalhe"><summary>como se chega nesse valor</summary>${esc(l.comissaoDetalhe)}</details>` : ''}</span>` : ''}
     </div>
     ${linhaRecorrente(l)}
     <div class="lead-line3"><b>Última:</b> ${ultimaAtivTxt}<span class="sep">·</span><b>Próxima ação:</b> ${proximaAcaoTxt}</div>
