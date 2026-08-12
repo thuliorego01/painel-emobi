@@ -128,6 +128,16 @@ leads.forEach(l => {
   const temLog = log.some(a => String(a.leadId) === String(l.id));
   if (!temLog) problemas.push(`${l.nome} não tem nenhuma entrada de histórico ligada por ID`);
 });
+// A regra de comissão de cada venda (percentual, parceiro, ajuste) não mora na
+// planilha — só aqui. Em 12/08/2026 o briefing das 7h apagou esses campos de
+// nove negociações de uma vez, porque não os encontrou na fonte dele.
+(DATA.listaNegociacoes || []).filter(n => n.tipo === 'Venda').forEach(n => {
+  if (typeof n.pctVenda !== 'number')
+    problemas.push(`negociação "${n.imovel}" está sem o percentual combinado`);
+  if (n.ajusteComissao !== undefined && typeof n.comissaoPelaRegra !== 'number')
+    problemas.push(`negociação "${n.imovel}" tem ajuste sem o valor que a regra daria`);
+});
+
 // Lead fechado sem negociação é dinheiro que sumiu do faturamento. Aconteceu
 // em 12/08: o briefing das 7h reconstruiu a lista a partir da planilha e
 // apagou a venda da Patrícia (R$350.000, R$5.250 de comissão), que tinha sido
