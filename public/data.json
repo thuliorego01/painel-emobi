@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-11T19:10:00-03:00",
+  "ultimaAtualizacao": "2026-08-11T19:20:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1341,8 +1341,8 @@
       "status": "Pendente"
     },
     {
-      "data": "2026-08-17",
-      "texto": "Decidir sobre Taciana (Smile Village) e Cláudia Montenegro (Natal Brisa): sem resposta, descartar as duas prospecções",
+      "data": "2026-08-18",
+      "texto": "Cláudia Montenegro (Natal Brisa): sem resposta, descartar a prospecção",
       "relacionado": "Prospecção de captação",
       "status": "Pendente"
     },
@@ -1350,6 +1350,12 @@
       "data": "2026-08-14",
       "texto": "Cobrar a comissão da venda da Patrícia (parceria com o corretor Talison) — R$5.250",
       "relacionado": "Patrícia de Paiva Marinho Melo",
+      "status": "Pendente"
+    },
+    {
+      "data": "2026-08-21",
+      "texto": "Taciana (Smile Village): perguntar se a venda dela se concretizou — encerrar a prospecção se sim",
+      "relacionado": "Taciana",
       "status": "Pendente"
     }
   ],
@@ -1363,8 +1369,8 @@
       "indicadorNome": "Anísio",
       "indicadorCadastrado": false,
       "status": "Aguardando Retorno",
-      "proximaAcao": "Última tentativa feita — descartar se não responder",
-      "dataProximaAcao": "2026-08-17",
+      "proximaAcao": "Conferir se a venda dela saiu — se saiu, encerrar; se não, retomar a captação",
+      "dataProximaAcao": "2026-08-21",
       "historico": [
         {
           "data": "2026-07-24",
@@ -1377,10 +1383,14 @@
         {
           "data": "2026-08-10",
           "texto": "Contato feito. Combinado: se não houver resposta até 17/08, a prospecção é descartada."
+        },
+        {
+          "data": "2026-08-11",
+          "texto": "Ela respondeu: o imóvel está em negociação com outra pessoa e ela avisa se a venda não se concretizar. Cadência de 10 dias para tirar a dúvida."
         }
       ],
       "imovelCaptadoCod": null,
-      "decisaoNoPrazo": "Descartar"
+      "decisaoNoPrazo": "Conferir se a venda dela saiu"
     },
     {
       "id": 2,
@@ -1392,7 +1402,7 @@
       "indicadorCadastrado": null,
       "status": "Aguardando Retorno",
       "proximaAcao": "Última tentativa feita — descartar se não responder",
-      "dataProximaAcao": "2026-08-17",
+      "dataProximaAcao": "2026-08-18",
       "historico": [
         {
           "data": "2026-08-10",
@@ -2910,6 +2920,12 @@
       "tipo": "WhatsApp",
       "leadId": 14,
       "resumo": "Aguardando a cliente voltar de Campina Grande, onde foi resolver assuntos pessoais. A formalização da proposta no N2-17 fica parada até a volta."
+    },
+    {
+      "data": "11/08/2026 19:20",
+      "lead": "Taciana",
+      "tipo": "WhatsApp",
+      "resumo": "Ela respondeu: o imóvel está em negociação com outra pessoa e ela avisa caso a venda não se concretize. Deixa de ser caso de descarte por silêncio — cadência de 10 dias (21/08) para tirar a dúvida."
     }
   ],
   "regraComissao": {
