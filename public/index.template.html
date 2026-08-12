@@ -2020,6 +2020,8 @@ function computeAcoesUrgentes() {
   // sozinho quando um campo era preenchido, sem nada mudar no negócio.
   const ativos = (DATA.leads || []).filter(l => !fasesInativasLocal.includes(l.fase));
   const comValor = ativos.filter(l => typeof l.valor === 'number' && l.valor > 0);
+  // Proposta aceita ou enviada é o que está de fato na mesa — o resto é interesse.
+  const emNegociacaoDeFato = ativos.filter(l => l.fase === 'Em Negociação' || l.fase === 'Proposta Enviada');
   const semValor = ativos.length - comValor.length;
 
   el.innerHTML =
@@ -2030,9 +2032,14 @@ function computeAcoesUrgentes() {
       { icon: '🏆', label: 'Fechamentos no Mês', value: fechamentosMes, click: 'fechamentos' },
     ]) +
     grupo([
-      { icon: '💰', label: 'Em negociação na mesa', value: brl(valorPipeline),
-        hint: `Valor dos imóveis de ${comValor.length} lead${comValor.length === 1 ? '' : 's'}` +
-              (semValor ? ` · ${semValor} sem valor informado` : '') },
+      // O rótulo dizia "em negociação na mesa" para a soma de TODO lead ativo
+      // com valor — inclusive quem está só olhando. Hoje isso mostrava R$1,5 mi
+      // "em negociação" quando havia um único negócio de fato em negociação,
+      // de R$390 mil. O número estava certo; o nome é que prometia outra coisa.
+      { icon: '💰', label: 'Valor em jogo no pipeline', value: brl(valorPipeline),
+        hint: `Imóveis que ${comValor.length} lead${comValor.length === 1 ? ' ativo está olhando' : 's ativos estão olhando'}` +
+              (semValor ? ` · ${semValor} sem valor informado` : '') +
+              (emNegociacaoDeFato.length ? ` · em negociação de fato: ${brl(emNegociacaoDeFato.reduce((a, l) => a + (l.valor || 0), 0))}` : '') },
       { icon: '🏘️', label: 'V.G.V. da carteira', value: brl(valorVGV), hint: 'Imóveis disponíveis para venda' },
       { icon: '💵', label: 'Potencial da carteira inteira', value: brl(vgcDireto),
         hint: 'Se vender tudo sozinho. Em parceria: ' + brl(vgcParceria) + ' — é teto, não previsão.' },

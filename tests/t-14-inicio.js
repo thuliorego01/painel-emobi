@@ -68,4 +68,46 @@ module.exports = { nome: 'Início: dinheiro real antes de estoque', rodar: async
   // O termômetro é análise: mora no BI, não na tela de abertura.
   assert(!doc.querySelector('#panel-inicio #termometroFunil'), 'o termômetro voltou para a Home');
   assert(doc.querySelector('#panel-bicomercial #termometroFunil'), 'o termômetro sumiu do BI');
+
+  // Os KPIs da carteira precisam bater com a conta feita à parte — e o rótulo
+  // precisa descrever o que o número é. "Em negociação na mesa" somava todo
+  // lead ativo com valor, inclusive quem só estava olhando: mostrava R$1,5 mi
+  // "em negociação" havendo um único negócio de R$390 mil na mesa.
+  (function kpisDaCarteira() {
+    const FI = ['Inativo', 'Fechado Ganho', 'Fechado Perdido'];
+    const imoveis = DATA.imoveis || [];
+    const leads = DATA.leads || [];
+    const esperado = {
+      'Imóveis Ativos': imoveis.filter(i => i.status === 'Disponível' || i.status === 'Reservado').length,
+      'Leads Ativos': leads.filter(l => !FI.includes(l.fase)).length,
+      'Captações em Andamento': imoveis.filter(i => i.status === 'Em Captação').length
+    };
+    const kpis = [...doc.querySelectorAll('#panel-inicio .kpi, #panel-inicio .kpi-group-item')];
+    Object.entries(esperado).forEach(([rotulo, valor]) => {
+      const el = kpis.find(k => k.textContent.includes(rotulo));
+      assert(el, `KPI "${rotulo}" sumiu da Home`);
+      const n = Number((el.textContent.match(/(\d+)\s*$/m) || [])[1] ?? el.textContent.replace(/\D/g, ''));
+      assert(String(el.textContent).includes(String(valor)),
+        `${rotulo}: esperava ${valor} e a tela mostra "${el.textContent.replace(/\s+/g, ' ').trim()}"`);
+    });
+
+    const vgvEsperado = imoveis
+      .filter(i => i.status === 'Disponível' && i.tipoOperacao !== 'Locação')
+      .reduce((s, i) => s + (i.valor || 0), 0);
+    const elVgv = kpis.find(k => k.textContent.includes('V.G.V.'));
+    assert(elVgv && elVgv.textContent.replace(/\D/g, '').includes(String(vgvEsperado).slice(0, 6)),
+      'o V.G.V. da carteira não bate com a soma dos disponíveis para venda');
+
+    // O rótulo do pipeline não pode prometer negociação onde há só interesse.
+    const elPipe = kpis.find(k => /pipeline|negocia/i.test(k.textContent) && /R\$/.test(k.textContent));
+    if (elPipe) {
+      const somaAtivos = leads.filter(l => !FI.includes(l.fase)).reduce((s, l) => s + (l.valor || 0), 0);
+      const naMesa = leads.filter(l => l.fase === 'Em Negociação' || l.fase === 'Proposta Enviada')
+        .reduce((s, l) => s + (l.valor || 0), 0);
+      if (somaAtivos !== naMesa)
+        assert(!/em negociação na mesa/i.test(elPipe.textContent),
+          'o KPI chama de "em negociação na mesa" uma soma que inclui quem só está olhando');
+    }
+  })();
+
 }};
