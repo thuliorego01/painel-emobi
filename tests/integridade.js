@@ -128,6 +128,22 @@ leads.forEach(l => {
   const temLog = log.some(a => String(a.leadId) === String(l.id));
   if (!temLog) problemas.push(`${l.nome} não tem nenhuma entrada de histórico ligada por ID`);
 });
+// Lead fechado sem negociação é dinheiro que sumiu do faturamento. Aconteceu
+// em 12/08: o briefing das 7h reconstruiu a lista a partir da planilha e
+// apagou a venda da Patrícia (R$350.000, R$5.250 de comissão), que tinha sido
+// registrada por conversa e nunca chegou à planilha de negociações. O painel
+// continuou bonito, com R$5.250 a menos.
+leads.filter(l => l.fase === 'Fechado Ganho').forEach(l => {
+  const tem = (DATA.listaNegociacoes || []).some(n =>
+    String(n.compradorLeadId) === String(l.id) || String(n.vendedorLeadId) === String(l.id));
+  if (!tem) problemas.push(`${l.nome} está em Fechado Ganho e não tem negociação correspondente`);
+});
+// E o contrário: negociação apontando para lead que não existe mais.
+(DATA.listaNegociacoes || []).forEach(n => {
+  [n.compradorLeadId, n.vendedorLeadId].filter(v => v !== undefined && v !== null).forEach(v => {
+    if (!idsLeads.has(String(v))) problemas.push(`negociação "${n.imovel}" aponta para lead inexistente (${v})`);
+  });
+});
 imoveis.filter(i => i.status === 'Vendido').forEach(i => {
   ['dataVenda', 'comissaoThulioVenda'].forEach(c => {
     if (i[c] === undefined || i[c] === null) problemas.push(`${i.nome} está Vendido sem ${c}`);
