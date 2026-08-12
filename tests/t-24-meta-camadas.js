@@ -45,5 +45,22 @@ module.exports = {
       `o "pontos atrás" devia usar só o recebido (${dif}): "${frase.trim()}"`);
     if (FIN.comissaoAguardando + FIN.comissaoPrevista > 0)
       assert(/já está fechado/.test(frase), 'a frase precisa dizer quanto já está encaminhado');
-  }
+  
+    // As três faixas precisam ser VISUALMENTE distintas. Elas já foram parar
+    // na mesma cor uma vez — recebido e "fechado a receber" saíram idênticos,
+    // e a barra passou a mostrar dois pedaços que ninguém conseguia separar.
+    const css = require('fs').readFileSync(require('./ambiente').ALVO, 'utf8');
+    const valor = (nome) => {
+      const m = css.match(new RegExp('--' + nome + '\\s*:\\s*(#[0-9A-Fa-f]{6})'));
+      return m ? m[1].toUpperCase() : null;
+    };
+    const tons = ['meta-caixa', 'meta-fechado', 'meta-previsto'].map(valor);
+    tons.forEach((t, i) => assert(t, `falta o token --${['meta-caixa','meta-fechado','meta-previsto'][i]}`));
+    assert(new Set(tons).size === 3, 'duas faixas da meta estão com a mesma cor');
+    const lum = (h) => 0.2126 * parseInt(h.slice(1, 3), 16) + 0.7152 * parseInt(h.slice(3, 5), 16) + 0.0722 * parseInt(h.slice(5, 7), 16);
+    const ls = tons.map(lum);
+    assert(Math.abs(ls[0] - ls[1]) > 40 && Math.abs(ls[1] - ls[2]) > 40,
+      `os degraus da barra estão perto demais para o olho separar: ${tons.join(' / ')}`);
+
+}
 };

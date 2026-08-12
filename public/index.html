@@ -69,6 +69,16 @@
     --frio-txt:    #33607F;
     --frio-bg:     #EAF2F8;
     --frio-linha:  #C6DBEA;
+
+    /* As três faixas da meta são a MESMA coisa em três graus de certeza:
+       dinheiro na conta, dinheiro fechado e dinheiro encaminhado. Por isso são
+       um degradê de um tom só, com passo largo entre eles — e não três cores
+       diferentes, que fariam o olho procurar três significados. O julgamento
+       (atrás ou à frente do calendário) fica na frase, não na barra: um
+       elemento, uma mensagem. */
+    --meta-caixa:    #6B4A10;
+    --meta-fechado:  #C8A24A;
+    --meta-previsto: #EBD9A8;
     /* Escala apertada e com papel definido. A variação entre um degrau e o
        seguinte é pequena de propósito: o que separa um título de um texto de
        apoio é o peso e a cor, não o tamanho. */
@@ -323,6 +333,10 @@
       --frio-txt:    #8FBBD9;
       --frio-bg:     #1C2A36;
       --frio-linha:  #25313B;
+
+      --meta-caixa:    #D9BE8B;
+      --meta-fechado:  #8C6D1F;
+      --meta-previsto: #4A4326;
     }
     /* Daqui para baixo fica só o que um token não resolve: fundo da página,
        sombra, gradiente e a borda com transparência dos campos. Antes eram 80
@@ -646,18 +660,18 @@
   .ajustes-comissao { margin-bottom:18px; }
   .temp.parado { background:var(--fundo-sutil); color:var(--txt-fraco); font-weight:600; }
   .ritmo-trilho { height:9px; background:var(--fundo-sutil); border-radius:var(--r-sm); overflow:hidden; display:flex; }
-  .ritmo-preenche.fechado { background:var(--aviso-txt); }
-  .ritmo-preenche.encaminhado { background:var(--aviso-linha); }
+  .ritmo-preenche.fechado { background:var(--meta-fechado); }
+  .ritmo-preenche.encaminhado { background:var(--meta-previsto); }
   .ano-legenda { display:flex; flex-wrap:wrap; gap:12px; margin-top:6px; font-size: var(--fs-xs); color:var(--txt-apoio); }
   .ano-legenda i.leg { display:inline-block; width:9px; height:9px; border-radius:var(--r-sm); margin-right:5px; vertical-align:middle; }
-  .ano-legenda i.leg.atras { background:var(--aviso-txt); }
-  .ano-legenda i.leg.frente { background:var(--ok-txt); }
-  .ano-legenda i.leg.fechado { background:var(--aviso-txt); }
-  .ano-legenda i.leg.encaminhado { background:var(--aviso-linha); }
+  .ano-legenda i.leg.atras { background:var(--meta-caixa); }
+  .ano-legenda i.leg.frente { background:var(--meta-caixa); }
+  .ano-legenda i.leg.fechado { background:var(--meta-fechado); }
+  .ano-legenda i.leg.encaminhado { background:var(--meta-previsto); }
   .ritmo-preenche { display:block; height:100%; border-radius:var(--r-sm); transition:width .5s ease; }
   .ritmo-preenche.tempo { background:var(--txt-tenue); }
-  .ritmo-preenche.atras { background:linear-gradient(90deg,var(--aviso-txt),var(--aviso-txt)); }
-  .ritmo-preenche.frente { background:linear-gradient(90deg,var(--ok-txt),var(--txt-apoio)); }
+  .ritmo-preenche.atras { background:var(--meta-caixa); }
+  .ritmo-preenche.frente { background:var(--meta-caixa); }
   .ritmo-frase { margin-top:12px; font-size: var(--fs-sm); color:var(--txt-apoio); line-height:1.5; }
   .ritmo-frase.atras b { color:var(--erro-txt); }
   .ritmo-frase.frente b { color:var(--ok-txt); }
