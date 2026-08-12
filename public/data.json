@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-12T10:35:00-03:00",
+  "ultimaAtualizacao": "2026-08-12T11:00:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -519,14 +519,15 @@
       "telefone": "84994509581",
       "origem": "Conecta TR",
       "dataEntrada": "2026-08-10",
-      "fase": "Novo Lead",
-      "maiorFaseIndex": 1,
+      "fase": "Primeiro Contato Feito",
+      "maiorFaseIndex": 2,
       "temperatura": "Morno",
       "valor": null,
       "comissaoPrevista": null,
-      "proximaAcao": "Fazer o primeiro contato e qualificar o perfil de busca",
-      "dataProximaAcao": "2026-08-11",
-      "obs": "Indicado por Ricardo Magnos pelo Conecta TR em 10/08 como cliente COMPRADOR. Perfil de busca ainda não levantado."
+      "proximaAcao": "Cobrar o retorno da opção do Residencial Alexandria e levantar o perfil de busca",
+      "dataProximaAcao": "2026-08-14",
+      "obs": "Indicado por Ricardo Magnos pelo Conecta TR em 10/08 como cliente COMPRADOR. Perfil de busca ainda não levantado. [12/08] Enviada opção do Residencial Alexandria, imóvel da corretora Camila Araújo.",
+      "interesse": "perfil ainda não levantado — primeira opção enviada: Residencial Alexandria"
     },
     {
       "id": 18,
@@ -2905,6 +2906,13 @@
       "lead": "Sistema",
       "tipo": "Outro",
       "resumo": "O briefing das 7h também apagou os campos de regra de comissão de 9 negociações: percentual combinado, parceiro, valor pela regra e ajuste de negociação. 24 campos restaurados. É o mesmo defeito da venda da Patrícia — a planilha não guarda esses campos, então o briefing os trata como inexistentes."
+    },
+    {
+      "data": "12/08/2026 11:00",
+      "lead": "Aminadabe Pereira da Silva",
+      "tipo": "WhatsApp",
+      "leadId": 17,
+      "resumo": "Enviada a primeira opção: Residencial Alexandria, imóvel da corretora Camila Araújo. Perfil de busca dele ainda não foi levantado."
     }
   ],
   "regraComissao": {

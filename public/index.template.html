@@ -541,6 +541,7 @@
   .nota-status { font-size: var(--fs-xs); color: var(--txt-fraco); }
   .nota-status.ok { color: var(--ok-txt); font-weight: 600; }
   .nota-status.erro { color: var(--erro-txt); font-weight: 600; }
+  .fila-notas-lista { display:flex; flex-direction:column; gap:8px; }
   .nota-pendente {
     background: var(--aviso-bg); border: 1px solid var(--aviso-linha); border-radius:var(--r-md);
     padding: 8px 10px; margin-top: 8px; font-size: var(--fs-xs); color: var(--aviso-txt);
@@ -1346,6 +1347,7 @@
             <span class="sync-status" id="syncStatus" role="status" aria-live="polite">Incorpora as notas que você escreveu nos clientes ao histórico do CRM.</span>
             <textarea id="syncTexto" class="sync-textarea" readonly style="display:none;" aria-label="Anotações pendentes para copiar"></textarea>
           </div>
+          <div id="filaNotas"></div>
           <div id="reativacaoCard"></div>
         </div>
       </div>
@@ -3721,6 +3723,41 @@ if (leadsInativosArr.length === 0) {
     }
     if (notasCache) notasCache = notasCache.filter(x => x !== n);
   }
+
+  // A nota só podia ser apagada abrindo o card do cliente dela. Quando a
+  // Camilla fechou a venda, saiu do pipeline — e a nota ficou inalcançável,
+  // voltando em toda leva de anotações. A fila precisa de um lugar próprio,
+  // que não dependa de onde o cliente está no funil.
+  async function renderFilaNotas() {
+    const el = document.getElementById('filaNotas');
+    if (!el) return;
+    await carregarNotas(true);
+    const fila = (notasCache || []).slice();
+    if (!fila.length) { el.innerHTML = ''; return; }
+    el.innerHTML = `<div class="bloco-rotulo" style="margin-top:14px;">Anotações aguardando incorporação (${fila.length})</div>
+      <div class="fila-notas-lista"></div>`;
+    const lista = el.querySelector('.fila-notas-lista');
+    fila.forEach(n => {
+      const div = document.createElement('div');
+      div.className = 'nota-pendente';
+      const quando = n.criadaEm && !isNaN(new Date(n.criadaEm))
+        ? new Date(n.criadaEm).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) : '';
+      div.innerHTML = `<span><b>${esc(n.lead || 'sem cliente')}</b>${quando ? ' · ' + quando : ''}<br>${esc(n.texto || '')}</span>`;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'nota-limpar-todas';
+      btn.textContent = '✓ Já incorporei';
+      btn.addEventListener('click', async () => {
+        btn.disabled = true; btn.textContent = 'Limpando…';
+        await descartarNota(n);
+        renderFilaNotas();
+      });
+      div.appendChild(btn);
+      lista.appendChild(div);
+    });
+  }
+  renderFilaNotas();
+  window.renderFilaNotas = renderFilaNotas;
 
   function renderNotasPendentes(nome) {
     if (!notaPendentes) return;
