@@ -1088,7 +1088,14 @@
   .sidebar.collapsed .nav-group-label {
     height:1px; padding:0; margin:10px 8px; background:rgba(255,255,255,0.14); text-indent:-9999px;
   }
-  .sidebar.collapsed .tab-label, .sidebar.collapsed .sidebar-sync-text, .sidebar.collapsed .nav-badge { display:none; }
+  .sidebar.collapsed .tab-label, .sidebar.collapsed .sidebar-sync-text { display:none; }
+  /* Recolhido, o número não cabe — mas sumir com ele apagava a urgência
+     inteira. Vira um ponto sobre o ícone: perde a contagem, mantém o aviso. */
+  .sidebar.collapsed .nav-badge {
+    position:absolute; top:6px; right:12px; min-width:0; width:8px; height:8px;
+    padding:0; text-indent:-9999px; overflow:hidden; box-shadow:0 0 0 2px var(--brand-dark);
+  }
+  .sidebar.collapsed .tab-btn { position:relative; }
   .sidebar.collapsed .tab-btn { justify-content:center; padding:11px 0; gap:0; }
   .sidebar.collapsed .tab-btn::before { left:0; }
   .sidebar.collapsed .sidebar-brand img { height:26px; }
@@ -1163,14 +1170,13 @@
     <nav class="tabs-nav" id="tabsNav" role="tablist" aria-label="Seções do painel">
       <button class="tab-btn" data-tab="inicio" role="tab" aria-controls="panel-inicio"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></svg></span><span class="tab-label">Início</span><span class="nav-badge" id="navBadgeInicio" style="display:none;"></span></button>
 
-      <div class="nav-group-label">Operação do dia</div>
-      <button class="tab-btn" data-tab="agenda" role="tab" aria-controls="panel-agenda"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg></span><span class="tab-label">Agenda</span></button>
+      <button class="tab-btn" data-tab="agenda" role="tab" aria-controls="panel-agenda"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg></span><span class="tab-label">Agenda</span><span class="nav-badge" id="navBadgeAgenda" style="display:none;"></span></button>
 
       <div class="nav-group-label">Negócios</div>
-      <button class="tab-btn" data-tab="pipeline" role="tab" aria-controls="panel-pipeline"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7a3 3 0 1 0 0-.01"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><path d="M16 7.5a2.5 2.5 0 0 1 0 5"/><path d="M18 20c0-2.2-.9-3.6-2.2-4.5"/></svg></span><span class="tab-label">Pipeline</span></button>
-      <button class="tab-btn" data-tab="imoveis" role="tab" aria-controls="panel-imoveis"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v15"/><path d="M13 21V10h5a1 1 0 0 1 1 1v10"/><path d="M8 9h2M8 13h2M8 17h2M16 14h.01M16 17h.01"/></svg></span><span class="tab-label">Imóveis</span></button>
-      <button class="tab-btn" data-tab="prospeccao" role="tab" aria-controls="panel-prospeccao"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/><path d="M11 8v6M8 11h6"/></svg></span><span class="tab-label">Prospecção</span></button>
-      <button class="tab-btn" data-tab="conectatr" role="tab" aria-controls="panel-conectatr"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="7" r="2.5"/><circle cx="18" cy="7" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M7.6 9.1 10.6 15.7M16.4 9.1 13.4 15.7M8.5 7h7"/></svg></span><span class="tab-label">Conecta TR</span></button>
+      <button class="tab-btn" data-tab="pipeline" role="tab" aria-controls="panel-pipeline"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7a3 3 0 1 0 0-.01"/><path d="M3 20c0-3 2.7-5 6-5s6 2 6 5"/><path d="M16 7.5a2.5 2.5 0 0 1 0 5"/><path d="M18 20c0-2.2-.9-3.6-2.2-4.5"/></svg></span><span class="tab-label">Pipeline</span><span class="nav-badge" id="navBadgePipeline" style="display:none;"></span></button>
+      <button class="tab-btn" data-tab="imoveis" role="tab" aria-controls="panel-imoveis"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v15"/><path d="M13 21V10h5a1 1 0 0 1 1 1v10"/><path d="M8 9h2M8 13h2M8 17h2M16 14h.01M16 17h.01"/></svg></span><span class="tab-label">Imóveis</span><span class="nav-badge" id="navBadgeImoveis" style="display:none;"></span></button>
+      <button class="tab-btn" data-tab="prospeccao" role="tab" aria-controls="panel-prospeccao"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/><path d="M11 8v6M8 11h6"/></svg></span><span class="tab-label">Prospecção</span><span class="nav-badge" id="navBadgeProspeccao" style="display:none;"></span></button>
+      <button class="tab-btn" data-tab="conectatr" role="tab" aria-controls="panel-conectatr"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="7" r="2.5"/><circle cx="18" cy="7" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M7.6 9.1 10.6 15.7M16.4 9.1 13.4 15.7M8.5 7h7"/></svg></span><span class="tab-label">Conecta TR</span><span class="nav-badge" id="navBadgeConectatr" style="display:none;"></span></button>
 
       <div class="nav-group-label">Resultados</div>
       <button class="tab-btn" data-tab="bicomercial" role="tab" aria-controls="panel-bicomercial"><span class="tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><rect x="5" y="12" width="3.4" height="6" rx="1"/><rect x="10.3" y="8" width="3.4" height="10" rx="1"/><rect x="15.6" y="4" width="3.4" height="14" rx="1"/></svg></span><span class="tab-label">BI Comercial</span></button>
@@ -4291,17 +4297,46 @@ new Chart(document.getElementById('chartMetaLinha'), {
     });
   }
 
-  // ---- Badge de acoes urgentes no item "Inicio" ----
+  // ---- Badges de pendência no menu ----
+  // O número morava só no "Início" — que é onde você VÊ o resumo, não onde
+  // resolve. Saber que há 6 pendências sem saber onde elas estão obriga a
+  // abrir a tela inicial para depois navegar de novo. Agora cada seção mostra
+  // o que é dela, e o Início continua com o total.
   try {
     if (typeof computeAcoesUrgentes === 'function') {
-      const badge = document.getElementById('navBadgeInicio');
-      const total = computeAcoesUrgentes().total;
-      if (badge && total > 0) {
-        badge.textContent = total;
-        badge.style.display = 'inline-block';
-      }
+      const a = computeAcoesUrgentes();
+      const porSecao = {
+        Inicio: a.total,
+        Agenda: a.lembretesUrgentes.length + (a.posVendaAbertos || []).length,
+        Pipeline: a.leadsAtrasados.length + a.leadsReativar.length,
+        Imoveis: a.imoveisAtrasados.length,
+        Prospeccao: a.prospeccoesAtrasadas.length,
+        // indicacaoParada mora dentro da IIFE do Conecta TR — repetir a regra
+        // aqui seria duas verdades sobre a mesma coisa. A conta é a mesma:
+        // indicação de IMÓVEL parada em "Registrada" há mais de 15 dias.
+        Conectatr: (DATA.conectaTR && DATA.conectaTR.lista || []).filter(it => {
+          if (!it || it.tipo === 'Cliente' || it.status !== 'Registrada' || !it.data) return false;
+          const dias = diasDesdeISO(it.data);
+          return dias !== null && dias > 15;
+        }).length
+      };
+      Object.entries(porSecao).forEach(([sec, n]) => {
+        const badge = document.getElementById('navBadge' + sec);
+        if (!badge) return;
+        if (n > 0) {
+          badge.textContent = n;
+          badge.style.display = 'inline-block';
+          badge.setAttribute('aria-label', n + (n === 1 ? ' pendência' : ' pendências'));
+        } else {
+          badge.style.display = 'none';
+        }
+      });
     }
-  } catch (e) {}
+  } catch (e) {
+    // Um catch mudo aqui escondeu por completo a falha dos badges: eles
+    // simplesmente não apareciam, e a tela parecia estar dizendo "nada pendente".
+    if (window.console) console.warn('badges do menu não puderam ser calculados:', e && e.message);
+  }
 })();
 
 // ---- Imoveis captados (agrupado por Tipo -> Bairro) ----
