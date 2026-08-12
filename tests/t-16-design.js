@@ -117,4 +117,28 @@ module.exports = { nome: 'Design: uma escala só, sem px solto', rodar: async ()
       'Frio está usando a cor do Conecta TR em vez da própria');
   })();
 
+
+  // ---- Emoji ------------------------------------------------------------
+  // Eram 510 emojis e 69 símbolos diferentes na mesma tela: 💬 46 vezes,
+  // 🏠 33, 👆 25. O emoji tinha virado marcador de lista — e quando tudo está
+  // marcado, nada está marcado. Ele volta a valer só onde carrega ESTADO.
+  (function emojiComParcimonia() {
+    const EMO = /[\u{1F000}-\u{1FAFF}\u{2300}-\u{27BF}\u{23E9}-\u{23FA}]/gu;
+    const pictos = (corpo.match(EMO) || []);
+    const distintos = new Set(pictos);
+    assert(distintos.size <= 45,
+      `${distintos.size} símbolos diferentes no painel — o emoji volta a ser ruído acima de ~45`);
+    // Nenhum símbolo pode se repetir tanto a ponto de virar bullet.
+    const cont = {};
+    pictos.forEach(e => { cont[e] = (cont[e] || 0) + 1; });
+    const abusados = Object.entries(cont).filter(([e, n]) => n > 26 && !'▶→↓↔'.includes(e));
+    assert(abusados.length === 0,
+      'símbolo usado como marcador de lista: ' + abusados.map(([e, n]) => e + '×' + n).join(', '));
+    // A instrução de clique não pode voltar a aparecer 25 vezes de uma vez.
+    // (aria-label pode e deve continuar dizendo isso — o que não pode é a
+    // linha visível repetida em cada card.)
+    const dicas = (corpo.match(/Clique para ver o histórico/g) || []).length;
+    assert(dicas === 0, 'a dica visível "Clique para ver o histórico" voltou ao card — ela é afordância de hover');
+  })();
+
 }};

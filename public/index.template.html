@@ -472,7 +472,12 @@
   .lead-card-clickable { cursor: pointer; transition: box-shadow .15s ease, border-color .15s ease; }
   .lead-card-clickable:hover { box-shadow: 0 3px 12px rgba(18,22,14,0.10); border-color: var(--brand-gold); }
   .lead-card-clickable:focus-visible { outline: 2px solid var(--brand-gold); outline-offset: 2px; }
-  .lead-card-hint { font-size: var(--fs-2xs); color: var(--txt-tenue); margin-top: 6px; }
+  /* Aparece só no hover: uma dica por vez, na que o mouse está, em vez de 25
+     linhas iguais na mesma tela. No toque não existe hover — some de vez. */
+  .lead-card-hint { font-size: var(--fs-2xs); color: var(--txt-tenue); margin-top: 6px;
+    opacity: 0; transition: opacity .15s ease; }
+  .lead-card:hover .lead-card-hint, .lead-card:focus-within .lead-card-hint { opacity: 1; }
+  @media (hover: none) { .lead-card-hint { display: none; } }
   .lead-line3 { font-size: var(--fs-xs); color: var(--muted); margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--linha-tenue); }
   .lead-line3 b { color: var(--text-strong); }
   .lead-line3 .sep { margin: 0 6px; color: var(--txt-tenue); }
@@ -1171,36 +1176,36 @@
 
     <div class="tab-panel active" data-tab="inicio" id="panel-inicio" role="tabpanel">
       <div class="greeting-block" id="greetingBlock"></div>
-      <div class="section-title"><span class="dot" aria-hidden="true"></span>💵 Como está o seu ano</div>
+      <div class="section-title"><span class="dot" aria-hidden="true"></span>Como está o seu ano</div>
       <div class="card" style="margin-bottom:18px;"><div id="anoResumo"></div></div>
       <div class="urgent-banner" id="urgentBanner"></div>
-      <div class="section-title" id="prestesTitulo" style="display:none;"><span class="dot" aria-hidden="true"></span>✍️ Prestes a fechar</div>
+      <div class="section-title" id="prestesTitulo" style="display:none;"><span class="dot" aria-hidden="true"></span>Prestes a fechar</div>
       <div class="card" id="prestesCard" style="margin-bottom:18px;display:none;"></div>
-      <div class="section-title"><span class="dot" aria-hidden="true"></span>🌟 Compromissos de Destaque</div>
+      <div class="section-title"><span class="dot" aria-hidden="true"></span>Compromissos de Destaque</div>
       <div class="card" id="compromissosCard" style="margin-bottom:18px;">
         <div id="compromissosDestaqueList"></div>
       </div>
-      <div class="section-title"><span class="dot" aria-hidden="true"></span>📦 Sua carteira</div>
+      <div class="section-title"><span class="dot" aria-hidden="true"></span>Sua carteira</div>
       <div class="kpis" id="homeKpis" style="margin-bottom:18px;"></div>
     </div>
 
 
   <div class="tab-panel" data-tab="agenda" id="panel-agenda" role="tabpanel">
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>🎯 Hoje</div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>Hoje</div>
     <div class="card" style="margin-bottom:18px;">
-      <div class="bloco-rotulo">📅 Compromissos de hoje</div>
+      <div class="bloco-rotulo">Compromissos de hoje</div>
       <div id="agendaFonte" class="agenda-fonte"></div>
       <div id="agendaList"></div>
       <div class="bloco-rotulo" style="margin-top:16px;">✅ O que fazer</div>
       <div id="acoesAgoraList"></div>
     </div>
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>📆 Sua Semana</div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>Sua Semana</div>
     <div class="card" style="margin-bottom:18px;">
       <div id="semanaStrip"></div>
     </div>
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>🗓️ Depois</div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>Depois</div>
     <div class="card">
-      <div class="bloco-rotulo">📅 Próximos compromissos</div>
+      <div class="bloco-rotulo">Próximos compromissos</div>
       <div id="agendaProximosList" style="margin-bottom:18px;"></div>
       <div id="lembretesCard"></div>
     </div>
@@ -1258,11 +1263,11 @@
 
     <div class="grid2" style="margin-top:18px;">
       <div class="card">
-        <h3>📈 Comissão Acumulada em 2026</h3>
+        <h3>Comissão Acumulada em 2026</h3>
         <div class="chart-wrap"><canvas id="chartComissaoLinha"></canvas></div>
       </div>
       <div class="card">
-        <h3>📈 Valor Negociado x Meta 2026</h3>
+        <h3>Valor Negociado x Meta 2026</h3>
         <div class="chart-wrap"><canvas id="chartMetaLinha"></canvas></div>
       </div>
     </div>
@@ -1288,7 +1293,7 @@
 
     <div class="section-title"><span class="dot" aria-hidden="true"></span>Negociações 2026</div>
     <div class="card">
-      <h3>📋 Vendas &amp; Locações</h3>
+      <h3>Vendas &amp; Locações</h3>
       <div class="legend">
         <span><span class="status-dot pago"></span>Comissão paga</span>
         <span><span class="status-dot aguardando"></span>Aguardando pagamento</span>
@@ -1310,7 +1315,7 @@
         <div class="section-title"><span class="dot" aria-hidden="true"></span>Ações rápidas</div>
         <div class="card">
           <div class="sync-box" id="syncBox" style="display:none;">
-            <button type="button" class="sync-btn" id="btnCarregarNotas">🔄 Carregar minhas anotações</button>
+            <button type="button" class="sync-btn" id="btnCarregarNotas">Carregar minhas anotações</button>
             <span class="sync-status" id="syncStatus" role="status" aria-live="polite">Incorpora as notas que você escreveu nos clientes ao histórico do CRM.</span>
             <textarea id="syncTexto" class="sync-textarea" readonly style="display:none;" aria-label="Anotações pendentes para copiar"></textarea>
           </div>
@@ -1328,15 +1333,15 @@
       <div id="leadsInativosCard"></div>
     </div>
 
-    <div class="section-title" id="posVendaTitulo" style="margin-top:22px;display:none;"><span class="dot" aria-hidden="true"></span>🤝 Clientes fechados — pós-venda</div>
+    <div class="section-title" id="posVendaTitulo" style="margin-top:22px;display:none;"><span class="dot" aria-hidden="true"></span>Clientes fechados — pós-venda</div>
     <div class="card" id="posVendaCard" style="display:none;"></div>
   </div>
 
   <div class="tab-panel" data-tab="bicomercial" id="panel-bicomercial" role="tabpanel">
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>💡 De onde vem resultado?</div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>De onde vem resultado?</div>
     <div class="grid2">
       <div class="card">
-        <h3>🧭 Origem dos leads e o que cada canal entrega</h3>
+        <h3>Origem dos leads e o que cada canal entrega</h3>
         <div id="origemResultado"></div>
       </div>
       <div class="card">
@@ -1344,25 +1349,25 @@
         <div id="clientesVoltam"></div>
       </div>
     </div>
-    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>🌡️ Termômetro do Funil <span class="titulo-escopo">— leads em acompanhamento ativo</span></div>
+    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>Termômetro do Funil <span class="titulo-escopo">— leads em acompanhamento ativo</span></div>
     <div class="card" style="margin-bottom:18px;">
       <div id="termometroFunil"></div>
     </div>
-    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>🕳️ Onde estou perdendo?</div>
+    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>Onde estou perdendo?</div>
     <div class="grid2">
       <div>
         <div class="card">
-          <h3>🔻 Funil por Fase <span class="titulo-escopo">— acompanhamento ativo</span></h3>
+          <h3>Funil por Fase <span class="titulo-escopo">— acompanhamento ativo</span></h3>
           <div id="funilList"></div>
         </div>
         <div class="card" style="margin-top:18px;">
-          <h3>🚫 Motivos de Perda e Pausa</h3>
+          <h3>Motivos de Perda e Pausa</h3>
           <div id="motivosPerda"></div>
         </div>
       </div>
       <div>
         <div class="card">
-          <h3>📊 Conversão entre Fases</h3>
+          <h3>Conversão entre Fases</h3>
           <div id="amostraNota" class="amostra-nota"></div>
           <div class="table-scroll">
           <table class="conv-table">
@@ -1373,28 +1378,28 @@
           <div id="fechamentoReal"></div>
         </div>
         <div class="card" style="margin-top:18px;">
-          <h3>🏠 Funil de Captação por Status</h3>
+          <h3>Funil de Captação por Status</h3>
           <div id="captacaoFunilResumo" class="followup-resumo"></div>
         </div>
       </div>
     </div>
-    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>⏱️ Ritmo de 2026</div>
+    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>Ritmo de 2026</div>
     <div class="card"><div id="ritmoAno"></div></div>
-    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>📚 Histórico de Negociações (2020-2026)</div>
+    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>Histórico de Negociações (2020-2026)</div>
     <div id="historicoNotas" style="margin-bottom:10px;"></div>
     <div class="grid2" style="margin-top:10px;">
       <div class="card">
-        <h3>💰 Comissão Total por Ano</h3>
+        <h3>Comissão Total por Ano</h3>
         <div class="chart-wrap"><canvas id="chartHistoricoAno"></canvas></div>
       </div>
       <div class="card">
-        <h3>📅 Sazonalidade — média histórica por mês</h3>
+        <h3>Sazonalidade — média histórica por mês</h3>
         <div id="sazonalidadeNota" class="amostra-nota"></div>
         <div class="chart-wrap"><canvas id="chartHistoricoSazonalidade"></canvas></div>
       </div>
     </div>
     <div class="card" style="margin-top:18px;">
-      <h3>📋 Resumo por Ano</h3>
+      <h3>Resumo por Ano</h3>
       <div class="table-scroll">
       <table class="conv-table">
         <thead><tr><th>Ano</th><th>Nº Negócios</th><th>Valor Negociado</th><th>Comissão Total</th><th>Meta</th><th>% Atingido</th></tr></thead>
@@ -1405,7 +1410,7 @@
   </div>
 
   <div class="tab-panel" data-tab="imoveis" id="panel-imoveis" role="tabpanel">
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>🏠 Imóveis Captados</div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>Imóveis Captados</div>
     <div id="followupResumo" class="followup-resumo"></div>
     <div class="filtros-imoveis" id="filtrosImoveis">
       <select id="filtroBairro" aria-label="Filtrar por bairro"><option value="">Todos os bairros</option></select>
@@ -1431,13 +1436,13 @@
     </div>
     <div class="card" id="imoveisCard"></div>
 
-    <div class="section-title" id="vendidosTitle" style="display:none;"><span class="dot" aria-hidden="true"></span>💰 Vendidos — aguardando confirmação de comissão</div>
+    <div class="section-title" id="vendidosTitle" style="display:none;"><span class="dot" aria-hidden="true"></span>Vendidos — aguardando confirmação de comissão</div>
     <div style="font-size:var(--fs-xs);color:var(--txt-fraco);margin-bottom:10px;display:none;" id="vendidosHint">Saem daqui automaticamente assim que você confirmar o pagamento da comissão — a partir daí ficam só em registro (Log de Atividades e Faturamento).</div>
     <div class="card" id="imoveisVendidosCard" style="display:none;"></div>
   </div>
 
   <div class="tab-panel" data-tab="conectatr" id="panel-conectatr" role="tabpanel">
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>🤝 Conecta TR — Programa de Indicação</div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>Conecta TR — Programa de Indicação</div>
     <div class="kpis" style="margin-bottom:8px;">
       <div class="kpi-group">
         <div class="kpi-group-item kpi-clickable" id="kpiCtrIndicadores" data-ctr-filter="ativos" role="button" tabindex="0" aria-pressed="false">
@@ -1481,20 +1486,20 @@
     </div>
     <div class="ctr-parada" id="ctrParadas" style="display:none;"></div>
     <div class="ctr-bonus" id="ctrBonus"></div>
-    <div style="font-size:var(--fs-xs);color:var(--txt-fraco);margin-bottom:14px;">💡 Clique num card acima para ver só aquele grupo — clique de novo pra voltar a ver tudo.</div>
+    <div style="font-size:var(--fs-xs);color:var(--txt-fraco);margin-bottom:14px;">Clique num card acima para ver só aquele grupo — clique de novo pra voltar a ver tudo.</div>
     <div class="card" id="ctrIndicadoresCard" style="margin-bottom:16px;">
-      <h3>🧑‍🤝‍🧑 Quem está indicando</h3>
+      <h3>‍🤝‍🧑 Quem está indicando</h3>
       <div id="conectaTRIndicadoresList"></div>
     </div>
     <div class="card">
-      <h3 id="ctrIndicacoesTitulo">📇 Indicações</h3>
+      <h3 id="ctrIndicacoesTitulo">Indicações</h3>
       <div id="conectaTRList"></div>
     </div>
-    <div class="amostra-nota" style="margin-top:14px;">💡 Programa novo — as indicações chegam pela planilha "conecta-tr-central" no Google Drive (via Google Forms) e são espelhadas aqui. Quando uma indicação vira captação de verdade, ela é linkada automaticamente na aba Imóveis.</div>
+    <div class="amostra-nota" style="margin-top:14px;">Programa novo — as indicações chegam pela planilha "conecta-tr-central" no Google Drive (via Google Forms) e são espelhadas aqui. Quando uma indicação vira captação de verdade, ela é linkada automaticamente na aba Imóveis.</div>
   </div>
 
   <div class="tab-panel" data-tab="prospeccao" id="panel-prospeccao" role="tabpanel">
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>🏗️ Prospecção de Captação</div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>Prospecção de Captação</div>
     <div style="font-size:var(--fs-xs);color:var(--txt-fraco);margin-bottom:14px;">Proprietários sendo prospectados pra virar captação — antes de terem um imóvel formal na aba Imóveis. Diferente da aba Leads, que é focada em compradores.</div>
     <div class="kpis" id="prospeccaoKpis" style="margin-bottom:14px;"></div>
     <div class="card">
@@ -1552,10 +1557,10 @@
     <div class="lead-meta" id="leadModalInfo" style="margin-top:10px;"></div>
     <div class="lead-meta" id="leadModalObs" style="margin-top:6px;"></div>
     <div id="leadModalRecorrente"></div>
-    <div class="modal-timeline-title">📜 Histórico</div>
+    <div class="modal-timeline-title">Histórico</div>
     <div id="leadModalTimeline"></div>
     <div class="nota-box">
-      <label for="leadNotaTexto" class="modal-timeline-title" style="display:block;margin:0 0 8px;">📝 Anotar atualização</label>
+      <label for="leadNotaTexto" class="modal-timeline-title" style="display:block;margin:0 0 8px;">Anotar atualização</label>
       <div style="font-size:var(--fs-2xs);color:var(--txt-fraco);margin-bottom:8px;">
         Escreva aqui qualquer novidade deste cliente. Fica salvo na nuvem e some depois que eu incorporar ao histórico no briefing das 7h. <b>Enter</b> salva · <b>Shift+Enter</b> quebra a linha.
       </div>
@@ -1853,10 +1858,10 @@ function prospeccaoPrazo(pr) {
   const dias = diasDesdeISO(pr.dataProximaAcao);
   if (dias === null) return { cls: 'sem-prazo', texto: 'Sem prazo definido' };
   if (dias > 0) return pr.decisaoNoPrazo
-    ? { cls: 'atrasado', texto: `🔴 prazo vencido há ${dias}d — combinado: ${pr.decisaoNoPrazo.toLowerCase()}`, dias, decisao: pr.decisaoNoPrazo }
+    ? { cls: 'atrasado', texto: `prazo vencido há ${dias}d — combinado: ${pr.decisaoNoPrazo.toLowerCase()}`, dias, decisao: pr.decisaoNoPrazo }
     : { cls: 'atrasado', texto: `🔴 ${dias}d de atraso`, dias };
-  if (dias === 0) return { cls: 'hoje', texto: pr.decisaoNoPrazo ? `🟡 Vence hoje — combinado: ${pr.decisaoNoPrazo.toLowerCase()} se não responder` : '🟡 Vence hoje' };
-  return { cls: 'em-dia', texto: pr.decisaoNoPrazo ? `🟢 faltam ${-dias}d — depois disso, ${pr.decisaoNoPrazo.toLowerCase()}` : `🟢 Em dia · faltam ${-dias}d` };
+  if (dias === 0) return { cls: 'hoje', texto: pr.decisaoNoPrazo ? `Vence hoje — combinado: ${pr.decisaoNoPrazo.toLowerCase()} se não responder` : 'Vence hoje' };
+  return { cls: 'em-dia', texto: pr.decisaoNoPrazo ? `faltam ${-dias}d — depois disso, ${pr.decisaoNoPrazo.toLowerCase()}` : `Em dia · faltam ${-dias}d` };
 }
 function prospeccoesAtivas() {
   return (DATA.prospeccaoCaptacao || []).filter(pr => !PROSPECCAO_ENCERRADAS.includes(pr.status));
@@ -1951,13 +1956,13 @@ function computeAcoesUrgentes() {
 
   const linhas = [];
   if (total > 0) linhas.push(`<span>🔴 <b>${total}</b> pendência${total === 1 ? '' : 's'}${novasDesdeUltimaVisita > 0 ? ' <b style="color:var(--aviso-txt);">(+' + novasDesdeUltimaVisita + ' nova' + (novasDesdeUltimaVisita === 1 ? '' : 's') + ')</b>' : ''}</span>`);
-  if (visitasHoje > 0) linhas.push(`<span>🏠 <b>${visitasHoje}</b> visita${visitasHoje === 1 ? '' : 's'} agendada${visitasHoje === 1 ? '' : 's'}</span>`);
-  if (clientesAguardandoRetorno > 0) linhas.push(`<span>📞 <b>${clientesAguardandoRetorno}</b> cliente${clientesAguardandoRetorno === 1 ? '' : 's'} aguardando retorno</span>`);
-  if (propostasEmNegociacao > 0) linhas.push(`<span>📄 <b>${propostasEmNegociacao}</b> proposta${propostasEmNegociacao === 1 ? '' : 's'} em negociação</span>`);
-  if (lembretesUrgentes.length > 0) linhas.push(`<span>🔔 <b>${lembretesUrgentes.length}</b> lembrete${lembretesUrgentes.length === 1 ? '' : 's'} de hoje/atrasado${lembretesUrgentes.length === 1 ? '' : 's'}</span>`);
+  if (visitasHoje > 0) linhas.push(`<span><b>${visitasHoje}</b> visita${visitasHoje === 1 ? '' : 's'} agendada${visitasHoje === 1 ? '' : 's'}</span>`);
+  if (clientesAguardandoRetorno > 0) linhas.push(`<span><b>${clientesAguardandoRetorno}</b> cliente${clientesAguardandoRetorno === 1 ? '' : 's'} aguardando retorno</span>`);
+  if (propostasEmNegociacao > 0) linhas.push(`<span><b>${propostasEmNegociacao}</b> proposta${propostasEmNegociacao === 1 ? '' : 's'} em negociação</span>`);
+  if (lembretesUrgentes.length > 0) linhas.push(`<span><b>${lembretesUrgentes.length}</b> lembrete${lembretesUrgentes.length === 1 ? '' : 's'} de hoje/atrasado${lembretesUrgentes.length === 1 ? '' : 's'}</span>`);
   if (prospeccoesAtrasadas.length > 0) {
     const n = prospeccoesAtrasadas.length;
-    linhas.push(`<span>🏗️ <b>${n}</b> ${n === 1 ? 'prospecção de captação atrasada' : 'prospecções de captação atrasadas'}</span>`);
+    linhas.push(`<span><b>${n}</b> ${n === 1 ? 'prospecção de captação atrasada' : 'prospecções de captação atrasadas'}</span>`);
   }
 
   let title, breakdownHtml;
@@ -2199,7 +2204,7 @@ function renderAnoResumo() {
   // Recolhido por padrão: é conferência, não operação. O número do ano fica no
   // resumo, que é o que responde a pergunta sem ocupar meia tela.
   el.innerHTML = `<details class="ctr-encerradas ajustes-comissao">
-    <summary>⚖️ Ajustes de comissão na negociação · <b>${brl(soma)}</b> no ano, em ${negs.length} ${negs.length === 1 ? 'negócio' : 'negócios'}${semParceria.length ? ` · ${semParceria.length} a apurar` : ''}</summary>
+    <summary>Ajustes de comissão na negociação · <b>${brl(soma)}</b> no ano, em ${negs.length} ${negs.length === 1 ? 'negócio' : 'negócios'}${semParceria.length ? ` · ${semParceria.length} a apurar` : ''}</summary>
     <div class="ctr-encerradas-corpo">
       <div style="font-size:var(--fs-xs);color:var(--txt-apoio);margin-bottom:10px;">
         O percentual combinado é sempre o mesmo. Estes são os negócios em que o valor fechado
@@ -2278,7 +2283,7 @@ function renderPrestesAFechar() {
       <div class="compromisso-card${a.bloqueado ? ' bloqueado' : ''}">
         <div class="cc-time">${a.quando}<br>${a.hora}${a.horaFim ? '–' + a.horaFim : ''}</div>
         <div>
-          <div class="cc-tag">${a.bloqueado ? '🔒 Horário bloqueado' : '🏠 Compromisso'}</div>
+          <div class="cc-tag">${a.bloqueado ? '🔒 Horário bloqueado' : 'Compromisso'}</div>
           <div class="cc-titulo">${esc(a.titulo)}</div>
           <div class="cc-local">${esc(a.local || '')}</div>
         </div>
@@ -2718,7 +2723,7 @@ function abrirBiModal(titulo, leads, nota) {
       .sort((a, b) => (diasSemMovimento(b.id) ?? -1) - (diasSemMovimento(a.id) ?? -1))
       .map(l => {
         const dg = String(l.telefone || '').replace(/\D/g, '');
-        const wa = dg ? `<a class="wa-link" href="https://wa.me/${dg.startsWith('55') ? dg : '55' + dg}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+        const wa = dg ? `<a class="wa-link" href="https://wa.me/${dg.startsWith('55') ? dg : '55' + dg}" target="_blank" rel="noopener">Falar</a>` : '';
         const parado = diasSemMovimento(l.id);
         const tempoTxt = parado === null ? '' : (parado === 0 ? ' · movimentou hoje' : ` · parado há ${parado}d`);
         return `<div class="bi-modal-lead"><span><b>${esc(l.nome)}</b> <span class="bi-fase">${esc(l.fase)} · ${esc(l.temperatura || '—')}${tempoTxt}</span></span>${wa}</div>`;
@@ -2936,12 +2941,12 @@ reativacaoCard.innerHTML = rDegraus.map(t => {
       <span class="reativa-count zero">${espera.length}</span></div>`;
   })()}
   <div class="reativa-row">
-    <span><b>🔔 Total para reativar agora</b></span>
+    <span><b>Total para reativar agora</b></span>
     <span class="reativa-count ${leadsReativarAgora.length === 0 ? 'zero' : ''}">${leadsReativarAgora.length}</span>
   </div>` + (leadsReativarAgora.length ? `
   <div class="reativa-detalhe">` + leadsReativarAgora.map(l => {
     const m = motivoReativacao(l);
-    const wa = l.telefone ? `<a class="wa-link reativar" href="https://wa.me/${String(l.telefone).replace(/\D/g,'').replace(/^(?!55)/,'55')}?text=${encodeURIComponent(buildReativacaoMsg(l))}" target="_blank" rel="noopener">🔥 Reativar</a>` : '';
+    const wa = l.telefone ? `<a class="wa-link reativar" href="https://wa.me/${String(l.telefone).replace(/\D/g,'').replace(/^(?!55)/,'55')}?text=${encodeURIComponent(buildReativacaoMsg(l))}" target="_blank" rel="noopener">Reativar</a>` : '';
     return `<div class="reativa-item"><span>${esc(l.nome)} <i>· ${esc(m.texto)}</i></span>${wa}</div>`;
   }).join('') + `</div>` : '') + `
   <details class="reativa-regra"><summary>Como esta conta é feita</summary>
@@ -2978,7 +2983,7 @@ function blocoProximos(qtd, titulo) {
   return `<div class="prox-vencer"><div class="bloco-rotulo">${titulo}</div>` +
     prox.map(({ lead, restam }) => {
       const dg = String(lead.telefone || '').replace(/\D/g, '');
-      const wa = dg ? `<a class="wa-link" href="https://wa.me/${dg.startsWith('55') ? dg : '55' + dg}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+      const wa = dg ? `<a class="wa-link" href="https://wa.me/${dg.startsWith('55') ? dg : '55' + dg}" target="_blank" rel="noopener">Falar</a>` : '';
       const quando = restam === 0 ? 'vence hoje' : (restam === 1 ? 'vence amanhã' : `em ${restam} dias`);
       return `<div class="prox-linha">
         <span><b>${esc(lead.nome)}</b> <span class="prox-fase">${esc(lead.fase)} · ${esc(lead.temperatura)}</span>
@@ -3306,7 +3311,7 @@ function renderLeadCard(l, container) {
     const d = degrauReativacao(l);
     if (!d) return '';
     if (d.esgotou) return `<span class="temp parado">⏹️ ${d.parado}d parado · escada esgotada</span>`;
-    if (d.vencido !== null) return `<span class="temp parado">🔔 ${d.ordem}º toque vencido há ${d.parado - d.vencido}d</span>`;
+    if (d.vencido !== null) return `<span class="temp parado">${d.ordem}º toque vencido há ${d.parado - d.vencido}d</span>`;
     return `<span class="temp parado">⏳ ${d.ordem + 1}º toque em ${d.proximo - d.parado}d</span>`;
   })();
   const valorTxt = (l.valor === null || l.valor === undefined) ? 'a definir' : brl(l.valor);
@@ -3316,14 +3321,14 @@ function renderLeadCard(l, container) {
     const digits = String(l.telefone).replace(/\D/g, '');
     const withCountry = digits.startsWith('55') ? digits : '55' + digits;
     const displayPhone = digits.length === 11 ? `(${digits.slice(0,2)}) ${digits.slice(2,7)}-${digits.slice(7)}` : l.telefone;
-    waHtml = `<a class="wa-link" href="https://wa.me/${withCountry}" target="_blank" rel="noopener">💬 WhatsApp ${displayPhone}</a>`;
+    waHtml = `<a class="wa-link" href="https://wa.me/${withCountry}" target="_blank" rel="noopener">WhatsApp ${displayPhone}</a>`;
   }
   let reativarHtml = '';
   if (precisaReativar(l) && l.telefone) {
     const digits = String(l.telefone).replace(/\D/g, '');
     const withCountry = digits.startsWith('55') ? digits : '55' + digits;
     const msg = buildReativacaoMsg(l);
-    reativarHtml = `<a class="wa-link reativar" href="https://wa.me/${withCountry}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">🔥 Reativar agora (script pronto)</a>`;
+    reativarHtml = `<a class="wa-link reativar" href="https://wa.me/${withCountry}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">Reativar agora (script pronto)</a>`;
   }
   let confirmHtml = '';
   if (l.fase === 'Visita Agendada' && l.telefone) {
@@ -3335,7 +3340,7 @@ function renderLeadCard(l, container) {
   let matchHtml = '';
   if (Array.isArray(l.imoveisCompativeis)) {
     if (l.imoveisCompativeis.length === 0) {
-      matchHtml = `<div class="match-line"><span class="match-chip zero">🏠 Nenhum imóvel compatível no momento</span></div>`;
+      matchHtml = `<div class="match-line"><span class="match-chip zero">Nenhum imóvel compatível no momento</span></div>`;
     } else {
       // O que acabou some; o que está preso fica em destaque. Vendido ou fora
       // da carteira não é opção — mostrar só cria a chance de você mandar para
@@ -3349,14 +3354,14 @@ function renderLeadCard(l, container) {
       const livres = refs.filter(r => r.im.status === 'Disponível');
       const presos = refs.filter(r => r.im.status !== 'Disponível');
       if (refs.length === 0) {
-        matchHtml = `<div class="match-line"><span class="match-chip zero">🏠 Nenhum imóvel compatível no momento</span></div>`;
+        matchHtml = `<div class="match-line"><span class="match-chip zero">Nenhum imóvel compatível no momento</span></div>`;
       } else {
         const chips = livres.map(r => `<span class="match-chip zero">${esc(r.ref)}</span>`)
           .concat(presos.map(r => `<span class="match-chip negociando">${esc(r.ref)} · em negociação</span>`))
           .join('');
         const cabeca = presos.length === 0
-          ? `🏠 ${livres.length} imóvel(is) compatível(is)`
-          : `🏠 ${livres.length} livre(s) · ${presos.length} em negociação`;
+          ? `${livres.length} imóvel(is) compatível(is)`
+          : `${livres.length} livre(s) · ${presos.length} em negociação`;
         matchHtml = `<div class="match-line"><span class="match-chip${livres.length === 0 ? ' zero' : ''}">${cabeca}</span>` + chips + `</div>`;
       }
     }
@@ -3377,7 +3382,7 @@ function renderLeadCard(l, container) {
     partesIdade.push(`<span class="lead-idade${alerta}">parado há <b>${urg.parado}d</b></span>`);
   }
   const motivoHtml = l.motivoPerda
-    ? `<div class="lead-motivo" title="${(l.motivoDetalhe || '').replace(/"/g,'&quot;')}">🚫 <b>${l.motivoPerda}</b>${l.motivoDetalhe ? ' — ' + truncar(l.motivoDetalhe, 90) : ''}</div>`
+    ? `<div class="lead-motivo" title="${(l.motivoDetalhe || '').replace(/"/g,'&quot;')}"><b>${l.motivoPerda}</b>${l.motivoDetalhe ? ' — ' + truncar(l.motivoDetalhe, 90) : ''}</div>`
     : '';
   let chipHtml = '';
   if (urg.nivel === 'critica' || urg.nivel === 'alta') {
@@ -3385,7 +3390,7 @@ function renderLeadCard(l, container) {
     chipHtml = `<span class="lead-alerta-chip ${urg.nivel}" title="${l.temperatura} deve ser tocado a cada ${urg.limite} dia(s) — está parado há ${urg.parado}.">⚠️ ${rotulo}</span>`;
   }
   const idadeHtml = partesIdade.length
-    ? `<div class="lead-idade" style="margin-top:6px;">⏱️ ${partesIdade.join(' <span class="sep">·</span> ')}</div>`
+    ? `<div class="lead-idade" style="margin-top:6px;">${partesIdade.join(' <span class="sep">·</span> ')}</div>`
     : '';
 
   const card = document.createElement('div');
@@ -3415,7 +3420,7 @@ function renderLeadCard(l, container) {
     ${motivoHtml}
     ${matchHtml}
     <div class="lead-actions">${waHtml}${confirmHtml}${reativarHtml}${registrarHtml}</div>
-    <div class="lead-card-hint">👆 Clique para ver o histórico completo</div>`;
+    <div class="lead-card-hint">ver histórico completo</div>`;
   container.appendChild(card);
 }
 
@@ -3511,12 +3516,12 @@ if (leadsAtivosArr.length === 0) {
   const legenda = document.createElement('div');
   legenda.className = 'urg-legenda';
   legenda.innerHTML =
-    '<div class="legenda-linha"><b>🌡️ Bloco colorido</b> = temperatura do cliente:' +
+    '<div class="legenda-linha"><b>Bloco colorido</b> = temperatura do cliente:' +
       '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--quente-txt)"></span>quente</span>' +
       '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--morno-txt)"></span>morno</span>' +
       '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--frio-txt)"></span>frio</span>' +
     '</div>' +
-    '<div class="legenda-linha"><b>⏱️ Faixa fina no card</b> = cadência (quanto tempo sem contato):' +
+    '<div class="legenda-linha"><b>Faixa fina no card</b> = cadência (quanto tempo sem contato):' +
       '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--ok-txt)"></span>em dia</span>' +
       '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--aviso-txt)"></span>chegando no limite</span>' +
       '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--aviso-txt)"></span>passou do prazo</span>' +
@@ -3907,49 +3912,49 @@ if (leadsInativosArr.length === 0) {
   if (leadsAtrasados.length > 0) {
     html += `<div class="acao-group"><div class="acao-group-title">🔴 Leads atrasados (${leadsAtrasados.length})</div>` +
       leadsAtrasados.map(l => {
-        const wa = l.telefone ? `<a class="wa-link" href="${waHref(l.telefone)}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+        const wa = l.telefone ? `<a class="wa-link" href="${waHref(l.telefone)}" target="_blank" rel="noopener">Falar</a>` : '';
         return `<div class="acao-item"><span>${l.nome} — ${l.proximaAcao || 'follow-up pendente'}</span>${wa}</div>`;
       }).join('') + `</div>`;
   }
 
   if (leadsReativar.length > 0) {
-    html += `<div class="acao-group"><div class="acao-group-title">🔥 Leads para reativar (${leadsReativar.length})</div>` +
+    html += `<div class="acao-group"><div class="acao-group-title">Leads para reativar (${leadsReativar.length})</div>` +
       leadsReativar.map(l => {
-        const wa = l.telefone ? `<a class="wa-link reativar" href="${waHref(l.telefone, buildReativacaoMsg(l))}" target="_blank" rel="noopener">🔥 Reativar</a>` : '';
+        const wa = l.telefone ? `<a class="wa-link reativar" href="${waHref(l.telefone, buildReativacaoMsg(l))}" target="_blank" rel="noopener">Reativar</a>` : '';
         return `<div class="acao-item"><span>${l.nome}</span>${wa}</div>`;
       }).join('') + `</div>`;
   }
 
   if (imoveisAtrasados.length > 0) {
-    html += `<div class="acao-group"><div class="acao-group-title">🏠 Follow-up de proprietários atrasado (${imoveisAtrasados.length})</div>` +
+    html += `<div class="acao-group"><div class="acao-group-title">Follow-up de proprietários atrasado (${imoveisAtrasados.length})</div>` +
       imoveisAtrasados.map(im => {
         const dias = diasSemContato(im.ultimaInteracaoProprietario);
-        const wa = im.telefone ? `<a class="wa-link" href="${waHref(im.telefone)}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+        const wa = im.telefone ? `<a class="wa-link" href="${waHref(im.telefone)}" target="_blank" rel="noopener">Falar</a>` : '';
         return `<div class="acao-item"><span>${im.nome} — ${dias}d sem contato</span>${wa}</div>`;
       }).join('') + `</div>`;
   }
 
   if (lembretesUrgentes.length > 0) {
-    html += `<div class="acao-group" id="grupoLembretesHoje"><div class="acao-group-title">🔔 Lembretes de hoje e atrasados (${lembretesUrgentes.length})</div><div id="lembretesHojeLista"></div></div>`;
+    html += `<div class="acao-group" id="grupoLembretesHoje"><div class="acao-group-title">Lembretes de hoje e atrasados (${lembretesUrgentes.length})</div><div id="lembretesHojeLista"></div></div>`;
   }
 
   if (prospeccoesAtrasadas.length > 0) {
-    html += `<div class="acao-group"><div class="acao-group-title">🏗️ Prospecção de captação atrasada (${prospeccoesAtrasadas.length})</div>` +
+    html += `<div class="acao-group"><div class="acao-group-title">Prospecção de captação atrasada (${prospeccoesAtrasadas.length})</div>` +
       prospeccoesAtrasadas.map(pr => {
         const atraso = pr.dataProximaAcao ? diasSemContato(pr.dataProximaAcao) : null;
         const quanto = (atraso !== null && atraso > 0) ? ` — ${atraso}d de atraso` : '';
-        const wa = pr.telefone ? `<a class="wa-link" href="${waHref(pr.telefone)}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+        const wa = pr.telefone ? `<a class="wa-link" href="${waHref(pr.telefone)}" target="_blank" rel="noopener">Falar</a>` : '';
         return `<div class="acao-item"><span>${pr.nome} (${pr.imovelBairro || 'imóvel a definir'})${quanto}</span>${wa}</div>`;
       }).join('') + `</div>`;
   }
 
   const pv = posVendaVencidos();
   if (pv.length > 0) {
-    html += `<div class="acao-group"><div class="acao-group-title">🤝 Pós-venda em aberto (${pv.length})</div>` +
+    html += `<div class="acao-group"><div class="acao-group-title">Pós-venda em aberto (${pv.length})</div>` +
       pv.map(({ lead, m }) => {
         const dg = String(lead.telefone || '').replace(/\D/g, '');
         const link = dg ? 'https://wa.me/' + (dg.startsWith('55') ? dg : '55' + dg) + '?text=' + encodeURIComponent(scriptPosVenda(lead, m.marco)) : null;
-        const wa = link ? `<a class="wa-link" href="${link}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+        const wa = link ? `<a class="wa-link" href="${link}" target="_blank" rel="noopener">Falar</a>` : '';
         return `<div class="acao-item"><span>${esc(lead.nome)} — ${esc(m.marco.rotulo)} do fechamento${m.atraso > 0 ? ` (${m.atraso}d de atraso)` : ''}</span>${wa}</div>`;
       }).join('') + `</div>`;
   }
@@ -4018,7 +4023,7 @@ function addLocalConcluido(id) {
   lembretesCard.innerHTML = '';
   const titulo = document.createElement('div');
   titulo.className = 'bloco-rotulo';
-  titulo.textContent = '🔔 Lembretes agendados';
+  titulo.textContent = 'Lembretes agendados';
   lembretesCard.appendChild(titulo);
 
   if (futuros.length === 0) {
@@ -4050,9 +4055,9 @@ function linhaLembrete(l, concluidos) {
       <div class="txt">${esc(l.texto)}</div>
       <div class="meta">${l.data ? esc(l.data.split('-').reverse().join('/')) : 'sem data'}${l.hora ? ' às ' + esc(l.hora) : ''}${l.relacionado ? ' · ' + esc(l.relacionado) : ''}${s.dias > 0 ? ' · <b class="idade-atraso">há ' + s.dias + 'd</b>' : ''}</div>
       <div class="lembrete-acoes">
-        ${dg ? `<a class="wa-link" href="https://wa.me/${dg.startsWith('55') ? dg : '55' + dg}" target="_blank" rel="noopener">💬 Falar</a>` : ''}
-        <button type="button" class="lembrete-btn" data-adiar="${id}">⏰ Adiar 7 dias</button>
-        <button type="button" class="lembrete-btn" data-arquivar="${id}">🗄️ Não vale mais</button>
+        ${dg ? `<a class="wa-link" href="https://wa.me/${dg.startsWith('55') ? dg : '55' + dg}" target="_blank" rel="noopener">Falar</a>` : ''}
+        <button type="button" class="lembrete-btn" data-adiar="${id}">Adiar 7 dias</button>
+        <button type="button" class="lembrete-btn" data-arquivar="${id}">Não vale mais</button>
       </div>
     </div>`;
 
@@ -4292,9 +4297,9 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
     const [y, m, d] = im.ultimaInteracaoProprietario.split('-').map(Number);
     const ultima = new Date(y, m - 1, d);
     const dias = Math.floor((new Date() - ultima) / (1000 * 60 * 60 * 24));
-    if (dias > 30) return { label: '🔴 Follow-up atrasado (' + dias + 'd)', cls: 'atrasado' };
-    if (dias >= 25) return { label: '🟡 Follow-up se aproximando (' + dias + 'd)', cls: 'aproximando' };
-    return { label: '🟢 Follow-up em dia (' + dias + 'd)', cls: 'em-dia' };
+    if (dias > 30) return { label: 'Follow-up atrasado (' + dias + 'd)', cls: 'atrasado' };
+    if (dias >= 25) return { label: 'Follow-up se aproximando (' + dias + 'd)', cls: 'aproximando' };
+    return { label: 'Follow-up em dia (' + dias + 'd)', cls: 'em-dia' };
   }
 
   // Card enxuto: nome, valor e o que exige ação. O detalhe completo (endereço,
@@ -4331,11 +4336,11 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
         <span>${esc(im.bairro || 'bairro a definir')}${im.detalhes ? ' · ' + esc(String(im.detalhes).split(',').slice(0, 2).join(',')) : ''}</span>
         ${locacao ? '<span class="fu-chip locacao">Locação</span>' : ''}
         ${fu ? `<span class="fu-chip ${fu.cls}">${esc(fu.label.replace(/Follow-up /, ''))}</span>` : ''}
-        ${semTel ? '<span class="fu-chip sem-tel">☎ sem telefone</span>' : ''}
+        ${semTel ? '<span class="fu-chip sem-tel">sem telefone</span>' : ''}
         ${(function () {
           // Quanto esse imóvel vale para você, pela regra: sozinho e em parceria.
           const c = im.status === 'Disponível' ? comissaoEsperada(im) : null;
-          return c ? `<span class="fu-chip comissao">💰 ${brl(c.sozinho)} sozinho · ${brl(c.parceria)} em parceria${c.excecao ? ` · ${(c.pct * 100).toFixed(0).replace('.', ',')}% acordado` : ''}</span>` : '';
+          return c ? `<span class="fu-chip comissao">${brl(c.sozinho)} sozinho · ${brl(c.parceria)} em parceria${c.excecao ? ` · ${(c.pct * 100).toFixed(0).replace('.', ',')}% acordado` : ''}</span>` : '';
         })()}
       </div>`;
     return card;
@@ -4351,7 +4356,7 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
     const box = document.createElement('div');
     box.className = 'aviso-telefones';
     const total = (DATA.imoveis || []).filter(im => im.status !== 'Vendido').length;
-    box.innerHTML = `☎ <b>${semTel.length} de ${total}</b> imóveis estão sem o telefone do proprietário — é o que impede o follow-up que o painel cobra. Me passe os números que eu registro.`;
+    box.innerHTML = `<b>${semTel.length} de ${total}</b> imóveis estão sem o telefone do proprietário — é o que impede o follow-up que o painel cobra. Me passe os números que eu registro.`;
     alvo.parentNode.insertBefore(box, alvo);
   })();
 
@@ -4362,9 +4367,9 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
     if (fu) { if (fu.cls === 'atrasado') atrasados++; else if (fu.cls === 'aproximando') aproximando++; else emDia++; }
   });
   resumoEl.innerHTML = `
-    <span class="followup-chip ${atrasados > 0 ? 'atrasado' : ''}">🔴 ${atrasados} atrasado(s)</span>
-    <span class="followup-chip">🟡 ${aproximando} se aproximando</span>
-    <span class="followup-chip">🟢 ${emDia} em dia</span>
+    <span class="followup-chip ${atrasados > 0 ? 'atrasado' : ''}">${atrasados} atrasado(s)</span>
+    <span class="followup-chip">${aproximando} se aproximando</span>
+    <span class="followup-chip">${emDia} em dia</span>
     <span class="followup-chip">Cadência máxima: 30 dias sem falar com o proprietário</span>`;
 
   const captacaoEl = document.getElementById('captacaoFunilResumo');
@@ -4379,8 +4384,8 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
       total: DATA.imoveis.length
     };
     captacaoEl.innerHTML = `
-      <span class="followup-chip">🟠 ${cs.emCaptacao} em captação</span>
-      <span class="followup-chip">🟢 ${cs.disponivel} disponível(is)</span>
+      <span class="followup-chip">${cs.emCaptacao} em captação</span>
+      <span class="followup-chip">${cs.disponivel} disponível(is)</span>
       <span class="followup-chip">🟡 ${cs.reservado} reservado(s)</span>
       <span class="followup-chip">⚪ ${cs.vendido} vendido(s)</span>
       <span class="followup-chip ${cs.suspenso > 0 ? 'atrasado' : ''}">🔴 ${cs.suspenso} suspenso(s)</span>
@@ -4596,20 +4601,20 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
       (im.tipoOperacao === 'Locação' ? ' <span class="fu-chip">Locação</span>' : '');
     imBody.innerHTML = `
       <div class="lead-meta">
-        <span>💰 <b>${im.valor ? (brl(im.valor) + (im.tipoOperacao === 'Locação' ? '/mês' : '')) : 'valor a definir'}</b>${im.tipoOperacao === 'Locação' ? ' <span class="fu-chip locacao">Locação</span>' : ''}</span>
+        <span><b>${im.valor ? (brl(im.valor) + (im.tipoOperacao === 'Locação' ? '/mês' : '')) : 'valor a definir'}</b>${im.tipoOperacao === 'Locação' ? ' <span class="fu-chip locacao">Locação</span>' : ''}</span>
         ${im.tipo ? `<span>${esc(im.tipo)}</span>` : ''}
         ${im.dataCaptacao ? `<span>Captado em <b>${String(im.dataCaptacao).split('-').reverse().join('/')}</b></span>` : ''}
       </div>
       <div class="imovel-meta" style="margin-top:8px;">
-        📍 ${esc(im.endereco || 'Endereço a definir')}${im.bairro ? ' — ' + esc(im.bairro) : ''}${im.cidade ? ', ' + esc(im.cidade) : ''}<br>
-        📐 ${esc(im.detalhes || '—')}<br>
-        👤 Proprietário: <b>${esc(im.proprietario || '—')}</b>${im.telefone ? ' · ' + esc(formatarTel(im.telefone)) : ' <span class="fu-chip sem-tel">☎ telefone pendente</span>'}
+        ${esc(im.endereco || 'Endereço a definir')}${im.bairro ? ' — ' + esc(im.bairro) : ''}${im.cidade ? ', ' + esc(im.cidade) : ''}<br>
+        ${esc(im.detalhes || '—')}<br>
+        Proprietário: <b>${esc(im.proprietario || '—')}</b>${im.telefone ? ' · ' + esc(formatarTel(im.telefone)) : ' <span class="fu-chip sem-tel">telefone pendente</span>'}
       </div>
-      ${(im.comissaoTotalVenda || im.comissaoThulioVenda) ? `<div class="ctr-motivo" style="background:var(--ok-bg);border-color:var(--ok-linha);color:var(--ok-txt);">💰 Comissão total ${im.comissaoTotalVenda ? brl(im.comissaoTotalVenda) : '—'} · sua parte <b>${im.comissaoThulioVenda ? brl(im.comissaoThulioVenda) : '—'}</b>${im.corretorParceiro ? ' · parceria com ' + esc(im.corretorParceiro) : ''}</div>` : ''}
-      ${im.obs ? `<div class="modal-timeline-title">📝 Observações</div><div class="pilar-desc">${esc(im.obs)}</div>` : ''}
+      ${(im.comissaoTotalVenda || im.comissaoThulioVenda) ? `<div class="ctr-motivo" style="background:var(--ok-bg);border-color:var(--ok-linha);color:var(--ok-txt);">Comissão total ${im.comissaoTotalVenda ? brl(im.comissaoTotalVenda) : '—'} · sua parte <b>${im.comissaoThulioVenda ? brl(im.comissaoThulioVenda) : '—'}</b>${im.corretorParceiro ? ' · parceria com ' + esc(im.corretorParceiro) : ''}</div>` : ''}
+      ${im.obs ? `<div class="modal-timeline-title">Observações</div><div class="pilar-desc">${esc(im.obs)}</div>` : ''}
       <div class="lead-actions" style="margin-top:14px;">
-        ${im.link ? `<a class="imovel-link" href="${esc(im.link)}" target="_blank" rel="noopener">🔗 Ver anúncio / fotos</a>` : ''}
-        ${wa ? `<a class="imovel-link" href="${wa}" target="_blank" rel="noopener">💬 WhatsApp proprietário</a>` : ''}
+        ${im.link ? `<a class="imovel-link" href="${esc(im.link)}" target="_blank" rel="noopener">Ver anúncio / fotos</a>` : ''}
+        ${wa ? `<a class="imovel-link" href="${wa}" target="_blank" rel="noopener">WhatsApp proprietário</a>` : ''}
       </div>
       ${!wa ? '<div class="tbl-nota">Sem telefone cadastrado — é o que impede o follow-up com este proprietário. Me passe o número que eu registro.</div>' : ''}`;
     imOver.classList.add('open');
@@ -4652,7 +4657,7 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
       const card = renderCard(im);
       if (im.comissaoThulioVenda) {
         const sub = card.querySelector('.imovel-linha-sub');
-        if (sub) sub.insertAdjacentHTML('beforeend', `<span class="fu-chip comissao">💰 sua parte ${brl(im.comissaoThulioVenda)}</span>`);
+        if (sub) sub.insertAdjacentHTML('beforeend', `<span class="fu-chip comissao">sua parte ${brl(im.comissaoThulioVenda)}</span>`);
       }
       vendidosCard.appendChild(card);
     });
@@ -4899,10 +4904,10 @@ new Chart(document.getElementById('chartHistoricoAno'), {
   // Cada status vira um bloco próprio, na ordem em que exigem sua atenção.
   // Perdidas ficam recolhidas no fim: são histórico, não operação.
   const GRUPOS_CTR = [
-    { status: 'Registrada', titulo: '📋 Aguardando captação', nota: 'precisam de contato com o proprietário' },
-    { status: 'Captada',    titulo: '🏠 Captadas',            nota: 'já viraram imóvel na carteira' },
+    { status: 'Registrada', titulo: 'Aguardando captação', nota: 'precisam de contato com o proprietário' },
+    { status: 'Captada',    titulo: 'Captadas',            nota: 'já viraram imóvel na carteira' },
     { status: 'Vendida',    titulo: '✅ Vendidas',            nota: 'bonificação devida ao indicador' },
-    { tipo: 'Cliente',      titulo: '👤 Clientes indicados',  nota: 'compradores que chegaram por indicação — viram lead, não captação' }
+    { tipo: 'Cliente',      titulo: 'Clientes indicados',  nota: 'compradores que chegaram por indicação — viram lead, não captação' }
   ];
 
   function cardIndicacao(it) {
@@ -4931,24 +4936,24 @@ new Chart(document.getElementById('chartHistoricoAno'), {
             // Indicação de cliente vincula a um LEAD; a de imóvel, à carteira.
             if (ehIndicacaoDeCliente(it)) {
               const lead = (DATA.leads || []).find(l => String(l.id) === String(it.leadId));
-              if (lead) return `<span class="ctr-mini-chip">👤 ${esc(lead.nome)} · ${esc(lead.fase)}</span>`;
-              return it.leadId !== undefined ? '<span class="ctr-mini-chip alerta">👤 lead não encontrado</span>' : '<span class="ctr-mini-chip alerta">👤 ainda não virou lead</span>';
+              if (lead) return `<span class="ctr-mini-chip">${esc(lead.nome)} · ${esc(lead.fase)}</span>`;
+              return it.leadId !== undefined ? '<span class="ctr-mini-chip alerta">lead não encontrado</span>' : '<span class="ctr-mini-chip alerta">ainda não virou lead</span>';
             }
             const im = imovelDaIndicacao(it);
-            if (im) return `<span class="ctr-mini-chip">🔗 ${esc(im.nome.replace(/\s*\(Cód\..*/, ''))}</span>`;
-            return it.imovelId !== undefined ? '<span class="ctr-mini-chip alerta">🔗 imóvel não encontrado na carteira</span>' : '';
+            if (im) return `<span class="ctr-mini-chip">${esc(im.nome.replace(/\s*\(Cód\..*/, ''))}</span>`;
+            return it.imovelId !== undefined ? '<span class="ctr-mini-chip alerta">imóvel não encontrado na carteira</span>' : '';
           })()}
           ${indicacaoParada(it) ? `<span class="ctr-mini-chip alerta">⏳ parada há ${idadeIndicacao(it)}d</span>` : ''}
-          ${ehIndicacaoDeCliente(it) ? '<span class="ctr-mini-chip fora-regra">👤 indicação de cliente — não conta para o bônus de captação</span>' : ''}
-          ${it.aguardandoFormulario ? '<span class="ctr-mini-chip alerta">📝 aguardando o formulário</span>' : ''}
-          ${it.valorDevido ? `<span class="ctr-mini-chip pagar">💰 ${brl(it.valorDevido)}</span>` : ''}
-          ${it.motivoPerda ? `<span class="ctr-mini-chip motivo">🚫 ${esc(it.motivoPerda)}</span>` : ''}
+          ${ehIndicacaoDeCliente(it) ? '<span class="ctr-mini-chip fora-regra">indicação de cliente — não conta para o bônus de captação</span>' : ''}
+          ${it.aguardandoFormulario ? '<span class="ctr-mini-chip alerta">aguardando o formulário</span>' : ''}
+          ${it.valorDevido ? `<span class="ctr-mini-chip pagar">${brl(it.valorDevido)}</span>` : ''}
+          ${it.motivoPerda ? `<span class="ctr-mini-chip motivo">${esc(it.motivoPerda)}</span>` : ''}
         </div>
       </div>`;
   }
 
   function renderIndicacoes() {
-    tituloEl.textContent = filtroAtivo && filtroAtivo !== 'ativos' ? `📇 Indicações — ${filtroAtivo}` : '📇 Indicações';
+    tituloEl.textContent = filtroAtivo && filtroAtivo !== 'ativos' ? `Indicações — ${filtroAtivo}` : 'Indicações';
     if (itens.length === 0) {
       list.innerHTML = '<div class="estado-vazio">Nenhuma indicação recebida ainda. Assim que alguém indicar um imóvel pelo Forms do Conecta TR, ela aparece aqui com protocolo e status.</div>';
       return;
@@ -5041,11 +5046,11 @@ new Chart(document.getElementById('chartHistoricoAno'), {
           ${s.total === 0 ? '<span class="ctr-ind-zero">sem indicações</span>' : `<span class="ctr-ind-num">${s.total}</span>`}
         </div>
         ${s.total > 0 ? `<div class="ctr-ind-meta">${s.captadas} captada(s) · ${s.vendidas} vendida(s)${s.aReceber > 0 ? ` · <b>${brl(s.aReceber)} a receber</b>` : ''}</div>` : ''}
-        ${s.vgv > 0 ? `<span class="ind-rendeu">🏗️ ${brl(s.vgv)} colocados na sua carteira</span>` : ''}
-        ${bonusACada && s.captadas >= bonusACada - 1 ? `<span class="ind-rendeu">🎁 ${s.captadas} de ${bonusACada} captações para o bônus</span>` : ''}
+        ${s.vgv > 0 ? `<span class="ind-rendeu">${brl(s.vgv)} colocados na sua carteira</span>` : ''}
+        ${bonusACada && s.captadas >= bonusACada - 1 ? `<span class="ind-rendeu">${s.captadas} de ${bonusACada} captações para o bônus</span>` : ''}
         ${s.paradas > 0 ? `<span class="ind-rendeu" style="color:var(--aviso-txt);">⏳ ${s.paradas} indicação${s.paradas === 1 ? '' : 'ões'} parada${s.paradas === 1 ? '' : 's'} esperando você</span>` : ''}
-        ${wa ? `<a class="wa-link" href="${wa}" target="_blank" rel="noopener">💬 WhatsApp</a>` : ''}
-        ${s.total > 0 ? '<div class="ctr-ind-dica">👆 ver indicações</div>' : ''}
+        ${wa ? `<a class="wa-link" href="${wa}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
+        ${s.total > 0 ? '<div class="ctr-ind-dica">ver indicações</div>' : ''}
       </div>`;
     }).join('') + `</div>`;
   }
@@ -5145,9 +5150,9 @@ new Chart(document.getElementById('chartHistoricoAno'), {
       const alcancaram = placar.filter(x => x.n >= bonus.aCada).sort((a, b) => b.n - a.n);
       const quase = placar.filter(x => x.n === bonus.aCada - 1);
       const partes = [];
-      if (alcancaram.length) partes.push('💰 <b>Bônus a pagar:</b> ' + alcancaram.map(x =>
+      if (alcancaram.length) partes.push('<b>Bônus a pagar:</b> ' + alcancaram.map(x =>
         primeiro(x.ind.nome) + ' — ' + brl(Math.floor(x.n / bonus.aCada) * bonus.valor)).join(' · ') + '.');
-      if (quase.length) partes.push('🎁 A <b>uma captação</b> do bônus de ' + brl(bonus.valor) + ': ' +
+      if (quase.length) partes.push('A <b>uma captação</b> do bônus de ' + brl(bonus.valor) + ': ' +
         quase.map(x => primeiro(x.ind.nome)).join(' · ') + '.');
       htmlBonus = partes.join(' ');
     }
@@ -5186,24 +5191,24 @@ new Chart(document.getElementById('chartHistoricoAno'), {
         <span>Indicador: <b>${esc(ind ? ind.nome : (it.indicador || '—'))}</b></span>
         <span>Proprietário: <b>${esc(it.proprietario || '—')}</b></span>
         ${it.data ? `<span>Recebida em: <b>${String(it.data).split('-').reverse().join('/')}</b></span>` : ''}
-        ${it.valorDevido ? `<span>💰 A pagar: <b>${brl(it.valorDevido)}</b></span>` : ''}
+        ${it.valorDevido ? `<span>A pagar: <b>${brl(it.valorDevido)}</b></span>` : ''}
       </div>
       ${(function () {
         const im = imovelDaIndicacao(it);
-        if (im) return `<div class="match-line" style="margin-top:8px;"><span class="match-chip">🔗 ${esc(im.nome)} · ${esc(im.status)}${im.valor ? ' · ' + brl(im.valor) : ''}</span></div>`;
+        if (im) return `<div class="match-line" style="margin-top:8px;"><span class="match-chip">${esc(im.nome)} · ${esc(im.status)}${im.valor ? ' · ' + brl(im.valor) : ''}</span></div>`;
         if (it.imovelId !== undefined) return `<div class="ctr-motivo">⚠️ O imóvel de ID ${esc(String(it.imovelId))} não está mais na carteira. Vínculo precisa ser refeito.</div>`;
         return '';
       })()}
       ${indicacaoParada(it) ? `<div class="ctr-motivo" style="background:var(--aviso-bg);border-color:var(--aviso-linha);color:var(--aviso-txt);">⏳ Registrada há <b>${idadeIndicacao(it)} dias</b> e ainda não virou captação. O indicador está esperando notícia.</div>` : ''}
-      ${it.aguardandoFormulario ? `<div class="ctr-motivo" style="background:var(--aviso-bg);border-color:var(--aviso-linha);color:var(--aviso-txt);">📝 Registrada por fora do formulário. O protocolo é <b>provisório</b> — quando o indicador enviar pelo Forms, este registro recebe o número definitivo. <b>Não criar um segundo.</b></div>` : ''}
-      ${it.tipoIndicacao ? `<div class="ctr-motivo" style="background:var(--info-bg);border-color:var(--info-linha);color:var(--info-txt);">👤 <b>${esc(it.tipoIndicacao)}</b> — o programa foi desenhado para indicação de imóvel, e a bonificação depende da venda do imóvel indicado. Este caso não se encaixa na regra atual.</div>` : ''}
-      ${it.motivoPerda ? `<div class="ctr-motivo">🚫 <b>${esc(it.motivoPerda)}</b>${it.detalhePerda ? '<br>' + esc(it.detalhePerda) : ''}</div>` : ''}
+      ${it.aguardandoFormulario ? `<div class="ctr-motivo" style="background:var(--aviso-bg);border-color:var(--aviso-linha);color:var(--aviso-txt);">Registrada por fora do formulário. O protocolo é <b>provisório</b> — quando o indicador enviar pelo Forms, este registro recebe o número definitivo. <b>Não criar um segundo.</b></div>` : ''}
+      ${it.tipoIndicacao ? `<div class="ctr-motivo" style="background:var(--info-bg);border-color:var(--info-linha);color:var(--info-txt);"><b>${esc(it.tipoIndicacao)}</b> — o programa foi desenhado para indicação de imóvel, e a bonificação depende da venda do imóvel indicado. Este caso não se encaixa na regra atual.</div>` : ''}
+      ${it.motivoPerda ? `<div class="ctr-motivo"><b>${esc(it.motivoPerda)}</b>${it.detalhePerda ? '<br>' + esc(it.detalhePerda) : ''}</div>` : ''}
       ${it.obs ? `<div class="pilar-desc" style="margin-top:8px;">${esc(it.obs)}</div>` : ''}
       ${(waInd || waProp) && it.status !== 'Perdida' ? `<div class="lead-actions" style="margin-top:12px;">
-        ${waProp ? `<a class="wa-link" href="${waProp}" target="_blank" rel="noopener">💬 Falar com o proprietário</a>` : ''}
-        ${waInd && ind ? `<a class="wa-link registrar" href="${waInd}" target="_blank" rel="noopener">💬 Avisar ${esc(ind.nome.split(' ')[0])}</a>` : ''}
+        ${waProp ? `<a class="wa-link" href="${waProp}" target="_blank" rel="noopener">Falar com o proprietário</a>` : ''}
+        ${waInd && ind ? `<a class="wa-link registrar" href="${waInd}" target="_blank" rel="noopener">Avisar ${esc(ind.nome.split(' ')[0])}</a>` : ''}
       </div>` : ''}
-      ${ind ? `<div style="margin-top:14px;"><button type="button" class="nota-limpar-todas" data-ver-indicador="${ind.id}">👤 Ver tudo de ${esc(ind.nome.split(' ')[0])}</button></div>` : ''}`;
+      ${ind ? `<div style="margin-top:14px;"><button type="button" class="nota-limpar-todas" data-ver-indicador="${ind.id}">Ver tudo de ${esc(ind.nome.split(' ')[0])}</button></div>` : ''}`;
     abrirModal();
   }
 
@@ -5223,10 +5228,10 @@ new Chart(document.getElementById('chartHistoricoAno'), {
         <span>Indicações: <b>${minhas.length}</b></span>
         <span>Viraram captação: <b>${captadas}</b></span>
         <span>Vendidas: <b>${vendidas}</b></span>
-        ${aReceber > 0 ? `<span>💰 A receber: <b>${brl(aReceber)}</b></span>` : ''}
+        ${aReceber > 0 ? `<span>A receber: <b>${brl(aReceber)}</b></span>` : ''}
       </div>
-      ${wa ? `<div class="lead-actions" style="margin-top:10px;"><a class="wa-link" href="${wa}" target="_blank" rel="noopener">💬 WhatsApp</a></div>` : ''}
-      <div class="modal-timeline-title">📇 Indicações desta pessoa</div>
+      ${wa ? `<div class="lead-actions" style="margin-top:10px;"><a class="wa-link" href="${wa}" target="_blank" rel="noopener">WhatsApp</a></div>` : ''}
+      <div class="modal-timeline-title">Indicações desta pessoa</div>
       ${minhas.length === 0 ? '<div class="estado-vazio">Ainda não indicou nenhum imóvel.</div>'
         : minhas.map(it => {
             const dias = it.data ? diasDesdeISO(it.data) : null;
@@ -5235,7 +5240,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
                 <span class="ctr-linha-nome">${esc(it.protocolo)} · ${esc(it.imovel || '')}</span>
                 <span class="ctr-linha-selos">${dias !== null ? `<span class="ctr-idade">${dias}d</span>` : ''}<span class="badge ${statusClass[it.status] || 'novo'}">${esc(it.status)}</span></span>
               </div>
-              ${it.motivoPerda ? `<div class="ctr-linha-sub"><span class="ctr-mini-chip motivo">🚫 ${esc(it.motivoPerda)}</span></div>` : ''}
+              ${it.motivoPerda ? `<div class="ctr-linha-sub"><span class="ctr-mini-chip motivo">${esc(it.motivoPerda)}</span></div>` : ''}
             </div>`;
           }).join('')}`;
     abrirModal();
@@ -5459,7 +5464,7 @@ function resumirEvento(titulo) {
   // iniciar uma conversa no chat. Então o botão faz a próxima melhor coisa:
   // junta as anotações pendentes num texto pronto para colar.
   const textarea = document.getElementById('syncTexto');
-  btn.textContent = '📋 Copiar anotações pendentes';
+  btn.textContent = 'Copiar anotações pendentes';
   status.textContent = 'Copia suas anotações num texto pronto — cole no chat do Claude e eu incorporo ao histórico.';
 
   async function coletarNotas() {
@@ -5727,10 +5732,10 @@ function resumirEvento(titulo) {
       ? `<div class="termo-nota">Maior perda entre <b>${FUNIL_CONVERSAO_FASES[gargaloIdx - 1]}</b> e <b>${FUNIL_CONVERSAO_FASES[gargaloIdx]}</b> — de ${alcancaram[gargaloIdx - 1]} para ${alcancaram[gargaloIdx]} (${Math.round(piorQueda * 100)}% de queda). É onde vale atacar primeiro.</div>`
       : '')
     + (alcancaram[ULTIMA - 1] > 0 && alcancaram[ULTIMA] === 0
-        ? `<div class="termo-nota-mini">🤝 <b>${alcancaram[ULTIMA - 1]}</b> em negociação, nenhum fechado ainda — fila de espera, não gargalo.</div>`
+        ? `<div class="termo-nota-mini"><b>${alcancaram[ULTIMA - 1]}</b> em negociação, nenhum fechado ainda — fila de espera, não gargalo.</div>`
         : '')
     + (vendasForaDoFunil > 0
-        ? `<div class="termo-nota-mini">➕ <b>${vendasForaDoFunil}</b> ${vendasForaDoFunil === 1 ? 'venda fechada fora do funil' : 'vendas fechadas fora do funil'} (vieram pela captação).</div>`
+        ? `<div class="termo-nota-mini"><b>${vendasForaDoFunil}</b> ${vendasForaDoFunil === 1 ? 'venda fechada fora do funil' : 'vendas fechadas fora do funil'} (vieram pela captação).</div>`
         : '')
     + `<details class="termo-ajuda">
         <summary>Como ler este funil</summary>
@@ -5890,7 +5895,7 @@ function abrirPosVenda(id) {
       : `<div class="bi-modal-nota">Sem data de fechamento registrada. Me diga a data e a cadência começa a rodar.</div>`) +
     (neg ? `<div class="bi-modal-lead"><span>Negócio</span><b>${esc(neg.imovel)}</b></div>
             <div class="bi-modal-lead"><span>Comissão</span><b>${brl(neg.comissao)} · ${neg.status === 'pago' ? 'recebida' : 'a receber'}</b></div>` : '') +
-    `<div class="modal-timeline-title">🤝 Linha do tempo do pós-venda</div>` +
+    `<div class="modal-timeline-title">Linha do tempo do pós-venda</div>` +
     POS_VENDA_MARCOS.map(m => {
       const feito = feitos.has(String(m.dias));
       const vencido = dias !== null && dias >= m.dias && !feito;
@@ -5901,7 +5906,7 @@ function abrirPosVenda(id) {
       return `<div class="pv-passo ${classe}">
         <span class="pv-passo-topo"><b>${m.rotulo}</b> <span class="pv-passo-quando">${quando}</span></span>
         <span class="pv-passo-acao">${esc(m.acao)}</span>
-        ${link ? `<a class="wa-link" href="${link}" target="_blank" rel="noopener">💬 Falar (mensagem pronta)</a>` : ''}
+        ${link ? `<a class="wa-link" href="${link}" target="_blank" rel="noopener">Falar (mensagem pronta)</a>` : ''}
       </div>`;
     }).join('');
   over.classList.add('open');
@@ -5952,7 +5957,7 @@ function abrirPosVenda(id) {
       <div class="pr-sub">
         <span>${esc(pr.imovelBairro || 'imóvel a definir')}</span>
         ${pr.indicadorNome ? `<span class="fu-chip ${pr.indicadorCadastrado === false ? 'sem-tel' : 'em-dia'}">↗ ${esc(pr.indicadorNome)}${pr.indicadorCadastrado === false ? ' · fora do Conecta TR' : ''}</span>` : ''}
-        ${!pr.telefone ? '<span class="fu-chip sem-tel">☎ sem telefone</span>' : ''}
+        ${!pr.telefone ? '<span class="fu-chip sem-tel">sem telefone</span>' : ''}
         ${im ? `<span class="fu-chip comissao">→ ${esc(im.nome)}</span>` : ''}
       </div>
     </div>`;
@@ -6005,7 +6010,7 @@ function abrirProspeccao(id) {
   const pz = prospeccaoPrazo(pr);
   const im = imovelDaProspeccao(pr);
   const dg = String(pr.telefone || '').replace(/\D/g, '');
-  const wa = dg ? `<a class="wa-link" href="https://wa.me/${dg.startsWith('55') ? dg : '55' + dg}" target="_blank" rel="noopener">💬 Falar</a>` : '';
+  const wa = dg ? `<a class="wa-link" href="https://wa.me/${dg.startsWith('55') ? dg : '55' + dg}" target="_blank" rel="noopener">Falar</a>` : '';
   const hist = (pr.historico || []).slice().reverse();
 
   document.getElementById('biModalTitulo').textContent = pr.nome || '—';
@@ -6019,7 +6024,7 @@ function abrirProspeccao(id) {
     `<div class="bi-modal-lead"><span>Telefone</span><b>${pr.telefone ? esc(formatarTel(pr.telefone)) : 'não cadastrado'}</b>${wa}</div>` +
     (im ? `<div class="bi-modal-lead"><span>Virou o imóvel</span><b>${esc(im.nome)}</b></div>` : '') +
     `<div class="bi-modal-lead"><span>Próxima ação</span><b>${esc(pr.proximaAcao || '—')}</b></div>` +
-    `<div class="modal-timeline-title">📜 Histórico</div>` +
+    `<div class="modal-timeline-title">Histórico</div>` +
     (hist.length
       ? hist.map(a => `<div class="timeline-item">
             <span class="timeline-date">${esc(a.data.split('-').reverse().join('/'))}</span><span class="timeline-tipo">${esc(a.tipo || 'Outro')}</span>
