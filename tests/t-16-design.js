@@ -71,4 +71,50 @@ module.exports = { nome: 'Design: uma escala só, sem px solto', rodar: async ()
   // Estado vazio é classe, não estilo escrito à mão 16 vezes.
   assert(!/style="font-size:[0-9.]+px;color:#8A9186;"/.test(corpo),
     'voltou a existir mensagem de "vazio" com estilo inline');
+
+  // ---- Paleta ----------------------------------------------------------
+  // Eram 177 cores escritas à mão, 76 usadas uma única vez: três vermelhos
+  // para "atrasado", três verdes para "em dia", trinta e oito âmbares. Cor sem
+  // regra deixa de ser atalho e vira decoração. Agora existe uma paleta
+  // semântica, e hex solto no CSS é o mesmo erro que px solto na fonte.
+  (function paletaFechada() {
+    const fonte = css;
+    // Os :root são onde os tokens NASCEM — só lá pode haver hex.
+    const faixas = [];
+    const re = /:root\s*\{/g;
+    let m;
+    while ((m = re.exec(fonte))) {
+      let d = 0;
+      for (let k = m.index + m[0].length - 1; k < fonte.length; k++) {
+        if (fonte[k] === '{') d++;
+        else if (fonte[k] === '}') { d--; if (d === 0) { faixas.push([m.index, k]); break; } }
+      }
+    }
+    const dentroDeRoot = (i) => faixas.some(([a, b]) => i >= a && i <= b);
+    const soltos = [];
+    const rh = /#[0-9A-Fa-f]{3,8}\b/g;
+    let h;
+    while ((h = rh.exec(fonte))) {
+      if (dentroDeRoot(h.index)) continue;
+      soltos.push(h[0]);
+    }
+    // Sobra permitida: fundo da página, superfícies do escuro e a borda com
+    // transparência dos campos — coisas que um token semântico não descreve.
+    const PERMITIDOS = new Set(['#111510', '#20261E', '#39423577', '#232A22', '#232B21', '#3A4435']);
+    const proibidos = soltos.filter(c => !PERMITIDOS.has(c.toUpperCase()) && !PERMITIDOS.has(c));
+    assert(proibidos.length === 0,
+      `cor escrita à mão fora da paleta: ${[...new Set(proibidos)].slice(0, 6).join(', ')}` +
+      ` (${proibidos.length} no total) — use um token de --erro/--ok/--aviso/--info/--quente/--morno/--frio/--txt/--linha`);
+
+    // Temperatura não pode reusar a cor de estado: lead Quente é boa notícia,
+    // e pintá-lo com o vermelho de "atrasado" faz o olho ler perigo.
+    ['quente', 'morno', 'frio'].forEach(t => {
+      assert(new RegExp(`--${t}-txt\\s*:`).test(fonte), `falta o token --${t}-txt`);
+    });
+    assert(!/\.temp\.quente\s*\{[^}]*--erro-/.test(fonte),
+      'o selo de temperatura Quente está usando a cor de erro');
+    assert(!/\.temp\.frio\s*\{[^}]*--info-/.test(fonte),
+      'Frio está usando a cor do Conecta TR em vez da própria');
+  })();
+
 }};
