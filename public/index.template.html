@@ -1582,7 +1582,33 @@ const DATA = /*__PAINEL_DATA_PLACEHOLDER__*/{};
 const IMOVEIS_TODOS = (DATA.imoveis || []).slice();
 DATA.imoveis = IMOVEIS_TODOS.filter(im => im && im.status !== 'Fora da carteira');
 const isDemo = false;
-const BRAND = { dark: 'var(--brand-dark)', dark2:'var(--brand-dark2)', gold:'var(--brand-gold)', goldLight:'var(--brand-gold-light)', goldDeep:'var(--brand-gold-deep)', green:'var(--ok-txt)' };
+// Canvas não entende var(): o Chart.js recebe uma string e, se ela não for uma
+// cor de verdade, desenha preto. Foi o que aconteceu quando a paleta virou
+// tokens — os gráficos ficaram todos pretos. Aqui os tokens são RESOLVIDOS
+// para o valor real antes de ir para o gráfico, o que também faz o gráfico
+// acompanhar o modo escuro sem uma segunda lista de cores.
+function cor(token, alternativa) {
+  try {
+    const v = getComputedStyle(document.documentElement).getPropertyValue(token).trim();
+    if (v) return v;
+  } catch (e) { /* ambiente sem CSS resolvido */ }
+  return alternativa;
+}
+const BRAND = {
+  dark:      cor('--brand-dark', '#10150F'),
+  dark2:     cor('--brand-dark2', '#1D2717'),
+  gold:      cor('--brand-gold', '#BF9D53'),
+  goldLight: cor('--brand-gold-light', '#D9BE8B'),
+  goldDeep:  cor('--brand-gold-deep', '#8C6D1F'),
+  green:     cor('--ok-txt', '#2E7D32'),
+  quente:    cor('--quente-txt', '#B4300F'),
+  morno:     cor('--morno-txt', '#8A5A14'),
+  frio:      cor('--frio-txt', '#33607F'),
+  erro:      cor('--erro-txt', '#B4300F'),
+  aviso:     cor('--aviso-txt', '#8A5A14'),
+  linha:     cor('--linha', '#E9EBE4'),
+  txtFraco:  cor('--txt-fraco', '#8A9186')
+};
 
 function brl(v) {
   return (v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
@@ -3486,9 +3512,9 @@ if (leadsAtivosArr.length === 0) {
   legenda.className = 'urg-legenda';
   legenda.innerHTML =
     '<div class="legenda-linha"><b>🌡️ Bloco colorido</b> = temperatura do cliente:' +
-      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--erro-txt)"></span>quente</span>' +
-      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--aviso-txt)"></span>morno</span>' +
-      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--info-txt)"></span>frio</span>' +
+      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--quente-txt)"></span>quente</span>' +
+      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--morno-txt)"></span>morno</span>' +
+      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--frio-txt)"></span>frio</span>' +
     '</div>' +
     '<div class="legenda-linha"><b>⏱️ Faixa fina no card</b> = cadência (quanto tempo sem contato):' +
       '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--ok-txt)"></span>em dia</span>' +
@@ -4059,7 +4085,7 @@ function linhaLembrete(l, concluidos) {
 
 // Gráficos acompanham o tema do sistema
 if (window.Chart && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  try { Chart.defaults.color = 'var(--txt-fraco)'; Chart.defaults.borderColor = 'rgba(154,163,148,.18)'; } catch (e) {}
+  try { Chart.defaults.color = BRAND.txtFraco; Chart.defaults.borderColor = 'rgba(154,163,148,.18)'; } catch (e) {}
 }
 
 // ---- Gráficos de linha (evolução mensal 2026) ----
@@ -4812,7 +4838,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
       labels: labels,
       datasets: [
         { label: 'Média histórica', data: medias, backgroundColor: BRAND.dark2, borderRadius: 4, order: 2 },
-        { label: String(new Date().getFullYear()), data: atual, type: 'line', borderColor: BRAND.gold || 'var(--aviso-txt)',
+        { label: String(new Date().getFullYear()), data: atual, type: 'line', borderColor: BRAND.gold,
           backgroundColor: 'transparent', borderWidth: 2, pointRadius: 3, tension: .25, order: 1 }
       ]
     },
