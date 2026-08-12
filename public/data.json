@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-11T19:00:00-03:00",
+  "ultimaAtualizacao": "2026-08-11T19:10:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -286,16 +286,15 @@
       "temperatura": null,
       "valor": 500000,
       "comissaoPrevista": null,
-      "proximaAcao": "Retomada a cada 15 dias — avaliar encerrar se não houver resposta",
+      "proximaAcao": "Retomada a cada 30 dias — avaliar encerrar se não houver resposta",
       "dataProximaAcao": null,
-      "obs": "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente quer levar a mãe numa segunda visita antes de decidir. 2ª visita agendada para quarta-feira, 08/07, às 16h. [18/07] Cliente pediu que Thúlio entre em contato diretamente com a mãe dela. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada. [10/08] Cadência de reativação ajustada para 15 dias. Leitura do Thúlio: provavelmente é lead perdido.",
+      "obs": "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente quer levar a mãe numa segunda visita antes de decidir. 2ª visita agendada para quarta-feira, 08/07, às 16h. [18/07] Cliente pediu que Thúlio entre em contato diretamente com a mãe dela. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada. [10/08] Cadência de reativação de 30 dias (a padrão). Leitura do Thúlio: provavelmente é lead perdido.",
       "imoveisCompativeis": [],
       "visitaResumo": null,
       "visitaDetalhe": "pra você trazer sua mãe dessa vez",
       "interesse": "casa em Capim Macio",
       "temperaturaAoInativar": "Morno",
-      "dataInativacao": "2026-07-25",
-      "cadenciaDias": 15
+      "dataInativacao": "2026-07-25"
     },
     {
       "id": 5,
@@ -469,9 +468,9 @@
       "temperatura": "Quente",
       "valor": null,
       "comissaoPrevista": null,
-      "proximaAcao": "Formalizar a proposta no N2-17 (Alphaville Pium)",
-      "dataProximaAcao": "2026-08-13",
-      "obs": "Cliente de relacionamento: foi a VENDEDORA do Maria Bernadete (803), vendido em abril/2026 por R$635.000. Agora volta como COMPRADORA. Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já visitou 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta. [07/08] Trabalhando a formalização da proposta no N2-17. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel).",
+      "proximaAcao": "Retomar a formalização da proposta quando ela voltar de Campina Grande",
+      "dataProximaAcao": "2026-08-17",
+      "obs": "Cliente de relacionamento: foi a VENDEDORA do Maria Bernadete (803), vendido em abril/2026 por R$635.000. Agora volta como COMPRADORA. Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já visitou 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta. [07/08] Trabalhando a formalização da proposta no N2-17. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [11/08] Aguardando a cliente voltar de Campina Grande, onde foi resolver assuntos pessoais. A proposta fica parada até a volta.",
       "interesse": "lote plano no Alphaville para construir casa térrea — inclinada ao N2-17 (Alphaville Pium)",
       "imoveisCompativeis": []
     },
@@ -2897,6 +2896,20 @@
       "tipo": "WhatsApp",
       "leadId": 16,
       "resumo": "Enviada mais uma mensagem de feedback sobre o Cód. 10652. Leitura do Thúlio: provavelmente ficará sem resposta. Temperatura de Quente para Morno."
+    },
+    {
+      "data": "10/08/2026 16:05",
+      "lead": "Kamylla Gadelha",
+      "tipo": "Outro",
+      "leadId": 4,
+      "resumo": "Correção: a cadência dela é de 30 dias, não 15 — volta a ser a escada padrão de 30/60/90."
+    },
+    {
+      "data": "11/08/2026 18:00",
+      "lead": "Caroline Evelin",
+      "tipo": "WhatsApp",
+      "leadId": 14,
+      "resumo": "Aguardando a cliente voltar de Campina Grande, onde foi resolver assuntos pessoais. A formalização da proposta no N2-17 fica parada até a volta."
     }
   ],
   "regraComissao": {
