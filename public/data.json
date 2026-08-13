@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-13T12:10:00-03:00",
+  "ultimaAtualizacao": "2026-08-13T15:10:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -941,7 +941,7 @@
       "status": "Disponível",
       "dataCaptacao": "2026-07-02",
       "ultimaInteracaoProprietario": "2026-08-13",
-      "obs": "Condomínio Porto Arena, exclusividade. Condomínio R$ 945,00 + IPTU R$ 299,00. [13/08] Visita hoje às 16h30 com cliente do corretor Caio Marinho.",
+      "obs": "Condomínio Porto Arena, exclusividade. Condomínio R$ 945,00 + IPTU R$ 299,00. [13/08] A cliente do corretor Caio Marinho cancelou a visita de hoje; remarcada para sábado 15/08 às 9h.",
       "tipoOperacao": "Venda"
     },
     {
@@ -1284,13 +1284,6 @@
       "horaFim": "16:30",
       "titulo": "Pós-venda — Diana Rêgo tira medidas no Porto Arena (apto 607, bloco C)",
       "local": "Porto Arena, Candelária - Natal/RN"
-    },
-    {
-      "data": "2026-08-13",
-      "hora": "16:30",
-      "horaFim": "17:30",
-      "titulo": "Visita ao Cód. 5485 (Porto Arena) — cliente do corretor Caio Marinho",
-      "local": "Alameda Das Mansões, Candelária - Natal/RN"
     }
   ],
   "agendaAmanha": [
@@ -1302,7 +1295,15 @@
       "local": "Corais Alto da Candelária, Candelária - Natal/RN"
     }
   ],
-  "agendaProximos": [],
+  "agendaProximos": [
+    {
+      "data": "2026-08-15",
+      "hora": "09:00",
+      "horaFim": "10:00",
+      "titulo": "Visita ao Cód. 5485 (Porto Arena) — cliente do corretor Caio Marinho",
+      "local": "Alameda Das Mansões, Candelária - Natal/RN"
+    }
+  ],
   "lembretes": [
     {
       "texto": "Falar com Filipe Ideli sobre chegada da irmã e procura de apartamento em Tirol ou Petrópolis",
@@ -2963,6 +2964,12 @@
       "lead": "Sandro Rok",
       "tipo": "Visita",
       "resumo": "Visita em 14/08 às 8h ao apto 1303 do Corais Alto da Candelária, acompanhando o cliente do corretor Sandro Rok. O imóvel não está na minha carteira."
+    },
+    {
+      "data": "13/08/2026 15:10",
+      "lead": "Klevisson Araújo",
+      "tipo": "Outro",
+      "resumo": "Cód. 5485 (Porto Arena): a cliente do corretor Caio Marinho cancelou a visita de hoje às 16h30. Remarcada para sábado, 15/08, às 9h."
     }
   ],
   "regraComissao": {
