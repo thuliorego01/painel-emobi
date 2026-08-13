@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-13T11:56:00-03:00",
+  "ultimaAtualizacao": "2026-08-13T12:10:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -940,8 +940,8 @@
       "link": "https://emobiimobiliaria.com.br/imovel/5485/apartamento-3-quartos-candelaria-natal/",
       "status": "Disponível",
       "dataCaptacao": "2026-07-02",
-      "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Condomínio Porto Arena, exclusividade. Condomínio R$ 945,00 + IPTU R$ 299,00.",
+      "ultimaInteracaoProprietario": "2026-08-13",
+      "obs": "Condomínio Porto Arena, exclusividade. Condomínio R$ 945,00 + IPTU R$ 299,00. [13/08] Visita hoje às 16h30 com cliente do corretor Caio Marinho.",
       "tipoOperacao": "Venda"
     },
     {
@@ -1289,8 +1289,8 @@
       "data": "2026-08-13",
       "hora": "16:30",
       "horaFim": "17:30",
-      "titulo": "Visita — Caio Marinho · Porto Arena, apartamento 306",
-      "local": "Porto Arena, Candelária - Natal/RN"
+      "titulo": "Visita ao Cód. 5485 (Porto Arena) — cliente do corretor Caio Marinho",
+      "local": "Alameda Das Mansões, Candelária - Natal/RN"
     }
   ],
   "agendaAmanha": [
@@ -1298,7 +1298,7 @@
       "data": "2026-08-14",
       "hora": "08:00",
       "horaFim": "09:00",
-      "titulo": "Visita — apartamento 1303, Corais Alto da Candelária (com o corretor Sandro Rok)",
+      "titulo": "Visita ao apto 1303, Corais Alto da Candelária — cliente do corretor Sandro Rok",
       "local": "Corais Alto da Candelária, Candelária - Natal/RN"
     }
   ],
@@ -2954,15 +2954,15 @@
     },
     {
       "data": "13/08/2026 11:46",
-      "lead": "Caio Marinho",
+      "lead": "Klevisson Araújo",
       "tipo": "Visita",
-      "resumo": "Visita hoje às 16h30 ao apartamento 306 do Porto Arena. Cliente ainda não cadastrado como lead."
+      "resumo": "Cód. 5485 (Porto Arena, Candelária): visita hoje às 16h30 com a cliente do corretor Caio Marinho. Imóvel em exclusividade."
     },
     {
       "data": "13/08/2026 11:47",
       "lead": "Sandro Rok",
       "tipo": "Visita",
-      "resumo": "Visita amanhã (13/08) às 8h ao apartamento 1303 do Corais Alto da Candelária, com o corretor parceiro Sandro Rok. Cliente a confirmar."
+      "resumo": "Visita em 14/08 às 8h ao apto 1303 do Corais Alto da Candelária, acompanhando o cliente do corretor Sandro Rok. O imóvel não está na minha carteira."
     }
   ],
   "regraComissao": {
