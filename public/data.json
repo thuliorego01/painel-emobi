@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-12T11:30:00-03:00",
+  "ultimaAtualizacao": "2026-08-13T11:56:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -329,9 +329,9 @@
       "temperatura": "Quente",
       "valor": 575000,
       "comissaoPrevista": 12075,
-      "proximaAcao": "Pós-venda: confirmar a documentação na primeira semana",
-      "dataProximaAcao": "2026-08-11",
-      "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. Cliente quente. [19/07] Visita agendada para hoje às 10h no Porto Arena, unidade 607 (imóvel de corretor parceiro — não é o Porto Arena do nosso inventário). [19/07] Visita realizada no Porto Arena. Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607, bloco C, do Porto Arena — aguardando validação do vendedor. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar. [01/08] Valor do negócio: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento. Comissão: 6% sobre R$575.000 = R$34.500, dividido com a corretora Célia Cristina (R$17.250), sua parte 70% = R$12.075. [04/08] Entrou na fase de assinatura de contrato — assinatura prevista para hoje. [04/08] CONTRATO ASSINADO — apartamento 607, bloco C, do Porto Arena, R$575.000,00. Aguardando o sinal e o pagamento da comissão. [05/08] SINAL PAGO. Falta só o pagamento da comissão. [05/08] COMISSÃO RECEBIDA (R$12.075). Negócio encerrado financeiramente. [06/08] O imóvel é o Cód. 8038, captação da corretora parceira Célia Cristina — por isso não está na minha carteira.",
+      "proximaAcao": "Pós-venda: próximo toque é o de 1 mês (pedir indicação)",
+      "dataProximaAcao": "2026-09-03",
+      "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. Cliente quente. [19/07] Visita agendada para hoje às 10h no Porto Arena, unidade 607 (imóvel de corretor parceiro — não é o Porto Arena do nosso inventário). [19/07] Visita realizada no Porto Arena. Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607, bloco C, do Porto Arena — aguardando validação do vendedor. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar. [01/08] Valor do negócio: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento. Comissão: 6% sobre R$575.000 = R$34.500, dividido com a corretora Célia Cristina (R$17.250), sua parte 70% = R$12.075. [04/08] Entrou na fase de assinatura de contrato — assinatura prevista para hoje. [04/08] CONTRATO ASSINADO — apartamento 607, bloco C, do Porto Arena, R$575.000,00. Aguardando o sinal e o pagamento da comissão. [05/08] SINAL PAGO. Falta só o pagamento da comissão. [05/08] COMISSÃO RECEBIDA (R$12.075). Negócio encerrado financeiramente. [06/08] O imóvel é o Cód. 8038, captação da corretora parceira Célia Cristina — por isso não está na minha carteira. [13/08] Acompanhamento pós-venda: fui com ela ao Porto Arena para tirar medidas para a arquiteta.",
       "imoveisCompativeis": [
         "Cód. 5485"
       ],
@@ -1277,8 +1277,31 @@
       "nota": "apenas os anos com mês de fechamento registrado na planilha original."
     }
   },
-  "agendaHoje": [],
-  "agendaAmanha": [],
+  "agendaHoje": [
+    {
+      "data": "2026-08-13",
+      "hora": "16:00",
+      "horaFim": "16:30",
+      "titulo": "Pós-venda — Diana Rêgo tira medidas no Porto Arena (apto 607, bloco C)",
+      "local": "Porto Arena, Candelária - Natal/RN"
+    },
+    {
+      "data": "2026-08-13",
+      "hora": "16:30",
+      "horaFim": "17:30",
+      "titulo": "Visita — Caio Marinho · Porto Arena, apartamento 306",
+      "local": "Porto Arena, Candelária - Natal/RN"
+    }
+  ],
+  "agendaAmanha": [
+    {
+      "data": "2026-08-14",
+      "hora": "08:00",
+      "horaFim": "09:00",
+      "titulo": "Visita — apartamento 1303, Corais Alto da Candelária (com o corretor Sandro Rok)",
+      "local": "Corais Alto da Candelária, Candelária - Natal/RN"
+    }
+  ],
   "agendaProximos": [],
   "lembretes": [
     {
@@ -2921,6 +2944,25 @@
       "lead": "Vilmar Segundo",
       "tipo": "Outro",
       "resumo": "Cód. 9272 (Lagoa Nova, 140m², R$ 1.299.990) vendido pela concorrência. Captação perdida, imóvel fora da carteira. Terceira perda para a concorrência em agosto, e a de maior valor."
+    },
+    {
+      "data": "13/08/2026 11:45",
+      "lead": "Diana Rêgo",
+      "tipo": "Visita",
+      "leadId": 6,
+      "resumo": "Acompanhamento pós-venda no Porto Arena às 16h — cliente tirando medidas para a arquiteta. Cumpre o toque de primeira semana da cadência."
+    },
+    {
+      "data": "13/08/2026 11:46",
+      "lead": "Caio Marinho",
+      "tipo": "Visita",
+      "resumo": "Visita hoje às 16h30 ao apartamento 306 do Porto Arena. Cliente ainda não cadastrado como lead."
+    },
+    {
+      "data": "13/08/2026 11:47",
+      "lead": "Sandro Rok",
+      "tipo": "Visita",
+      "resumo": "Visita amanhã (13/08) às 8h ao apartamento 1303 do Corais Alto da Candelária, com o corretor parceiro Sandro Rok. Cliente a confirmar."
     }
   ],
   "regraComissao": {
