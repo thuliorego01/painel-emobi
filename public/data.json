@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-14T13:20:00-03:00",
+  "ultimaAtualizacao": "2026-08-14T13:31:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -185,7 +185,7 @@
       "mes": "Agosto",
       "mesNum": 8,
       "ano": 2026,
-      "status": "aguardando",
+      "status": "pago",
       "tipo": "Venda",
       "parceria": "Ivanaldo Tavares — 50% da comissão total",
       "data": "2026-08-10",
@@ -729,13 +729,13 @@
       "status": "Vendido",
       "dataCaptacao": "2026-07-06",
       "ultimaInteracaoProprietario": "2026-08-14",
-      "obs": "Condomínio Luiz Marques, sem área de lazer mas ótima localização. Imóvel quitado e escriturado. Condomínio R$ 425,00. Visita realizada hoje (22/07) às 13h30, com corretor parceiro Pedro Palitot. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [05/08] EM ASSINATURA DE CONTRATO — conclusão prevista para 06/08. Venda em parceria com Ivanaldo Tavares, corretor da própria Emobi. [05/08] Fechamento acordado em R$240.000,00 (tabela R$249.990,00). Comissão total 5% = R$12.000,00, dividida com Ivanaldo Tavares (R$6.000,00 cada); parte de Thúlio 70% = R$4.200,00. Vira \"Vendido\" quando a assinatura for concluída. [06/08] O lead comprador é do Ivanaldo Tavares — não há ficha dele no meu CRM. [07/08] Parceria: Ivanaldo Tavares — o lead comprador é dele. [10/08] CONTRATO ASSINADO por R$240.000,00. Aguardando o pagamento do sinal e o repasse da comissão. [14/08] SINAL PAGO pela cliente do Ivanaldo. Falta só o repasse da comissão (sua parte R$4.200).",
+      "obs": "Condomínio Luiz Marques, sem área de lazer mas ótima localização. Imóvel quitado e escriturado. Condomínio R$ 425,00. Visita realizada hoje (22/07) às 13h30, com corretor parceiro Pedro Palitot. [28/07] Em negociação, fase de leitura de contrato — provavelmente assina até o final da semana. [05/08] EM ASSINATURA DE CONTRATO — conclusão prevista para 06/08. Venda em parceria com Ivanaldo Tavares, corretor da própria Emobi. [05/08] Fechamento acordado em R$240.000,00 (tabela R$249.990,00). Comissão total 5% = R$12.000,00, dividida com Ivanaldo Tavares (R$6.000,00 cada); parte de Thúlio 70% = R$4.200,00. Vira \"Vendido\" quando a assinatura for concluída. [06/08] O lead comprador é do Ivanaldo Tavares — não há ficha dele no meu CRM. [07/08] Parceria: Ivanaldo Tavares — o lead comprador é dele. [10/08] CONTRATO ASSINADO por R$240.000,00. Aguardando o pagamento do sinal e o repasse da comissão. [14/08] SINAL PAGO pela cliente do Ivanaldo. Falta só o repasse da comissão (sua parte R$4.200). [14/08] COMISSÃO RECEBIDA (R$4.200). Negócio encerrado financeiramente.",
       "tipoOperacao": "Venda",
       "corretorParceiro": "Ivanaldo Tavares",
       "comissaoTotalVenda": 12000,
       "comissaoThulioVenda": 4200,
       "dataVenda": "2026-08-10",
-      "comissaoConfirmada": false
+      "comissaoConfirmada": true
     },
     {
       "id": 11,
@@ -940,8 +940,8 @@
       "link": "https://emobiimobiliaria.com.br/imovel/5485/apartamento-3-quartos-candelaria-natal/",
       "status": "Disponível",
       "dataCaptacao": "2026-07-02",
-      "ultimaInteracaoProprietario": "2026-08-13",
-      "obs": "Condomínio Porto Arena, exclusividade. Condomínio R$ 945,00 + IPTU R$ 299,00. [13/08] A cliente do corretor Caio Marinho cancelou a visita de hoje; remarcada para sábado 15/08 às 9h.",
+      "ultimaInteracaoProprietario": "2026-08-14",
+      "obs": "Condomínio Porto Arena, exclusividade. Condomínio R$ 945,00 + IPTU R$ 299,00. [13/08] A cliente do corretor Caio Marinho cancelou a visita de hoje; remarcada para sábado 15/08 às 9h. [14/08] Visita antecipada do sábado para hoje às 17h.",
       "tipoOperacao": "Venda"
     },
     {
@@ -1279,31 +1279,15 @@
   },
   "agendaHoje": [
     {
-      "data": "2026-08-13",
-      "hora": "16:00",
-      "horaFim": "16:30",
-      "titulo": "Pós-venda — Diana Rêgo tira medidas no Porto Arena (apto 607, bloco C)",
-      "local": "Porto Arena, Candelária - Natal/RN"
-    }
-  ],
-  "agendaAmanha": [
-    {
       "data": "2026-08-14",
-      "hora": "08:00",
-      "horaFim": "09:00",
-      "titulo": "Visita ao apto 1303, Corais Alto da Candelária — cliente do corretor Sandro Rok",
-      "local": "Corais Alto da Candelária, Candelária - Natal/RN"
-    }
-  ],
-  "agendaProximos": [
-    {
-      "data": "2026-08-15",
-      "hora": "09:00",
-      "horaFim": "10:00",
+      "hora": "17:00",
+      "horaFim": "18:00",
       "titulo": "Visita ao Cód. 5485 (Porto Arena) — cliente do corretor Caio Marinho",
       "local": "Alameda Das Mansões, Candelária - Natal/RN"
     }
   ],
+  "agendaAmanha": [],
+  "agendaProximos": [],
   "lembretes": [
     {
       "texto": "Falar com Filipe Ideli sobre chegada da irmã e procura de apartamento em Tirol ou Petrópolis",
@@ -1340,12 +1324,6 @@
       "data": "2026-08-01",
       "hora": "",
       "relacionado": "Cód. 9754 (Neópolis) — Vanessa Oliveira"
-    },
-    {
-      "texto": "Cobrar o repasse da comissão do Cód. 10567 (parceria Ivanaldo Tavares) — R$4.200, sinal já pago",
-      "data": "2026-08-17",
-      "hora": "",
-      "relacionado": "Cód. 10567 (Condomínio Luiz Marques, Lagoa Nova)"
     },
     {
       "texto": "Cláudia Montenegro (Natal Brisa): sem resposta, descartar a prospecção",
@@ -3004,6 +2982,18 @@
       "lead": "Lenise Costa",
       "tipo": "Outro",
       "resumo": "Cód. 10567: SINAL PAGO pela cliente do corretor Ivanaldo Tavares. Falta apenas o repasse da comissão — sua parte R$4.200."
+    },
+    {
+      "data": "14/08/2026 13:30",
+      "lead": "Lenise Costa",
+      "tipo": "Outro",
+      "resumo": "Cód. 10567: COMISSÃO RECEBIDA (R$4.200). Negócio encerrado financeiramente."
+    },
+    {
+      "data": "14/08/2026 13:31",
+      "lead": "Klevisson Araújo",
+      "tipo": "Outro",
+      "resumo": "Cód. 5485 (Porto Arena): a visita da cliente do corretor Caio Marinho foi antecipada de sábado (15/08, 9h) para hoje às 17h."
     }
   ],
   "regraComissao": {
