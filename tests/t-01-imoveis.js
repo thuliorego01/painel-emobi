@@ -44,7 +44,9 @@ module.exports = { nome: 'Imóveis: cidade, bairro e telefones', rodar: async ()
   // apartamento de R$4.500/mês entra na faixa "até R$300 mil" como se fosse
   // um imóvel de R$4.500, e engorda o "em carteira" da cidade.
   const DATA = dom.window.eval('DATA');
-  const locacoes = (DATA.imoveis || []).filter(i => i.tipoOperacao === 'Locação' && i.status !== 'Vendido');
+  // Fechado (Vendido ou Alugado) sai do estoque — a mesma régua do painel.
+  const locacoes = (DATA.imoveis || []).filter(i =>
+    i.tipoOperacao === 'Locação' && ['Vendido', 'Alugado'].indexOf(i.status) === -1);
   if (locacoes.length) {
     const cod = (locacoes[0].nome.match(/Cód\.\s*(\d+)/) || [])[1];
     assert(/\/mês/.test(card.textContent), 'valor de locação precisa do "/mês"');
@@ -59,4 +61,24 @@ module.exports = { nome: 'Imóveis: cidade, bairro e telefones', rodar: async ()
     faixa.dispatchEvent(new dom.window.Event('change', { bubbles: true }));
     await new Promise(r => setTimeout(r, 200));
   }
+
+  // Negócio fechado não é estoque, e não tem follow-up de proprietário. O
+  // Cód. 7768 apareceu alugado no meio dos disponíveis, com selo "em dia (0d)"
+  // — alerta para um acompanhamento que não vai mais acontecer.
+  (function fechadoSaiDoEstoque() {
+    const fechados = (DATA.imoveis || []).filter(i => i.status === 'Vendido' || i.status === 'Alugado');
+    const estoque = doc.getElementById('imoveisCard');
+    fechados.forEach(im => {
+      const cod = (String(im.nome).match(/Cód\.\s*(\d+)/) || [])[1];
+      if (cod) assert(!new RegExp('Cód\\.\\s*' + cod + '\\b').test(estoque.textContent),
+        `${im.nome} está ${im.status} e continua na listagem de imóveis`);
+    });
+    const fu = dom.window.eval('typeof followupStatus === "function"');
+    if (fu && fechados.length) {
+      // sem acesso direto à função interna, checa pela tela
+      assert(!/Alugado[\s\S]{0,120}Follow-up/.test(doc.body.innerHTML),
+        'imóvel alugado ainda exibe selo de follow-up de proprietário');
+    }
+  })();
+
 }};

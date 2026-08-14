@@ -3233,6 +3233,11 @@ function clientesQueVoltaram() {
 // a apontar para o imóvel errado. Aqui o nome é sempre calculado na hora.
 // Resolve uma referência de texto do tipo "Cód. 7454" para o imóvel.
 // Enquanto essa ligação for por texto, pelo menos a leitura é uma só.
+// Imóvel com negócio fechado não é estoque. Antes só "Vendido" saía da
+// listagem; quando "Alugado" nasceu, o apartamento já locado continuou
+// aparecendo entre os disponíveis, com direito a alerta de follow-up.
+const IMOVEL_FECHADO = ['Vendido', 'Alugado'];
+const imovelFechado = (im) => !!im && IMOVEL_FECHADO.indexOf(im.status) !== -1;
 function imovelPorCodigoTexto(ref) {
   const cod = (String(ref || '').match(/(\d+)/) || [])[1];
   if (!cod) return null;
@@ -4389,6 +4394,10 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
   const tipoPlural = { "Casa Comercial": "Casas Comerciais", "Terreno/Lote": "Terrenos/Lotes" };
 
   function followupStatus(im) {
+    // Follow-up existe para manter a captação viva. Fechado o negócio, não há
+    // o que acompanhar — e o selo "em dia (0d)" num apartamento já alugado
+    // é alerta para uma coisa que não vai acontecer.
+    if (imovelFechado(im)) return null;
     if (!im.ultimaInteracaoProprietario) return null;
     const [y, m, d] = im.ultimaInteracaoProprietario.split('-').map(Number);
     const ultima = new Date(y, m - 1, d);
@@ -4445,20 +4454,20 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
   // O telefone faltando é a pendência que trava o follow-up — mas repetir o
   // aviso em cada bairro virava ruído. Fica um só, no resumo do topo.
   (function avisoTelefones() {
-    const semTel = (DATA.imoveis || []).filter(im => im.status !== 'Vendido' && !im.telefone);
+    const semTel = (DATA.imoveis || []).filter(im => !imovelFechado(im) && !im.telefone);
     if (semTel.length === 0) return;
     const alvo = document.getElementById('filtrosImoveis');
     if (!alvo) return;
     const box = document.createElement('div');
     box.className = 'aviso-telefones';
-    const total = (DATA.imoveis || []).filter(im => im.status !== 'Vendido').length;
+    const total = (DATA.imoveis || []).filter(im => !imovelFechado(im)).length;
     box.innerHTML = `<b>${semTel.length} de ${total}</b> imóveis estão sem o telefone do proprietário — é o que impede o follow-up que o painel cobra. Me passe os números que eu registro.`;
     alvo.parentNode.insertBefore(box, alvo);
   })();
 
   const resumoEl = document.getElementById('followupResumo');
   let atrasados = 0, aproximando = 0, emDia = 0;
-  DATA.imoveis.filter(im => im.status !== 'Vendido').forEach(im => {
+  DATA.imoveis.filter(im => !imovelFechado(im)).forEach(im => {
     const fu = followupStatus(im);
     if (fu) { if (fu.cls === 'atrasado') atrasados++; else if (fu.cls === 'aproximando') aproximando++; else emDia++; }
   });
@@ -4497,7 +4506,7 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
   const filtroResultadoEl = document.getElementById('filtroResultado');
   const ordemEl = document.getElementById('ordemImoveis');
 
-  const naoVendidos = DATA.imoveis.filter(im => im.status !== 'Vendido');
+  const naoVendidos = DATA.imoveis.filter(im => !imovelFechado(im));
   if (filtroBairroEl) {
     [...new Set(naoVendidos.map(im => im.bairro).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'))
       .forEach(b => { const o=document.createElement('option'); o.value=b; o.textContent=b; filtroBairroEl.appendChild(o); });
