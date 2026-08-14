@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-14T13:31:00-03:00",
+  "ultimaAtualizacao": "2026-08-14T16:20:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -207,6 +207,18 @@
       "pctVenda": 0.05,
       "comissaoPelaRegra": 6125.0,
       "ajusteComissao": -875.0
+    },
+    {
+      "imovel": "Apartamento 3 Quartos Lagoa Nova 101m² (Cód. 7768)",
+      "cliente": "Locatário — a informar",
+      "valor": 4500,
+      "comissao": 1230,
+      "mes": "Agosto",
+      "mesNum": 8,
+      "ano": 2026,
+      "data": "2026-08-14",
+      "status": "aguardando",
+      "tipo": "Locação"
     }
   ],
   "leads": [
@@ -617,11 +629,14 @@
       "proprietario": "Juliska Azevedo",
       "telefone": "84994072677",
       "link": "https://emobiimobiliaria.com.br/imovel/7768/apartamento-3-quartos-lagoa-nova-natal/",
-      "status": "Disponível",
+      "status": "Alugado",
       "dataCaptacao": "2026-08-04",
-      "ultimaInteracaoProprietario": "2026-08-04",
-      "obs": "Edifício Bacara, 11º andar. Locação por R$4.500,00 com todas as taxas inclusas. Captação com EXCLUSIVIDADE. Pet friendly. 3 suítes com móveis planejados, escritório montado, cozinha planejada, varanda, área e banheiro de serviço. Condomínio com piscina adulto e infantil, deck molhado, academia, salão de festas com área gourmet, salão de jogos e portaria 24h. O texto do anúncio citava \"Capim Macio\" por engano — corrigido no sistema em 04/08, o imóvel é em Lagoa Nova.",
-      "tipoOperacao": "Locação"
+      "ultimaInteracaoProprietario": "2026-08-14",
+      "obs": "Edifício Bacara, 11º andar. Locação por R$4.500,00 com todas as taxas inclusas. Captação com EXCLUSIVIDADE. Pet friendly. 3 suítes com móveis planejados, escritório montado, cozinha planejada, varanda, área e banheiro de serviço. Condomínio com piscina adulto e infantil, deck molhado, academia, salão de festas com área gourmet, salão de jogos e portaria 24h. O texto do anúncio citava \"Capim Macio\" por engano — corrigido no sistema em 04/08, o imóvel é em Lagoa Nova. [14/08] CONTRATO DE LOCAÇÃO ASSINADO. Sua comissão: R$1.230,00. Aguardando o pagamento.",
+      "tipoOperacao": "Locação",
+      "dataLocacao": "2026-08-14",
+      "comissaoThulioLocacao": 1230,
+      "comissaoConfirmada": false
     },
     {
       "id": 5,
@@ -1342,6 +1357,12 @@
       "data": "2026-08-21",
       "hora": "",
       "relacionado": "Taciana"
+    },
+    {
+      "data": "2026-08-19",
+      "texto": "Cobrar o pagamento da comissão da locação do Cód. 7768 (Juliska Azevedo) — R$1.230",
+      "relacionado": "Cód. 7768 (Edifício Bacara, Lagoa Nova)",
+      "status": "Pendente"
     }
   ],
   "prospeccaoCaptacao": [
@@ -2994,6 +3015,12 @@
       "lead": "Klevisson Araújo",
       "tipo": "Outro",
       "resumo": "Cód. 5485 (Porto Arena): a visita da cliente do corretor Caio Marinho foi antecipada de sábado (15/08, 9h) para hoje às 17h."
+    },
+    {
+      "data": "14/08/2026 16:20",
+      "lead": "Juliska Azevedo",
+      "tipo": "Outro",
+      "resumo": "Cód. 7768 (Edifício Bacara, Lagoa Nova): CONTRATO DE LOCAÇÃO ASSINADO. Aluguel de R$4.500,00, sua comissão R$1.230,00. Captação com exclusividade. Aguardando o pagamento."
     }
   ],
   "regraComissao": {

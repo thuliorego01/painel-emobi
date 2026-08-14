@@ -154,6 +154,21 @@ leads.filter(l => l.fase === 'Fechado Ganho').forEach(l => {
     if (!idsLeads.has(String(v))) problemas.push(`negociação "${n.imovel}" aponta para lead inexistente (${v})`);
   });
 });
+// Locação fechada tem estado próprio ("Alugado"): marcar como "Vendido"
+// inflaria a contagem de vendas, os fechamentos do mês e o funil.
+imoveis.filter(i => i.status === 'Alugado').forEach(i => {
+  ['dataLocacao', 'comissaoThulioLocacao'].forEach(c => {
+    if (i[c] === undefined || i[c] === null) problemas.push(`${i.nome} está Alugado sem ${c}`);
+  });
+  if (i.tipoOperacao !== 'Locação') problemas.push(`${i.nome} está Alugado mas o tipo de operação não é Locação`);
+});
+// E venda não pode usar os campos de locação, nem o contrário.
+imoveis.forEach(i => {
+  if (i.status === 'Vendido' && i.comissaoThulioLocacao !== undefined)
+    problemas.push(`${i.nome} está Vendido e carrega comissão de locação`);
+  if (i.status === 'Alugado' && i.comissaoThulioVenda !== undefined)
+    problemas.push(`${i.nome} está Alugado e carrega comissão de venda`);
+});
 imoveis.filter(i => i.status === 'Vendido').forEach(i => {
   ['dataVenda', 'comissaoThulioVenda'].forEach(c => {
     if (i[c] === undefined || i[c] === null) problemas.push(`${i.nome} está Vendido sem ${c}`);

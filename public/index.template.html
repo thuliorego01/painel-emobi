@@ -1465,7 +1465,7 @@
     </div>
     <div class="card" id="imoveisCard"></div>
 
-    <div class="section-title" id="vendidosTitle" style="display:none;"><span class="dot" aria-hidden="true"></span>Vendidos — aguardando confirmação de comissão</div>
+    <div class="section-title" id="vendidosTitle" style="display:none;"><span class="dot" aria-hidden="true"></span>Fechados — aguardando confirmação de comissão</div>
     <div style="font-size:var(--fs-xs);color:var(--txt-fraco);margin-bottom:10px;display:none;" id="vendidosHint">Saem daqui automaticamente assim que você confirmar o pagamento da comissão — a partir daí ficam só em registro (Log de Atividades e Faturamento).</div>
     <div class="card" id="imoveisVendidosCard" style="display:none;"></div>
   </div>
@@ -4381,7 +4381,9 @@ const imoveisCard = document.getElementById('imoveisCard');
 if (!DATA.imoveis || DATA.imoveis.length === 0) {
   imoveisCard.innerHTML = '<div class="estado-vazio">Nenhum imóvel captado cadastrado ainda.</div>';
 } else {
-  const statusClass = { "Em Captação": "em-captacao", "Disponível": "disponivel", "Reservado": "reservado", "Vendido": "vendido", "Suspenso": "suspenso", "Perdido": "perdido" };
+  // "Alugado" é estado próprio: locação fechada não é venda. Marcar como
+  // "Vendido" inflaria a contagem de vendas, os fechamentos do mês e o funil.
+  const statusClass = { "Em Captação": "em-captacao", "Disponível": "disponivel", "Reservado": "reservado", "Vendido": "vendido", "Alugado": "vendido", "Suspenso": "suspenso", "Perdido": "perdido" };
   const tipoOrdem = ["Casa", "Casa em Condomínio", "Casa Comercial", "Apartamento", "Terreno/Lote", "Comercial", "Outro"];
   const tipoIcone = { "Casa": "🏠", "Casa em Condomínio": "🏡", "Casa Comercial": "🏪", "Apartamento": "🏢", "Terreno/Lote": "📐", "Comercial": "🏬", "Outro": "🔑" };
   const tipoPlural = { "Casa Comercial": "Casas Comerciais", "Terreno/Lote": "Terrenos/Lotes" };
@@ -4741,17 +4743,19 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
   }
 
   // ---- Vendidos por Thulio: ficam visiveis ate a comissao ser confirmada como paga ----
-  const vendidos = DATA.imoveis.filter(im => im.status === 'Vendido' && !im.comissaoConfirmada);
+  const fechados = DATA.imoveis.filter(im =>
+    (im.status === 'Vendido' || im.status === 'Alugado') && !im.comissaoConfirmada);
   const vendidosCard = document.getElementById('imoveisVendidosCard');
-  if (vendidos.length > 0 && vendidosCard) {
+  if (fechados.length > 0 && vendidosCard) {
     document.getElementById('vendidosTitle').style.display = '';
     document.getElementById('vendidosHint').style.display = '';
     vendidosCard.style.display = '';
-    vendidos.forEach(im => {
+    fechados.forEach(im => {
       const card = renderCard(im);
-      if (im.comissaoThulioVenda) {
+      const minha = im.status === 'Alugado' ? im.comissaoThulioLocacao : im.comissaoThulioVenda;
+      if (minha) {
         const sub = card.querySelector('.imovel-linha-sub');
-        if (sub) sub.insertAdjacentHTML('beforeend', `<span class="fu-chip comissao">sua parte ${brl(im.comissaoThulioVenda)}</span>`);
+        if (sub) sub.insertAdjacentHTML('beforeend', `<span class="fu-chip comissao">sua parte ${brl(minha)}</span>`);
       }
       vendidosCard.appendChild(card);
     });
