@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-17T09:10:00-03:00",
+  "ultimaAtualizacao": "2026-08-17T10:20:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -876,11 +876,13 @@
       "proprietario": "Michelle",
       "telefone": "8498002220",
       "link": "https://emobiimobiliaria.com.br/imovel/10627/apartamento-3-quartos-nova-parnamirim-parnamirim/",
-      "status": "Disponível",
+      "status": "Suspenso",
       "dataCaptacao": "2026-07-13",
-      "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Condomínio California Gardens. Potencial de reforma/modernização. Condomínio R$ 530,00 + IPTU R$ 1.100,00/ano. Visita realizada hoje (22/07) às 9h, com corretor parceiro Ranniere Araújo (levando cliente próprio). Nova visita em 24/07 às 14h com a corretora parceira Katyanne Layse — clientes gostaram, cogitam uma segunda visita. Nova visita agendada para sexta-feira (31/07) às 14h — clientes Monique e Caio, com o corretor Madson Oliveira (CRECI/RN 3385).",
-      "tipoOperacao": "Venda"
+      "ultimaInteracaoProprietario": "2026-08-17",
+      "obs": "Condomínio California Gardens. Potencial de reforma/modernização. Condomínio R$ 530,00 + IPTU R$ 1.100,00/ano. Visita realizada hoje (22/07) às 9h, com corretor parceiro Ranniere Araújo (levando cliente próprio). Nova visita em 24/07 às 14h com a corretora parceira Katyanne Layse — clientes gostaram, cogitam uma segunda visita. Nova visita agendada para sexta-feira (31/07) às 14h — clientes Monique e Caio, com o corretor Madson Oliveira (CRECI/RN 3385). [17/08] A proprietária pediu para SUSPENDER a divulgação — vai avaliar se compensa vender. Captação mantida, sem anúncio.",
+      "tipoOperacao": "Venda",
+      "motivoSuspensao": "Proprietária vai avaliar se compensa vender",
+      "dataSuspensao": "2026-08-17"
     },
     {
       "id": 18,
@@ -1349,6 +1351,12 @@
       "data": "2026-08-21",
       "hora": "",
       "relacionado": "Taciana"
+    },
+    {
+      "data": "2026-09-16",
+      "texto": "Retomar com a Michelle o Cód. 10627 (California Gardens): ela pediu 30 dias para avaliar se vende",
+      "relacionado": "Cód. 10627 (California Gardens, Nova Parnamirim)",
+      "status": "Pendente"
     }
   ],
   "prospeccaoCaptacao": [
@@ -3041,6 +3049,12 @@
       "tipo": "Outro",
       "leadId": 7,
       "resumo": "Fase corrigida de Visita Agendada para Visita Realizada — as visitas com o André Brito aconteceram em 07/08 e o lead seguiu para envio de opções."
+    },
+    {
+      "data": "17/08/2026 10:20",
+      "lead": "Michelle",
+      "tipo": "Outro",
+      "resumo": "Cód. 10627 (California Gardens, Nova Parnamirim, R$324.990): a proprietária pediu para suspender a divulgação — vai avaliar se compensa vender. A captação continua minha; só o anúncio para. Retomada marcada para 16/09."
     }
   ],
   "regraComissao": {
