@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-17T07:20:00-03:00",
+  "ultimaAtualizacao": "2026-08-17T09:10:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -49,8 +49,8 @@
       "status": "pago",
       "tipo": "Venda",
       "pctVenda": 0.05,
-      "comissaoPelaRegra": 12425,
-      "ajusteComissao": 50
+      "comissaoPelaRegra": 12425.0,
+      "ajusteComissao": 50.0
     },
     {
       "imovel": "Bairro Latino",
@@ -64,8 +64,8 @@
       "tipo": "Venda",
       "pctVenda": 0.05,
       "parceria": "Guilherme Marinho — 50% da comissão total",
-      "comissaoPelaRegra": 4550,
-      "ajusteComissao": -125
+      "comissaoPelaRegra": 4550.0,
+      "ajusteComissao": -125.0
     },
     {
       "imovel": "Maria Bernadete (803)",
@@ -79,8 +79,8 @@
       "tipo": "Venda",
       "vendedorLeadId": 14,
       "pctVenda": 0.05,
-      "comissaoPelaRegra": 22225,
-      "ajusteComissao": -4475
+      "comissaoPelaRegra": 22225.0,
+      "ajusteComissao": -4475.0
     },
     {
       "imovel": "Central Park (3-803)",
@@ -94,7 +94,7 @@
       "tipo": "Venda",
       "pctVenda": 0.05,
       "parceria": "Alon Nunes — 50% da comissão total",
-      "comissaoPelaRegra": 8225,
+      "comissaoPelaRegra": 8225.0,
       "ajusteComissao": -587.5
     },
     {
@@ -205,8 +205,8 @@
       "compradorLeadId": 18,
       "parceria": "Talison Cavalcanti — 50% da comissão total (R$15.000) · captação dele",
       "pctVenda": 0.05,
-      "comissaoPelaRegra": 6125,
-      "ajusteComissao": -875
+      "comissaoPelaRegra": 6125.0,
+      "ajusteComissao": -875.0
     },
     {
       "imovel": "Apartamento 3 Quartos Lagoa Nova 101m² (Cód. 7768)",
@@ -359,14 +359,14 @@
       "telefone": "84981319709",
       "origem": "Instagram",
       "dataEntrada": "2026-07-21",
-      "fase": "Visita Agendada",
-      "maiorFaseIndex": 4,
+      "fase": "Visita Realizada",
+      "maiorFaseIndex": 5,
       "temperatura": "Morno",
       "valor": null,
       "comissaoPrevista": null,
       "proximaAcao": "Cobrar o retorno das 2 opções do Alto da Boa Vista",
-      "dataProximaAcao": "2026-08-14",
-      "obs": "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [31/07] Contato feito via WhatsApp. [31/07] Visita agendada para 01/08 às 10h, com o corretor parceiro André Brito. [01/08] Contato feito via WhatsApp. [01/08] A visita das 10h com o corretor André Brito NÃO aconteceu — cliente vai remarcar durante a semana. [07/08] Visita remarcada: 2 imóveis hoje, das 14h às 15h30, com o corretor parceiro André Brito da Abreu. [11/08] Enviadas 2 opções no Alto da Boa Vista — uma reformada e uma não reformada.",
+      "dataProximaAcao": "2026-08-17",
+      "obs": "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [31/07] Contato feito via WhatsApp. [31/07] Visita agendada para 01/08 às 10h, com o corretor parceiro André Brito. [01/08] Contato feito via WhatsApp. [01/08] A visita das 10h com o corretor André Brito NÃO aconteceu — cliente vai remarcar durante a semana. [07/08] Visita remarcada: 2 imóveis hoje, das 14h às 15h30, com o corretor parceiro André Brito da Abreu. [11/08] Enviadas 2 opções no Alto da Boa Vista — uma reformada e uma não reformada. [15/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [16/08] Fase corrigida para Visita Realizada: as 2 visitas com o André Brito aconteceram em 07/08 e depois disso ele já recebeu opções novas.",
       "imoveisCompativeis": [
         "Cód. 9995"
       ],
@@ -479,7 +479,7 @@
       "maiorFaseIndex": 5,
       "temperatura": "Quente",
       "valor": 410000,
-      "comissaoPrevista": 7175,
+      "comissaoPrevista": 7175.0,
       "proximaAcao": "Formalizar a proposta de R$410 mil no N2-17 quando ela voltar de Campina Grande",
       "dataProximaAcao": "2026-08-17",
       "obs": "Cliente de relacionamento: foi a VENDEDORA do Maria Bernadete (803), vendido em abril/2026 por R$635.000. Agora volta como COMPRADORA. Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já visitou 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta. [07/08] Trabalhando a formalização da proposta no N2-17. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [11/08] Aguardando a cliente voltar de Campina Grande, onde foi resolver assuntos pessoais. A proposta fica parada até a volta. [12/08] A proposta será no lote N2-17 do Alphaville Pium, em parceria com o corretor Alon Nunes. Valor da proposta: R$410.000,00. [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel).",
@@ -517,8 +517,8 @@
       "valor": 589990,
       "comissaoPrevista": null,
       "proximaAcao": "Última cobrança do retorno do Cód. 10652 — sem resposta, esfriar",
-      "dataProximaAcao": "2026-08-14",
-      "obs": "Visita agendada para 06/08 às 16h. E-mail: atendimento@sosrastreamento.net. Agenda bloqueada das 14h45 às 17h para o deslocamento (saída de Capim Macio). Origem: Instagram — chegou pela publicação do próprio Cód. 10652. [07/08] Visita realizada no Cód. 10652 (Muriú). Cliente deve apresentar proposta. [11/08] Enviada mais uma mensagem de feedback. Leitura do Thúlio: provavelmente ficará sem resposta.",
+      "dataProximaAcao": "2026-08-17",
+      "obs": "Visita agendada para 06/08 às 16h. E-mail: atendimento@sosrastreamento.net. Agenda bloqueada das 14h45 às 17h para o deslocamento (saída de Capim Macio). Origem: Instagram — chegou pela publicação do próprio Cód. 10652. [07/08] Visita realizada no Cód. 10652 (Muriú). Cliente deve apresentar proposta. [11/08] Enviada mais uma mensagem de feedback. Leitura do Thúlio: provavelmente ficará sem resposta. [15/08] Contato feito via WhatsApp (registrado em 1 clique no painel).",
       "interesse": "Casa em Condomínio 4 Quartos Muriú 200m² (Cód. 10652) — R$589.990",
       "visitaResumo": "Visitou o Cód. 10652 em Muriú — gostou e deve fazer proposta",
       "imoveisCompativeis": [
@@ -537,8 +537,8 @@
       "valor": null,
       "comissaoPrevista": null,
       "proximaAcao": "Cobrar o retorno da opção do Residencial Alexandria e levantar o perfil de busca",
-      "dataProximaAcao": "2026-08-14",
-      "obs": "Indicado por Ricardo Magnos pelo Conecta TR em 10/08 como cliente COMPRADOR. Perfil de busca ainda não levantado. [12/08] Enviada opção do Residencial Alexandria, imóvel da corretora Camila Araújo.",
+      "dataProximaAcao": "2026-08-17",
+      "obs": "Indicado por Ricardo Magnos pelo Conecta TR em 10/08 como cliente COMPRADOR. Perfil de busca ainda não levantado. [12/08] Enviada opção do Residencial Alexandria, imóvel da corretora Camila Araújo. [15/08] Contato feito via WhatsApp (registrado em 1 clique no painel).",
       "interesse": "perfil ainda não levantado — primeira opção enviada: Residencial Alexandria"
     },
     {
@@ -1243,7 +1243,7 @@
         },
         {
           "mes": "Mar",
-          "mediaComissao": 9025
+          "mediaComissao": 9025.0
         },
         {
           "mes": "Abr",
@@ -3013,6 +3013,34 @@
       "lead": "Juliska Azevedo",
       "tipo": "Outro",
       "resumo": "Cód. 7768: COMISSÃO DE LOCAÇÃO RECEBIDA (R$1.230). Encerrado financeiramente."
+    },
+    {
+      "data": "15/08/2026 09:10",
+      "lead": "Heber Lima",
+      "tipo": "WhatsApp",
+      "leadId": 7,
+      "resumo": "Contato feito via WhatsApp (registrado em 1 clique no painel)."
+    },
+    {
+      "data": "15/08/2026 09:12",
+      "lead": "Rubens Júnior",
+      "tipo": "WhatsApp",
+      "leadId": 16,
+      "resumo": "Contato feito via WhatsApp (registrado em 1 clique no painel)."
+    },
+    {
+      "data": "15/08/2026 09:14",
+      "lead": "Aminadabe Pereira da Silva",
+      "tipo": "WhatsApp",
+      "leadId": 17,
+      "resumo": "Contato feito via WhatsApp (registrado em 1 clique no painel)."
+    },
+    {
+      "data": "16/08/2026 09:50",
+      "lead": "Heber Lima",
+      "tipo": "Outro",
+      "leadId": 7,
+      "resumo": "Fase corrigida de Visita Agendada para Visita Realizada — as visitas com o André Brito aconteceram em 07/08 e o lead seguiu para envio de opções."
     }
   ],
   "regraComissao": {
