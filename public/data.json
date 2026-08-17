@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-16T07:15:00-03:00",
+  "ultimaAtualizacao": "2026-08-17T07:20:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -49,8 +49,8 @@
       "status": "pago",
       "tipo": "Venda",
       "pctVenda": 0.05,
-      "comissaoPelaRegra": 12425.0,
-      "ajusteComissao": 50.0
+      "comissaoPelaRegra": 12425,
+      "ajusteComissao": 50
     },
     {
       "imovel": "Bairro Latino",
@@ -64,8 +64,8 @@
       "tipo": "Venda",
       "pctVenda": 0.05,
       "parceria": "Guilherme Marinho — 50% da comissão total",
-      "comissaoPelaRegra": 4550.0,
-      "ajusteComissao": -125.0
+      "comissaoPelaRegra": 4550,
+      "ajusteComissao": -125
     },
     {
       "imovel": "Maria Bernadete (803)",
@@ -79,8 +79,8 @@
       "tipo": "Venda",
       "vendedorLeadId": 14,
       "pctVenda": 0.05,
-      "comissaoPelaRegra": 22225.0,
-      "ajusteComissao": -4475.0
+      "comissaoPelaRegra": 22225,
+      "ajusteComissao": -4475
     },
     {
       "imovel": "Central Park (3-803)",
@@ -94,7 +94,7 @@
       "tipo": "Venda",
       "pctVenda": 0.05,
       "parceria": "Alon Nunes — 50% da comissão total",
-      "comissaoPelaRegra": 8225.0,
+      "comissaoPelaRegra": 8225,
       "ajusteComissao": -587.5
     },
     {
@@ -205,8 +205,8 @@
       "compradorLeadId": 18,
       "parceria": "Talison Cavalcanti — 50% da comissão total (R$15.000) · captação dele",
       "pctVenda": 0.05,
-      "comissaoPelaRegra": 6125.0,
-      "ajusteComissao": -875.0
+      "comissaoPelaRegra": 6125,
+      "ajusteComissao": -875
     },
     {
       "imovel": "Apartamento 3 Quartos Lagoa Nova 101m² (Cód. 7768)",
@@ -479,7 +479,7 @@
       "maiorFaseIndex": 5,
       "temperatura": "Quente",
       "valor": 410000,
-      "comissaoPrevista": 7175.0,
+      "comissaoPrevista": 7175,
       "proximaAcao": "Formalizar a proposta de R$410 mil no N2-17 quando ela voltar de Campina Grande",
       "dataProximaAcao": "2026-08-17",
       "obs": "Cliente de relacionamento: foi a VENDEDORA do Maria Bernadete (803), vendido em abril/2026 por R$635.000. Agora volta como COMPRADORA. Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já visitou 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta. [07/08] Trabalhando a formalização da proposta no N2-17. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [11/08] Aguardando a cliente voltar de Campina Grande, onde foi resolver assuntos pessoais. A proposta fica parada até a volta. [12/08] A proposta será no lote N2-17 do Alphaville Pium, em parceria com o corretor Alon Nunes. Valor da proposta: R$410.000,00. [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel).",
@@ -1243,7 +1243,7 @@
         },
         {
           "mes": "Mar",
-          "mediaComissao": 9025.0
+          "mediaComissao": 9025
         },
         {
           "mes": "Abr",
@@ -1292,15 +1292,7 @@
       "nota": "apenas os anos com mês de fechamento registrado na planilha original."
     }
   },
-  "agendaHoje": [
-    {
-      "data": "2026-08-14",
-      "hora": "17:00",
-      "horaFim": "18:00",
-      "titulo": "Visita ao Cód. 5485 (Porto Arena) — cliente do corretor Caio Marinho",
-      "local": "Alameda Das Mansões, Candelária - Natal/RN"
-    }
-  ],
+  "agendaHoje": [],
   "agendaAmanha": [],
   "agendaProximos": [],
   "lembretes": [
