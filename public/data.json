@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-17T10:20:00-03:00",
+  "ultimaAtualizacao": "2026-08-17T11:10:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -364,13 +364,14 @@
       "temperatura": "Morno",
       "valor": null,
       "comissaoPrevista": null,
-      "proximaAcao": "Cobrar o retorno das 2 opções do Alto da Boa Vista",
+      "proximaAcao": "Trabalhar a venda do Cód. 10842 junto com a busca dele — uma destrava a outra",
       "dataProximaAcao": "2026-08-17",
-      "obs": "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [31/07] Contato feito via WhatsApp. [31/07] Visita agendada para 01/08 às 10h, com o corretor parceiro André Brito. [01/08] Contato feito via WhatsApp. [01/08] A visita das 10h com o corretor André Brito NÃO aconteceu — cliente vai remarcar durante a semana. [07/08] Visita remarcada: 2 imóveis hoje, das 14h às 15h30, com o corretor parceiro André Brito da Abreu. [11/08] Enviadas 2 opções no Alto da Boa Vista — uma reformada e uma não reformada. [15/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [16/08] Fase corrigida para Visita Realizada: as 2 visitas com o André Brito aconteceram em 07/08 e depois disso ele já recebeu opções novas.",
+      "obs": "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [31/07] Contato feito via WhatsApp. [31/07] Visita agendada para 01/08 às 10h, com o corretor parceiro André Brito. [01/08] Contato feito via WhatsApp. [01/08] A visita das 10h com o corretor André Brito NÃO aconteceu — cliente vai remarcar durante a semana. [07/08] Visita remarcada: 2 imóveis hoje, das 14h às 15h30, com o corretor parceiro André Brito da Abreu. [11/08] Enviadas 2 opções no Alto da Boa Vista — uma reformada e uma não reformada. [15/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [16/08] Fase corrigida para Visita Realizada: as 2 visitas com o André Brito aconteceram em 07/08 e depois disso ele já recebeu opções novas. [17/08] Captei o apartamento DELE: Cód. 10842, Renaissance Première, Nova Parnamirim, R$329.990. Ele é comprador e vendedor ao mesmo tempo — a compra provavelmente depende desta venda.",
       "imoveisCompativeis": [
         "Cód. 9995"
       ],
-      "interesse": "apartamento em Tirol ou Barro Vermelho, mín. 80m²"
+      "interesse": "apartamento em Tirol ou Barro Vermelho, mín. 80m²",
+      "imovelVendaId": 35
     },
     {
       "id": 9,
@@ -1175,6 +1176,25 @@
       "dataCaptacao": null,
       "ultimaInteracaoProprietario": "2026-08-10",
       "obs": "Condomínio Paradise Village. Móveis planejados, 2 ar-condicionados, cooktop, forno, coifa e geladeira. Pet friendly. Condomínio R$ 635,00 · IPTU R$ 1.970,00 · taxa extra R$ 198,02 até dez/2027. [10/08] Captação com visita hoje às 15h.",
+      "tipoOperacao": "Venda"
+    },
+    {
+      "id": 35,
+      "nome": "Apartamento 2 Quartos Nova Parnamirim 70m² (Cód. 10842)",
+      "tipo": "Apartamento",
+      "bairro": "Nova Parnamirim",
+      "cidade": "Parnamirim",
+      "endereco": "Rua Virginópolis, Nova Parnamirim - Parnamirim/RN",
+      "valor": 329990,
+      "detalhes": "2 quartos (1 suíte), 2 banheiros, 1 vaga coberta e livre, 70m² privativos, reformado, andar alto",
+      "proprietario": "Heber Lima",
+      "telefone": "84981319709",
+      "proprietarioLeadId": 7,
+      "link": "https://emobiimobiliaria.com.br/imovel/10842/apartamento-2-quartos-nova-parnamirim-parnamirim/",
+      "status": "Disponível",
+      "dataCaptacao": "2026-08-17",
+      "ultimaInteracaoProprietario": "2026-08-17",
+      "obs": "Condomínio Renaissance Première. Reformado: sala ampliada e integrada à varanda, cozinha integrada, antiga dependência virou closet. Móveis planejados, piso laminado, vista para Natal. Vaga coberta e livre. Condomínio R$ 540,00 · IPTU R$ 650,00/ano. Aceita financiamento. [17/08] Captação com o Heber Lima, que também é lead COMPRADOR no pipeline — provável venda para comprar.",
       "tipoOperacao": "Venda"
     }
   ],
@@ -3055,6 +3075,13 @@
       "lead": "Michelle",
       "tipo": "Outro",
       "resumo": "Cód. 10627 (California Gardens, Nova Parnamirim, R$324.990): a proprietária pediu para suspender a divulgação — vai avaliar se compensa vender. A captação continua minha; só o anúncio para. Retomada marcada para 16/09."
+    },
+    {
+      "data": "17/08/2026 11:10",
+      "lead": "Heber Lima",
+      "tipo": "Outro",
+      "leadId": 7,
+      "resumo": "CAPTAÇÃO Cód. 10842 — apartamento 2 quartos, 70m², reformado, Renaissance Première (Nova Parnamirim), R$329.990. O proprietário é o próprio Heber, que já é lead comprador no pipeline: ele vende para comprar."
     }
   ],
   "regraComissao": {

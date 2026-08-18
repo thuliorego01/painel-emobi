@@ -66,6 +66,13 @@ checa('negociação → comprador', negs, 'compradorLeadId', v => idsLeads.has(S
   { rotulo: n => n.imovel });
 checa('imóvel → comprador', imoveis, 'compradorLeadId', v => idsLeads.has(String(v)),
   { rotulo: i => i.nome });
+// Proprietário que também é lead: o Heber Lima é comprador no pipeline E dono
+// do Cód. 10842. Guardar só o nome faria o vínculo sumir no dia em que alguém
+// corrigir a grafia — foi assim que a Maria Matos perdeu 3 registros.
+checa('imóvel → proprietário lead', imoveis, 'proprietarioLeadId', v => idsLeads.has(String(v)),
+  { rotulo: i => i.nome });
+checa('lead → imóvel que ele vende', leads, 'imovelVendaId', v => idsImoveis.has(String(v)),
+  { rotulo: l => l.nome });
 checa('indicação → indicador', indicacoes, 'indicadorId', v => idsIndicadores.has(String(v)),
   { rotulo: x => x.protocolo });
 
