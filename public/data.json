@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-18T09:35:00-03:00",
+  "ultimaAtualizacao": "2026-08-19T08:50:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -234,8 +234,8 @@
       "valor": null,
       "comissaoPrevista": null,
       "proximaAcao": "Agendar a visita ao Francisco de Goya",
-      "dataProximaAcao": "2026-08-17",
-      "obs": "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso entre os dois, mas prefere condomínios mais novos — sugerido o Vivant (Lagoa Nova). Agendando visita para até o final da semana (10/07). Parceria: 5% dividido, sua parte 2,5%. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M. Retomada em 02/08: enviada opção no Francisco de Goya, aguardando retorno. [04/08] REATIVADO: gostou do Francisco de Goya e quer visitar. Saiu da inatividade, temperatura para Quente. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel).",
+      "dataProximaAcao": "2026-08-22",
+      "obs": "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso entre os dois, mas prefere condomínios mais novos — sugerido o Vivant (Lagoa Nova). Agendando visita para até o final da semana (10/07). Parceria: 5% dividido, sua parte 2,5%. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M. Retomada em 02/08: enviada opção no Francisco de Goya, aguardando retorno. [04/08] REATIVADO: gostou do Francisco de Goya e quer visitar. Saiu da inatividade, temperatura para Quente. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] Contato feito via WhatsApp (registrado em 1 clique no painel).",
       "imoveisCompativeis": null,
       "visitaResumo": null,
       "visitaDetalhe": "o mais novo que você tava procurando",
@@ -316,12 +316,12 @@
       "dataEntrada": "2026-07-06",
       "fase": "Qualificado",
       "maiorFaseIndex": 3,
-      "temperatura": "Morno",
+      "temperatura": "Frio",
       "valor": null,
       "comissaoPrevista": null,
-      "proximaAcao": "Enviar a nova seleção dentro do raio de 2 km do IFRN Central",
-      "dataProximaAcao": "2026-08-17",
-      "obs": "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08. [04/08] Clientes voltaram de viagem e o contato foi retomado. Temperatura de Frio para Morno. [06/08] Cód. 7454 saiu das opções — vendido pela concorrência. [06/08] Descartou as opções do Tirol. Critério estreitado: Candelária, no máximo Lagoa Nova, num raio de 2 km do IFRN Central. [10/08] Buscando outras opções dentro do critério estreitado.",
+      "proximaAcao": "Nova tentativa de reativação — se não responder, esfriar",
+      "dataProximaAcao": "2026-08-26",
+      "obs": "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08. [04/08] Clientes voltaram de viagem e o contato foi retomado. Temperatura de Frio para Morno. [06/08] Cód. 7454 saiu das opções — vendido pela concorrência. [06/08] Descartou as opções do Tirol. Critério estreitado: Candelária, no máximo Lagoa Nova, num raio de 2 km do IFRN Central. [10/08] Buscando outras opções dentro do critério estreitado. [19/08] Tentando reativar — cliente parou de responder desde o pedido de novas opções.",
       "imoveisCompativeis": [
         "Cód. 8024",
         "Cód. 5485",
@@ -386,8 +386,8 @@
       "valor": null,
       "comissaoPrevista": null,
       "proximaAcao": "Enviar novas opções em Capim Macio, acima de 150m²",
-      "dataProximaAcao": "2026-08-17",
-      "obs": "[01/08] Contato feito via WhatsApp. [04/08] Visita realizada ao Residencial Ariane (Cód. 10650). Cliente confirmou que quer Capim Macio — opção enviada, aguardando resposta. [07/08] Descartou a opção do Mar de Corais. Pediu outras opções. [10/08] Conferindo outras opções — perfil restrito a Capim Macio.",
+      "dataProximaAcao": "2026-08-26",
+      "obs": "[01/08] Contato feito via WhatsApp. [04/08] Visita realizada ao Residencial Ariane (Cód. 10650). Cliente confirmou que quer Capim Macio — opção enviada, aguardando resposta. [07/08] Descartou a opção do Mar de Corais. Pediu outras opções. [10/08] Conferindo outras opções — perfil restrito a Capim Macio. [19/08] Contato feito via WhatsApp (registrado em 1 clique no painel).",
       "imoveisCompativeis": [],
       "interesse": "Apartamento acima de 150m², SOMENTE Capim Macio, condomínio até ~R$2.000"
     },
@@ -426,9 +426,9 @@
       "temperatura": "Quente",
       "valor": 390000,
       "comissaoPrevista": 13650,
-      "proximaAcao": "Acompanhar a elaboração do contrato após a vistoria",
-      "dataProximaAcao": "2026-08-21",
-      "obs": "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 - Corais de Ponta Negra R$525.000; Cód. 10572 - Corais Enseada de Ponta Negra R$420.000; Cód. 6830 - Corais da Enseada R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra (Cód. 9266, 10572, 6830) — descartou todas. Nova visita encaixada hoje às 11h30 no Cód. 7726 (Candelária). [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel (Cód. 7560) e do comprador prontas — liberado para solicitação de contrato. [31/07] Contato feito via WhatsApp. [01/08] Inteiro teor solicitado e já pago pelo comprador. Comissão: 5% sobre R$390.000 = R$19.500, venda sem parceria, sua parte 70% = R$13.650. [04/08] Contato via WhatsApp. Inteiro teor enviado ao correspondente; aguardando a solicitação de engenharia. [07/08] Aguardando a engenharia acontecer. Contrato em fase de elaboração. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [10/08] Vistoria da engenharia marcada para 11/08 às 16h15 no Residencial Apollo. [12/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel).",
+      "proximaAcao": "Acompanhar a leitura do contrato hoje 15h30 e encaminhar a assinatura",
+      "dataProximaAcao": "2026-08-20",
+      "obs": "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 - Corais de Ponta Negra R$525.000; Cód. 10572 - Corais Enseada de Ponta Negra R$420.000; Cód. 6830 - Corais da Enseada R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra (Cód. 9266, 10572, 6830) — descartou todas. Nova visita encaixada hoje às 11h30 no Cód. 7726 (Candelária). [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel (Cód. 7560) e do comprador prontas — liberado para solicitação de contrato. [31/07] Contato feito via WhatsApp. [01/08] Inteiro teor solicitado e já pago pelo comprador. Comissão: 5% sobre R$390.000 = R$19.500, venda sem parceria, sua parte 70% = R$13.650. [04/08] Contato via WhatsApp. Inteiro teor enviado ao correspondente; aguardando a solicitação de engenharia. [07/08] Aguardando a engenharia acontecer. Contrato em fase de elaboração. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [10/08] Vistoria da engenharia marcada para 11/08 às 16h15 no Residencial Apollo. [12/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] LEITURA DE CONTRATO hoje às 15h30, no condomínio Apollo.",
       "imoveisCompativeis": [
         "Cód. 7726",
         "Cód. 7560"
@@ -446,9 +446,9 @@
       "temperatura": "Quente",
       "valor": 530000,
       "comissaoPrevista": null,
-      "proximaAcao": "Levantar e enviar novas opções — perfil até ~R$530 mil, Candelária",
-      "dataProximaAcao": "2026-08-21",
-      "obs": "Veio de um anúncio no Instagram como cliente VENDEDOR: captei o Cód. 10638 (Candelária) com ele e vendi em 29/07. Hoje é lead COMPRADOR — mesma pessoa, segunda jornada. Visita hoje às 18h a um apartamento no Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Cliente quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h. [30/07] Visitou o Residencial Cabugi: gostou da disposição e da metragem, mas NÃO aprovou a posição — apartamento quente. Quer ver outras unidades no mesmo condomínio. [31/07] Contato feito via WhatsApp. [04/08] Contato via WhatsApp. Proposta de R$530.000 no Corais Alto da Candelária, apartamento 103 — RECUSADA pela vendedora. Estudando nova proposta. [07/08] Desistiu por enquanto da proposta no Corais Alto da Candelária (apto 103). Procurando outras opções. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel).",
+      "proximaAcao": "Cobrar o retorno da opção do Corais de Cotovelo",
+      "dataProximaAcao": "2026-08-22",
+      "obs": "Veio de um anúncio no Instagram como cliente VENDEDOR: captei o Cód. 10638 (Candelária) com ele e vendi em 29/07. Hoje é lead COMPRADOR — mesma pessoa, segunda jornada. Visita hoje às 18h a um apartamento no Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Cliente quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h. [30/07] Visitou o Residencial Cabugi: gostou da disposição e da metragem, mas NÃO aprovou a posição — apartamento quente. Quer ver outras unidades no mesmo condomínio. [31/07] Contato feito via WhatsApp. [04/08] Contato via WhatsApp. Proposta de R$530.000 no Corais Alto da Candelária, apartamento 103 — RECUSADA pela vendedora. Estudando nova proposta. [07/08] Desistiu por enquanto da proposta no Corais Alto da Candelária (apto 103). Procurando outras opções. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] Enviada opção do Corais de Cotovelo.",
       "imoveisCompativeis": [],
       "interesse": "outras opções em Candelária, até ~R$530 mil — desistiu do Corais Alto da Candelária"
     },
@@ -477,17 +477,18 @@
       "telefone": "84994769229",
       "origem": "Relacionamento",
       "dataEntrada": "2026-08-04",
-      "fase": "Visita Agendada",
+      "fase": "Visita Realizada",
       "maiorFaseIndex": 5,
       "temperatura": "Quente",
       "valor": 410000,
       "comissaoPrevista": 7175.0,
-      "proximaAcao": "Colher o retorno das 2 casas visitadas hoje e comparar com o N2-17",
+      "proximaAcao": "Ajudar a decidir entre casa pronta e o lote N2-17 — a proposta depende dessa escolha",
       "dataProximaAcao": "2026-08-21",
-      "obs": "Cliente de relacionamento: foi a VENDEDORA do Maria Bernadete (803), vendido em abril/2026 por R$635.000. Agora volta como COMPRADORA. Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já visitou 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta. [07/08] Trabalhando a formalização da proposta no N2-17. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [11/08] Aguardando a cliente voltar de Campina Grande, onde foi resolver assuntos pessoais. A proposta fica parada até a volta. [12/08] A proposta será no lote N2-17 do Alphaville Pium, em parceria com o corretor Alon Nunes. Valor da proposta: R$410.000,00. [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Vai visitar hoje 2 casas no Alphaville, das 15h às 17h, em parceria com os corretores Ângelo Andrade e Sâmara Diógenes.",
+      "obs": "Cliente de relacionamento: foi a VENDEDORA do Maria Bernadete (803), vendido em abril/2026 por R$635.000. Agora volta como COMPRADORA. Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já visitou 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta. [07/08] Trabalhando a formalização da proposta no N2-17. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [11/08] Aguardando a cliente voltar de Campina Grande, onde foi resolver assuntos pessoais. A proposta fica parada até a volta. [12/08] A proposta será no lote N2-17 do Alphaville Pium, em parceria com o corretor Alon Nunes. Valor da proposta: R$410.000,00. [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Vai visitar hoje 2 casas no Alphaville, das 15h às 17h, em parceria com os corretores Ângelo Andrade e Sâmara Diógenes. [19/08] Visitou apenas a casa da corretora Sâmara Diógenes. Está decidindo entre casa pronta e terreno para construir.",
       "interesse": "lote N2-17, Alphaville Pium — proposta de R$410 mil, parceria com Alon Nunes",
       "imoveisCompativeis": [],
-      "comissaoDetalhe": "5% sobre R$410.000 = R$20.500,00, dividido com o corretor Alon Nunes (R$10.250,00 cada); sua parte 70% = R$7.175,00."
+      "comissaoDetalhe": "5% sobre R$410.000 = R$20.500,00, dividido com o corretor Alon Nunes (R$10.250,00 cada); sua parte 70% = R$7.175,00.",
+      "visitaResumo": "Visitou a casa da Sâmara Diógenes — decidindo entre casa pronta e terreno"
     },
     {
       "id": 15,
@@ -513,19 +514,23 @@
       "telefone": "84986858585",
       "origem": "Instagram",
       "dataEntrada": "2026-08-05",
-      "fase": "Visita Realizada",
+      "fase": "Inativo",
       "maiorFaseIndex": 5,
-      "temperatura": "Morno",
+      "temperatura": null,
       "valor": 589990,
       "comissaoPrevista": null,
-      "proximaAcao": "Última cobrança do retorno do Cód. 10652 — sem resposta, esfriar",
-      "dataProximaAcao": "2026-08-17",
-      "obs": "Visita agendada para 06/08 às 16h. E-mail: atendimento@sosrastreamento.net. Agenda bloqueada das 14h45 às 17h para o deslocamento (saída de Capim Macio). Origem: Instagram — chegou pela publicação do próprio Cód. 10652. [07/08] Visita realizada no Cód. 10652 (Muriú). Cliente deve apresentar proposta. [11/08] Enviada mais uma mensagem de feedback. Leitura do Thúlio: provavelmente ficará sem resposta. [15/08] Contato feito via WhatsApp (registrado em 1 clique no painel).",
+      "proximaAcao": "Reativação pela escada: 1º toque em 18/09",
+      "dataProximaAcao": null,
+      "obs": "Visita agendada para 06/08 às 16h. E-mail: atendimento@sosrastreamento.net. Agenda bloqueada das 14h45 às 17h para o deslocamento (saída de Capim Macio). Origem: Instagram — chegou pela publicação do próprio Cód. 10652. [07/08] Visita realizada no Cód. 10652 (Muriú). Cliente deve apresentar proposta. [11/08] Enviada mais uma mensagem de feedback. Leitura do Thúlio: provavelmente ficará sem resposta. [15/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] INATIVADO: mais de uma semana sem resposta desde a visita ao Cód. 10652.",
       "interesse": "Casa em Condomínio 4 Quartos Muriú 200m² (Cód. 10652) — R$589.990",
       "visitaResumo": "Visitou o Cód. 10652 em Muriú — gostou e deve fazer proposta",
       "imoveisCompativeis": [
         "Cód. 10652"
-      ]
+      ],
+      "temperaturaAoInativar": "Morno",
+      "dataInativacao": "2026-08-19",
+      "motivoPerda": "Parou de responder",
+      "motivoDetalhe": "Mais de uma semana sem retorno após a visita ao Cód. 10652 e três tentativas de contato."
     },
     {
       "id": 17,
@@ -540,7 +545,7 @@
       "comissaoPrevista": null,
       "proximaAcao": "Última tentativa — sem resposta até 25/08, inativar",
       "dataProximaAcao": "2026-08-25",
-      "obs": "Indicado por Ricardo Magnos pelo Conecta TR em 10/08 como cliente COMPRADOR. Perfil de busca ainda não levantado. [12/08] Enviada opção do Residencial Alexandria, imóvel da corretora Camila Araújo. [15/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Sem resposta ao contato. Segunda tentativa sem retorno desde o envio da opção do Residencial Alexandria.",
+      "obs": "Indicado por Ricardo Magnos pelo Conecta TR em 10/08 como cliente COMPRADOR. Perfil de busca ainda não levantado. [12/08] Enviada opção do Residencial Alexandria, imóvel da corretora Camila Araújo. [15/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Sem resposta ao contato. Segunda tentativa sem retorno desde o envio da opção do Residencial Alexandria. [19/08] Segue sem resposta. Leitura do Thúlio: provavelmente já fechou compra em outro lugar.",
       "interesse": "perfil ainda não levantado — primeira opção enviada: Residencial Alexandria",
       "decisaoNoPrazo": "Inativar"
     },
@@ -1318,11 +1323,11 @@
   },
   "agendaHoje": [
     {
-      "data": "2026-08-18",
-      "hora": "15:00",
-      "horaFim": "17:00",
-      "titulo": "Visita — Caroline Evelin · 2 casas no Alphaville (Ângelo Andrade e Sâmara Diógenes)",
-      "local": "Alphaville, Natal/RN"
+      "data": "2026-08-19",
+      "hora": "15:30",
+      "horaFim": "16:30",
+      "titulo": "Leitura de contrato — João Paulo de Paula (Cód. 7560)",
+      "local": "Condomínio Apollo"
     }
   ],
   "agendaAmanha": [],
@@ -3141,6 +3146,62 @@
       "tipo": "Outro",
       "leadId": 7,
       "resumo": "CONFIRMADO: a compra dele está condicionada à venda do próprio imóvel (Cód. 10842, R$329.990). O gargalo não é achar imóvel para ele — é vender o dele."
+    },
+    {
+      "data": "19/08/2026 08:10",
+      "lead": "Tácito Barreto",
+      "tipo": "WhatsApp",
+      "leadId": 1,
+      "resumo": "Contato feito via WhatsApp (registrado em 1 clique no painel)."
+    },
+    {
+      "data": "19/08/2026 08:12",
+      "lead": "Maria Matos",
+      "tipo": "WhatsApp",
+      "leadId": 9,
+      "resumo": "Contato feito via WhatsApp (registrado em 1 clique no painel)."
+    },
+    {
+      "data": "19/08/2026 08:20",
+      "lead": "João Paulo de Paula",
+      "tipo": "Outro",
+      "leadId": 11,
+      "resumo": "LEITURA DE CONTRATO hoje às 15h30 no condomínio Apollo. É a etapa seguinte à vistoria da engenharia — o negócio caminha para a assinatura."
+    },
+    {
+      "data": "19/08/2026 08:25",
+      "lead": "Renato Cássio",
+      "tipo": "WhatsApp",
+      "leadId": 12,
+      "resumo": "Enviada opção do Corais de Cotovelo — primeira opção nova desde que ele desistiu do apto 103 do Corais Alto da Candelária."
+    },
+    {
+      "data": "19/08/2026 08:30",
+      "lead": "Caroline Evelin",
+      "tipo": "Visita",
+      "leadId": 14,
+      "resumo": "Das 2 casas, visitou só a da corretora Sâmara Diógenes. Está indecisa entre casa pronta e terreno para construir — a proposta do N2-17 depende dessa escolha."
+    },
+    {
+      "data": "19/08/2026 08:35",
+      "lead": "Rubens Júnior",
+      "tipo": "Outro",
+      "leadId": 16,
+      "resumo": "INATIVADO — mais de uma semana sem resposta desde a visita ao Cód. 10652 em Muriú. Estava Morno quando parou. Entra na escada de reativação de 30/60/90 dias."
+    },
+    {
+      "data": "19/08/2026 08:40",
+      "lead": "Aminadabe Pereira da Silva",
+      "tipo": "Outro",
+      "leadId": 17,
+      "resumo": "Segue sem resposta. Leitura do Thúlio: provavelmente já fechou a compra em outro lugar. Prazo de decisão continua 25/08."
+    },
+    {
+      "data": "19/08/2026 08:45",
+      "lead": "Daianne",
+      "tipo": "WhatsApp",
+      "leadId": 5,
+      "resumo": "Tentativa de reativação — parou de responder desde o pedido de opções em 10/08. Temperatura de Morno para Frio."
     }
   ],
   "regraComissao": {
