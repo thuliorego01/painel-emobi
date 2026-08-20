@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-19T08:50:00-03:00",
+  "ultimaAtualizacao": "2026-08-19T16:00:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -425,15 +425,17 @@
       "maiorFaseIndex": 7,
       "temperatura": "Quente",
       "valor": 390000,
-      "comissaoPrevista": 13650,
+      "comissaoPrevista": 19500,
       "proximaAcao": "Acompanhar a leitura do contrato hoje 15h30 e encaminhar a assinatura",
       "dataProximaAcao": "2026-08-20",
-      "obs": "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 - Corais de Ponta Negra R$525.000; Cód. 10572 - Corais Enseada de Ponta Negra R$420.000; Cód. 6830 - Corais da Enseada R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra (Cód. 9266, 10572, 6830) — descartou todas. Nova visita encaixada hoje às 11h30 no Cód. 7726 (Candelária). [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel (Cód. 7560) e do comprador prontas — liberado para solicitação de contrato. [31/07] Contato feito via WhatsApp. [01/08] Inteiro teor solicitado e já pago pelo comprador. Comissão: 5% sobre R$390.000 = R$19.500, venda sem parceria, sua parte 70% = R$13.650. [04/08] Contato via WhatsApp. Inteiro teor enviado ao correspondente; aguardando a solicitação de engenharia. [07/08] Aguardando a engenharia acontecer. Contrato em fase de elaboração. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [10/08] Vistoria da engenharia marcada para 11/08 às 16h15 no Residencial Apollo. [12/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] LEITURA DE CONTRATO hoje às 15h30, no condomínio Apollo.",
+      "obs": "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 - Corais de Ponta Negra R$525.000; Cód. 10572 - Corais Enseada de Ponta Negra R$420.000; Cód. 6830 - Corais da Enseada R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra (Cód. 9266, 10572, 6830) — descartou todas. Nova visita encaixada hoje às 11h30 no Cód. 7726 (Candelária). [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel (Cód. 7560) e do comprador prontas — liberado para solicitação de contrato. [31/07] Contato feito via WhatsApp. [01/08] Inteiro teor solicitado e já pago pelo comprador. Comissão: 5% sobre R$390.000 = R$19.500, venda sem parceria, sua parte 70% = R$13.650. [04/08] Contato via WhatsApp. Inteiro teor enviado ao correspondente; aguardando a solicitação de engenharia. [07/08] Aguardando a engenharia acontecer. Contrato em fase de elaboração. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [10/08] Vistoria da engenharia marcada para 11/08 às 16h15 no Residencial Apollo. [12/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] LEITURA DE CONTRATO hoje às 15h30, no condomínio Apollo. [19/08] Comissão acertada: os R$19.500,00 ficam integralmente com você — sem o repasse de 30%. É exceção à regra do ano.",
       "imoveisCompativeis": [
         "Cód. 7726",
         "Cód. 7560"
       ],
-      "interesse": "apartamento em Candelária — proposta no Cód. 7560"
+      "interesse": "apartamento em Candelária — proposta no Cód. 7560",
+      "suaParteAcordada": 1.0,
+      "comissaoDetalhe": "5% sobre R$390.000,00 = R$19.500,00, venda sem parceria. EXCEÇÃO: neste negócio você fica com 100% da comissão, sem o repasse de 30% que vale nos demais."
     },
     {
       "id": 12,
@@ -3202,6 +3204,13 @@
       "tipo": "WhatsApp",
       "leadId": 5,
       "resumo": "Tentativa de reativação — parou de responder desde o pedido de opções em 10/08. Temperatura de Morno para Frio."
+    },
+    {
+      "data": "19/08/2026 16:00",
+      "lead": "João Paulo de Paula",
+      "tipo": "Outro",
+      "leadId": 11,
+      "resumo": "Comissão da operação acertada em R$19.500,00 INTEGRAIS para Thúlio — 5% sobre R$390.000, sem parceria e sem o repasse de 30%. Exceção à regra: nos outros 11 negócios do ano a parte dele é 70%."
     }
   ],
   "regraComissao": {
