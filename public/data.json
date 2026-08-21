@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-21T11:17:00-03:00",
+  "ultimaAtualizacao": "2026-08-21T11:30:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1350,6 +1350,13 @@
       "horaFim": "15:00",
       "titulo": "Visita ao Cód. 10700 (Paradise Village) — cliente da corretora Paola Oliveira",
       "local": "Rua Antônio Madruga, Capim Macio - Natal/RN"
+    },
+    {
+      "data": "2026-08-21",
+      "hora": "17:30",
+      "horaFim": "18:00",
+      "titulo": "Visita ao Cód. 10842 — cliente da corretora Natália Pimenta",
+      "local": "Rua Virginópolis, Nova Parnamirim - Parnamirim/RN"
     }
   ],
   "agendaAmanha": [
@@ -1358,13 +1365,6 @@
       "hora": "09:00",
       "horaFim": "09:30",
       "titulo": "Visita ao Cód. 10842 (Renaissance Première) — Raphael Augusto",
-      "local": "Rua Virginópolis, Nova Parnamirim - Parnamirim/RN"
-    },
-    {
-      "data": "2026-08-22",
-      "hora": "09:30",
-      "horaFim": "10:00",
-      "titulo": "Visita ao Cód. 10842 — cliente da corretora Natália Pimenta",
       "local": "Rua Virginópolis, Nova Parnamirim - Parnamirim/RN"
     },
     {
@@ -3273,6 +3273,13 @@
       "tipo": "Visita",
       "leadId": 7,
       "resumo": "Cód. 10842: TRÊS visitas marcadas para 22/08 pela manhã — 9h Raphael Augusto (direto), 9h30 cliente da corretora Natália Pimenta, 10h cliente do corretor Thiago Lucena. É a venda que destrava a compra dele."
+    },
+    {
+      "data": "21/08/2026 11:30",
+      "lead": "Heber Lima",
+      "tipo": "Visita",
+      "leadId": 7,
+      "resumo": "Cód. 10842: a visita da cliente da corretora Natália Pimenta foi antecipada de 22/08 (9h30) para hoje às 17h30."
     }
   ],
   "regraComissao": {
