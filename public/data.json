@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-21T11:30:00-03:00",
+  "ultimaAtualizacao": "2026-08-21T11:40:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -219,6 +219,21 @@
       "data": "2026-08-14",
       "status": "pago",
       "tipo": "Locação"
+    },
+    {
+      "imovel": "Apartamento 3 Quartos Candelária 133m² (Cód. 7560)",
+      "cliente": "João Paulo de Paula",
+      "valor": 390000,
+      "comissao": 19500,
+      "mes": "Agosto",
+      "mesNum": 8,
+      "ano": 2026,
+      "data": "2026-08-21",
+      "status": "aguardando",
+      "tipo": "Venda",
+      "compradorLeadId": 11,
+      "pctVenda": 0.05,
+      "observacaoComissao": "Sem parceria e SEM o repasse de 30%: os 5% ficam integralmente com Thúlio. Exceção pontual acordada neste negócio."
     }
   ],
   "leads": [
@@ -341,9 +356,9 @@
       "temperatura": "Quente",
       "valor": 575000,
       "comissaoPrevista": 12075,
-      "proximaAcao": "Pós-venda: próximo toque é o de 1 mês (pedir indicação)",
-      "dataProximaAcao": "2026-09-03",
-      "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. Cliente quente. [19/07] Visita agendada para hoje às 10h no Porto Arena, unidade 607 (imóvel de corretor parceiro — não é o Porto Arena do nosso inventário). [19/07] Visita realizada no Porto Arena. Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607, bloco C, do Porto Arena — aguardando validação do vendedor. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar. [01/08] Valor do negócio: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento. Comissão: 6% sobre R$575.000 = R$34.500, dividido com a corretora Célia Cristina (R$17.250), sua parte 70% = R$12.075. [04/08] Entrou na fase de assinatura de contrato — assinatura prevista para hoje. [04/08] CONTRATO ASSINADO — apartamento 607, bloco C, do Porto Arena, R$575.000,00. Aguardando o sinal e o pagamento da comissão. [05/08] SINAL PAGO. Falta só o pagamento da comissão. [05/08] COMISSÃO RECEBIDA (R$12.075). Negócio encerrado financeiramente. [06/08] O imóvel é o Cód. 8038, captação da corretora parceira Célia Cristina — por isso não está na minha carteira. [13/08] Acompanhamento pós-venda: fui com ela ao Porto Arena para tirar medidas para a arquiteta.",
+      "proximaAcao": "Pós-venda: próximo toque da cadência (depois do de 1 mês)",
+      "dataProximaAcao": "2026-11-02",
+      "obs": "Busca apartamento 3 quartos (1 suíte) em Candelária, Lagoa Nova ou Tirol, até R$600 mil. Cliente quente. [19/07] Visita agendada para hoje às 10h no Porto Arena, unidade 607 (imóvel de corretor parceiro — não é o Porto Arena do nosso inventário). [19/07] Visita realizada no Porto Arena. Cliente vai ajustar com a arquiteta dela para uma nova visita. [20/07] 2ª visita agendada para amanhã (21/07) às 17h, mesmo apartamento (607). [21/07] 2ª visita realizada, acompanhada da arquiteta. Cliente provavelmente vai fazer proposta pelo apartamento 607, Porto Arena — conferir amanhã (22/07) à tarde se ela puxa a proposta. [30/07] Proposta feita no apartamento 607, bloco C, do Porto Arena — aguardando validação do vendedor. [31/07] Contato feito via WhatsApp. [01/08] Proposta ACEITA — contrato em fase de leitura, já validado pelos vendedores. Aguardando Diana ler e se posicionar. [01/08] Valor do negócio: R$575.000,00 — R$210.000,00 de recursos próprios e o restante via financiamento. Comissão: 6% sobre R$575.000 = R$34.500, dividido com a corretora Célia Cristina (R$17.250), sua parte 70% = R$12.075. [04/08] Entrou na fase de assinatura de contrato — assinatura prevista para hoje. [04/08] CONTRATO ASSINADO — apartamento 607, bloco C, do Porto Arena, R$575.000,00. Aguardando o sinal e o pagamento da comissão. [05/08] SINAL PAGO. Falta só o pagamento da comissão. [05/08] COMISSÃO RECEBIDA (R$12.075). Negócio encerrado financeiramente. [06/08] O imóvel é o Cód. 8038, captação da corretora parceira Célia Cristina — por isso não está na minha carteira. [13/08] Acompanhamento pós-venda: fui com ela ao Porto Arena para tirar medidas para a arquiteta. [21/08] Contato de pós-venda feito — cliente atualizada sobre o andamento do processo dela.",
       "imoveisCompativeis": [
         "Cód. 5485"
       ],
@@ -421,21 +436,22 @@
       "telefone": "84994815995",
       "origem": "Relacionamento",
       "dataEntrada": "2026-07-29",
-      "fase": "Em Negociação",
-      "maiorFaseIndex": 7,
+      "fase": "Fechado Ganho",
+      "maiorFaseIndex": 8,
       "temperatura": "Quente",
       "valor": 390000,
       "comissaoPrevista": 19500,
-      "proximaAcao": "Acompanhar a leitura do contrato hoje 15h30 e encaminhar a assinatura",
-      "dataProximaAcao": "2026-08-20",
-      "obs": "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 - Corais de Ponta Negra R$525.000; Cód. 10572 - Corais Enseada de Ponta Negra R$420.000; Cód. 6830 - Corais da Enseada R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra (Cód. 9266, 10572, 6830) — descartou todas. Nova visita encaixada hoje às 11h30 no Cód. 7726 (Candelária). [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel (Cód. 7560) e do comprador prontas — liberado para solicitação de contrato. [31/07] Contato feito via WhatsApp. [01/08] Inteiro teor solicitado e já pago pelo comprador. Comissão: 5% sobre R$390.000 = R$19.500, venda sem parceria, sua parte 70% = R$13.650. [04/08] Contato via WhatsApp. Inteiro teor enviado ao correspondente; aguardando a solicitação de engenharia. [07/08] Aguardando a engenharia acontecer. Contrato em fase de elaboração. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [10/08] Vistoria da engenharia marcada para 11/08 às 16h15 no Residencial Apollo. [12/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] LEITURA DE CONTRATO hoje às 15h30, no condomínio Apollo. [19/08] Comissão acertada: os R$19.500,00 ficam integralmente com você — sem o repasse de 30%. É exceção à regra do ano.",
+      "proximaAcao": "Cobrar o sinal e o pagamento da comissão (R$19.500)",
+      "dataProximaAcao": "2026-08-25",
+      "obs": "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 - Corais de Ponta Negra R$525.000; Cód. 10572 - Corais Enseada de Ponta Negra R$420.000; Cód. 6830 - Corais da Enseada R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra (Cód. 9266, 10572, 6830) — descartou todas. Nova visita encaixada hoje às 11h30 no Cód. 7726 (Candelária). [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel (Cód. 7560) e do comprador prontas — liberado para solicitação de contrato. [31/07] Contato feito via WhatsApp. [01/08] Inteiro teor solicitado e já pago pelo comprador. Comissão: 5% sobre R$390.000 = R$19.500, venda sem parceria, sua parte 70% = R$13.650. [04/08] Contato via WhatsApp. Inteiro teor enviado ao correspondente; aguardando a solicitação de engenharia. [07/08] Aguardando a engenharia acontecer. Contrato em fase de elaboração. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [10/08] Vistoria da engenharia marcada para 11/08 às 16h15 no Residencial Apollo. [12/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] LEITURA DE CONTRATO hoje às 15h30, no condomínio Apollo. [19/08] Comissão acertada: os R$19.500,00 ficam integralmente com você — sem o repasse de 30%. É exceção à regra do ano. [21/08] CONTRATO ASSINADO pela vendedora. Negócio fechado — aguardando sinal e pagamento da comissão.",
       "imoveisCompativeis": [
         "Cód. 7726",
         "Cód. 7560"
       ],
       "interesse": "apartamento em Candelária — proposta no Cód. 7560",
       "suaParteAcordada": 1.0,
-      "comissaoDetalhe": "5% sobre R$390.000,00 = R$19.500,00, venda sem parceria. EXCEÇÃO: neste negócio você fica com 100% da comissão, sem o repasse de 30% que vale nos demais."
+      "comissaoDetalhe": "5% sobre R$390.000,00 = R$19.500,00, venda sem parceria. EXCEÇÃO: neste negócio você fica com 100% da comissão, sem o repasse de 30% que vale nos demais.",
+      "dataFechamento": "2026-08-21"
     },
     {
       "id": 12,
@@ -465,9 +481,9 @@
       "temperatura": "Quente",
       "valor": 122500,
       "comissaoPrevista": 2143.75,
-      "proximaAcao": "Pós-venda: confirmar a documentação na primeira semana",
-      "dataProximaAcao": "2026-08-15",
-      "obs": "Cliente de relacionamento: foi a VENDEDORA do João Mendonça (301), vendido em maio/2026 por R$380.000. Agora volta como COMPRADORA. [30/07] Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista. [31/07] Contato feito via WhatsApp. [01/08] Negócio sendo fechado por R$122.500,00 (proposta inicial era R$120.000,00), em parceria com a corretora Natália Barbosa. Comissão: 5% sobre R$122.500 = R$6.125, dividido com a corretora Natália Barbosa (R$3.062,50), sua parte 70% = R$2.143,75. [04/08] Em fase de LEITURA DE CONTRATO. [04/08] Contato via WhatsApp. [07/08] Segue em fase de leitura de contrato. Contato feito. [08/08] CONTRATO ASSINADO — apto 404, bloco 11, Jardim Satélite, R$122.500,00. Aguardando o sinal e o recebimento da comissão. [10/08] SINAL PAGO. Falta só o vendedor pagar a comissão. [10/08] COMISSÃO RECEBIDA (R$2.143,75). Negócio encerrado financeiramente.",
+      "proximaAcao": "Pós-venda: próximo toque da cadência (depois do de primeira semana)",
+      "dataProximaAcao": "2026-09-07",
+      "obs": "Cliente de relacionamento: foi a VENDEDORA do João Mendonça (301), vendido em maio/2026 por R$380.000. Agora volta como COMPRADORA. [30/07] Cliente cadastrada com temperatura quente, buscando imóvel até R$140 mil. Visitou (em parceria com a corretora Natália Barbosa) o apartamento 404, Bloco 11, Condomínio Jardim Satélite, e fez proposta de R$120.000,00 à vista. [31/07] Contato feito via WhatsApp. [01/08] Negócio sendo fechado por R$122.500,00 (proposta inicial era R$120.000,00), em parceria com a corretora Natália Barbosa. Comissão: 5% sobre R$122.500 = R$6.125, dividido com a corretora Natália Barbosa (R$3.062,50), sua parte 70% = R$2.143,75. [04/08] Em fase de LEITURA DE CONTRATO. [04/08] Contato via WhatsApp. [07/08] Segue em fase de leitura de contrato. Contato feito. [08/08] CONTRATO ASSINADO — apto 404, bloco 11, Jardim Satélite, R$122.500,00. Aguardando o sinal e o recebimento da comissão. [10/08] SINAL PAGO. Falta só o vendedor pagar a comissão. [10/08] COMISSÃO RECEBIDA (R$2.143,75). Negócio encerrado financeiramente. [21/08] Contato de pós-venda feito — cliente atualizada sobre o andamento do processo dela.",
       "imoveisCompativeis": [],
       "interesse": "apto 404, bloco 11, Jardim Satélite — contrato assinado por R$122.500",
       "dataFechamento": "2026-08-08",
@@ -562,9 +578,9 @@
       "temperatura": "Quente",
       "valor": 350000,
       "comissaoPrevista": 5250,
-      "proximaAcao": "Cobrar o pagamento da comissão",
-      "dataProximaAcao": "2026-08-14",
-      "obs": "Negócio em parceria com o corretor Talison. Contrato assinado com cláusula suspensiva: só valeria se a engenharia aprovasse o imóvel. [11/08] LAUDO APROVADO — condição cumprida, negócio segue. Valor R$350.000,00. Comissão total R$15.000,00, R$7.500,00 cada, sua parte 70% = R$5.250,00.",
+      "proximaAcao": "Pós-venda: próximo toque da cadência (depois do de primeira semana)",
+      "dataProximaAcao": "2026-09-10",
+      "obs": "Negócio em parceria com o corretor Talison. Contrato assinado com cláusula suspensiva: só valeria se a engenharia aprovasse o imóvel. [11/08] LAUDO APROVADO — condição cumprida, negócio segue. Valor R$350.000,00. Comissão total R$15.000,00, R$7.500,00 cada, sua parte 70% = R$5.250,00. [21/08] Contato de pós-venda feito — cliente atualizada sobre o andamento do processo dela.",
       "dataFechamento": "2026-08-11",
       "comissaoDetalhe": "Comissão total combinada de R$15.000,00 (a regra de 5% daria R$17.500,00), dividida com o corretor Talison Cavalcanti (R$7.500,00 cada); sua parte 70% = R$5.250,00.",
       "interesse": "Casa 24, Condomínio Quatro Estações (Emaús, Parnamirim) — Cód. 8081, comprada por R$350.000"
@@ -734,12 +750,16 @@
       "proprietario": "A definir",
       "telefone": null,
       "link": "https://emobiimobiliaria.com.br/imovel/7560/apartamento-3-quartos-candelaria-natal/",
-      "status": "Reservado",
+      "status": "Vendido",
       "dataCaptacao": null,
-      "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Aceita financiamento e permuta. Condomínio R$ 850,00 + IPTU R$ 2.510,00/ano. [30/07] Proposta recebida do cliente João Paulo de Paula: R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel e do comprador (João Paulo de Paula) prontas — seguindo para solicitação de contrato. [07/08] Comprador: João Paulo de Paula (lead do CRM).",
+      "ultimaInteracaoProprietario": "2026-08-21",
+      "obs": "Aceita financiamento e permuta. Condomínio R$ 850,00 + IPTU R$ 2.510,00/ano. [30/07] Proposta recebida do cliente João Paulo de Paula: R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel e do comprador (João Paulo de Paula) prontas — seguindo para solicitação de contrato. [07/08] Comprador: João Paulo de Paula (lead do CRM). [21/08] VENDIDO — contrato assinado pela vendedora. R$390.000,00 ao comprador João Paulo de Paula.",
       "tipoOperacao": "Venda",
-      "compradorLeadId": 11
+      "compradorLeadId": 11,
+      "dataVenda": "2026-08-21",
+      "comissaoTotalVenda": 19500,
+      "comissaoThulioVenda": 19500,
+      "comissaoConfirmada": false
     },
     {
       "id": 9,
@@ -1436,6 +1456,12 @@
       "texto": "Retomar com a Michelle o Cód. 10627 (California Gardens): ela pediu 30 dias para avaliar se vende",
       "relacionado": "Cód. 10627 (California Gardens, Nova Parnamirim)",
       "status": "Pendente"
+    },
+    {
+      "data": "2026-08-25",
+      "texto": "Cobrar o sinal e a comissão da venda do Cód. 7560 (João Paulo de Paula) — R$19.500",
+      "relacionado": "João Paulo de Paula",
+      "status": "Pendente"
     }
   ],
   "prospeccaoCaptacao": [
@@ -1475,9 +1501,14 @@
       "indicadorNome": null,
       "indicadorCadastrado": null,
       "status": "Aguardando Retorno",
-      "proximaAcao": "Última tentativa feita — descartar se não responder",
-      "dataProximaAcao": "2026-08-18",
-      "historico": [],
+      "proximaAcao": "Retomar em 02/09 — prospecção suspensa por combinação com a proprietária",
+      "dataProximaAcao": "2026-09-02",
+      "historico": [
+        {
+          "data": "2026-08-21",
+          "texto": "Prospecção suspensa até 02/09 por combinação com a proprietária. Deixa de ser caso de descarte por silêncio."
+        }
+      ],
       "imovelCaptadoCod": null
     }
   ],
@@ -1607,11 +1638,13 @@
         "indicadorId": 8,
         "imovel": "Condomínio Polinésia (Candelária)",
         "proprietario": "Lindeza",
-        "status": "Registrada",
+        "status": "Suspensa",
         "valorDevido": 0,
         "indicador": "Carlos Henrique",
         "imovelId": 33,
-        "tipo": "Imóvel"
+        "tipo": "Imóvel",
+        "motivoSuspensao": "Suspensa a pedido — retomar quando o proprietário voltar a considerar",
+        "dataSuspensao": "2026-08-21"
       },
       {
         "protocolo": "IND-TR-2026-0015",
@@ -3280,6 +3313,31 @@
       "tipo": "Visita",
       "leadId": 7,
       "resumo": "Cód. 10842: a visita da cliente da corretora Natália Pimenta foi antecipada de 22/08 (9h30) para hoje às 17h30."
+    },
+    {
+      "data": "21/08/2026 11:35",
+      "lead": "João Paulo de Paula",
+      "tipo": "Outro",
+      "leadId": 11,
+      "resumo": "CONTRATO ASSINADO pela vendedora — Cód. 7560, Candelária, R$390.000,00. Negócio fechado. Comissão de R$19.500,00 integrais, aguardando sinal e pagamento."
+    },
+    {
+      "data": "21/08/2026 11:36",
+      "lead": "Cláudia Montenegro",
+      "tipo": "Outro",
+      "resumo": "Prospecção do Natal Brisa SUSPENSA até 02/09 por combinação com a proprietária. Sai do critério de descarte por silêncio."
+    },
+    {
+      "data": "21/08/2026 11:37",
+      "lead": "Conecta TR",
+      "tipo": "Outro",
+      "resumo": "IND-TR-2026-0012 (Carlos Henrique → Lindeza, Condomínio Polinésia) SUSPENSA. Continua contando como indicação dele."
+    },
+    {
+      "data": "21/08/2026 11:40",
+      "lead": "Sistema",
+      "tipo": "Outro",
+      "resumo": "Pós-venda: Diana Rêgo, Camilla Natasha e Patrícia de Paiva contactadas e atualizadas sobre o andamento dos processos delas."
     }
   ],
   "regraComissao": {
