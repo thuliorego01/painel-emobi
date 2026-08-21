@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-21T11:55:00-03:00",
+  "ultimaAtualizacao": "2026-08-21T12:10:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1673,55 +1673,64 @@
         "id": 1,
         "nome": "Jozimar Alves de Lima Júnior",
         "telefone": "84987531523",
-        "status": "Ativo"
+        "status": "Ativo",
+        "pix": "84987531523"
       },
       {
         "id": 2,
         "nome": "Nisia Raquel Gadelha de Lima",
         "telefone": "84998918516",
-        "status": "Ativo"
+        "status": "Ativo",
+        "pix": "84998918516"
       },
       {
         "id": 3,
         "nome": "Klevisson Ranniere Meira de Araújo",
         "telefone": "84996204433",
-        "status": "Ativo"
+        "status": "Ativo",
+        "pix": "8499620-4433"
       },
       {
         "id": 4,
         "nome": "Flávia Costa Marinho",
         "telefone": "84999001343",
-        "status": "Ativo"
+        "status": "Ativo",
+        "pix": "84999001343"
       },
       {
         "id": 5,
         "nome": "Hudson Bezerra de Brito",
         "telefone": "84988572343",
-        "status": "Ativo"
+        "status": "Ativo",
+        "pix": "098.935.614-00"
       },
       {
         "id": 6,
         "nome": "Jorge Tomé De Paiva Filho",
         "telefone": "84996744509",
-        "status": "Ativo"
+        "status": "Ativo",
+        "pix": "70050241419"
       },
       {
         "id": 7,
         "nome": "Raul Lucas Damasceno de Moura",
         "telefone": "84996733668",
-        "status": "Ativo"
+        "status": "Ativo",
+        "pix": "84986345460"
       },
       {
         "id": 8,
         "nome": "Carlos Henrique",
         "telefone": "84981324060",
-        "status": "Ativo"
+        "status": "Ativo",
+        "pix": "84981324060"
       },
       {
         "id": 9,
         "nome": "Ricardo Magnos",
         "telefone": "84988566793",
-        "status": "Ativo"
+        "status": "Ativo",
+        "pix": "84988566793"
       }
     ]
   },
@@ -3347,6 +3356,12 @@
       "lead": "Sistema",
       "tipo": "Outro",
       "resumo": "Pós-venda: Diana Rêgo, Camilla Natasha e Patrícia de Paiva contactadas e atualizadas sobre o andamento dos processos delas."
+    },
+    {
+      "data": "21/08/2026 12:10",
+      "lead": "Conecta TR",
+      "tipo": "Outro",
+      "resumo": "Chaves PIX dos 9 indicadores importadas da planilha central. Ricardo Magnos completou o cadastro em 10/08 (CPF e PIX)."
     }
   ],
   "regraComissao": {
