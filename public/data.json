@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-21T11:40:00-03:00",
+  "ultimaAtualizacao": "2026-08-21T11:55:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -366,7 +366,10 @@
       "visitaDetalhe": null,
       "interesse": "apartamento 607, Porto Arena (Cód. 8038) — comprado",
       "dataFechamento": "2026-08-04",
-      "comissaoDetalhe": "6% sobre R$575.000 = R$34.500, dividido com a corretora Célia Cristina (R$17.250), sua parte 70% = R$12.075."
+      "comissaoDetalhe": "6% sobre R$575.000 = R$34.500, dividido com a corretora Célia Cristina (R$17.250), sua parte 70% = R$12.075.",
+      "posVendaFeitos": [
+        7
+      ]
     },
     {
       "id": 7,
@@ -487,7 +490,10 @@
       "imoveisCompativeis": [],
       "interesse": "apto 404, bloco 11, Jardim Satélite — contrato assinado por R$122.500",
       "dataFechamento": "2026-08-08",
-      "comissaoDetalhe": "5% sobre R$122.500 = R$6.125, dividido com a corretora Natália Barbosa (R$3.062,50), sua parte 70% = R$2.143,75."
+      "comissaoDetalhe": "5% sobre R$122.500 = R$6.125, dividido com a corretora Natália Barbosa (R$3.062,50), sua parte 70% = R$2.143,75.",
+      "posVendaFeitos": [
+        7
+      ]
     },
     {
       "id": 14,
@@ -583,7 +589,10 @@
       "obs": "Negócio em parceria com o corretor Talison. Contrato assinado com cláusula suspensiva: só valeria se a engenharia aprovasse o imóvel. [11/08] LAUDO APROVADO — condição cumprida, negócio segue. Valor R$350.000,00. Comissão total R$15.000,00, R$7.500,00 cada, sua parte 70% = R$5.250,00. [21/08] Contato de pós-venda feito — cliente atualizada sobre o andamento do processo dela.",
       "dataFechamento": "2026-08-11",
       "comissaoDetalhe": "Comissão total combinada de R$15.000,00 (a regra de 5% daria R$17.500,00), dividida com o corretor Talison Cavalcanti (R$7.500,00 cada); sua parte 70% = R$5.250,00.",
-      "interesse": "Casa 24, Condomínio Quatro Estações (Emaús, Parnamirim) — Cód. 8081, comprada por R$350.000"
+      "interesse": "Casa 24, Condomínio Quatro Estações (Emaús, Parnamirim) — Cód. 8081, comprada por R$350.000",
+      "posVendaFeitos": [
+        7
+      ]
     },
     {
       "id": 19,

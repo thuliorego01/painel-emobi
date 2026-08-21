@@ -60,10 +60,37 @@ module.exports = { nome: 'Pós-venda: seção própria e cadência viva', rodar:
     const r = await montar({ quando: m.data });
     const t = txt(r.doc.getElementById('posVendaCard'));
     assert(t.includes(m.espera), `em ${m.data.toLocaleDateString('pt-BR')} o marco deveria ser "${m.espera}" — veio: ${t.slice(0, 160)}`);
-    assert(/de atraso/.test(t) && /Com toque vencido/.test(t),
-      'marco vencido precisa estar sinalizado e no grupo de vencidos');
-    // e precisa chegar em "O Que Fazer Agora", senão ninguém vê
-    assert(/Pós-venda em aberto/.test(txt(r.doc.getElementById('acoesAgoraList'))),
-      'pós-venda vencido não apareceu nas ações do dia');
+    // Vencido só existe se houver toque em aberto naquela data — um toque já
+    // cumprido some da fila, e isso é o comportamento certo, não uma falha.
+    const vencidos = r.dom.window.eval('posVendaVencidos')();
+    if (vencidos.length > 0) {
+      assert(/de atraso/.test(t) && /Com toque vencido/.test(t),
+        `em ${m.data.toLocaleDateString('pt-BR')} há ${vencidos.length} toque(s) vencido(s) e a tela não sinaliza`);
+      // e precisa chegar em "O Que Fazer Agora", senão ninguém vê
+      assert(/Pós-venda em aberto/.test(txt(r.doc.getElementById('acoesAgoraList'))),
+        'pós-venda vencido não apareceu nas ações do dia');
+    } else {
+      assert(!/de atraso/.test(t),
+        `em ${m.data.toLocaleDateString('pt-BR')} não há toque vencido, mas a tela mostra atraso`);
+    }
   }
+
+  // O toque cumprido mora em `posVendaFeitos`, não na próxima ação. Já
+  // aconteceu de registrar o contato na observação e no log e o painel seguir
+  // cobrando "primeira semana com 10d de atraso" — porque ele lê outro campo.
+  (function toqueCumpridoSaiDaFila() {
+    const marcos = dom.window.eval('POS_VENDA_MARCOS').map(m => m.dias);
+    (DATA.leads || []).filter(l => l.fase === 'Fechado Ganho').forEach(l => {
+      (l.posVendaFeitos || []).forEach(v => assert(marcos.indexOf(Number(v)) !== -1,
+        `${l.nome}: posVendaFeitos tem ${v}, que não é um marco da cadência (${marcos.join(', ')})`));
+    });
+    // Nenhum cliente pode aparecer como vencido num marco já marcado como feito.
+    const vencidos = dom.window.eval('posVendaVencidos')();
+    vencidos.forEach(({ lead, m }) => {
+      const feitos = (lead.posVendaFeitos || []).map(String);
+      assert(feitos.indexOf(String(m.marco.dias)) === -1,
+        `${lead.nome}: o toque de ${m.marco.rotulo} está marcado como feito e ainda aparece vencido`);
+    });
+  })();
+
 }};
