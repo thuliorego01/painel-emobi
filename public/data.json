@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-19T16:00:00-03:00",
+  "ultimaAtualizacao": "2026-08-21T11:17:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -568,6 +568,26 @@
       "dataFechamento": "2026-08-11",
       "comissaoDetalhe": "Comissão total combinada de R$15.000,00 (a regra de 5% daria R$17.500,00), dividida com o corretor Talison Cavalcanti (R$7.500,00 cada); sua parte 70% = R$5.250,00.",
       "interesse": "Casa 24, Condomínio Quatro Estações (Emaús, Parnamirim) — Cód. 8081, comprada por R$350.000"
+    },
+    {
+      "id": 19,
+      "nome": "Raphael Augusto",
+      "telefone": null,
+      "email": "raphaelaacl@gmail.com",
+      "origem": "CRM Emobi",
+      "dataEntrada": "2026-08-21",
+      "fase": "Visita Agendada",
+      "maiorFaseIndex": 4,
+      "temperatura": "Morno",
+      "valor": null,
+      "comissaoPrevista": null,
+      "proximaAcao": "Colher o retorno da visita ao Cód. 10842 (22/08, 9h)",
+      "dataProximaAcao": "2026-08-24",
+      "obs": "Cliente direto. Visita ao Cód. 10842 (Renaissance Première, Nova Parnamirim, R$329.990) marcada para 22/08 às 9h. Telefone ainda não informado.",
+      "imoveisCompativeis": [
+        "Cód. 10842"
+      ],
+      "interesse": "apartamento em Nova Parnamirim — visitando o Cód. 10842"
     }
   ],
   "imoveis": [
@@ -1183,8 +1203,8 @@
       "link": "https://emobiimobiliaria.com.br/imovel/10700/apartamento-2-quartos-capim-macio-natal/",
       "status": "Disponível",
       "dataCaptacao": null,
-      "ultimaInteracaoProprietario": "2026-08-10",
-      "obs": "Condomínio Paradise Village. Móveis planejados, 2 ar-condicionados, cooktop, forno, coifa e geladeira. Pet friendly. Condomínio R$ 635,00 · IPTU R$ 1.970,00 · taxa extra R$ 198,02 até dez/2027. [10/08] Captação com visita hoje às 15h.",
+      "ultimaInteracaoProprietario": "2026-08-21",
+      "obs": "Condomínio Paradise Village. Móveis planejados, 2 ar-condicionados, cooktop, forno, coifa e geladeira. Pet friendly. Condomínio R$ 635,00 · IPTU R$ 1.970,00 · taxa extra R$ 198,02 até dez/2027. [10/08] Captação com visita hoje às 15h. [21/08] Visita hoje às 14h com cliente da corretora Paola Oliveira.",
       "tipoOperacao": "Venda"
     },
     {
@@ -1202,8 +1222,8 @@
       "link": "https://emobiimobiliaria.com.br/imovel/10842/apartamento-2-quartos-nova-parnamirim-parnamirim/",
       "status": "Disponível",
       "dataCaptacao": "2026-08-17",
-      "ultimaInteracaoProprietario": "2026-08-17",
-      "obs": "Condomínio Renaissance Première. Reformado: sala ampliada e integrada à varanda, cozinha integrada, antiga dependência virou closet. Móveis planejados, piso laminado, vista para Natal. Vaga coberta e livre. Condomínio R$ 540,00 · IPTU R$ 650,00/ano. Aceita financiamento. [17/08] Captação com o Heber Lima, que também é lead COMPRADOR no pipeline — provável venda para comprar.",
+      "ultimaInteracaoProprietario": "2026-08-21",
+      "obs": "Condomínio Renaissance Première. Reformado: sala ampliada e integrada à varanda, cozinha integrada, antiga dependência virou closet. Móveis planejados, piso laminado, vista para Natal. Vaga coberta e livre. Condomínio R$ 540,00 · IPTU R$ 650,00/ano. Aceita financiamento. [17/08] Captação com o Heber Lima, que também é lead COMPRADOR no pipeline — provável venda para comprar. [21/08] TRÊS visitas marcadas para 22/08: 9h (Raphael Augusto, direto), 9h30 (cliente da corretora Natália Pimenta) e 10h (cliente do corretor Thiago Lucena).",
       "tipoOperacao": "Venda"
     }
   ],
@@ -1325,14 +1345,36 @@
   },
   "agendaHoje": [
     {
-      "data": "2026-08-19",
-      "hora": "15:30",
-      "horaFim": "16:30",
-      "titulo": "Leitura de contrato — João Paulo de Paula (Cód. 7560)",
-      "local": "Condomínio Apollo"
+      "data": "2026-08-21",
+      "hora": "14:00",
+      "horaFim": "15:00",
+      "titulo": "Visita ao Cód. 10700 (Paradise Village) — cliente da corretora Paola Oliveira",
+      "local": "Rua Antônio Madruga, Capim Macio - Natal/RN"
     }
   ],
-  "agendaAmanha": [],
+  "agendaAmanha": [
+    {
+      "data": "2026-08-22",
+      "hora": "09:00",
+      "horaFim": "09:30",
+      "titulo": "Visita ao Cód. 10842 (Renaissance Première) — Raphael Augusto",
+      "local": "Rua Virginópolis, Nova Parnamirim - Parnamirim/RN"
+    },
+    {
+      "data": "2026-08-22",
+      "hora": "09:30",
+      "horaFim": "10:00",
+      "titulo": "Visita ao Cód. 10842 — cliente da corretora Natália Pimenta",
+      "local": "Rua Virginópolis, Nova Parnamirim - Parnamirim/RN"
+    },
+    {
+      "data": "2026-08-22",
+      "hora": "10:00",
+      "horaFim": "10:30",
+      "titulo": "Visita ao Cód. 10842 — cliente do corretor Thiago Lucena",
+      "local": "Rua Virginópolis, Nova Parnamirim - Parnamirim/RN"
+    }
+  ],
   "agendaProximos": [],
   "lembretes": [
     {
@@ -3211,6 +3253,26 @@
       "tipo": "Outro",
       "leadId": 11,
       "resumo": "Comissão da operação acertada em R$19.500,00 INTEGRAIS para Thúlio — 5% sobre R$390.000, sem parceria e sem o repasse de 30%. Exceção à regra: nos outros 11 negócios do ano a parte dele é 70%."
+    },
+    {
+      "data": "21/08/2026 11:15",
+      "lead": "Roberto Fischer",
+      "tipo": "Visita",
+      "resumo": "Cód. 10700 (Paradise Village, Capim Macio): visita hoje às 14h com cliente da corretora Paola Oliveira."
+    },
+    {
+      "data": "21/08/2026 11:16",
+      "lead": "Raphael Augusto",
+      "tipo": "Visita",
+      "leadId": 19,
+      "resumo": "Novo lead direto. Visita ao Cód. 10842 marcada para 22/08 às 9h. E-mail: raphaelaacl@gmail.com. Telefone a colher."
+    },
+    {
+      "data": "21/08/2026 11:17",
+      "lead": "Heber Lima",
+      "tipo": "Visita",
+      "leadId": 7,
+      "resumo": "Cód. 10842: TRÊS visitas marcadas para 22/08 pela manhã — 9h Raphael Augusto (direto), 9h30 cliente da corretora Natália Pimenta, 10h cliente do corretor Thiago Lucena. É a venda que destrava a compra dele."
     }
   ],
   "regraComissao": {
