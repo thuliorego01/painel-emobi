@@ -135,6 +135,23 @@ leads.forEach(l => {
   const temLog = log.some(a => String(a.leadId) === String(l.id));
   if (!temLog) problemas.push(`${l.nome} não tem nenhuma entrada de histórico ligada por ID`);
 });
+// O protocolo é o comprovante que o indicador guardou. Na planilha ele é
+// gerado pelo NÚMERO DA LINHA, então apagar uma linha renumera todas as de
+// baixo — foi o que aconteceu em 21/08/2026, e o comprovante do Jozimar
+// passou a apontar para a indicação da Nisia. Aqui ele é identidade: único,
+// e o painel nunca depende dele para ligar nada (isso é por ID).
+(function protocolosUnicos() {
+  const vistos = new Map();
+  indicacoes.forEach(x => {
+    if (!x.protocolo) return problemas.push(`indicação de ${x.indicador || '?'} está sem protocolo`);
+    if (vistos.has(x.protocolo))
+      problemas.push(`protocolo ${x.protocolo} está em duas indicações: "${vistos.get(x.protocolo)}" e "${x.imovel || x.cliente}"`);
+    vistos.set(x.protocolo, x.imovel || x.cliente);
+    if (!/^IND-TR-\d{4}-\d{4}$/.test(x.protocolo))
+      problemas.push(`protocolo fora do padrão: ${x.protocolo}`);
+  });
+})();
+
 // A regra de comissão de cada venda (percentual, parceiro, ajuste) não mora na
 // planilha — só aqui. Em 12/08/2026 o briefing das 7h apagou esses campos de
 // nove negociações de uma vez, porque não os encontrou na fonte dele.

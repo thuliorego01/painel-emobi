@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-21T12:10:00-03:00",
+  "ultimaAtualizacao": "2026-08-21T12:20:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -3362,6 +3362,12 @@
       "lead": "Conecta TR",
       "tipo": "Outro",
       "resumo": "Chaves PIX dos 9 indicadores importadas da planilha central. Ricardo Magnos completou o cadastro em 10/08 (CPF e PIX)."
+    },
+    {
+      "data": "21/08/2026 12:20",
+      "lead": "Conecta TR",
+      "tipo": "Outro",
+      "resumo": "A planilha central renumerou todos os protocolos (deslocaram −1) porque a fórmula os gera pelo NÚMERO DA LINHA e alguma linha foi apagada. O painel NÃO foi afetado: ele liga indicação a indicador e a imóvel por ID, e usa o protocolo só como rótulo. Os protocolos do painel são os que foram enviados aos indicadores como comprovante, e continuam valendo."
     }
   ],
   "regraComissao": {
