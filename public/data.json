@@ -49,8 +49,8 @@
       "status": "pago",
       "tipo": "Venda",
       "pctVenda": 0.05,
-      "comissaoPelaRegra": 12425.0,
-      "ajusteComissao": 50.0
+      "comissaoPelaRegra": 12425,
+      "ajusteComissao": 50
     },
     {
       "imovel": "Bairro Latino",
@@ -64,8 +64,8 @@
       "tipo": "Venda",
       "pctVenda": 0.05,
       "parceria": "Guilherme Marinho — 50% da comissão total",
-      "comissaoPelaRegra": 4550.0,
-      "ajusteComissao": -125.0
+      "comissaoPelaRegra": 4550,
+      "ajusteComissao": -125
     },
     {
       "imovel": "Maria Bernadete (803)",
@@ -79,8 +79,8 @@
       "tipo": "Venda",
       "vendedorLeadId": 14,
       "pctVenda": 0.05,
-      "comissaoPelaRegra": 22225.0,
-      "ajusteComissao": -4475.0
+      "comissaoPelaRegra": 22225,
+      "ajusteComissao": -4475
     },
     {
       "imovel": "Central Park (3-803)",
@@ -94,7 +94,7 @@
       "tipo": "Venda",
       "pctVenda": 0.05,
       "parceria": "Alon Nunes — 50% da comissão total",
-      "comissaoPelaRegra": 8225.0,
+      "comissaoPelaRegra": 8225,
       "ajusteComissao": -587.5
     },
     {
@@ -205,8 +205,8 @@
       "compradorLeadId": 18,
       "parceria": "Talison Cavalcanti — 50% da comissão total (R$15.000) · captação dele",
       "pctVenda": 0.05,
-      "comissaoPelaRegra": 6125.0,
-      "ajusteComissao": -875.0
+      "comissaoPelaRegra": 6125,
+      "ajusteComissao": -875
     },
     {
       "imovel": "Apartamento 3 Quartos Lagoa Nova 101m² (Cód. 7768)",
@@ -452,7 +452,7 @@
         "Cód. 7560"
       ],
       "interesse": "apartamento em Candelária — proposta no Cód. 7560",
-      "suaParteAcordada": 1.0,
+      "suaParteAcordada": 1,
       "comissaoDetalhe": "5% sobre R$390.000,00 = R$19.500,00, venda sem parceria. EXCEÇÃO: neste negócio você fica com 100% da comissão, sem o repasse de 30% que vale nos demais.",
       "dataFechamento": "2026-08-21"
     },
@@ -505,7 +505,7 @@
       "maiorFaseIndex": 5,
       "temperatura": "Quente",
       "valor": 410000,
-      "comissaoPrevista": 7175.0,
+      "comissaoPrevista": 7175,
       "proximaAcao": "Ajudar a decidir entre casa pronta e o lote N2-17 — a proposta depende dessa escolha",
       "dataProximaAcao": "2026-08-21",
       "obs": "Cliente de relacionamento: foi a VENDEDORA do Maria Bernadete (803), vendido em abril/2026 por R$635.000. Agora volta como COMPRADORA. Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já visitou 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta. [07/08] Trabalhando a formalização da proposta no N2-17. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [11/08] Aguardando a cliente voltar de Campina Grande, onde foi resolver assuntos pessoais. A proposta fica parada até a volta. [12/08] A proposta será no lote N2-17 do Alphaville Pium, em parceria com o corretor Alon Nunes. Valor da proposta: R$410.000,00. [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Vai visitar hoje 2 casas no Alphaville, das 15h às 17h, em parceria com os corretores Ângelo Andrade e Sâmara Diógenes. [19/08] Visitou apenas a casa da corretora Sâmara Diógenes. Está decidindo entre casa pronta e terreno para construir.",
@@ -705,11 +705,15 @@
       "proprietario": "Neilor Castiel",
       "telefone": "84996357380",
       "link": "https://emobiimobiliaria.com.br/imovel/9995/apartamento-3-quartos-tirol-natal/",
-      "status": "Disponível",
+      "status": "Reservado",
       "dataCaptacao": null,
-      "ultimaInteracaoProprietario": "2026-08-02",
-      "obs": "Potencial de reforma/valorização. Condomínio R$ 650,00 + IPTU R$ 223,00.",
-      "tipoOperacao": "Venda"
+      "ultimaInteracaoProprietario": "2026-08-21",
+      "obs": "Potencial de reforma/valorização. Condomínio R$ 650,00 + IPTU R$ 223,00. [21/08] Visita realizada com o corretor parceiro Pedro Palitot e as clientes dele. PROPOSTA DE R$300.000,00 ACEITA pelo proprietário Neilor Castiel (tabela R$329.990,00) — 20% recursos próprios e 80% financiado. Segue para elaboração de contrato. Comissão total 5% = R$15.000,00, dividida com Pedro Palitot (R$7.500,00 cada); sua parte 70% = R$5.250,00. O lead comprador é do Pedro Palitot — não há ficha dele no meu CRM. Vira \"Vendido\" quando o contrato for assinado.",
+      "tipoOperacao": "Venda",
+      "corretorParceiro": "Pedro Palitot",
+      "valorNegociado": 300000,
+      "comissaoTotalVenda": 15000,
+      "comissaoThulioVenda": 5250
     },
     {
       "id": 6,
@@ -1323,7 +1327,7 @@
         },
         {
           "mes": "Mar",
-          "mediaComissao": 9025.0
+          "mediaComissao": 9025
         },
         {
           "mes": "Abr",
@@ -1471,6 +1475,12 @@
       "texto": "Cobrar o sinal e a comissão da venda do Cód. 7560 (João Paulo de Paula) — R$19.500",
       "relacionado": "João Paulo de Paula",
       "status": "Pendente"
+    },
+    {
+      "texto": "Acompanhar elaboração do contrato — Cód. 9995 (Tirol), proposta de R$300 mil aceita por Neilor Castiel, parceria Pedro Palitot",
+      "data": "2026-08-25",
+      "hora": "",
+      "relacionado": "Imóvel Cód. 9995"
     }
   ],
   "prospeccaoCaptacao": [
@@ -3368,6 +3378,12 @@
       "lead": "Conecta TR",
       "tipo": "Outro",
       "resumo": "A planilha central renumerou todos os protocolos (deslocaram −1) porque a fórmula os gera pelo NÚMERO DA LINHA e alguma linha foi apagada. O painel NÃO foi afetado: ele liga indicação a indicador e a imóvel por ID, e usa o protocolo só como rótulo. Os protocolos do painel são os que foram enviados aos indicadores como comprovante, e continuam valendo."
+    },
+    {
+      "data": "21/08/2026 20:55",
+      "lead": "Imóvel Cód. 9995",
+      "tipo": "Proposta",
+      "resumo": "Visita hoje com o corretor parceiro Pedro Palitot e as clientes dele. Proposta de R$300.000,00 (20% próprios, 80% financiado) ACEITA pelo proprietário Neilor Castiel. Segue para elaboração de contrato. Comissão total R$15.000; sua parte R$5.250 (parceria 50% com Pedro Palitot, 70% sobre a metade)."
     }
   ],
   "regraComissao": {
