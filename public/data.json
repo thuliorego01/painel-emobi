@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-21T12:20:00-03:00",
+  "ultimaAtualizacao": "2026-08-22T07:55:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1408,7 +1408,15 @@
       "local": "Rua Virginópolis, Nova Parnamirim - Parnamirim/RN"
     }
   ],
-  "agendaProximos": [],
+  "agendaProximos": [
+    {
+      "data": "2026-08-26",
+      "hora": "18:30",
+      "horaFim": "19:30",
+      "titulo": "Talk de Vendas - Como Construir Máquinas de Vendas de Sucesso",
+      "local": "Sebrae RN"
+    }
+  ],
   "lembretes": [
     {
       "texto": "Falar com Filipe Ideli sobre chegada da irmã e procura de apartamento em Tirol ou Petrópolis",
