@@ -1,0 +1,54 @@
+// Proposta aceita cujo comprador é do corretor parceiro não tem lead no meu CRM:
+// ela só existe no imóvel, com status "Reservado". A barra da meta e o KPI
+// "comissão prevista" contavam apenas leads — o card listava o negócio e a barra
+// dizia zero. Zero engana porque parece boa notícia.
+const { montar, dados } = require('./ambiente');
+const assert = (c, m) => { if (!c) throw new Error(m); };
+
+module.exports = {
+  nome: 'Proposta aceita sem lead meu entra na conta',
+  async rodar() {
+    const { dom, doc } = await montar();
+    const D = dados(dom);
+
+    const reservados = (D.imoveis || []).filter(im => im.status === 'Reservado');
+    const leadsEmNeg = (D.leads || []).filter(l => l.fase === 'Em Negociação' || l.fase === 'Proposta Enviada');
+
+    reservados.forEach(im => {
+      assert(typeof im.comissaoThulioVenda === 'number',
+        `imóvel ${im.id} está Reservado sem comissaoThulioVenda — apareceria sem valor`);
+      assert(im.corretorParceiro || im.compradorLeadId,
+        `imóvel ${im.id} está Reservado sem corretorParceiro nem compradorLeadId`);
+    });
+
+    const esperado =
+      leadsEmNeg.filter(l => typeof l.comissaoPrevista === 'number')
+        .reduce((s, l) => s + l.comissaoPrevista, 0) +
+      reservados.filter(im => typeof im.comissaoThulioVenda === 'number'
+        && !leadsEmNeg.some(l => String(l.id) === String(im.compradorLeadId)))
+        .reduce((s, im) => s + im.comissaoThulioVenda, 0);
+
+    const fin = dom.window.eval('FIN');
+    assert(fin.comissaoPrevista === esperado,
+      `FIN.comissaoPrevista = ${fin.comissaoPrevista}, esperado ${esperado}`);
+
+    const el = doc.getElementById('comissaoPrevista');
+    assert(el, 'KPI de comissão prevista não existe');
+    const hint = el.parentElement && el.parentElement.querySelector('.hint');
+    if (esperado > 0) {
+      assert(!/^R\$\s*0(,00)?$/.test(el.textContent.trim()),
+        `KPI mostra ${el.textContent.trim()} com R$${esperado} de proposta aceita`);
+      assert(!hint || !/nenhum/i.test(hint.textContent),
+        `dica diz "${hint && hint.textContent.trim()}" com negócio em negociação`);
+    }
+    assert(!hint || !/nenhum lead/i.test(hint.textContent),
+      'a dica ainda fala em "lead" — proposta via corretor parceiro não tem lead meu');
+
+    // O template é a fonte. Se alguém publicar só o index.html, o próximo
+    // briefing regenera a partir do template e desfaz tudo — foi o que
+    // aconteceu em 22/08. Esta checagem faz o portão reprovar antes disso.
+    const tpl = require('fs').readFileSync(require('path').join(__dirname, '..', 'public', 'index.template.html'), 'utf8');
+    assert(tpl.indexOf('reservadosSemLead') !== -1,
+      'a correção não está no TEMPLATE, só no HTML gerado — o próximo build desfaz');
+  }
+};
