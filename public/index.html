@@ -2500,14 +2500,24 @@ const FIN = (function calcularFinanceiro() {
   // Estimar por taxa média daria um número que parece medido e não é.
   const emNegociacao = (DATA.leads || []).filter(l => l.fase === 'Em Negociação' || l.fase === 'Proposta Enviada');
   const previstaInformada = emNegociacao.filter(l => typeof l.comissaoPrevista === 'number');
+  // Proposta aceita também existe SEM lead meu: quando o comprador é do corretor
+  // parceiro, o negócio só vive no imóvel (status Reservado). Antes isso ficava
+  // de fora da barra da meta — a faixa "proposta aceita" dizia zero enquanto o
+  // card logo acima listava o negócio. Mesma deduplicação do card: se o imóvel
+  // já aponta para um lead que está na lista, não conta duas vezes.
+  const idsEmNegociacao = new Set(emNegociacao.map(l => String(l.id)));
+  const reservadosSemLead = (DATA.imoveis || []).filter(im =>
+    im.status === 'Reservado'
+    && typeof im.comissaoThulioVenda === 'number'
+    && !idsEmNegociacao.has(String(im.compradorLeadId)));
   return {
     negs, pagas, aguardando, porTipo, negociado, metaValor,
     comissaoPaga: soma(pagas, 'comissao'),
     comissaoAguardando: soma(aguardando, 'comissao'),
     saldoMeta: Math.max(0, metaValor - negociado),
     emNegociacao,
-    comissaoPrevista: soma(previstaInformada, 'comissaoPrevista'),
-    previstaCompleta: previstaInformada.length === emNegociacao.length && emNegociacao.length > 0
+    reservadosSemLead,
+    comissaoPrevista: soma(previstaInformada, 'comissaoPrevista') + soma(reservadosSemLead, 'comissaoThulioVenda')
   };
 })();
 
@@ -2631,14 +2641,19 @@ document.getElementById('comissaoAguardando').textContent = brl(FIN.comissaoAgua
 (function renderPrevista() {
   const el = document.getElementById('comissaoPrevista');
   const hint = el.parentElement.querySelector('.hint');
-  const n = FIN.emNegociacao.length;
-  if (n === 0) { el.textContent = brl(0); if (hint) hint.textContent = 'nenhum lead em negociação'; return; }
-  if (FIN.previstaCompleta) {
+  // Conta leads E imóveis reservados sem lead meu. Contar só leads faria o KPI
+  // dizer "nenhum lead em negociação / R$0" com uma proposta aceita de verdade
+  // na mesa — o comprador é do corretor parceiro, o negócio é meu do mesmo jeito.
+  const reservados = FIN.reservadosSemLead || [];
+  const n = FIN.emNegociacao.length + reservados.length;
+  if (n === 0) { el.textContent = brl(0); if (hint) hint.textContent = 'nenhum negócio em negociação'; return; }
+  const comValor = FIN.emNegociacao.filter(l => typeof l.comissaoPrevista === 'number').length + reservados.length;
+  if (comValor === n) {
     el.textContent = brl(FIN.comissaoPrevista);
     if (hint) hint.textContent = n + (n === 1 ? ' negócio em andamento' : ' negócios em andamento');
     return;
   }
-  const semValor = n - FIN.emNegociacao.filter(l => typeof l.comissaoPrevista === 'number').length;
+  const semValor = n - comValor;
   el.innerHTML = FIN.comissaoPrevista > 0
     ? brl(FIN.comissaoPrevista) + ' <span class="kpi-parcial">+ ' + semValor + ' sem valor</span>'
     : '<span class="kpi-adefinir">a definir</span>';
