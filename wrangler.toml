@@ -5,7 +5,7 @@ main = "worker.js"
 [assets]
 directory = "./public"
 binding = "ASSETS"
-run_worker_first = ["/api/*"]
+run_worker_first = ["/api/*", "/visita/*"]
 
 [[kv_namespaces]]
 binding = "LEMBRETES_KV"
