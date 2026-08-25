@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-24T10:25:00-03:00",
+  "ultimaAtualizacao": "2026-08-25T20:28:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1512,6 +1512,13 @@
       "data": "2026-08-25",
       "hora": "",
       "relacionado": "Imóvel Cód. 9995"
+    },
+    {
+      "texto": "Contatar Angélica (indicação de Vitor Gabriel de Morais Farias via Conecta TR) — quer comprar no Condomínio Itatiaia, tel. (84) 99981-0624",
+      "data": "2026-08-26",
+      "hora": "",
+      "relacionado": "Angélica (indicação Conecta TR — Vitor Gabriel)",
+      "status": "Pendente"
     }
   ],
   "prospeccaoCaptacao": [
@@ -1707,6 +1714,18 @@
         "leadId": 17,
         "tipo": "Cliente",
         "cliente": "Aminadabe Pereira da Silva"
+      },
+      {
+        "protocolo": "IND-TR-2026-0016",
+        "data": "2026-08-25",
+        "indicadorId": 10,
+        "imovel": "Condomínio Itatiaia — Angélica (cliente compradora)",
+        "status": "Registrada",
+        "valorDevido": 0,
+        "indicador": "Vitor Gabriel de Morais Farias",
+        "tipo": "Cliente",
+        "cliente": "Angélica",
+        "observacao": "Formulário Conecta TR em 25/08 16:24 — indicação de cliente (Angélica, tel. (84) 99981-0624) interessada em comprar no Condomínio Itatiaia. Ainda não virou lead formal."
       }
     ],
     "indicadoresLista": [
@@ -1772,6 +1791,13 @@
         "telefone": "84988566793",
         "status": "Ativo",
         "pix": "84988566793"
+      },
+      {
+        "id": 10,
+        "nome": "Vitor Gabriel de Morais Farias",
+        "telefone": "84981894561",
+        "status": "Ativo",
+        "pix": "84981894561"
       }
     ]
   },
@@ -3468,6 +3494,12 @@
       "lead": "Imóvel Cód. 9754",
       "tipo": "Outro",
       "resumo": "Proprietário do Cód. 9754 identificado: Andrei Brettas, (71) 99356-7563. O imóvel estava como \"A definir\" e sem telefone desde a captação."
+    },
+    {
+      "data": "25/08/2026 20:28",
+      "lead": "Conecta TR",
+      "tipo": "Outro",
+      "resumo": "Novo indicador cadastrado: Vitor Gabriel de Morais Farias (Termo de Adesão em 25/08). Indicação IND-TR-2026-0016 recebida no mesmo dia — indicação de CLIENTE (Angélica, tel. (84) 99981-0624), interessada em comprar no Condomínio Itatiaia. Status: Registrada, aguardando contato."
     }
   ],
   "regraComissao": {
