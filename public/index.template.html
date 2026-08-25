@@ -635,6 +635,10 @@
   .conv-table th { text-align:left; background:var(--brand-dark2); color:var(--surface); padding:6px 8px; font-size:var(--fs-2xs); text-transform:uppercase; letter-spacing:.3px; }
   .conv-table td { padding:6px 8px; border-bottom:1px solid var(--fundo-sutil); }
   .conv-table tr:last-child td { border-bottom:none; }
+.hist-total td { border-top:2px solid var(--linha-forte); background:var(--surface-2); }
+.fb-item { border:1px solid var(--linha-media); border-radius:var(--r-md); padding:9px 11px; margin-top:7px; font-size:var(--fs-xs); }
+  .fb-item > div { display:flex; gap:6px; padding:2px 0; }
+  .fb-item > div span { color:var(--txt-fraco); min-width:96px; }
   .amostra-nota { font-size:var(--fs-xs); color:var(--aviso-txt); background:var(--aviso-bg); border:1px solid var(--aviso-linha); border-radius:var(--r-md); padding:8px 10px; margin-bottom:10px; }
   .reativa-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid var(--fundo-sutil); font-size:var(--fs-sm); }
   .reativa-row:last-child { border-bottom:none; }
@@ -1431,10 +1435,12 @@
       <h3>Resumo por Ano</h3>
       <div class="table-scroll">
       <table class="conv-table">
-        <thead><tr><th>Ano</th><th>Nº Negócios</th><th>Valor Negociado</th><th>Comissão Total</th><th>Meta</th><th>% Atingido</th></tr></thead>
+        <thead><tr><th>Ano</th><th>Nº Negócios</th><th>Volume dos Negócios</th><th>Comissão Total</th><th>Meta</th><th>% Atingido</th></tr></thead>
         <tbody id="historicoTabela"></tbody>
+        <tfoot id="historicoTotal"></tfoot>
       </table>
       </div>
+      <details id="historicoNota" class="fech-nota"></details>
     </div>
   </div>
 
@@ -1616,6 +1622,30 @@ const DATA = /*__PAINEL_DATA_PLACEHOLDER__*/{};
 const IMOVEIS_TODOS = (DATA.imoveis || []).slice();
 DATA.imoveis = IMOVEIS_TODOS.filter(im => im && im.status !== 'Fora da carteira');
 const isDemo = false;
+
+// COMISSÃO RECEBIDA — "status: pago/aguardando" é binário e não sabe dizer
+// "metade". A venda do Maria Gorette (Mossoró) recebeu R$17.500 em maio e tem
+// a outra metade presa à venda de um terreno que o comprador deu como parte do
+// pagamento: é comissão GANHA, sem data de recebimento. Guardar isso como
+// "pago" mentia para mais; como "aguardando" mentia para menos.
+// Onde existir comissaoRecebida, ela manda. Onde não existir, o status antigo
+// continua valendo — nenhuma linha existente muda de comportamento.
+function recebidoDe(n) {
+  if (!n) return 0;
+  if (typeof n.comissaoRecebida === 'number') return n.comissaoRecebida;
+  return n.status === 'pago' ? (n.comissao || 0) : 0;
+}
+function aReceberDe(n) {
+  return Math.max(0, ((n && n.comissao) || 0) - recebidoDe(n));
+}
+function quitado(n) { return aReceberDe(n) === 0; }
+// Rótulo honesto: metade recebida não é "comissão paga" nem "aguardando".
+function situacaoComissao(n) {
+  if (!n) return '';
+  if (quitado(n)) return 'Comissão recebida';
+  if (recebidoDe(n) > 0) return 'Parcialmente recebida';
+  return n.semDataPrevista ? 'Ganha, sem data de recebimento' : 'Aguardando pagamento';
+}
 // Canvas não entende var(): o Chart.js recebe uma string e, se ela não for uma
 // cor de verdade, desenha preto. Foi o que aconteceu quando a paleta virou
 // tokens — os gráficos ficaram todos pretos. Aqui os tokens são RESOLVIDOS
@@ -2181,7 +2211,7 @@ function renderAnoResumo() {
   const pctFechado = Math.max(0, Math.min(100 - pctRecebido, teto(areceber)));
   const pctPrevisto = Math.max(0, Math.min(100 - pctRecebido - pctFechado, teto(previsto)));
   const falta = Math.max(0, meta - recebido);
-  const mesesRestantes = Math.max(1, 12 - new Date().getMonth());
+  const mesesRestantes = mesesQueSobram();
 
   el.innerHTML = `
     <div class="ano-linha">
@@ -2193,12 +2223,12 @@ function renderAnoResumo() {
       <div class="ano-item">
         <span class="ano-rot">Fechado, a receber</span>
         <span class="ano-val ${areceber > 0 ? 'aguardando' : ''}">${brl(areceber)}</span>
-        <span class="ano-sub">${FIN.aguardando.length} ${FIN.aguardando.length === 1 ? 'negócio' : 'negócios'} esperando pagamento</span>
+        <span class="ano-sub">${FIN.aguardando.length} ${FIN.aguardando.length === 1 ? 'negócio' : 'negócios'} esperando pagamento${FIN.semDataPrevista > 0 ? ` · ${brl(FIN.semDataPrevista)} sem data prevista` : ''}</span>
       </div>
       <div class="ano-item">
         <span class="ano-rot">Falta para a meta</span>
         <span class="ano-val">${brl(falta)}</span>
-        <span class="ano-sub">${brl(falta / mesesRestantes)}/mês nos ${mesesRestantes} meses restantes</span>
+        <span class="ano-sub">${brl(falta / mesesRestantes)}/mês nos ${mesesTexto(mesesRestantes)} que sobram</span>
       </div>
     </div>
     <div class="ano-barras">
@@ -2484,8 +2514,8 @@ if (!temHoje && !temAmanha) {
 const FIN = (function calcularFinanceiro() {
   const negs = DATA.listaNegociacoes || [];
   const soma = (arr, campo) => arr.reduce((s, n) => s + (n[campo] || 0), 0);
-  const pagas = negs.filter(n => n.status === 'pago');
-  const aguardando = negs.filter(n => n.status !== 'pago');
+  const pagas = negs.filter(n => quitado(n));
+  const aguardando = negs.filter(n => !quitado(n));
   const porTipo = {};
   negs.forEach(n => {
     const t = n.tipo || 'Outro';
@@ -2512,8 +2542,11 @@ const FIN = (function calcularFinanceiro() {
     && !idsEmNegociacao.has(String(im.compradorLeadId)));
   return {
     negs, pagas, aguardando, porTipo, negociado, metaValor,
-    comissaoPaga: soma(pagas, 'comissao'),
-    comissaoAguardando: soma(aguardando, 'comissao'),
+    comissaoPaga: negs.reduce((s, n) => s + recebidoDe(n), 0),
+    comissaoAguardando: negs.reduce((s, n) => s + aReceberDe(n), 0),
+    // Dinheiro ganho mas sem data não é a mesma coisa que dinheiro que chega
+    // este mês. Somar os dois sob "a receber" faz o mês parecer melhor do que é.
+    semDataPrevista: negs.reduce((s, n) => s + (n.semDataPrevista ? aReceberDe(n) : 0), 0),
     saldoMeta: Math.max(0, metaValor - negociado),
     emNegociacao,
     reservadosSemLead,
@@ -2530,6 +2563,17 @@ function fracaoAnoDecorrida(ref) {
   const ano = hj.getFullYear();
   const dias = ((ano % 4 === 0 && ano % 100 !== 0) || ano % 400 === 0) ? 366 : 365;
   return (Math.floor((hj - new Date(ano, 0, 1)) / 86400000) + 1) / dias;
+}
+// MESES QUE SOBRAM — o complemento de "meses corridos", que já era fracionado.
+// Contar agosto inteiro como restante em 22/08 divide a falta por 5 e faz o
+// esforço mensal parecer 16% menor do que é. Sobram 4,3 meses, não 5.
+function mesesQueSobram(ref) {
+  return Math.max(0.25, 12 - fracaoAnoDecorrida(ref) * 12);
+}
+function mesesTexto(m) {
+  const n = Math.round(m * 10) / 10;
+  if (n === 1) return '1 mês';
+  return (Number.isInteger(n) ? String(n) : n.toFixed(1).replace('.', ',')) + ' meses';
 }
 function projecaoAnualComissao() {
   const f = fracaoAnoDecorrida();
@@ -2565,20 +2609,21 @@ const ANO_META = 2026;
   // Recebido de fato por mês = soma das comissões com status "pago".
   const recebidoPorMes = {};
   (DATA.listaNegociacoes || []).forEach(n => {
-    if (n.status !== 'pago') return;
-    recebidoPorMes[n.mes] = (recebidoPorMes[n.mes] || 0) + (n.comissao || 0);
+    const recebido = recebidoDe(n);
+    if (recebido <= 0) return;
+    recebidoPorMes[n.mes] = (recebidoPorMes[n.mes] || 0) + recebido;
   });
 
   const totalRecebido = Object.values(recebidoPorMes).reduce((s, v) => s + v, 0);
   const metaAnual = (DATA.metaComissao2026 && DATA.metaComissao2026.meta) || 0;
-  const mesesRestantes = Math.max(1, 12 - mesAtual + 1);   // inclui o mês corrente
+  const mesesRestantes = mesesQueSobram(hojeReal);   // fração: o mês corrente entra pelo que falta dele
   const falta = Math.max(0, metaAnual - totalRecebido);
   const metaMensal = falta / mesesRestantes;
 
   document.getElementById('metaMensalValor').textContent = brl(metaMensal);
   document.getElementById('metaMensalSub').textContent =
     '(' + brl(metaAnual) + ' meta anual − ' + brl(totalRecebido) + ' já recebido em ' + ANO_META + ') ÷ ' +
-    mesesRestantes + (mesesRestantes === 1 ? ' mês restante' : ' meses restantes') +
+    mesesTexto(mesesRestantes) + ' que sobram' +
     (mesAtual === 12 ? ' · só Dezembro' : ' · de ' + MESES_NOME[mesAtual - 1] + ' a Dezembro');
 
   // A tabela começava no mês atual — o passado sumia. Só que é no passado que
@@ -2703,7 +2748,7 @@ document.getElementById('totalNegociadoHint').textContent = (function () {
         row.className = 'neg-row bi-clicavel';
         row.setAttribute('role', 'button');
         row.setAttribute('tabindex', '0');
-        const statusTxt = n.status === 'pago' ? 'Comissão paga' : 'Aguardando pagamento';
+        const statusTxt = situacaoComissao(n);
         const abrir = () => abrirNegociacao(n);
         row.addEventListener('click', abrir);
         row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(); } });
@@ -2726,7 +2771,8 @@ document.getElementById('totalNegociadoHint').textContent = (function () {
   if (FIN.aguardando.length) {
     const aviso = document.createElement('div');
     aviso.className = 'neg-pendente';
-    aviso.innerHTML = `⏳ <b>${brl(FIN.comissaoAguardando)}</b> de comissão já fechada, ainda não recebida — ` +
+    aviso.innerHTML = `⏳ <b>${brl(FIN.comissaoAguardando)}</b> de comissão já fechada, ainda não recebida` +
+      (FIN.semDataPrevista > 0 ? ` (${brl(FIN.semDataPrevista)} sem data prevista)` : '') + ` — ` +
       FIN.aguardando.map(n => esc(n.imovel) + (n.previsaoRecebimento ? ' (previsto: ' + esc(n.previsaoRecebimento) + ')' : ' (sem previsão de data)')).join('; ') + '.';
     negList.parentElement.appendChild(aviso);
   }
@@ -2743,7 +2789,7 @@ function abrirNegociacao(n) {
     <div class="bi-modal-lead"><span>Valor do negócio</span><b>${brl(n.valor)}</b></div>
     <div class="bi-modal-lead"><span>Sua comissão</span><b>${brl(n.comissao)}${taxa !== null ? ' <span class="bi-fase">(' + taxa.toFixed(1).replace('.', ',') + '%)</span>' : ''}</b></div>
     <div class="bi-modal-lead"><span>Mês</span><b>${esc(n.mes)}</b></div>
-    <div class="bi-modal-lead"><span>Situação</span><b>${n.status === 'pago' ? 'Comissão recebida' : 'Aguardando pagamento'}</b></div>
+    <div class="bi-modal-lead"><span>Situação</span><b>${situacaoComissao(n)}</b>${aReceberDe(n) > 0 && recebidoDe(n) > 0 ? `<i>${brl(recebidoDe(n))} recebidos · ${brl(aReceberDe(n))} a receber</i>` : ''}</div>
     ${n.previsaoRecebimento ? `<div class="bi-modal-lead"><span>Previsão de recebimento</span><b>${esc(n.previsaoRecebimento)}</b></div>` : ''}
     ${(function () {
       const vinc = [];
@@ -2929,10 +2975,10 @@ funilConversaoCalculado.forEach(f => {
   const ganhosNoFunil = DATA.leads.filter(l => l.fase === 'Fechado Ganho').length;
   const perdidosOuPausados = DATA.leads.filter(l => l.motivoPerda).length;
   const negs = (DATA.listaNegociacoes || []);
-  const pagas = negs.filter(n => n.status === 'pago');
-  const comissaoPaga = pagas.reduce((s, n) => s + (n.comissao || 0), 0);
-  const aguardando = negs.filter(n => n.status !== 'pago');
-  const comissaoAguardando = aguardando.reduce((s, n) => s + (n.comissao || 0), 0);
+  const pagas = negs.filter(n => quitado(n));
+  const comissaoPaga = negs.reduce((s, n) => s + recebidoDe(n), 0);
+  const aguardando = negs.filter(n => !quitado(n));
+  const comissaoAguardando = negs.reduce((s, n) => s + aReceberDe(n), 0);
   alvo.innerHTML = `
     <div class="fech-linha">
       <span>Fechados <b>pelo funil de leads</b></span>
@@ -3265,6 +3311,12 @@ function clientesQueVoltaram() {
 // aparecendo entre os disponíveis, com direito a alerta de follow-up.
 const IMOVEL_FECHADO = ['Vendido', 'Alugado'];
 const imovelFechado = (im) => !!im && IMOVEL_FECHADO.indexOf(im.status) !== -1;
+// O código do imóvel vive dentro do nome ("... (Cód. 9754)"). Extrair aqui, uma
+// vez, evita repetir a expressão em cada lugar que precisa dele.
+function codigoDoImovel(im) {
+  const m = String((im && im.nome) || '').match(/Cód\.\s*(\d+)/);
+  return m ? m[1] : null;
+}
 function imovelPorCodigoTexto(ref) {
   const cod = (String(ref || '').match(/(\d+)/) || [])[1];
   if (!cod) return null;
@@ -3679,6 +3731,103 @@ if (leadsInativosArr.length === 0) {
     document.body.style.overflow = 'hidden';
     closeBtn.focus();
   }
+
+  // ---- Feedback de visita ----
+  // O feedback nunca voltava: ficava "cobrar o feedback" na ficha do imóvel e
+  // morria ali (o Cód. 9754 esperou 25 dias). Agora o cliente responde sozinho
+  // por um link, e a resposta chega sem depender de você lembrar de ligar.
+  // Mesmo desenho das notas: o KV é caixa de entrada, o histórico é o data.json.
+  let fbCache = null;
+
+  async function carregarFeedbacks(force) {
+    if (fbCache && !force) return fbCache;
+    try {
+      const r = await fetch('/api/feedback', { cache: 'no-store' });
+      if (r.ok) {
+        const j = await r.json();
+        fbCache = Array.isArray(j) ? j : [];
+        return fbCache;
+      }
+    } catch (e) { /* sem backend (arquivo local) */ }
+    fbCache = [];
+    return fbCache;
+  }
+
+  const FB_ROTULO = {
+    intencao: 'Intenção', prazo: 'Prazo', precoIdeal: 'Compraria por',
+    notaPreco: 'Preço (1-10)', comentario: 'Comentário'
+  };
+
+  function fbLinhas(reg) {
+    const r = reg.respostas || {};
+    return Object.keys(FB_ROTULO)
+      .filter(k => r[k])
+      .map(k => `<div><span>${FB_ROTULO[k]}</span> <b>${esc(r[k])}</b></div>`)
+      .join('');
+  }
+
+  // Quantos clientes acharam o preço alto é a informação que muda a conversa
+  // com o proprietário — "acho que está caro" vira um número.
+  function fbResumoPreco(regs) {
+    const notas = regs.map(f => Number((f.respostas || {}).notaPreco)).filter(n => n >= 1 && n <= 10);
+    if (notas.length < 2) return '';
+    const media = notas.reduce((a, b) => a + b, 0) / notas.length;
+    const precos = regs.map(f => Number(String((f.respostas || {}).precoIdeal || '').replace(/[^0-9]/g, '')))
+      .filter(v => v > 1000);
+    const medPreco = precos.length ? precos.slice().sort((a, b) => a - b)[Math.floor(precos.length / 2)] : null;
+    return `<div class="ctr-motivo"><b>${notas.length} respostas</b> · nota média do preço <b>${media.toFixed(1)}</b>` +
+      (medPreco ? ` · mediana do que pagariam: <b>${brl(medPreco)}</b>` : '') + '</div>';
+  }
+
+  async function pintarFeedback(im) {
+    const bloco = document.getElementById('fbBloco');
+    if (!bloco || !im) return;
+    const cod = codigoDoImovel(im);
+    const todos = await carregarFeedbacks();
+    const meus = todos.filter(f => String(f.imovelCodigo) === String(cod));
+    if (!meus.length) return;
+    const respondidos = meus.filter(f => f.respondidoEm);
+    const aguardando = meus.filter(f => !f.respondidoEm);
+    bloco.innerHTML = `<div class="modal-timeline-title">Feedback das visitas</div>` +
+      fbResumoPreco(respondidos) +
+      respondidos.map(f => `<div class="fb-item"><b>${esc(f.cliente || 'Cliente')}</b>${fbLinhas(f)}</div>`).join('') +
+      (aguardando.length ? `<div class="tbl-nota">${aguardando.length} link(s) enviado(s) sem resposta: ${aguardando.map(f => esc(f.cliente || 'cliente')).join(', ')}.</div>` : '');
+  }
+
+  document.addEventListener('click', async (e) => {
+    const bt = alvoDe(e).closest('#fbPedir');
+    if (!bt) return;
+    const status = document.getElementById('fbStatus');
+    const cliente = prompt('Nome do cliente que visitou:');
+    if (!cliente || !cliente.trim()) return;
+    status.style.display = '';
+    status.textContent = 'Gerando o link…';
+    try {
+      const r = await fetch('/api/feedback/criar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          imovelCodigo: bt.dataset.cod, imovelNome: bt.dataset.nome,
+          cliente: cliente.trim(), data: dataLocalISO()
+        })
+      });
+      if (!r.ok) throw new Error('falhou');
+      const j = await r.json();
+      const msg = `Oi, ${cliente.trim().split(' ')[0]}! Obrigado pela visita. Responde em 1 minuto o que você achou? São 5 perguntas e me ajuda muito a achar o imóvel certo pra você: ${j.link}`;
+      let copiou = false;
+      try {
+        if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(msg); copiou = true; }
+      } catch (err) { /* plano B abaixo */ }
+      status.className = 'tbl-nota';
+      status.innerHTML = copiou
+        ? `✓ Mensagem copiada — é só colar no WhatsApp do cliente.<br><span class="fu-chip">${esc(j.link)}</span>`
+        : `Link criado: <span class="fu-chip">${esc(j.link)}</span>`;
+      fbCache = null;
+    } catch (err) {
+      status.className = 'tbl-nota';
+      status.textContent = 'Não consegui criar o link. Isso só funciona no painel publicado, não no arquivo aberto do computador.';
+    }
+  });
 
   // ---- Notas rápidas por cliente (salvas na nuvem via /api/notas) ----
   const notaTexto = document.getElementById('leadNotaTexto');
@@ -4744,14 +4893,18 @@ if (!DATA.imoveis || DATA.imoveis.length === 0) {
       </div>
       ${(im.comissaoTotalVenda || im.comissaoThulioVenda) ? `<div class="ctr-motivo" style="background:var(--ok-bg);border-color:var(--ok-linha);color:var(--ok-txt);">Comissão total ${im.comissaoTotalVenda ? brl(im.comissaoTotalVenda) : '—'} · sua parte <b>${im.comissaoThulioVenda ? brl(im.comissaoThulioVenda) : '—'}</b>${im.corretorParceiro ? ' · parceria com ' + esc(im.corretorParceiro) : ''}</div>` : ''}
       ${im.obs ? `<div class="modal-timeline-title">Observações</div><div class="pilar-desc">${esc(im.obs)}</div>` : ''}
+      <div id="fbBloco"></div>
       <div class="lead-actions" style="margin-top:14px;">
         ${im.link ? `<a class="imovel-link" href="${esc(im.link)}" target="_blank" rel="noopener">Ver anúncio / fotos</a>` : ''}
         ${wa ? `<a class="imovel-link" href="${wa}" target="_blank" rel="noopener">WhatsApp proprietário</a>` : ''}
+        <button type="button" class="imovel-link" id="fbPedir" data-cod="${esc(codigoDoImovel(im) || '')}" data-nome="${esc(im.nome || '')}">Pedir feedback de visita</button>
       </div>
+      <div id="fbStatus" class="tbl-nota" style="display:none;"></div>
       ${!wa ? '<div class="tbl-nota">Sem telefone cadastrado — é o que impede o follow-up com este proprietário. Me passe o número que eu registro.</div>' : ''}`;
     imOver.classList.add('open');
     document.body.style.overflow = 'hidden';
     imClose.focus();
+    pintarFeedback(im);
   }
 
   document.addEventListener('click', (e) => {
@@ -4841,6 +4994,38 @@ ANOS_HISTORICO.forEach(a => {
   historicoTabela.appendChild(tr);
 });
 
+// A CARREIRA INTEIRA numa linha. O número que faltava não estava em lugar
+// nenhum: cada ano aparecia sozinho e a soma vivia só na cabeça dele.
+// "Volume dos Negócios", não VGV: aqui dentro há preço de venda, aluguel
+// MENSAL e serviço avulso somados. VGV, no mercado, é só venda de imóvel —
+// chamar isto de VGV seria dar nome de coisa exata a uma mistura.
+(function renderTotalCarreira() {
+  const tfoot = document.getElementById('historicoTotal');
+  const nota = document.getElementById('historicoNota');
+  if (!tfoot) return;
+  const anos = ANOS_HISTORICO.filter(a => a.nNegocios);
+  if (!anos.length) return;
+  const n = anos.reduce((s, a) => s + (a.nNegocios || 0), 0);
+  const vol = anos.reduce((s, a) => s + (a.valorNegociado || 0), 0);
+  const com = anos.reduce((s, a) => s + (a.comissaoTotal || 0), 0);
+  const de = anos[0].ano, ate = anos[anos.length - 1].ano;
+  tfoot.innerHTML = `<tr class="hist-total"><td><b>${de}–${ate}</b></td><td><b>${n}</b></td><td><b>${brl(vol)}</b></td><td><b>${brl(com)}</b></td><td>—</td><td>—</td></tr>`;
+  if (nota) {
+    const ticket = n ? vol / n : 0;
+    const pct = vol ? com / vol * 100 : 0;
+    // A ressalva vira o RÓTULO do clique, não um parágrafo aberto: quem bate o
+    // olho já sabe que não é VGV, e quem quiser o porquê abre. Nota de quatro
+    // linhas permanente é a mesma poluição da dica de hover repetida
+    // 25 vezes no mesmo card — explicação constante deixa de ser lida.
+    nota.innerHTML =
+      `<summary>O que entra neste volume — não é VGV</summary>` +
+      `<b>${brl(ticket)}</b> de ticket médio em ${ate - de + 1} anos. ` +
+      `De cada R$ 100 que passam pelas suas mãos, <b>R$ ${pct.toFixed(2).replace('.', ',')}</b> ficam com você, já descontadas parcerias e repasses.<br>` +
+      `O volume soma preço de venda, <b>aluguel mensal</b> e serviço avulso. VGV, no mercado, é só venda de imóvel — por isso este número não é VGV. ` +
+      `Os anos de ${de} a ${ate - 1} vieram importados com locações misturadas: a série serve para comparar anos entre si, não como número de mercado.`;
+  }
+})();
+
 new Chart(document.getElementById('chartHistoricoAno'), {
   type: 'bar',
   data: {
@@ -4884,7 +5069,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
   const projecao = projecaoAnualComissao();   // idêntica à do KPI "Projeção Anual"
   const falta = Math.max(0, metaCom - recebido);
   const mesAtual = hoje.getMonth();               // 0-11
-  const mesesRestantes = Math.max(1, 12 - mesAtual);
+  const mesesRestantes = mesesQueSobram(hoje);
   // Meses corridos como fração contínua: em 02/08, dividir por 8 puxaria a
   // média para baixo por causa de um mês que mal começou.
   const mesesCorridos = Math.max(0.5, fracaoAno * 12);
@@ -4923,7 +5108,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
       <div class="ritmo-celula">
         <span class="ritmo-celula-rot">Para bater a meta, precisa por mês</span>
         <span class="ritmo-celula-val">${brl(precisaPorMes)}</span>
-        <span class="ritmo-celula-sub">${mesesRestantes === 1 ? 'no último mês do ano' : 'nos ' + mesesRestantes + ' meses restantes'}</span>
+        <span class="ritmo-celula-sub">nos ${mesesTexto(mesesRestantes)} que sobram do ano</span>
       </div>
       <div class="ritmo-celula">
         <span class="ritmo-celula-rot">Média que você fez por mês</span>
@@ -5946,7 +6131,7 @@ function resumirEvento(titulo) {
     const seusNegocios = (DATA.listaNegociacoes || []).filter(n =>
       String(n.compradorLeadId) === String(l.id) || String(n.vendedorLeadId) === String(l.id));
     const pendente = seusNegocios
-      .filter(n => n.status !== 'pago')
+      .filter(n => !quitado(n))
       .sort((a, b) => ((b.ano || 0) * 100 + (b.mesNum || 0)) - ((a.ano || 0) * 100 + (a.mesNum || 0)))[0] || null;
     const chip = est
       ? (est.vencido
@@ -6028,7 +6213,7 @@ function abrirPosVenda(id) {
       ? `<div class="bi-modal-nota">Fechou em <b>${l.dataFechamento.split('-').reverse().join('/')}</b> — há ${dias} dias.</div>`
       : `<div class="bi-modal-nota">Sem data de fechamento registrada. Me diga a data e a cadência começa a rodar.</div>`) +
     (neg ? `<div class="bi-modal-lead"><span>Negócio</span><b>${esc(neg.imovel)}</b></div>
-            <div class="bi-modal-lead"><span>Comissão</span><b>${brl(neg.comissao)} · ${neg.status === 'pago' ? 'recebida' : 'a receber'}</b></div>` : '') +
+            <div class="bi-modal-lead"><span>Comissão</span><b>${brl(neg.comissao)} · ${situacaoComissao(neg).toLowerCase()}</b></div>` : '') +
     `<div class="modal-timeline-title">Linha do tempo do pós-venda</div>` +
     POS_VENDA_MARCOS.map(m => {
       const feito = feitos.has(String(m.dias));
