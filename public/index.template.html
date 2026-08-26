@@ -267,6 +267,17 @@
   .sync-btn { background: var(--brand-dark2); color:var(--surface); border:none; border-radius:var(--r-md); padding:9px 16px; font-size: var(--fs-xs); font-weight:600; cursor:pointer; font-family:inherit; white-space:nowrap; }
   .sync-btn:hover:not(:disabled) { background: var(--brand-dark); }
   .sync-btn:disabled { opacity:.55; cursor:default; }
+  /* MODO PRIVADO — o painel é usado numa sala com outras pessoas. Comissão,
+     meta e faturamento não precisam ficar legíveis de longe o tempo todo.
+     Mesma ideia do olhinho do app do banco. */
+  .privado-btn { font-family:inherit; font-size: var(--fs-2xs); font-weight:600; letter-spacing:.3px;
+    text-transform:uppercase; color:var(--txt-apoio); background:var(--surface-2);
+    border:1px solid var(--linha-media); border-radius:var(--r-pill); padding:7px 13px; cursor:pointer; white-space:nowrap; }
+  .privado-btn:hover { color:var(--txt-forte); border-color:var(--linha-forte); }
+  .privado-btn[aria-pressed="true"] { color:var(--brand-gold-deep); border-color:var(--brand-gold-deep); }
+  /* Gráfico não passa por brl(): o valor é desenhado no canvas. Borrar é o
+     equivalente visual de mascarar o número. */
+  body.privado canvas { filter: blur(9px); }
   .sync-status { font-size: var(--fs-xs); color:var(--txt-apoio); flex:1; min-width:180px; }
   .sync-status.ok { color:var(--ok-txt); font-weight:600; }
   .sync-status.erro { color:var(--erro-txt); font-weight:600; }
@@ -1204,6 +1215,7 @@
         <input type="search" id="buscaGlobal" placeholder="Buscar cliente, imóvel, indicação…  ( / )" autocomplete="off" aria-label="Busca global">
         <div class="busca-resultados" id="buscaResultados" role="listbox" style="display:none;"></div>
       </div>
+      <button class="privado-btn" id="privadoBtn" type="button" title="Esconder os valores da tela (atalho: V)" aria-pressed="false">Ocultar valores</button>
     </div>
 
     <div class="tab-panel active" data-tab="inicio" id="panel-inicio" role="tabpanel">
@@ -1674,7 +1686,17 @@ const BRAND = {
   txtFraco:  cor('--txt-fraco', '#8A9186')
 };
 
+// MODO PRIVADO. brl() é o funil por onde todo valor em dinheiro passa antes de
+// virar texto — mascarar aqui cobre a tela inteira de uma vez, sem precisar
+// caçar cada lugar que mostra dinheiro (e sem esquecer nenhum na próxima tela).
+// A preferência é lida uma vez no carregamento: alternar recarrega a página,
+// porque brl() já devolveu strings prontas para dentro de innerHTML.
+const PRIVADO_KEY = 'painelEmobiPrivado';
+let PRIVADO = false;
+try { PRIVADO = localStorage.getItem(PRIVADO_KEY) === '1'; } catch (e) { PRIVADO = false; }
+
 function brl(v) {
+  if (PRIVADO) return 'R$ ••••';
   return (v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
 }
 
@@ -1787,6 +1809,31 @@ function agendaPorDia() {
     realizadosCount: unicos.length - pend.length
   };
 }
+// Liga o botão e o atalho. Recarregar é de propósito: garante que TODO valor
+// já renderizado seja remontado mascarado, sem sobrar nenhum canto esquecido.
+(function ligarModoPrivado() {
+  if (PRIVADO) document.body.classList.add('privado');
+  const bt = document.getElementById('privadoBtn');
+  const pintar = () => {
+    if (!bt) return;
+    bt.textContent = PRIVADO ? 'Mostrar valores' : 'Ocultar valores';
+    bt.setAttribute('aria-pressed', PRIVADO ? 'true' : 'false');
+  };
+  pintar();
+  const alternar = () => {
+    try { localStorage.setItem(PRIVADO_KEY, PRIVADO ? '0' : '1'); } catch (e) { }
+    location.reload();
+  };
+  if (bt) bt.addEventListener('click', alternar);
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'v' && e.key !== 'V') return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const a = document.activeElement;
+    if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.isContentEditable)) return;
+    alternar();
+  });
+})();
+
 const AGENDA_DIA = agendaPorDia();
 
 // ---- Quem precisa de reativação (calculado ao vivo) ----

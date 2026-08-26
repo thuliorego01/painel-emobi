@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-25T20:28:00-03:00",
+  "ultimaAtualizacao": "2026-08-25T21:00:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -1272,7 +1272,7 @@
       "status": "Disponível",
       "dataCaptacao": "2026-08-17",
       "ultimaInteracaoProprietario": "2026-08-24",
-      "obs": "Condomínio Renaissance Première. Reformado: sala ampliada e integrada à varanda, cozinha integrada, antiga dependência virou closet. Móveis planejados, piso laminado, vista para Natal. Vaga coberta e livre. Condomínio R$ 540,00 · IPTU R$ 650,00/ano. Aceita financiamento. [17/08] Captação com o Heber Lima, que também é lead COMPRADOR no pipeline — provável venda para comprar. [21/08] TRÊS visitas marcadas para 22/08: 9h (Raphael Augusto, direto), 9h30 (cliente da corretora Natália Pimenta) e 10h (cliente do corretor Thiago Lucena). [24/08] Quatro visitas no mesmo dia: Felipe Zumba (16h), Dani Med (16h30), Gianne Bezerra (17h) e cliente do corretor Pedro Palitot (18h30).",
+      "obs": "Condomínio Renaissance Première. Reformado: sala ampliada e integrada à varanda, cozinha integrada, antiga dependência virou closet. Móveis planejados, piso laminado, vista para Natal. Vaga coberta e livre. Condomínio R$ 540,00 · IPTU R$ 650,00/ano. Aceita financiamento. [17/08] Captação com o Heber Lima, que também é lead COMPRADOR no pipeline — provável venda para comprar. [21/08] TRÊS visitas marcadas para 22/08: 9h (Raphael Augusto, direto), 9h30 (cliente da corretora Natália Pimenta) e 10h (cliente do corretor Thiago Lucena). [24/08] Quatro visitas no mesmo dia: Felipe Zumba (16h), Dani Med (16h30), Gianne Bezerra (17h) e cliente do corretor Pedro Palitot (18h30). [25/08] Feedback da visita de Felipe Zumba: intenção \"Talvez, estou avaliando\" · prazo longo (mais de 6 meses) · compraria por R$250.000 · nota do preço 8/10 · \"O apartamento de fato estava bem organizado e devidamente reformado, isso foi um aspecto positivo. No entanto, o condomínio e o histórico dos alagamentos me fazem repensar no potencial de valorização do imóvel a médio e longo prazo. Outrossim, gostaria de parabenizar o atendimento do corretor.\" ⚠️ ALAGAMENTO: primeira vez que esse histórico aparece no CRM — pode explicar sete visitas sem proposta. Confirmar com o proprietário Heber Lima.",
       "tipoOperacao": "Venda"
     }
   ],
@@ -3500,6 +3500,13 @@
       "lead": "Conecta TR",
       "tipo": "Outro",
       "resumo": "Novo indicador cadastrado: Vitor Gabriel de Morais Farias (Termo de Adesão em 25/08). Indicação IND-TR-2026-0016 recebida no mesmo dia — indicação de CLIENTE (Angélica, tel. (84) 99981-0624), interessada em comprar no Condomínio Itatiaia. Status: Registrada, aguardando contato."
+    },
+    {
+      "data": "25/08/2026 21:00",
+      "lead": "Heber Lima",
+      "tipo": "Outro",
+      "leadId": 7,
+      "resumo": "PRIMEIRO feedback pós-visita pelo formulário. Cód. 10842, Felipe Zumba: compraria por R$250.000 (pedido R$329.990, -24%), prazo longo, intenção \"talvez\". Elogiou reforma e atendimento, mas citou o HISTÓRICO DE ALAGAMENTOS do condomínio como o que trava a decisão — informação nova, não estava no CRM."
     }
   ],
   "regraComissao": {
