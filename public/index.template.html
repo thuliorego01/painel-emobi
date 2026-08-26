@@ -270,9 +270,11 @@
   /* MODO PRIVADO — o painel é usado numa sala com outras pessoas. Comissão,
      meta e faturamento não precisam ficar legíveis de longe o tempo todo.
      Mesma ideia do olhinho do app do banco. */
-  .privado-btn { font-family:inherit; font-size: var(--fs-2xs); font-weight:600; letter-spacing:.3px;
-    text-transform:uppercase; color:var(--txt-apoio); background:var(--surface-2);
-    border:1px solid var(--linha-media); border-radius:var(--r-pill); padding:7px 13px; cursor:pointer; white-space:nowrap; }
+  .privado-btn { flex:0 0 auto; background:var(--surface-2); border:1px solid var(--linha-media);
+    color:var(--txt-apoio); width:34px; height:34px; border-radius:var(--r-md); cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center; padding:0;
+    transition: color .14s ease, border-color .14s ease; }
+  .privado-btn svg { width:19px; height:19px; }
   .privado-btn:hover { color:var(--txt-forte); border-color:var(--linha-forte); }
   .privado-btn[aria-pressed="true"] { color:var(--brand-gold-deep); border-color:var(--brand-gold-deep); }
   /* Gráfico não passa por brl(): o valor é desenhado no canvas. Borrar é o
@@ -1217,7 +1219,7 @@
         <input type="search" id="buscaGlobal" placeholder="Buscar cliente, imóvel, indicação…  ( / )" autocomplete="off" aria-label="Busca global">
         <div class="busca-resultados" id="buscaResultados" role="listbox" style="display:none;"></div>
       </div>
-      <button class="privado-btn" id="privadoBtn" type="button" title="Esconder os valores da tela (atalho: V)" aria-pressed="false">Ocultar valores</button>
+      <button class="privado-btn" id="privadoBtn" type="button" aria-pressed="false"></button>
     </div>
 
     <div class="tab-panel active" data-tab="inicio" id="panel-inicio" role="tabpanel">
@@ -1816,10 +1818,18 @@ function agendaPorDia() {
 (function ligarModoPrivado() {
   if (PRIVADO) document.body.classList.add('privado');
   const bt = document.getElementById('privadoBtn');
+  // Ícone no mesmo traço dos do menu. Ele descreve o ESTADO (olho aberto = os
+  // valores estão à mostra), e o rótulo acessível descreve a AÇÃO — botão de
+  // ícone sem aria-label é botão mudo para quem usa leitor de tela.
+  const OLHO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/></svg>';
+  const OLHO_CORTADO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.9 5.8A9.6 9.6 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a17 17 0 0 1-2.9 3.8M6.3 7.6A17 17 0 0 0 2.5 12S6 18.5 12 18.5c1.2 0 2.3-.2 3.3-.6"/><path d="m10 10a3 3 0 0 0 4 4"/><path d="M3 3l18 18"/></svg>';
   const pintar = () => {
     if (!bt) return;
-    bt.textContent = PRIVADO ? 'Mostrar valores' : 'Ocultar valores';
+    bt.innerHTML = PRIVADO ? OLHO_CORTADO : OLHO;
     bt.setAttribute('aria-pressed', PRIVADO ? 'true' : 'false');
+    const rotulo = (PRIVADO ? 'Mostrar' : 'Ocultar') + ' os valores da tela (atalho: V)';
+    bt.setAttribute('aria-label', rotulo);
+    bt.setAttribute('title', rotulo);
   };
   pintar();
   const alternar = () => {
@@ -4223,6 +4233,12 @@ if (leadsInativosArr.length === 0) {
     if (ok && notasCache) notasCache.push({ lead: l.nome, texto, criadaEm: hoje.toISOString() });
     return ok;
   };
+
+  // A ficha do imóvel mora FORA deste bloco e precisa chamar pintarFeedback.
+  // Sem esta ponte, o clique no imóvel lançava ReferenceError e a lista de
+  // feedback nunca era desenhada — o botão funcionava, o dado estava gravado,
+  // e a tela ficava muda. O erro só aparecia no console, então passou batido.
+  window.pintarFeedback = pintarFeedback;
 })();
 
 // ---- O Que Fazer Agora: consolida leads atrasados, reativação, follow-up de proprietários e lembretes ----
