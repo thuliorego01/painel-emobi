@@ -1272,8 +1272,19 @@
       "status": "Disponível",
       "dataCaptacao": "2026-08-17",
       "ultimaInteracaoProprietario": "2026-08-24",
-      "obs": "Condomínio Renaissance Première. Reformado: sala ampliada e integrada à varanda, cozinha integrada, antiga dependência virou closet. Móveis planejados, piso laminado, vista para Natal. Vaga coberta e livre. Condomínio R$ 540,00 · IPTU R$ 650,00/ano. Aceita financiamento. [17/08] Captação com o Heber Lima, que também é lead COMPRADOR no pipeline — provável venda para comprar. [21/08] TRÊS visitas marcadas para 22/08: 9h (Raphael Augusto, direto), 9h30 (cliente da corretora Natália Pimenta) e 10h (cliente do corretor Thiago Lucena). [24/08] Quatro visitas no mesmo dia: Felipe Zumba (16h), Dani Med (16h30), Gianne Bezerra (17h) e cliente do corretor Pedro Palitot (18h30). [25/08] Feedback da visita de Felipe Zumba: intenção \"Talvez, estou avaliando\" · prazo longo (mais de 6 meses) · compraria por R$250.000 · nota do preço 8/10 · \"O apartamento de fato estava bem organizado e devidamente reformado, isso foi um aspecto positivo. No entanto, o condomínio e o histórico dos alagamentos me fazem repensar no potencial de valorização do imóvel a médio e longo prazo. Outrossim, gostaria de parabenizar o atendimento do corretor.\" ⚠️ ALAGAMENTO: primeira vez que esse histórico aparece no CRM — pode explicar sete visitas sem proposta. Confirmar com o proprietário Heber Lima.",
-      "tipoOperacao": "Venda"
+      "obs": "Condomínio Renaissance Première. Reformado: sala ampliada e integrada à varanda, cozinha integrada, antiga dependência virou closet. Móveis planejados, piso laminado, vista para Natal. Vaga coberta e livre. Condomínio R$ 540,00 · IPTU R$ 650,00/ano. Aceita financiamento. [17/08] Captação com o Heber Lima, que também é lead COMPRADOR no pipeline — provável venda para comprar. [21/08] TRÊS visitas marcadas para 22/08: 9h (Raphael Augusto, direto), 9h30 (cliente da corretora Natália Pimenta) e 10h (cliente do corretor Thiago Lucena). [24/08] Quatro visitas no mesmo dia: Felipe Zumba (16h), Dani Med (16h30), Gianne Bezerra (17h) e cliente do corretor Pedro Palitot (18h30). [25/08] Um visitante citou HISTÓRICO DE ALAGAMENTOS no condomínio — informação nova, não estava no CRM. Confirmar com o proprietário Heber Lima.",
+      "tipoOperacao": "Venda",
+      "feedbacks": [
+        {
+          "cliente": "Felipe Zumba",
+          "data": "2026-08-25",
+          "intencao": "Talvez, estou avaliando",
+          "prazo": "Longo prazo (mais de 6 meses)",
+          "precoIdeal": 250000,
+          "notaPreco": 8,
+          "comentario": "O apartamento de fato estava bem organizado e devidamente reformado, isso foi um aspecto positivo. No entanto, o condomínio e o histórico dos alagamentos me fazem repensar no potencial de valorização do imóvel a médio e longo prazo. Outrossim, gostaria de parabenizar o atendimento do corretor."
+        }
+      ]
     }
   ],
   "historico": {

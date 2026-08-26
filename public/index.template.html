@@ -647,7 +647,9 @@
   .conv-table td { padding:6px 8px; border-bottom:1px solid var(--fundo-sutil); }
   .conv-table tr:last-child td { border-bottom:none; }
 .hist-total td { border-top:2px solid var(--linha-forte); background:var(--surface-2); }
-.fb-item { border:1px solid var(--linha-media); border-radius:var(--r-md); padding:9px 11px; margin-top:7px; font-size:var(--fs-xs); }
+.fb-contagem { font-weight:600; font-size: var(--fs-2xs); color:var(--txt-apoio); text-transform:none; letter-spacing:0; }
+  .fb-data { display:block; font-style:normal; font-size: var(--fs-xs); color:var(--txt-apoio); margin-bottom:4px; }
+  .fb-item { border:1px solid var(--linha-media); border-radius:var(--r-md); padding:9px 11px; margin-top:7px; font-size:var(--fs-xs); }
   .fb-item > div { display:flex; gap:6px; padding:2px 0; }
   .fb-item > div span { color:var(--txt-fraco); min-width:96px; }
   .amostra-nota { font-size:var(--fs-xs); color:var(--aviso-txt); background:var(--aviso-bg); border:1px solid var(--aviso-linha); border-radius:var(--r-md); padding:8px 10px; margin-bottom:10px; }
@@ -3806,38 +3808,77 @@ if (leadsInativosArr.length === 0) {
   };
 
   function fbLinhas(reg) {
-    const r = reg.respostas || {};
+    const r = reg.r || {};
     return Object.keys(FB_ROTULO)
-      .filter(k => r[k])
-      .map(k => `<div><span>${FB_ROTULO[k]}</span> <b>${esc(r[k])}</b></div>`)
-      .join('');
+      .filter(k => r[k] !== undefined && r[k] !== null && r[k] !== '')
+      .map(k => {
+        const v = k === 'precoIdeal' && typeof r[k] === 'number' ? brl(r[k])
+          : k === 'notaPreco' ? r[k] + '/10' : r[k];
+        return `<div><span>${FB_ROTULO[k]}</span> <b>${esc(String(v))}</b></div>`;
+      }).join('');
   }
 
   // Quantos clientes acharam o preço alto é a informação que muda a conversa
   // com o proprietário — "acho que está caro" vira um número.
-  function fbResumoPreco(regs) {
-    const notas = regs.map(f => Number((f.respostas || {}).notaPreco)).filter(n => n >= 1 && n <= 10);
+  function fbResumoPreco(regs, im) {
+    const notas = regs.map(f => Number((f.r || {}).notaPreco)).filter(n => n >= 1 && n <= 10);
     if (notas.length < 2) return '';
     const media = notas.reduce((a, b) => a + b, 0) / notas.length;
-    const precos = regs.map(f => Number(String((f.respostas || {}).precoIdeal || '').replace(/[^0-9]/g, '')))
-      .filter(v => v > 1000);
-    const medPreco = precos.length ? precos.slice().sort((a, b) => a - b)[Math.floor(precos.length / 2)] : null;
-    return `<div class="ctr-motivo"><b>${notas.length} respostas</b> · nota média do preço <b>${media.toFixed(1)}</b>` +
-      (medPreco ? ` · mediana do que pagariam: <b>${brl(medPreco)}</b>` : '') + '</div>';
+    const precos = regs.map(f => Number(String((f.r || {}).precoIdeal || '').replace(/[^0-9]/g, '')))
+      .filter(v => v > 1000).sort((a, b) => a - b);
+    const medPreco = precos.length ? precos[Math.floor(precos.length / 2)] : null;
+    // "acho que está caro" vira número: a distância entre o que o mercado
+    // pagaria e o que está sendo pedido é o que se leva ao proprietário.
+    const pedido = im && im.valor;
+    const gap = (medPreco && pedido) ? Math.round((1 - medPreco / pedido) * 100) : null;
+    return `<div class="ctr-motivo">Nota média do preço <b>${media.toFixed(1).replace('.', ',')}/10</b>` +
+      (medPreco ? ` · pagariam em média <b>${brl(medPreco)}</b>` : '') +
+      (gap !== null && gap > 0 ? ` · <b>${gap}% abaixo</b> do valor pedido` : '') + '</div>';
+  }
+
+  // Feedback é REGISTRO, não parágrafo. A primeira versão despejava a resposta
+  // dentro do `obs` do imóvel como texto corrido — com quatro visitas no mesmo
+  // imóvel virava um bloco ilegível, e não dava para somar nada. Agora cada
+  // resposta é um item com campos próprios, venha ela da caixa (KV, recém
+  // respondida) ou do histórico (data.json, já incorporada pelo briefing).
+  // As duas fontes se juntam aqui e a conta do preço passa por cima das duas.
+  // "2026-08-25" -> "25/08". Sem new Date(): a string ISO pura evita o fuso
+  // empurrar a data um dia para trás, erro que já custou caro aqui.
+  function dataBR(iso) {
+    const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+    return m ? `${m[3]}/${m[2]}` : '';
+  }
+
+  function fbNormalizar(f, origem) {
+    if (origem === 'historico') {
+      return {
+        cliente: f.cliente, data: f.data, respondido: true,
+        r: { intencao: f.intencao, prazo: f.prazo, precoIdeal: f.precoIdeal,
+             notaPreco: f.notaPreco, comentario: f.comentario }
+      };
+    }
+    return {
+      cliente: f.cliente, data: (f.respondidoEm || f.criadoEm || '').slice(0, 10),
+      respondido: !!f.respondidoEm, r: f.respostas || {}
+    };
   }
 
   async function pintarFeedback(im) {
     const bloco = document.getElementById('fbBloco');
     if (!bloco || !im) return;
     const cod = codigoDoImovel(im);
-    const todos = await carregarFeedbacks();
-    const meus = todos.filter(f => String(f.imovelCodigo) === String(cod));
-    if (!meus.length) return;
-    const respondidos = meus.filter(f => f.respondidoEm);
-    const aguardando = meus.filter(f => !f.respondidoEm);
-    bloco.innerHTML = `<div class="modal-timeline-title">Feedback das visitas</div>` +
-      fbResumoPreco(respondidos) +
-      respondidos.map(f => `<div class="fb-item"><b>${esc(f.cliente || 'Cliente')}</b>${fbLinhas(f)}</div>`).join('') +
+    const daCaixa = (await carregarFeedbacks())
+      .filter(f => String(f.imovelCodigo) === String(cod))
+      .map(f => fbNormalizar(f, 'caixa'));
+    const doHistorico = (im.feedbacks || []).map(f => fbNormalizar(f, 'historico'));
+    const todos = doHistorico.concat(daCaixa)
+      .sort((a, b) => String(b.data || '').localeCompare(String(a.data || '')));
+    if (!todos.length) return;
+    const respondidos = todos.filter(f => f.respondido);
+    const aguardando = todos.filter(f => !f.respondido);
+    bloco.innerHTML = `<div class="modal-timeline-title">Feedback das visitas <span class="fb-contagem">${respondidos.length} ${respondidos.length === 1 ? 'resposta' : 'respostas'}</span></div>` +
+      fbResumoPreco(respondidos, im) +
+      respondidos.map(f => `<div class="fb-item"><b>${esc(f.cliente || 'Cliente')}</b>${f.data ? `<i class="fb-data">${dataBR(f.data)}</i>` : ''}${fbLinhas(f)}</div>`).join('') +
       (aguardando.length ? `<div class="tbl-nota">${aguardando.length} link(s) enviado(s) sem resposta: ${aguardando.map(f => esc(f.cliente || 'cliente')).join(', ')}.</div>` : '');
   }
 
