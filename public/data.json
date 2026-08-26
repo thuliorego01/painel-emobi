@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-25T22:55:00-03:00",
+  "ultimaAtualizacao": "2026-08-26T16:10:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -629,6 +629,44 @@
         "Cód. 10842"
       ],
       "interesse": "apartamento em Nova Parnamirim — visitando o Cód. 10842"
+    },
+    {
+      "id": 20,
+      "nome": "Daniela Altoé",
+      "telefone": "84996925578",
+      "origem": "Anúncio patrocinado",
+      "dataEntrada": "2026-08-26",
+      "fase": "Em Negociação",
+      "maiorFaseIndex": 7,
+      "temperatura": "Quente",
+      "valor": 370000,
+      "comissaoPrevista": 6825,
+      "comissaoDetalhe": "Comissão total acordada R$19.500,00 sobre a venda de R$370.000,00, dividida 50/50 com o corretor parceiro Paulo Câmara (R$9.750,00 cada). Sua parte após o repasse de 30% para a imobiliária: R$6.825,00.",
+      "proximaAcao": "Acompanhar a elaboração do contrato com o Paulo Câmara",
+      "dataProximaAcao": "2026-08-28",
+      "obs": "[26/08] Entrou pelo anúncio patrocinado do Renaissance Première (Cód. 10842). Não seguiu com aquele imóvel, mas foi convertida para visita ao Solar Candelária 1004-A, em parceria com o corretor Paulo Câmara. [26/08] Negociação em R$370.000,00, em fase de ELABORAÇÃO DE CONTRATO.",
+      "imoveisCompativeis": [],
+      "interesse": "Apartamento na Candelária — fechando o Solar Candelária 1004-A"
+    },
+    {
+      "id": 21,
+      "nome": "Angélica",
+      "telefone": "84999810624",
+      "origem": "Conecta TR",
+      "dataEntrada": "2026-08-26",
+      "fase": "Proposta Enviada",
+      "maiorFaseIndex": 6,
+      "temperatura": "Quente",
+      "valor": 380000,
+      "comissaoPrevista": 13300,
+      "comissaoDetalhe": "Sobre a PROPOSTA de R$380.000,00 (ainda não aceita): 5% = R$19.000,00, sem parceria; sua parte 70% = R$13.300,00. Se o valor subir na negociação, este número sobe junto.",
+      "proximaAcao": "Alinhar com a Angélica para tentar subir a proposta antes de levar ao proprietário",
+      "dataProximaAcao": "2026-08-27",
+      "obs": "[26/08] Indicada pelo Vitor Gabriel de Morais Farias no Conecta TR (IND-TR-2026-0016) como cliente compradora interessada no Condomínio Itatiaia. [26/08] Visitou o Cód. 10869 (Parque Itatiaia, 83m²) e FEZ PROPOSTA de R$380.000,00 — R$300.000,00 no ato e R$80.000,00 em 10 parcelas. Tabela: R$449.990,00 (15,6% abaixo). Thúlio vai alinhar com ela para tentar subir antes de levar ao proprietário João Carlos.",
+      "imoveisCompativeis": [
+        "Cód. 10869"
+      ],
+      "interesse": "Apartamento no Condomínio Itatiaia, Nova Parnamirim"
     }
   ],
   "imoveis": [
@@ -1285,6 +1323,24 @@
           "comentario": "O apartamento de fato estava bem organizado e devidamente reformado, isso foi um aspecto positivo. No entanto, o condomínio e o histórico dos alagamentos me fazem repensar no potencial de valorização do imóvel a médio e longo prazo. Outrossim, gostaria de parabenizar o atendimento do corretor."
         }
       ]
+    },
+    {
+      "id": 36,
+      "nome": "Apartamento 3 Quartos Nova Parnamirim 83m² (Cód. 10869)",
+      "tipo": "Apartamento",
+      "bairro": "Nova Parnamirim",
+      "cidade": "Parnamirim",
+      "endereco": "Rua Algarobas, Nova Parnamirim - Parnamirim/RN",
+      "valor": 449990,
+      "detalhes": "3 quartos (1 suíte), 3 banheiros, 2 vagas, 83m² privativos, original (sem reforma), andar alto",
+      "proprietario": "João Carlos",
+      "telefone": "84994810673",
+      "link": "https://emobiimobiliaria.com.br/imovel/10869/apartamento-3-quartos-nova-parnamirim-parnamirim/",
+      "status": "Disponível",
+      "dataCaptacao": "2026-08-26",
+      "ultimaInteracaoProprietario": "2026-08-26",
+      "obs": "Condomínio Parque Itatiaia. EXCLUSIVIDADE. Condomínio R$640,00 (água e gás inclusos) + IPTU R$662,00/ano. Quitado e escriturado. Pet friendly. Imóvel praticamente original — o argumento de venda é a liberdade de reformar do próprio jeito, sem herdar escolha de outro. Andar alto, ventilado. Lazer completo: piscinas adulto e infantil, churrasqueiras, salão de festas, salão de jogos, playground, beach tênis, espaço gourmet, portaria e segurança 24h. [26/08] Captado. [26/08] Visita da Angélica (indicação Conecta TR, Vitor Gabriel). PROPOSTA de R$380.000,00 — R$300.000 no ato e R$80.000 em 10 parcelas. Tabela R$449.990,00. Ainda não levada ao proprietário; Thúlio vai tentar subir o valor.",
+      "tipoOperacao": "Venda"
     }
   ],
   "historico": {
@@ -1530,6 +1586,12 @@
       "hora": "",
       "relacionado": "Angélica (indicação Conecta TR — Vitor Gabriel)",
       "status": "Pendente"
+    },
+    {
+      "texto": "Acompanhar a elaboração do contrato do Solar Candelária 1004-A — Daniela Altoé, parceria Paulo Câmara",
+      "data": "2026-08-28",
+      "hora": "",
+      "relacionado": "Daniela Altoé"
     }
   ],
   "prospeccaoCaptacao": [
@@ -1731,12 +1793,13 @@
         "data": "2026-08-25",
         "indicadorId": 10,
         "imovel": "Condomínio Itatiaia — Angélica (cliente compradora)",
-        "status": "Registrada",
+        "status": "Virou Lead",
         "valorDevido": 0,
         "indicador": "Vitor Gabriel de Morais Farias",
         "tipo": "Cliente",
         "cliente": "Angélica",
-        "observacao": "Formulário Conecta TR em 25/08 16:24 — indicação de cliente (Angélica, tel. (84) 99981-0624) interessada em comprar no Condomínio Itatiaia. Ainda não virou lead formal."
+        "observacao": "Formulário Conecta TR em 25/08 16:24 — indicação de cliente (Angélica, tel. (84) 99981-0624) interessada em comprar no Condomínio Itatiaia. Ainda não virou lead formal. [26/08] Virou lead: visitou o Cód. 10869 e fez proposta de R$380.000.",
+        "leadId": 21
       }
     ],
     "indicadoresLista": [
@@ -3518,6 +3581,26 @@
       "tipo": "Outro",
       "leadId": 7,
       "resumo": "PRIMEIRO feedback pós-visita pelo formulário. Cód. 10842, Felipe Zumba: compraria por R$250.000 (pedido R$329.990, -24%), prazo longo, intenção \"talvez\". Elogiou reforma e atendimento, mas citou o HISTÓRICO DE ALAGAMENTOS do condomínio como o que trava a decisão — informação nova, não estava no CRM."
+    },
+    {
+      "data": "26/08/2026 15:35",
+      "lead": "Imóvel Cód. 10869",
+      "tipo": "Outro",
+      "resumo": "CAPTAÇÃO NOVA com exclusividade: Apartamento 3 quartos, 83m², Parque Itatiaia (Nova Parnamirim), R$449.990. Proprietário João Carlos, (84) 99481-0673. Quitado e escriturado."
+    },
+    {
+      "data": "26/08/2026 15:50",
+      "lead": "Daniela Altoé",
+      "tipo": "Proposta",
+      "leadId": 20,
+      "resumo": "Lead nova, veio do anúncio patrocinado do Renaissance Première (Cód. 10842) e foi convertida para o Solar Candelária 1004-A, em parceria com o corretor Paulo Câmara. Negociação em R$370.000, em elaboração de contrato. Comissão total R$19.500 dividida 50/50; sua parte R$6.825 após o repasse."
+    },
+    {
+      "data": "26/08/2026 16:10",
+      "lead": "Angélica",
+      "tipo": "Proposta",
+      "leadId": 21,
+      "resumo": "PRIMEIRA indicação do Conecta TR a virar proposta. Angélica, indicada por Vitor Gabriel (IND-TR-2026-0016), visitou o Cód. 10869 no mesmo dia da captação e ofereceu R$380.000 (R$300 mil ato + R$80 mil em 10x). Tabela R$449.990 — 15,6% abaixo. Thúlio vai alinhar com ela para subir antes de levar ao João Carlos."
     }
   ],
   "regraComissao": {

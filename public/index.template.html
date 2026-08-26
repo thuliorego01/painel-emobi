@@ -2251,7 +2251,10 @@ function renderAnoResumo() {
   // A barra mostrava só o caixa. Estava certa e contava metade da história:
   // a Camilla assinou e a barra não se mexeu, porque o dinheiro ainda não
   // entrou. Agora são três camadas na MESMA barra — recebido, fechado a
-  // receber, proposta aceita. O "pontos atrás" continua sendo calculado
+  // receber, proposta na mesa. Esta terceira faixa junta proposta ENVIADA com
+  // proposta ACEITA — chamá-la de "aceita" prometia mais do que existe, e a
+  // Angélica foi o primeiro caso a expor isso: proposta feita, ainda não aceita.
+  // O "pontos atrás" continua sendo calculado
   // sobre o recebido: caixa é caixa, e o resto ainda pode não acontecer.
   const previsto = FIN.comissaoPrevista || 0;
   const pctTotal = meta ? (recebido + areceber + previsto) / meta : 0;
@@ -2295,7 +2298,7 @@ function renderAnoResumo() {
         ${(pctFechado + pctPrevisto) > 0 ? `<div class="ano-legenda">
           <span><i class="leg ${atrasado ? 'atras' : 'frente'}"></i>recebido ${Math.round(pct * 100)}%</span>
           ${pctFechado > 0 ? `<span><i class="leg fechado"></i>fechado, a receber ${brl(areceber)}</span>` : ''}
-          ${pctPrevisto > 0 ? `<span><i class="leg encaminhado"></i>proposta aceita ${brl(previsto)}</span>` : ''}
+          ${pctPrevisto > 0 ? `<span><i class="leg encaminhado"></i>proposta na mesa ${brl(previsto)}</span>` : ''}
         </div>` : ''}
       </div>
     </div>
@@ -2303,7 +2306,7 @@ function renderAnoResumo() {
       ? `Você está <b>${dif} pontos atrás</b> do calendário.`
       : `Você está <b>${dif} pontos à frente</b> do calendário.`}${
       (areceber + previsto) > 0
-        ? ` Contando o que já está fechado e o que tem proposta aceita, são ${brl(recebido + areceber + previsto)} — <b>${Math.round(pctTotal * 100)}%</b> da meta.`
+        ? ` Contando o que já está fechado e o que tem proposta na mesa, são ${brl(recebido + areceber + previsto)} — <b>${Math.round(pctTotal * 100)}%</b> da meta.`
         : ''}</div>`;
 }
 
