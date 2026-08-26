@@ -29,7 +29,18 @@ module.exports = {
     assert(mBuild === mWorker,
       `marcador diferente entre build e worker:\n  build:  ${mBuild}\n  worker: ${mWorker}`);
 
-    // 3. Escapa </script — dado de cliente entra nesse JSON.
+    // 3. A rota da PÁGINA precisa chegar ao worker. Sem isto o ASSETS responde
+    //    primeiro, a injeção nunca roda, e o pior acontece: a gravação entra no
+    //    KV, a API confirma "ok", e a tela continua mostrando o dado velho.
+    //    Aconteceu no primeiro teste ao vivo, em 26/08/2026.
+    const wrangler = fs.readFileSync(path.join(raiz, 'wrangler.toml'), 'utf8');
+    const rwf = (wrangler.match(/run_worker_first\s*=\s*\[([^\]]*)\]/) || [])[1] || '';
+    assert(/"\/"/.test(rwf),
+      'wrangler.toml não manda "/" para o worker — a sobreposição nunca aparece na tela');
+    assert(/"\/index\.html"/.test(rwf),
+      'wrangler.toml não manda "/index.html" para o worker');
+
+    // 4. Escapa </script — dado de cliente entra nesse JSON.
     assert(/<\\\/script/.test(worker), 'o worker não escapa </script ao injetar os dados');
 
     // 4. PORTEIRO: coleção não pode encolher de repente.
