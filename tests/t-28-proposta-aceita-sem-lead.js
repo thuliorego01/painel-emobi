@@ -44,6 +44,17 @@ module.exports = {
     assert(!hint || !/nenhum lead/i.test(hint.textContent),
       'a dica ainda fala em "lead" — proposta via corretor parceiro não tem lead meu');
 
+    // O rótulo não pode prometer "aceita" quando a faixa também conta proposta
+    // apenas ENVIADA. A Angélica foi o primeiro caso: proposta feita, ainda não
+    // aceita — e a barra dizia "proposta aceita".
+    const tplRot = require('fs').readFileSync(require('path').join(__dirname, '..', 'public', 'index.template.html'), 'utf8');
+    if (tplRot.indexOf("fase === 'Proposta Enviada'") !== -1) {
+      const m = tplRot.match(/leg encaminhado"><\/i>([^$`]{0,40})/);
+      const legenda = m ? m[1] : '';
+      assert(!/aceita/i.test(legenda),
+        'a faixa conta proposta ENVIADA mas se chama "' + legenda.trim() + '" — promete mais do que existe');
+    }
+
     // O template é a fonte. Se alguém publicar só o index.html, o próximo
     // briefing regenera a partir do template e desfaz tudo — foi o que
     // aconteceu em 22/08. Esta checagem faz o portão reprovar antes disso.
