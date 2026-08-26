@@ -33,8 +33,18 @@ module.exports = {
     assert(/id="privadoBtn"/.test(tpl), 'o botão de ocultar valores não existe');
     assert(/aria-pressed/.test(tpl), 'o botão não informa o estado (aria-pressed)');
 
-    // 5. O atalho não pode disparar enquanto se digita numa nota de cliente.
+    // Virou botão de ícone, no mesmo traço dos ícones do menu. Botão de ícone
+    // sem rótulo acessível é botão mudo — quem usa leitor de tela ouve só
+    // "botão". E o ícone precisa dizer o ESTADO, não só existir.
     const bloco = (tpl.match(/function ligarModoPrivado\(\)[\s\S]*?\n\}\)\(\);/) || [''])[0];
+    assert(/aria-label/.test(bloco), 'o botão de ícone não tem aria-label — fica mudo no leitor de tela');
+    assert(/title/.test(bloco), 'o botão de ícone não tem title — ninguém descobre o que ele faz');
+    assert(/OLHO_CORTADO/.test(bloco) && /OLHO/.test(bloco),
+      'o ícone não muda entre mostrar e ocultar — o botão não diz em que estado está');
+    assert(!/textContent\s*=\s*['"`](Mostrar|Ocultar)/.test(bloco),
+      'o botão voltou a ser texto');
+
+    // 5. O atalho não pode disparar enquanto se digita numa nota de cliente.
     assert(/TEXTAREA/.test(bloco) && /INPUT/.test(bloco),
       'a tecla V viraria modo privado no meio de uma nota — falta ignorar campos de texto');
 

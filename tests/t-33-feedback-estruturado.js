@@ -50,7 +50,15 @@ module.exports = {
     assert(bloco && !/new Date/.test(bloco),
       'dataBR usa new Date() — o fuso vai empurrar a data um dia para trás');
 
-    // 5. Resposta pendente não pode entrar na conta como se fosse resposta.
+    // 5. ALCANCE: a ficha do imóvel chama pintarFeedback de fora do bloco onde
+    //    ela é declarada. Faltando a ponte, o clique lança ReferenceError, o
+    //    bloco de feedback nunca é desenhado — e nada disso derruba a suíte,
+    //    porque o jsdom só registra o erro no console. Aconteceu em 26/08/2026:
+    //    ficou dois dias no ar com o botão funcionando e a lista invisível.
+    assert(dom.window.eval('typeof pintarFeedback') === 'function',
+      'pintarFeedback não é alcançável de onde a ficha do imóvel a chama');
+
+    // 6. Resposta pendente não pode entrar na conta como se fosse resposta.
     assert(/respondidos = todos\.filter\(f => f\.respondido\)/.test(tpl),
       'link enviado sem resposta está sendo contado como respondido');
   }
