@@ -1291,7 +1291,7 @@
     </div>
     <div class="kpi">
       <div class="icon">📈</div>
-      <div class="label">Prevista (Pipeline CRM)</div>
+      <div class="label">Pipeline — não entra na meta</div>
       <div class="value" id="comissaoPrevista">—</div>
       <div class="hint">leads em negociação</div>
     </div>
@@ -2266,12 +2266,17 @@ function renderAnoResumo() {
   // Angélica foi o primeiro caso a expor isso: proposta feita, ainda não aceita.
   // O "pontos atrás" continua sendo calculado
   // sobre o recebido: caixa é caixa, e o resto ainda pode não acontecer.
+  // PROJEÇÃO = SÓ CONTRATO ASSINADO. Até 28/08/2026 a barra somava também as
+  // propostas do pipeline. Dois casos no mesmo dia mostraram por que isso não
+  // presta: a Daniela tinha proposta ACEITA e em elaboração de contrato, e
+  // desistiu; a proposta da Angélica foi recusada. Os dois valores estavam
+  // dentro da meta como se fossem dinheiro. Pipeline continua visível no card
+  // "Prestes a fechar" — só não conta como faturamento.
   const previsto = FIN.comissaoPrevista || 0;
-  const pctTotal = meta ? (recebido + areceber + previsto) / meta : 0;
+  const pctTotal = meta ? (recebido + areceber) / meta : 0;
   const teto = (v) => meta ? Math.max(0, Math.min(100, Math.round(v / meta * 100))) : 0;
   const pctRecebido = teto(recebido);
   const pctFechado = Math.max(0, Math.min(100 - pctRecebido, teto(areceber)));
-  const pctPrevisto = Math.max(0, Math.min(100 - pctRecebido - pctFechado, teto(previsto)));
   const falta = Math.max(0, meta - recebido);
   const mesesRestantes = mesesQueSobram();
 
@@ -2303,20 +2308,18 @@ function renderAnoResumo() {
         <div class="ritmo-trilho">
           <span class="ritmo-preenche ${atrasado ? 'atras' : 'frente'}" style="width:${pctRecebido}%"></span>
           <span class="ritmo-preenche fechado" style="width:${pctFechado}%"></span>
-          <span class="ritmo-preenche encaminhado" style="width:${pctPrevisto}%"></span>
         </div>
-        ${(pctFechado + pctPrevisto) > 0 ? `<div class="ano-legenda">
+        ${pctFechado > 0 ? `<div class="ano-legenda">
           <span><i class="leg ${atrasado ? 'atras' : 'frente'}"></i>recebido ${Math.round(pct * 100)}%</span>
-          ${pctFechado > 0 ? `<span><i class="leg fechado"></i>fechado, a receber ${brl(areceber)}</span>` : ''}
-          ${pctPrevisto > 0 ? `<span><i class="leg encaminhado"></i>proposta na mesa ${brl(previsto)}</span>` : ''}
+          <span><i class="leg fechado"></i>fechado, a receber ${brl(areceber)}</span>
         </div>` : ''}
       </div>
     </div>
     <div class="ano-frase ${atrasado ? 'atras' : 'frente'}">${atrasado
       ? `Você está <b>${dif} pontos atrás</b> do calendário.`
       : `Você está <b>${dif} pontos à frente</b> do calendário.`}${
-      (areceber + previsto) > 0
-        ? ` Contando o que já está fechado e o que tem proposta na mesa, são ${brl(recebido + areceber + previsto)} — <b>${Math.round(pctTotal * 100)}%</b> da meta.`
+      areceber > 0
+        ? ` Contando o que já está com contrato assinado, são ${brl(recebido + areceber)} — <b>${Math.round((recebido + areceber) / (meta || 1) * 100)}%</b> da meta.`
         : ''}</div>`;
 }
 
