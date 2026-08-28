@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-08-27T07:11:12-03:00",
+  "ultimaAtualizacao": "2026-08-28T07:15:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -322,16 +322,16 @@
       "telefone": "84999020411",
       "origem": "CRM Emobi",
       "dataEntrada": "2026-07-01",
-      "motivoPerda": "Parou de responder",
-      "motivoDetalhe": "Pediu para falar com a mãe antes de decidir; a mãe não retorna os contatos.",
-      "fase": "Inativo",
+      "motivoPerda": "Sem resposta",
+      "motivoDetalhe": "Silêncio total desde 25/07, apesar da escada de reativação. Encerrada em 26/08 a pedido de Thúlio.",
+      "fase": "Fechado Perdido",
       "maiorFaseIndex": 5,
       "temperatura": null,
       "valor": 500000,
       "comissaoPrevista": null,
-      "proximaAcao": "Retomada a cada 30 dias — avaliar encerrar se não houver resposta",
+      "proximaAcao": "",
       "dataProximaAcao": null,
-      "obs": "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente quer levar a mãe numa segunda visita antes de decidir. 2ª visita agendada para quarta-feira, 08/07, às 16h. [18/07] Cliente pediu que Thúlio entre em contato diretamente com a mãe dela. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada. [10/08] Inativo desde 25/07; estava Morno quando parou. Retomada pela escada de 30/60/90 dias. [10/08] Cadência de reativação de 30 dias (a padrão). Leitura do Thúlio: provavelmente é lead perdido.",
+      "obs": "Primeira visita realizada em 06/07 — casa em Capim Macio. Cliente quer levar a mãe numa segunda visita antes de decidir. 2ª visita agendada para quarta-feira, 08/07, às 16h. [18/07] Cliente pediu que Thúlio entre em contato diretamente com a mãe dela. [20/07] Cliente reativada — contato retomado, cadência de reativação reiniciada. [10/08] Inativo desde 25/07; estava Morno quando parou. Retomada pela escada de 30/60/90 dias. [10/08] Cadência de reativação de 30 dias (a padrão). Leitura do Thúlio: provavelmente é lead perdido. [26/08] ENCERRADA: não responde de modo algum. Sai da escada de reativação e do funil ativo.",
       "imoveisCompativeis": [],
       "visitaResumo": null,
       "visitaDetalhe": "pra você trazer sua mãe dessa vez",
@@ -1325,6 +1325,15 @@
           "precoIdeal": 250000,
           "notaPreco": 8,
           "comentario": "O apartamento de fato estava bem organizado e devidamente reformado, isso foi um aspecto positivo. No entanto, o condomínio e o histórico dos alagamentos me fazem repensar no potencial de valorização do imóvel a médio e longo prazo. Outrossim, gostaria de parabenizar o atendimento do corretor."
+        },
+        {
+          "cliente": "Raquel Moura",
+          "data": "2026-08-26",
+          "intencao": "Sim, quero comprar",
+          "prazo": "Curto prazo (1 a 3 meses)",
+          "precoIdeal": 30000,
+          "notaPreco": 7,
+          "comentario": "O imóvel é ótimo. Tamanho, projetados, reforma moderna, ta lindo. O IPTU barato, embora o condomínio não tenha nada e seja caro. Ponto a se pensar a infiltração nas janelas. O condomínio é velho pode surgir sempre bastante manutenção e o ponto de mais atenção a rua que alaga quando chove. E Natal chove bastante."
         }
       ]
     },
@@ -1463,38 +1472,25 @@
       "nota": "apenas os anos com mês de fechamento registrado na planilha original."
     }
   },
-  "agendaHoje": [],
-  "agendaAmanha": [
+  "agendaHoje": [
     {
-      "data": "2026-08-27",
-      "hora": "08:30",
-      "horaFim": "09:15",
-      "titulo": "Dentista — OdontoSat",
-      "local": ""
-    },
-    {
-      "data": "2026-08-27",
-      "hora": "09:30",
-      "horaFim": "10:30",
-      "titulo": "3º Ofício — processo Pipo Damásio",
-      "local": ""
-    },
-    {
-      "data": "2026-08-27",
+      "data": "2026-08-28",
       "hora": "16:00",
-      "horaFim": "18:00",
-      "titulo": "Evento Moura Dubeux — Dia do Corretor",
-      "local": ""
-    },
+      "horaFim": "17:00",
+      "titulo": "Visita - Kayo Feitosa",
+      "local": "Condomínio Renaissance Première, Rua Virginópolis, 58, Parque das Nações, Parnamirim - RN"
+    }
+  ],
+  "agendaAmanha": [],
+  "agendaProximos": [
     {
-      "data": "2026-08-27",
-      "hora": "19:30",
-      "horaFim": "21:00",
-      "titulo": "Ação Social — Emobi",
+      "data": "2026-08-30",
+      "hora": "19:00",
+      "horaFim": "20:00",
+      "titulo": "Parcelamento Mais",
       "local": ""
     }
   ],
-  "agendaProximos": [],
   "lembretes": [
     {
       "texto": "Falar com Filipe Ideli sobre chegada da irmã e procura de apartamento em Tirol ou Petrópolis",
@@ -1545,12 +1541,6 @@
       "relacionado": "Patrícia de Paiva Marinho Melo"
     },
     {
-      "texto": "Taciana (Smile Village): perguntar se a venda dela se concretizou — encerrar a prospecção se sim",
-      "data": "2026-08-21",
-      "hora": "",
-      "relacionado": "Taciana"
-    },
-    {
       "data": "2026-09-16",
       "texto": "Retomar com a Michelle o Cód. 10627 (California Gardens): ela pediu 30 dias para avaliar se vende",
       "relacionado": "Cód. 10627 (California Gardens, Nova Parnamirim)",
@@ -1591,9 +1581,9 @@
       "indicacao": "Indicação (Anísio)",
       "indicadorNome": "Anísio",
       "indicadorCadastrado": false,
-      "status": "Aguardando Retorno",
-      "proximaAcao": "Conferir se a venda dela saiu — se saiu, encerrar; se não, retomar a captação",
-      "dataProximaAcao": "2026-08-21",
+      "status": "Descartado",
+      "proximaAcao": "",
+      "dataProximaAcao": null,
       "historico": [
         {
           "data": "2026-07-24",
@@ -1606,6 +1596,10 @@
         {
           "data": "2026-08-11",
           "texto": "Respondeu: o imóvel está em negociação com outra pessoa e ela avisa se não se concretizar. Cadência de 10 dias."
+        },
+        {
+          "data": "2026-08-26",
+          "texto": "Taciana confirmou: o apartamento foi VENDIDO para outra pessoa. Prospecção encerrada."
         }
       ],
       "imovelCaptadoCod": null
@@ -3643,6 +3637,25 @@
       "lead": "Sistema",
       "tipo": "Outro",
       "resumo": "Agenda de 27/08 (Dia do Corretor de Imóveis) lançada no painel e no Google Agenda: dentista 8h30, 3º Ofício 9h30 (processo Pipo Damásio), evento Moura Dubeux 16h e Ação Social da Emobi 19h30. Dia sem espaço para visita."
+    },
+    {
+      "data": "26/08/2026 23:20",
+      "lead": "Taciana (prospecção)",
+      "tipo": "Outro",
+      "resumo": "Taciana confirmou que o apartamento dela no Smile Village foi VENDIDO para outra pessoa. Prospecção descartada. Origem era indicação do Anísio."
+    },
+    {
+      "data": "26/08/2026 23:20",
+      "lead": "Kamylla Gadelha",
+      "leadId": 4,
+      "tipo": "Outro",
+      "resumo": "ENCERRADA como Fechado Perdido: silêncio total desde 25/07, mesmo após a escada de reativação. Sai do funil ativo e da fila de reativação."
+    },
+    {
+      "data": "28/08/2026 07:15",
+      "lead": "Cód. 10842 (Renaissance Première)",
+      "tipo": "Outro",
+      "resumo": "Feedback pós-visita respondido por Raquel Moura: quer comprar, curto prazo, nota de preço 7. Reforça alagamento na rua em dias de chuva (já registrado em obs)."
     }
   ],
   "regraComissao": {
@@ -3656,5 +3669,6 @@
       60,
       90
     ]
-  }
+  },
+  "__gravadoEm": "2026-08-27T17:52:08.583Z"
 }
