@@ -8,6 +8,12 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<!-- Sem esta linha o celular finge ter 980px de largura e ENCOLHE a página
+     inteira para caber. Todo o trabalho de responsividade que existe abaixo
+     (gaveta do menu em 900px, uma coluna em 950px, fonte maior em 640px)
+     simplesmente nunca rodava no telefone — o navegador jamais entrava nessas
+     faixas. Descoberto em 29/08/2026, depois de meses de painel "não adaptado". -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Painel Emobi — Thúlio Rêgo</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
 <style>
@@ -1391,7 +1397,7 @@
     <div class="grid2">
       <div class="card">
         <h3>Origem dos leads e o que cada canal entrega</h3>
-        <div id="origemResultado"></div>
+        <div class="table-scroll"><div id="origemResultado"></div></div>
       </div>
       <div class="card">
         <h3>↩ Clientes que voltam</h3>
@@ -1411,7 +1417,7 @@
         </div>
         <div class="card" style="margin-top:18px;">
           <h3>Motivos de Perda e Pausa</h3>
-          <div id="motivosPerda"></div>
+          <div class="table-scroll"><div id="motivosPerda"></div></div>
         </div>
       </div>
       <div>
