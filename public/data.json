@@ -36,7 +36,9 @@
       "pctVenda": 0.05,
       "parceria": "Célia Cristina — 50% da comissão total",
       "comissaoPelaRegra": 4112.5,
-      "ajusteComissao": -1637.5
+      "ajusteComissao": -1637.5,
+      "cidade": "Natal",
+      "bairro": "Cidade Satélite"
     },
     {
       "imovel": "Natture 1501 Algaroba",
@@ -50,7 +52,9 @@
       "tipo": "Venda",
       "pctVenda": 0.05,
       "comissaoPelaRegra": 12425,
-      "ajusteComissao": 50
+      "ajusteComissao": 50,
+      "cidade": "Natal",
+      "bairro": "Candelária"
     },
     {
       "imovel": "Bairro Latino",
@@ -65,7 +69,9 @@
       "pctVenda": 0.05,
       "parceria": "Guilherme Marinho — 50% da comissão total",
       "comissaoPelaRegra": 4550,
-      "ajusteComissao": -125
+      "ajusteComissao": -125,
+      "cidade": "Natal",
+      "bairro": "Candelária"
     },
     {
       "imovel": "Maria Bernadete (803)",
@@ -80,7 +86,9 @@
       "vendedorLeadId": 14,
       "pctVenda": 0.05,
       "comissaoPelaRegra": 22225,
-      "ajusteComissao": -4475
+      "ajusteComissao": -4475,
+      "cidade": "Natal",
+      "bairro": "Capim Macio"
     },
     {
       "imovel": "Central Park (3-803)",
@@ -95,7 +103,9 @@
       "pctVenda": 0.05,
       "parceria": "Alon Nunes — 50% da comissão total",
       "comissaoPelaRegra": 8225,
-      "ajusteComissao": -587.5
+      "ajusteComissao": -587.5,
+      "cidade": "Natal",
+      "bairro": "Neópolis"
     },
     {
       "imovel": "Apartamento 607, Bloco C — Porto Arena, Candelária (Cód. 8038)",
@@ -110,7 +120,9 @@
       "compradorLeadId": 6,
       "parceria": "Célia Cristina — captação dela",
       "data": "2026-08-04",
-      "pctVenda": 0.06
+      "pctVenda": 0.06,
+      "cidade": "Natal",
+      "bairro": "Candelária"
     },
     {
       "imovel": "João Mendonça",
@@ -124,7 +136,9 @@
       "tipo": "Venda",
       "vendedorLeadId": 13,
       "pctVenda": 0.05,
-      "parceria": "Ângelo Andrade — 50% da comissão total"
+      "parceria": "Ângelo Andrade — 50% da comissão total",
+      "cidade": "Natal",
+      "bairro": "Candelária"
     },
     {
       "imovel": "Apartamento Cód. 10638 (Mirante dos Eucaliptos, Candelária)",
@@ -138,7 +152,9 @@
       "tipo": "Venda",
       "vendedorLeadId": 12,
       "pctVenda": 0.05,
-      "parceria": "Ricardo Pantoja — 50% da comissão total"
+      "parceria": "Ricardo Pantoja — 50% da comissão total",
+      "cidade": "Natal",
+      "bairro": "Candelária"
     },
     {
       "imovel": "Bacara 1102",
@@ -149,7 +165,9 @@
       "mesNum": 2,
       "ano": 2026,
       "status": "pago",
-      "tipo": "Locação"
+      "tipo": "Locação",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova"
     },
     {
       "imovel": "Prédio Alecrim (reclassificado de Vendas em 02/08/2026)",
@@ -160,7 +178,9 @@
       "mesNum": 4,
       "ano": 2026,
       "status": "pago",
-      "tipo": "Diversos"
+      "tipo": "Diversos",
+      "cidade": "Natal",
+      "bairro": "Alecrim"
     },
     {
       "imovel": "Apartamento 404, Bloco 11 — Jardim Satélite",
@@ -175,7 +195,9 @@
       "compradorLeadId": 13,
       "parceria": "Natália Barbosa — 50% da comissão total",
       "data": "2026-08-08",
-      "pctVenda": 0.05
+      "pctVenda": 0.05,
+      "cidade": "Natal",
+      "bairro": "Cidade Satélite"
     },
     {
       "imovel": "Apartamento 2 Quartos Lagoa Nova 60m² (Cód. 10567)",
@@ -189,7 +211,9 @@
       "tipo": "Venda",
       "parceria": "Ivanaldo Tavares — 50% da comissão total",
       "data": "2026-08-10",
-      "pctVenda": 0.05
+      "pctVenda": 0.05,
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova"
     },
     {
       "imovel": "Casa 24, Condomínio Quatro Estações — Emaús, Parnamirim (Cód. 8081)",
@@ -206,7 +230,9 @@
       "parceria": "Talison Cavalcanti — 50% da comissão total (R$15.000) · captação dele",
       "pctVenda": 0.05,
       "comissaoPelaRegra": 6125,
-      "ajusteComissao": -875
+      "ajusteComissao": -875,
+      "cidade": "Parnamirim",
+      "bairro": "Emaús"
     },
     {
       "imovel": "Apartamento 3 Quartos Lagoa Nova 101m² (Cód. 7768)",
@@ -218,7 +244,9 @@
       "ano": 2026,
       "data": "2026-08-14",
       "status": "pago",
-      "tipo": "Locação"
+      "tipo": "Locação",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova"
     },
     {
       "imovel": "Apartamento 3 Quartos Candelária 133m² (Cód. 7560)",
@@ -233,7 +261,9 @@
       "tipo": "Venda",
       "compradorLeadId": 11,
       "pctVenda": 0.05,
-      "observacaoComissao": "Sem parceria e SEM o repasse de 30%: os 5% ficam integralmente com Thúlio. Exceção pontual acordada neste negócio."
+      "observacaoComissao": "Sem parceria e SEM o repasse de 30%: os 5% ficam integralmente com Thúlio. Exceção pontual acordada neste negócio.",
+      "cidade": "Natal",
+      "bairro": "Candelária"
     },
     {
       "imovel": "Apartamento 12º andar — Condomínio Maria Gorette, Mossoró",
@@ -249,7 +279,9 @@
       "pctVenda": 0.05,
       "parceria": "Baretta — 50% da comissão total",
       "semDataPrevista": true,
-      "observacaoComissao": "Sem repasse de 30% — os 50% da parceria ficam integralmente com Thúlio. Comissão total R$70.000 (5% de R$1.400.000), dividida com o corretor Baretta: R$35.000 para cada. Metade (R$17.500) recebida em maio/2026. A outra metade (R$17.500) está vinculada à venda do terreno no Américas, que o comprador deu como parte do pagamento — comissão GANHA, sem data de recebimento."
+      "observacaoComissao": "Sem repasse de 30% — os 50% da parceria ficam integralmente com Thúlio. Comissão total R$70.000 (5% de R$1.400.000), dividida com o corretor Baretta: R$35.000 para cada. Metade (R$17.500) recebida em maio/2026. A outra metade (R$17.500) está vinculada à venda do terreno no Américas, que o comprador deu como parte do pagamento — comissão GANHA, sem data de recebimento.",
+      "cidade": "Mossoró",
+      "bairro": "Nova Betânia"
     }
   ],
   "leads": [
@@ -3670,5 +3702,1047 @@
       90
     ]
   },
-  "__gravadoEm": "2026-08-27T17:52:08.583Z"
+  "__gravadoEm": "2026-08-27T17:52:08.583Z",
+  "negociosHistoricos": [
+    {
+      "ano": 2020,
+      "tipo": "Venda",
+      "imovel": "Flora Boulevard",
+      "cidade": "Natal",
+      "bairro": "Ponta Negra",
+      "cliente": "Antônio Rodrigues",
+      "valor": 220000,
+      "comissao": 2475
+    },
+    {
+      "ano": 2020,
+      "tipo": "Venda",
+      "imovel": "Liberdade",
+      "cidade": "Natal",
+      "bairro": "Capim Macio",
+      "cliente": "Fábio e Lylian Mometto",
+      "valor": 144000,
+      "comissao": 3240
+    },
+    {
+      "ano": 2020,
+      "tipo": "Venda",
+      "imovel": "Green Park",
+      "cidade": "Natal",
+      "bairro": "Cidade Satélite",
+      "cliente": "Alexsander Alves",
+      "valor": 150000,
+      "comissao": 1687.5
+    },
+    {
+      "ano": 2020,
+      "tipo": "Venda",
+      "imovel": "Oásis (zona Norte)",
+      "cidade": "Natal",
+      "bairro": "Pajuçara",
+      "cliente": "Dora Macêdo (fiern)",
+      "valor": 175000,
+      "comissao": 3125.25
+    },
+    {
+      "ano": 2020,
+      "tipo": "Venda",
+      "imovel": "Residencial Nazareth",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Otair Silva",
+      "valor": 215000,
+      "comissao": 10750
+    },
+    {
+      "ano": 2020,
+      "tipo": "Venda",
+      "imovel": "Casa Pitimbu",
+      "cidade": "Natal",
+      "bairro": "Cidade Satélite",
+      "cliente": "Rollemberg Lourenço",
+      "valor": 320000,
+      "comissao": 3600
+    },
+    {
+      "ano": 2020,
+      "tipo": "Venda",
+      "imovel": "Anchela Lopes",
+      "cidade": "Natal",
+      "bairro": "Candelária",
+      "cliente": "Pedro e Gabriela",
+      "valor": 315500,
+      "comissao": 3487.5
+    },
+    {
+      "ano": 2020,
+      "tipo": "Venda",
+      "imovel": "Golden Valley",
+      "cidade": "Parnamirim",
+      "bairro": "Nova Parnamirim",
+      "cliente": "Gabriel e Luiza",
+      "valor": 145000,
+      "comissao": 1631.25
+    },
+    {
+      "ano": 2020,
+      "tipo": "Venda",
+      "imovel": "Vila Verde",
+      "cidade": "Parnamirim",
+      "bairro": "Nova Parnamirim",
+      "cliente": "Roberta Jácome",
+      "valor": 295000,
+      "comissao": 14750
+    },
+    {
+      "ano": 2020,
+      "tipo": "Locação",
+      "imovel": "Golden Green",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Vitor e Luana",
+      "valor": 2550,
+      "comissao": 573.75
+    },
+    {
+      "ano": 2020,
+      "tipo": "Locação",
+      "imovel": "João Mendonça",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Lusaneide Lemos",
+      "valor": 1700,
+      "comissao": 765
+    },
+    {
+      "ano": 2020,
+      "tipo": "Locação",
+      "imovel": "Spazzio Nautilus",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "George Oliveira",
+      "valor": 1300,
+      "comissao": 1300
+    },
+    {
+      "ano": 2021,
+      "tipo": "Venda",
+      "imovel": "Yby Natureza",
+      "cidade": "Parnamirim",
+      "bairro": "Parque das Nações",
+      "cliente": "João e Geórgia",
+      "valor": 150000,
+      "comissao": 2500
+    },
+    {
+      "ano": 2021,
+      "tipo": "Venda",
+      "imovel": "Yby Natureza",
+      "cidade": "Parnamirim",
+      "bairro": "Parque das Nações",
+      "cliente": "Pablo e Leila",
+      "valor": 150000,
+      "comissao": 2500
+    },
+    {
+      "ano": 2021,
+      "tipo": "Venda",
+      "imovel": "Casa Green Clube",
+      "cidade": "Parnamirim",
+      "bairro": "Parque das Nações",
+      "cliente": "Juciano e Sueli",
+      "valor": 590000,
+      "comissao": 20650
+    },
+    {
+      "ano": 2021,
+      "tipo": "Venda",
+      "imovel": "Central Park",
+      "cidade": "Natal",
+      "bairro": "Neópolis",
+      "cliente": "Sidney e Edson",
+      "valor": 350000,
+      "comissao": 4900
+    },
+    {
+      "ano": 2021,
+      "tipo": "Venda",
+      "imovel": "Alto do Tirol",
+      "cidade": "Natal",
+      "bairro": "Tirol",
+      "cliente": "Igor e Giovana",
+      "valor": 475000,
+      "comissao": 8312.5
+    },
+    {
+      "ano": 2021,
+      "tipo": "Venda",
+      "imovel": "Residencial Jerusalém",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Davis Costa",
+      "valor": 300000,
+      "comissao": 15000
+    },
+    {
+      "ano": 2021,
+      "tipo": "Venda",
+      "imovel": "Portal de Petrópolis",
+      "cidade": "Natal",
+      "bairro": "Petrópolis",
+      "cliente": "Leonardo Dantas",
+      "valor": 450000,
+      "comissao": 7875
+    },
+    {
+      "ano": 2021,
+      "tipo": "Venda",
+      "imovel": "Yby Natureza",
+      "cidade": "Parnamirim",
+      "bairro": "Parque das Nações",
+      "cliente": "Vinícius e Maria",
+      "valor": 320000,
+      "comissao": 5333.33
+    },
+    {
+      "ano": 2021,
+      "tipo": "Venda",
+      "imovel": "Costa do Atlântico",
+      "cidade": "Natal",
+      "bairro": "Rocas",
+      "cliente": "Hermam Cuellar",
+      "valor": 260000,
+      "comissao": 7800
+    },
+    {
+      "ano": 2021,
+      "tipo": "Venda",
+      "imovel": "Nabor Maia",
+      "cidade": "Natal",
+      "bairro": "Tirol",
+      "cliente": "Perla Sousa",
+      "valor": 317000,
+      "comissao": 8876
+    },
+    {
+      "ano": 2021,
+      "tipo": "Venda",
+      "imovel": "Ubatuba",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Anna Beatriz",
+      "valor": 342000,
+      "comissao": 12000
+    },
+    {
+      "ano": 2021,
+      "tipo": "Locação",
+      "imovel": "Alice Grilo",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "João Aquino",
+      "valor": 3800,
+      "comissao": 1960
+    },
+    {
+      "ano": 2021,
+      "tipo": "Locação",
+      "imovel": "In Mare Bali",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Fabiano e Josefa",
+      "valor": 4500,
+      "comissao": 1277.5
+    },
+    {
+      "ano": 2021,
+      "tipo": "Locação",
+      "imovel": "João Mendonça",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Juan e Vanusa",
+      "valor": 2500,
+      "comissao": 2500
+    },
+    {
+      "ano": 2021,
+      "tipo": "Locação",
+      "imovel": "Casa Green Field",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Raphael de Lima",
+      "valor": 7500,
+      "comissao": 1750
+    },
+    {
+      "ano": 2022,
+      "tipo": "Venda",
+      "imovel": "Severina Porpino",
+      "cidade": "Natal",
+      "bairro": "Nossa Senhora Nazaré",
+      "cliente": "Priscila Maurman",
+      "valor": 175000,
+      "comissao": 3062.5
+    },
+    {
+      "ano": 2022,
+      "tipo": "Venda",
+      "imovel": "Villaggio Di Roma",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Cláudia Rodrigues",
+      "valor": 195000,
+      "comissao": 3412.5
+    },
+    {
+      "ano": 2022,
+      "tipo": "Venda",
+      "imovel": "Prédio Kitnets",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Josué e Thiziana",
+      "valor": 2000000,
+      "comissao": 30000
+    },
+    {
+      "ano": 2022,
+      "tipo": "Venda",
+      "imovel": "Lote Buena Vista",
+      "cidade": "Parnamirim",
+      "bairro": "Nova Parnamirim",
+      "cliente": "Cássio Leandro",
+      "valor": 500000,
+      "comissao": 7000
+    },
+    {
+      "ano": 2022,
+      "tipo": "Venda",
+      "imovel": "Casa Buena Vista",
+      "cidade": "Parnamirim",
+      "bairro": "Nova Parnamirim",
+      "cliente": "Cássio Leandro",
+      "valor": 1000000,
+      "comissao": 7500
+    },
+    {
+      "ano": 2022,
+      "tipo": "Venda",
+      "imovel": "Portinari",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Barreto Jr (mossoró)",
+      "valor": 550000,
+      "comissao": 5000
+    },
+    {
+      "ano": 2022,
+      "tipo": "Venda",
+      "imovel": "Califórnia Gardens",
+      "cidade": "Parnamirim",
+      "bairro": "Nova Parnamirim",
+      "cliente": "Leonardo Guerra e Maria",
+      "valor": 230000,
+      "comissao": 11500
+    },
+    {
+      "ano": 2022,
+      "tipo": "Venda",
+      "imovel": "Cantera (1405)",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Luzinete Lima",
+      "valor": 270000,
+      "comissao": 4725
+    },
+    {
+      "ano": 2022,
+      "tipo": "Venda",
+      "imovel": "Polinésia",
+      "cidade": "Natal",
+      "bairro": "Candelária",
+      "cliente": "Henrique e Cecília",
+      "valor": 240000,
+      "comissao": 4200
+    },
+    {
+      "ano": 2022,
+      "tipo": "Venda",
+      "imovel": "Cantera (806)",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Marcus e Maiara",
+      "valor": 315000,
+      "comissao": 5000
+    },
+    {
+      "ano": 2022,
+      "tipo": "Venda",
+      "imovel": "Luiz de Barros",
+      "cidade": "Natal",
+      "bairro": "Rocas",
+      "cliente": "Railton e Verônica",
+      "valor": 290000,
+      "comissao": 5075
+    },
+    {
+      "ano": 2022,
+      "tipo": "Venda",
+      "imovel": "Smile Village",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Genaro Buonora",
+      "valor": 370000,
+      "comissao": 15000
+    },
+    {
+      "ano": 2022,
+      "tipo": "Venda",
+      "imovel": "Califórnia Gardens",
+      "cidade": "Parnamirim",
+      "bairro": "Nova Parnamirim",
+      "cliente": "Lioneide",
+      "valor": 248000,
+      "comissao": 8000
+    },
+    {
+      "ano": 2022,
+      "tipo": "Venda",
+      "imovel": "Maria Leite Cavalcante",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Romeu Silva",
+      "valor": 260000,
+      "comissao": 3500
+    },
+    {
+      "ano": 2022,
+      "tipo": "Locação",
+      "imovel": "Golden Green",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Fábio e Geovana",
+      "valor": 3000,
+      "comissao": 1052
+    },
+    {
+      "ano": 2022,
+      "tipo": "Locação",
+      "imovel": "Central Park",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Michelle Vieira",
+      "valor": 1800,
+      "comissao": 1260
+    },
+    {
+      "ano": 2022,
+      "tipo": "Locação",
+      "imovel": "Residencial Barcas",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Susie",
+      "valor": 870,
+      "comissao": 435
+    },
+    {
+      "ano": 2022,
+      "tipo": "Locação",
+      "imovel": "Residencial Biarritz",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Diego Pedrosa",
+      "valor": 2500,
+      "comissao": 875
+    },
+    {
+      "ano": 2022,
+      "tipo": "Locação",
+      "imovel": "Residencial Bacara",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Lucas / Gabriela",
+      "valor": 3600,
+      "comissao": 2520
+    },
+    {
+      "ano": 2023,
+      "tipo": "Venda",
+      "imovel": "Villagio Di Roma (h901)",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "María Emília",
+      "valor": 243000,
+      "comissao": 10000
+    },
+    {
+      "ano": 2023,
+      "tipo": "Venda",
+      "imovel": "Residencial Órion (602)",
+      "cidade": "Natal",
+      "bairro": "Barro Vermelho",
+      "cliente": "Juliana Mello",
+      "valor": 400000,
+      "comissao": 15000
+    },
+    {
+      "ano": 2023,
+      "tipo": "Venda",
+      "imovel": "Diego Velazquez (301)",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Graça",
+      "valor": 750000,
+      "comissao": 13125
+    },
+    {
+      "ano": 2023,
+      "tipo": "Venda",
+      "imovel": "Porto Arena (306c)",
+      "cidade": "Natal",
+      "bairro": "Candelária",
+      "cliente": "Klevisson e Luana",
+      "valor": 520000,
+      "comissao": 20000
+    },
+    {
+      "ano": 2023,
+      "tipo": "Venda",
+      "imovel": "Edifício Cantera",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Cliente Pablo Cabral",
+      "valor": 247500,
+      "comissao": 865
+    },
+    {
+      "ano": 2023,
+      "tipo": "Venda",
+      "imovel": "Residencial Jangadas (10-401)",
+      "cidade": "Parnamirim",
+      "bairro": "Nova Parnamirim",
+      "cliente": "Flávio Pequeno",
+      "valor": 125000,
+      "comissao": 6200
+    },
+    {
+      "ano": 2023,
+      "tipo": "Venda",
+      "imovel": "Casa Nova Descoberta",
+      "cidade": "Natal",
+      "bairro": "Nova Descoberta",
+      "cliente": "Cliente Marcelo Oliveira",
+      "valor": 240000,
+      "comissao": 4200
+    },
+    {
+      "ano": 2023,
+      "tipo": "Venda",
+      "imovel": "Mood Capim Macio",
+      "cidade": "Natal",
+      "bairro": "Capim Macio",
+      "cliente": "Pablo e Leia",
+      "valor": 488000,
+      "comissao": 12229.28
+    },
+    {
+      "ano": 2023,
+      "tipo": "Locação",
+      "imovel": "Residencial Bacara",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Gustavo Dias",
+      "valor": 3750,
+      "comissao": 3750
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Villaggio Di Roma (f803)",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Sidney / Edson",
+      "valor": 230000,
+      "comissao": 5750
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Reserva Malbec",
+      "cidade": "Natal",
+      "bairro": "Ponta Negra",
+      "cliente": "Daniel Di Pace",
+      "valor": 550000,
+      "comissao": 11000
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Di Maria Parque",
+      "cidade": "Natal",
+      "bairro": "Candelária",
+      "cliente": "Filipe e Anamelia",
+      "valor": 670000,
+      "comissao": 20100
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Casa 195 Central Park Ii",
+      "cidade": "Parnamirim",
+      "bairro": "Parque das Nações",
+      "cliente": "Cacilda",
+      "valor": 1100000,
+      "comissao": 17500
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Praia Bela",
+      "cidade": "Parnamirim",
+      "bairro": "Nova Parnamirim",
+      "cliente": "Pedro e Aline",
+      "valor": 195000,
+      "comissao": 4875
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Renaiscense Première 904b",
+      "cidade": "Parnamirim",
+      "bairro": "Nova Parnamirim",
+      "cliente": "Isabela Barroso",
+      "valor": 280000,
+      "comissao": 7000
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Casa Satélite",
+      "cidade": "Natal",
+      "bairro": "Cidade Satélite",
+      "cliente": "Ari",
+      "valor": 330000,
+      "comissao": 8250
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Sun Gardens",
+      "cidade": "Natal",
+      "bairro": "Cidade Satélite",
+      "cliente": "João e Genilda",
+      "valor": 267500,
+      "comissao": 13375
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Jardim Satélite",
+      "cidade": "Natal",
+      "bairro": "Cidade Satélite",
+      "cliente": "Victor",
+      "valor": 100000,
+      "comissao": 2500
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Vancouver",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Felipe e Raíssa",
+      "valor": 440000,
+      "comissao": 11000
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Portal da Candelária",
+      "cidade": "Natal",
+      "bairro": "Candelária",
+      "cliente": "Itanildo Augusto",
+      "valor": 420000,
+      "comissao": 15000
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Itatiaia",
+      "cidade": "Parnamirim",
+      "bairro": "Nova Parnamirim",
+      "cliente": "Margarida Souza",
+      "valor": 380000,
+      "comissao": 5500
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Mood Candelária",
+      "cidade": "Natal",
+      "bairro": "Candelária",
+      "cliente": "Erica Sabino",
+      "valor": 447000,
+      "comissao": 17880
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Mood Candelária",
+      "cidade": "Natal",
+      "bairro": "Candelária",
+      "cliente": "Francisco Leão",
+      "valor": 449000,
+      "comissao": 17960
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Anita Monteiro",
+      "cidade": "Natal",
+      "bairro": "Morro Branco",
+      "cliente": "Edjane Cortez",
+      "valor": 270000,
+      "comissao": 6750
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Polinésia (603a)",
+      "cidade": "Natal",
+      "bairro": "Candelária",
+      "cliente": "Stephenson e Conceição",
+      "valor": 260000,
+      "comissao": 10000
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Portinari (1901 B)",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Mário e Késia",
+      "valor": 405000,
+      "comissao": 7500
+    },
+    {
+      "ano": 2024,
+      "tipo": "Venda",
+      "imovel": "Polinésia (304b)",
+      "cidade": "Natal",
+      "bairro": "Candelária",
+      "cliente": "Iolanda Ferreira",
+      "valor": 323780,
+      "comissao": 13000
+    },
+    {
+      "ano": 2024,
+      "tipo": "Locação",
+      "imovel": "Polinésia 504 A",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "João Milton",
+      "valor": 1650,
+      "comissao": 1650
+    },
+    {
+      "ano": 2024,
+      "tipo": "Locação",
+      "imovel": "Biarritz",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Wedna Glebia",
+      "valor": 2600,
+      "comissao": 1300
+    },
+    {
+      "ano": 2024,
+      "tipo": "Locação",
+      "imovel": "Portinari",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Marcos Rangel",
+      "valor": 3200,
+      "comissao": 800
+    },
+    {
+      "ano": 2024,
+      "tipo": "Locação",
+      "imovel": "Polaris",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Lília Gonçalves",
+      "valor": 2800,
+      "comissao": 1400
+    },
+    {
+      "ano": 2024,
+      "tipo": "Locação",
+      "imovel": "Villaggio Di Roma",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Carla Gondim",
+      "valor": 2000,
+      "comissao": 2000
+    },
+    {
+      "ano": 2024,
+      "tipo": "Locação",
+      "imovel": "Bairro Latino - 01 - 301",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Ney Couto",
+      "valor": 1600,
+      "comissao": 1600
+    },
+    {
+      "ano": 2024,
+      "tipo": "Locação",
+      "imovel": "Praia do Forte",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Guilherme e Yasmin",
+      "valor": 1400,
+      "comissao": 700
+    },
+    {
+      "ano": 2024,
+      "tipo": "Locação",
+      "imovel": "Alice Grilo",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Cláudio e Helena",
+      "valor": 6200,
+      "comissao": 4500
+    },
+    {
+      "ano": 2024,
+      "tipo": "Locação",
+      "imovel": "Mirante Lagoa Nova",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Natalia",
+      "valor": 2600,
+      "comissao": 1300
+    },
+    {
+      "ano": 2024,
+      "tipo": "Locação",
+      "imovel": "Porto do Alto",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Alessandra",
+      "valor": 1800,
+      "comissao": 900
+    },
+    {
+      "ano": 2025,
+      "tipo": "Venda",
+      "imovel": "Casa Riviera 105",
+      "cidade": "Natal",
+      "bairro": "Ponta Negra",
+      "cliente": "Danilo e Mariana",
+      "valor": 850000,
+      "comissao": 12500
+    },
+    {
+      "ano": 2025,
+      "tipo": "Venda",
+      "imovel": "Casa Ricardo e Socorro",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Alex e Kaleide",
+      "valor": 440000,
+      "comissao": 11000
+    },
+    {
+      "ano": 2025,
+      "tipo": "Venda",
+      "imovel": "Apto João Mendonça",
+      "cidade": "Natal",
+      "bairro": "Candelária",
+      "cliente": "Socorro Costa",
+      "valor": 410000,
+      "comissao": 16400
+    },
+    {
+      "ano": 2025,
+      "tipo": "Venda",
+      "imovel": "Tirol Homes",
+      "cidade": "Natal",
+      "bairro": "Tirol",
+      "cliente": "Daniel e Tâmara",
+      "valor": 790000,
+      "comissao": 13800
+    },
+    {
+      "ano": 2025,
+      "tipo": "Venda",
+      "imovel": "Morada do Sul 2",
+      "cidade": "Natal",
+      "bairro": "Capim Macio",
+      "cliente": "Marta Barreto",
+      "valor": 185000,
+      "comissao": 2775
+    },
+    {
+      "ano": 2025,
+      "tipo": "Venda",
+      "imovel": "Flórida Gardens (901-6)",
+      "cidade": "Parnamirim",
+      "bairro": "Nova Parnamirim",
+      "cliente": "Edilton e Sidneia",
+      "valor": 255000,
+      "comissao": 3825
+    },
+    {
+      "ano": 2025,
+      "tipo": "Venda",
+      "imovel": "Vila Verde (604)",
+      "cidade": "Parnamirim",
+      "bairro": "Nova Parnamirim",
+      "cliente": "Leandro e Juliana",
+      "valor": 310000,
+      "comissao": 3000
+    },
+    {
+      "ano": 2025,
+      "tipo": "Venda",
+      "imovel": "Casa Bosque dos Pássaros",
+      "cidade": "Parnamirim",
+      "bairro": "Nova Parnamirim",
+      "cliente": "Xênia e Adriano",
+      "valor": 1050000,
+      "comissao": 15100
+    },
+    {
+      "ano": 2025,
+      "tipo": "Venda",
+      "imovel": "Porto do Alto",
+      "cidade": "Natal",
+      "bairro": "Neópolis",
+      "cliente": "Cícero Neto",
+      "valor": 255000,
+      "comissao": 3825
+    },
+    {
+      "ano": 2025,
+      "tipo": "Venda",
+      "imovel": "Casa Rua do Pereiro",
+      "cidade": "Natal",
+      "bairro": "Cidade Satélite",
+      "cliente": "Fco Cisinho e Lucicleide",
+      "valor": 280000,
+      "comissao": 4550
+    },
+    {
+      "ano": 2025,
+      "tipo": "Venda",
+      "imovel": "Jc",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Aquiles e Patrícia",
+      "valor": 575000,
+      "comissao": 28750
+    },
+    {
+      "ano": 2025,
+      "tipo": "Venda",
+      "imovel": "Casa Geraldo Galvão",
+      "cidade": "Parnamirim",
+      "bairro": "Nova Parnamirim",
+      "cliente": "Pedro e Valéria",
+      "valor": 550000,
+      "comissao": 8937.5
+    },
+    {
+      "ano": 2025,
+      "tipo": "Venda",
+      "imovel": "Smile Village (diogo)",
+      "cidade": "Natal",
+      "bairro": "Lagoa Nova",
+      "cliente": "Anisio",
+      "valor": 380000,
+      "comissao": 6175
+    },
+    {
+      "ano": 2025,
+      "tipo": "Venda",
+      "imovel": "Saint Julien (1203)",
+      "cidade": "Natal",
+      "bairro": "Tirol",
+      "cliente": "Pipo e Luisa",
+      "valor": 365000,
+      "comissao": 3193.75
+    },
+    {
+      "ano": 2025,
+      "tipo": "Venda",
+      "imovel": "Casa Cuaracyara",
+      "cidade": "Nísia Floresta",
+      "bairro": "Búzios",
+      "cliente": "Adolfo Delgado",
+      "valor": 2100000,
+      "comissao": 32500
+    },
+    {
+      "ano": 2025,
+      "tipo": "Venda",
+      "imovel": "Casa Rua da Saudade",
+      "cidade": "Natal",
+      "bairro": "Candelária",
+      "cliente": "Rummenigge",
+      "valor": 390000,
+      "comissao": 6337.5
+    },
+    {
+      "ano": 2025,
+      "tipo": "Locação",
+      "imovel": "Polinésia 604-b",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Pablo Mariz",
+      "valor": 2200,
+      "comissao": 1100
+    },
+    {
+      "ano": 2025,
+      "tipo": "Locação",
+      "imovel": "Palmira Carlos",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Gentil e Júlia",
+      "valor": 5500,
+      "comissao": 1823.5
+    },
+    {
+      "ano": 2025,
+      "tipo": "Locação",
+      "imovel": "Central Park",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Daniel e Jennifer",
+      "valor": 2600,
+      "comissao": 1300
+    },
+    {
+      "ano": 2025,
+      "tipo": "Locação",
+      "imovel": "In Mare Bali",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Larissa e Aryan",
+      "valor": 4800,
+      "comissao": 1170
+    },
+    {
+      "ano": 2025,
+      "tipo": "Locação",
+      "imovel": "Casa Verdes Campos",
+      "cidade": "",
+      "bairro": "",
+      "cliente": "Maiara e Daniel",
+      "valor": 4000,
+      "comissao": 2700
+    }
+  ]
 }

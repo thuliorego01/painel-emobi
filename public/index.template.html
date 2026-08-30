@@ -655,7 +655,20 @@
   .conv-table td { padding:6px 8px; border-bottom:1px solid var(--fundo-sutil); }
   .conv-table tr:last-child td { border-bottom:none; }
 .hist-total td { border-top:2px solid var(--linha-forte); background:var(--surface-2); }
-.fb-contagem { font-weight:600; font-size: var(--fs-2xs); color:var(--txt-apoio); text-transform:none; letter-spacing:0; }
+.ov-linha { display:grid; grid-template-columns: minmax(120px,1.4fr) 1fr auto; gap:10px; align-items:center; padding:7px 0; border-bottom:1px solid var(--linha-tenue); }
+  .ov-linha:last-child { border-bottom:0; }
+  .ov-nome { font-size:var(--fs-sm); color:var(--txt-forte); }
+  .ov-nome i { display:block; font-style:normal; font-size:var(--fs-xs); color:var(--txt-apoio); }
+  .ov-trilho { height:9px; background:var(--linha-tenue); border-radius:var(--r-pill); overflow:hidden; }
+  .ov-preenche { display:block; height:100%; background:var(--meta-caixa); border-radius:var(--r-pill); }
+  .ov-val { text-align:right; font-size:var(--fs-sm); font-weight:700; color:var(--txt-forte); white-space:nowrap; }
+  .ov-val i { display:block; font-style:normal; font-weight:400; font-size:var(--fs-xs); color:var(--txt-apoio); }
+  .ov-abas { display:flex; gap:6px; margin-bottom:12px; }
+  .ov-aba { font-family:inherit; font-size:var(--fs-2xs); font-weight:700; text-transform:uppercase; letter-spacing:.3px;
+    padding:6px 12px; border-radius:var(--r-pill); border:1px solid var(--linha-media); background:var(--surface-2);
+    color:var(--txt-apoio); cursor:pointer; }
+  .ov-aba.ativa { background:var(--brand-gold-deep); border-color:var(--brand-gold-deep); color:var(--surface); }
+  .fb-contagem { font-weight:600; font-size: var(--fs-2xs); color:var(--txt-apoio); text-transform:none; letter-spacing:0; }
   .fb-data { display:block; font-style:normal; font-size: var(--fs-xs); color:var(--txt-apoio); margin-bottom:4px; }
   .fb-item { border:1px solid var(--linha-media); border-radius:var(--r-md); padding:9px 11px; margin-top:7px; font-size:var(--fs-xs); }
   .fb-item > div { display:flex; gap:6px; padding:2px 0; }
@@ -1452,6 +1465,10 @@
         <div id="sazonalidadeNota" class="amostra-nota"></div>
         <div class="chart-wrap"><canvas id="chartHistoricoSazonalidade"></canvas></div>
       </div>
+    </div>
+    <div class="card" style="margin-top:18px;">
+      <h3>Onde você vende <span class="fb-contagem" id="ondeVendePeriodo"></span></h3>
+      <div id="ondeVende"></div>
     </div>
     <div class="card" style="margin-top:18px;">
       <h3>Resumo por Ano</h3>
@@ -5098,6 +5115,84 @@ const ANOS_HISTORICO = (function montarAnos() {
     if (a.ano !== anoAtual) return a;
     const meta = a.meta ?? null;
     return { ...a, ...vivo, meta, pctAtingido: meta ? vivo.valorNegociado / meta : null };
+  });
+})();
+
+// ONDE VOCÊ VENDE — o painel sabia quanto, quando e para quem, e não sabia
+// ONDE. A planilha ganhou cidade e bairro em 29/08/2026 e o histórico veio
+// para cá negócio a negócio: 2020-2025 da planilha, 2026 da lista viva. Tudo
+// aqui é calculado; nenhum percentual fica guardado.
+// Só VENDA entra: locação não tem bairro na origem, e somar aluguel mensal com
+// preço de venda não descreveria nada.
+const NEGOCIOS_LOCALIZADOS = (function () {
+  const hist = (DATA.negociosHistoricos || []).map(n => ({
+    ano: n.ano, tipo: n.tipo, imovel: n.imovel,
+    cidade: n.cidade || '', bairro: n.bairro || '',
+    valor: n.valor || 0, comissao: n.comissao || 0
+  }));
+  const atual = (DATA.listaNegociacoes || []).map(n => ({
+    ano: n.ano, tipo: n.tipo, imovel: n.imovel,
+    cidade: n.cidade || '', bairro: n.bairro || '',
+    valor: n.valor || 0, comissao: n.comissao || 0
+  }));
+  return hist.concat(atual).filter(n => n.tipo === 'Venda');
+})();
+
+(function renderOndeVende() {
+  const alvo = document.getElementById('ondeVende');
+  if (!alvo) return;
+  const vendas = NEGOCIOS_LOCALIZADOS;
+  if (!vendas.length) { alvo.innerHTML = '<div class="estado-vazio">Sem histórico de vendas com localização.</div>'; return; }
+
+  const anos = vendas.map(v => v.ano).filter(Boolean);
+  const per = document.getElementById('ondeVendePeriodo');
+  if (per) per.textContent = Math.min(...anos) + ' a ' + Math.max(...anos);
+
+  const semLocal = vendas.filter(v => !v.bairro);
+  const comLocal = vendas.filter(v => v.bairro);
+  const volTotal = vendas.reduce((s, v) => s + v.valor, 0);
+
+  function agrupar(chave) {
+    const m = {};
+    comLocal.forEach(v => {
+      const k = chave === 'bairro' ? (v.cidade + ' · ' + v.bairro) : v.cidade;
+      const a = m[k] || (m[k] = { n: 0, vol: 0, com: 0 });
+      a.n++; a.vol += v.valor; a.com += v.comissao;
+    });
+    return Object.entries(m).map(([k, a]) => ({ nome: k, ...a, ticket: a.vol / a.n }))
+      .sort((x, y) => y.vol - x.vol);
+  }
+
+  function pintar(chave) {
+    const lista = agrupar(chave);
+    const maior = lista[0] ? lista[0].vol : 1;
+    const linhas = lista.map(x => `
+      <div class="ov-linha">
+        <span class="ov-nome">${esc(x.nome)}<i>${x.n} ${x.n === 1 ? 'venda' : 'vendas'} · ticket ${brl(x.ticket)}</i></span>
+        <span class="ov-trilho"><span class="ov-preenche" style="width:${Math.round(x.vol / maior * 100)}%"></span></span>
+        <span class="ov-val">${brl(x.vol)}<i>${(x.vol / volTotal * 100).toFixed(1).replace('.', ',')}% · ${brl(x.com)} de comissão</i></span>
+      </div>`).join('');
+    // Concentração: quanto dos três primeiros. É força e risco na mesma conta.
+    const top3 = lista.slice(0, 3).reduce((s, x) => s + x.vol, 0);
+    const nota = lista.length > 3
+      ? `<div class="ctr-motivo">Os três primeiros somam <b>${Math.round(top3 / volTotal * 100)}%</b> do seu volume de vendas.</div>` : '';
+    const fora = semLocal.length
+      ? `<div class="tbl-nota">${semLocal.length} venda(s) sem bairro na origem (${brl(semLocal.reduce((s, v) => s + v.valor, 0))}) ficam fora deste recorte: ${semLocal.map(v => esc(v.imovel)).join(', ')}.</div>` : '';
+    return nota + linhas + fora;
+  }
+
+  const corpo = document.createElement('div');
+  const abas = document.createElement('div');
+  abas.className = 'ov-abas';
+  abas.innerHTML = '<button type="button" class="ov-aba ativa" data-ov="bairro">Por bairro</button><button type="button" class="ov-aba" data-ov="cidade">Por cidade</button>';
+  alvo.innerHTML = '';
+  alvo.appendChild(abas); alvo.appendChild(corpo);
+  corpo.innerHTML = pintar('bairro');
+  abas.addEventListener('click', (e) => {
+    const b = e.target.closest('.ov-aba');
+    if (!b) return;
+    [...abas.children].forEach(x => x.classList.toggle('ativa', x === b));
+    corpo.innerHTML = pintar(b.dataset.ov);
   });
 })();
 
