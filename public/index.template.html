@@ -21,6 +21,12 @@
     color-scheme: light;
     --text-strong: #1D2717;   /* texto forte — NO MODO ESCURO vira claro; a cor de marca (--brand-dark2) segue escura porque também é usada como FUNDO */
     --surface: #ffffff;
+    /* Texto que fica sobre fundo da MARCA (verde escuro, dourado, vermelho).
+       Esses fundos são escuros nos DOIS temas, então esta cor não muda com o
+       tema — e por isso ela NÃO é redefinida no bloco escuro. Antes usava-se
+       --surface aqui: funcionava no claro por coincidência e, no escuro,
+       virava texto escuro sobre fundo escuro. O número herói do banner sumia. */
+    --txt-sobre-marca: #F4F6F0;
     --surface-2: #FCFCFA;
     --border-soft: #E9EBE4;
     --brand-dark: #10150F;
@@ -117,7 +123,7 @@
   .header {
     display: flex; justify-content: space-between; align-items: center;
     background: linear-gradient(135deg, var(--brand-dark), var(--brand-dark2));
-    color: var(--surface); border-radius:var(--r-lg); padding: 20px 30px; margin-bottom: 22px;
+    color: var(--txt-sobre-marca); border-radius:var(--r-lg); padding: 20px 30px; margin-bottom: 22px;
     box-shadow: 0 10px 26px rgba(16,21,15,0.28);
     border-bottom: 3px solid var(--brand-gold);
   }
@@ -201,7 +207,7 @@
       padding: 16px 10px; font-size:var(--fs-md); font-weight: 700; margin-bottom: 0;
       box-shadow: 0 1px 5px rgba(18,22,14,0.05);
     }
-    .tab-btn.active { background: var(--brand-dark2); color: var(--surface); border-color: var(--text-strong); }
+    .tab-btn.active { background: var(--brand-dark2); color: var(--txt-sobre-marca); border-color: var(--text-strong); }
 
     .urgent-banner { flex-direction: column; align-items: flex-start; gap: 8px; padding: 14px 16px; }
     .meta-highlight { flex-direction: column; align-items: flex-start; gap: 10px; }
@@ -239,7 +245,7 @@
   .funil-label { width: 150px; font-size: var(--fs-sm); color:var(--ok-txt); font-weight:600; flex-shrink:0; }
   .funil-track { flex:1; height: 20px; background:var(--fundo-sutil); border-radius:var(--r-sm); overflow:hidden; }
   .funil-fill { height:100%; background: linear-gradient(90deg,var(--brand-dark2),var(--brand-gold-deep)); border-radius:var(--r-sm); display:flex; align-items:center; justify-content:flex-end; padding-right:6px; }
-  .funil-fill span { color:var(--surface); font-size:var(--fs-xs); font-weight:700; }
+  .funil-fill span { color:var(--txt-sobre-marca); font-size:var(--fs-xs); font-weight:700; }
   .funil-count { width: 24px; text-align:right; font-size:var(--fs-sm); font-weight:700; color: var(--text-strong); }
 
   .alert-box { background:var(--aviso-bg); border:1px solid var(--aviso-linha); border-radius:var(--r-lg); padding:12px 14px; margin-bottom:10px; display:flex; gap:10px; align-items:flex-start; }
@@ -270,7 +276,7 @@
   .lead-motivo { font-size: var(--fs-xs); color:var(--aviso-txt); background:var(--aviso-bg); border:1px solid var(--aviso-linha); border-radius:var(--r-sm); padding:5px 8px; margin-top:6px; }
   .lead-motivo b { color:var(--aviso-txt); }
   .sync-box { display:flex; align-items:center; gap:12px; flex-wrap:wrap; background:var(--ok-bg); border:1px solid var(--ok-linha); border-radius:var(--r-lg); padding:10px 14px; margin-bottom:12px; }
-  .sync-btn { background: var(--brand-dark2); color:var(--surface); border:none; border-radius:var(--r-md); padding:9px 16px; font-size: var(--fs-xs); font-weight:600; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .sync-btn { background: var(--brand-dark2); color:var(--txt-sobre-marca); border:none; border-radius:var(--r-md); padding:9px 16px; font-size: var(--fs-xs); font-weight:600; cursor:pointer; font-family:inherit; white-space:nowrap; }
   .sync-btn:hover:not(:disabled) { background: var(--brand-dark); }
   .sync-btn:disabled { opacity:.55; cursor:default; }
   /* MODO PRIVADO — o painel é usado numa sala com outras pessoas. Comissão,
@@ -403,7 +409,7 @@
   .termo-bar { display:block; height:100%; width:0; background:linear-gradient(90deg, var(--ok-txt), var(--txt-apoio));
     border-radius:var(--r-sm); transition:width .5s ease; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; box-sizing:border-box; }
   .termo-bar.gargalo { background:linear-gradient(90deg, var(--erro-txt), var(--aviso-txt)); }
-  .termo-bar-num { font-size:var(--fs-2xs); font-weight:700; color:var(--surface); letter-spacing:.2px; }
+  .termo-bar-num { font-size:var(--fs-2xs); font-weight:700; color:var(--txt-sobre-marca); letter-spacing:.2px; }
   .termo-num-fora { position:absolute; left:8px; top:50%; transform:translateY(-50%); font-size:var(--fs-xs); font-weight:700; color:var(--txt-fraco); }
   .termo-val { flex:0 0 54px; text-align:right; font-size: var(--fs-xs); color:var(--txt-fraco); font-variant-numeric:tabular-nums; }
   .termo-nota { font-size: var(--fs-xs); color:var(--txt-fraco); margin-top:9px; line-height:1.5; }
@@ -451,7 +457,7 @@
   .semana-dia.vazio { opacity:.55; }
   .semana-dow { font-size:var(--fs-2xs); text-transform:uppercase; letter-spacing:.5px; color:var(--txt-fraco); }
   .semana-num { font-size: var(--fs-sm); font-weight:700; color: var(--text-strong); line-height:1.2; }
-  .semana-ev { font-size:var(--fs-xs); background:var(--brand-dark2); color:var(--surface); border-radius:var(--r-sm); padding:3px 5px; margin-top:4px; line-height:1.35; white-space:normal; overflow-wrap:anywhere; }
+  .semana-ev { font-size:var(--fs-xs); background:var(--brand-dark2); color:var(--txt-sobre-marca); border-radius:var(--r-sm); padding:3px 5px; margin-top:4px; line-height:1.35; white-space:normal; overflow-wrap:anywhere; }
   .semana-ev .semana-hora { display:block; font-weight:700; opacity:.85; }
   .semana-vazia-msg { font-size:var(--fs-xs); color:var(--txt-tenue); margin-top:6px; }
   @media (max-width: 700px) {
@@ -552,7 +558,7 @@
   .nota-box textarea:focus { outline: 2px solid var(--brand-gold); outline-offset: 1px; border-color: var(--brand-gold); }
   .nota-actions { display:flex; align-items:center; gap:10px; margin-top: 8px; flex-wrap: wrap; }
   .nota-btn {
-    background: var(--brand-dark2); color: var(--surface); border: none; border-radius:var(--r-md);
+    background: var(--brand-dark2); color: var(--txt-sobre-marca); border: none; border-radius:var(--r-md);
     padding: 8px 16px; font-size: var(--fs-xs); font-weight: 600; cursor: pointer; font-family: inherit;
   }
   .nota-btn:hover:not(:disabled) { background: var(--brand-dark); }
@@ -583,7 +589,7 @@
 
   .urgent-banner {
     display:flex; align-items:center; gap:14px; background: linear-gradient(120deg, var(--brand-dark), var(--brand-dark2));
-    color:var(--surface); border-radius:var(--r-lg); padding:16px 20px; margin-bottom:22px; border-left:5px solid var(--brand-gold);
+    color:var(--txt-sobre-marca); border-radius:var(--r-lg); padding:16px 20px; margin-bottom:22px; border-left:5px solid var(--brand-gold);
   }
   .urgent-banner .u-icon { font-size:var(--ic-lg); flex-shrink:0; }
   .urgent-banner .u-label { font-size:var(--fs-2xs); text-transform:uppercase; letter-spacing:1.5px; color: var(--brand-gold-light); font-weight:700; }
@@ -644,14 +650,14 @@
   .meta-highlight .mh-sub { font-size:var(--fs-xs); color:var(--aviso-txt); margin-top:2px; }
 
   .mensal-table { width:100%; border-collapse:collapse; font-size:var(--fs-sm); }
-  .mensal-table th { text-align:left; background:var(--brand-dark2); color:var(--surface); padding:8px 10px; font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.3px; }
+  .mensal-table th { text-align:left; background:var(--brand-dark2); color:var(--txt-sobre-marca); padding:8px 10px; font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:.3px; }
   .mensal-table td { padding:8px 10px; border-bottom:1px solid var(--fundo-sutil); }
   .mensal-table tr:last-child td { border-bottom:none; }
   .status-bateu { color:var(--ok-txt); font-weight:700; }
   .status-falta { color:var(--erro-txt); font-weight:700; }
   .status-aguarda { color:var(--txt-fraco); }
   .conv-table { width:100%; border-collapse:collapse; font-size:var(--fs-sm); }
-  .conv-table th { text-align:left; background:var(--brand-dark2); color:var(--surface); padding:6px 8px; font-size:var(--fs-2xs); text-transform:uppercase; letter-spacing:.3px; }
+  .conv-table th { text-align:left; background:var(--brand-dark2); color:var(--txt-sobre-marca); padding:6px 8px; font-size:var(--fs-2xs); text-transform:uppercase; letter-spacing:.3px; }
   .conv-table td { padding:6px 8px; border-bottom:1px solid var(--fundo-sutil); }
   .conv-table tr:last-child td { border-bottom:none; }
 .hist-total td { border-top:2px solid var(--linha-forte); background:var(--surface-2); }
@@ -667,7 +673,7 @@
   .ov-aba { font-family:inherit; font-size:var(--fs-2xs); font-weight:700; text-transform:uppercase; letter-spacing:.3px;
     padding:6px 12px; border-radius:var(--r-pill); border:1px solid var(--linha-media); background:var(--surface-2);
     color:var(--txt-apoio); cursor:pointer; }
-  .ov-aba.ativa { background:var(--brand-gold-deep); border-color:var(--brand-gold-deep); color:var(--surface); }
+  .ov-aba.ativa { background:var(--brand-gold-deep); border-color:var(--brand-gold-deep); color:var(--txt-sobre-marca); }
   .fb-contagem { font-weight:600; font-size: var(--fs-2xs); color:var(--txt-apoio); text-transform:none; letter-spacing:0; }
   .fb-data { display:block; font-style:normal; font-size: var(--fs-xs); color:var(--txt-apoio); margin-bottom:4px; }
   .fb-item { border:1px solid var(--linha-media); border-radius:var(--r-md); padding:9px 11px; margin-top:7px; font-size:var(--fs-xs); }
@@ -1139,11 +1145,11 @@
   .sidebar.collapsed .tab-btn::before { left:0; }
   .sidebar.collapsed .sidebar-brand img { height:26px; }
   .sidebar .tab-btn:hover { background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.92); }
-  .sidebar .tab-btn.active { background:rgba(191,157,83,0.13); color:var(--surface); }
+  .sidebar .tab-btn.active { background:rgba(191,157,83,0.13); color:var(--txt-sobre-marca); }
   .sidebar .tab-btn.active .tab-icon svg { color:var(--brand-gold-light); }
   .sidebar .tab-btn:focus-visible { outline:2px solid var(--brand-gold); outline-offset:-2px; }
   .nav-badge {
-    margin-left:auto; background:var(--erro-txt); color:var(--surface); font-size:var(--fs-2xs); font-weight:700; line-height:1;
+    margin-left:auto; background:var(--erro-txt); color:var(--txt-sobre-marca); font-size:var(--fs-2xs); font-weight:700; line-height:1;
     border-radius:var(--r-pill); padding:3px 6px; min-width:17px; text-align:center; flex-shrink:0;
     box-shadow:0 0 0 2px rgba(192,57,43,0.18);
   }
@@ -1158,7 +1164,7 @@
   }
   .sidebar-toggle-btn svg { width:14px; height:14px; transition:transform .2s ease; }
   .sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
-  .sidebar-toggle-btn:hover { background:rgba(255,255,255,0.09); color:var(--surface); border-color:rgba(255,255,255,0.26); }
+  .sidebar-toggle-btn:hover { background:rgba(255,255,255,0.09); color:var(--txt-sobre-marca); border-color:rgba(255,255,255,0.26); }
   .sidebar-sync-text { font-size:var(--fs-2xs); color:rgba(255,255,255,0.5); line-height:1.5; white-space:nowrap; }
   .sync-rotulo { font-size:var(--fs-2xs); text-transform:uppercase; letter-spacing:.8px; color:rgba(255,255,255,0.34); }
   .sidebar-sync-text b { color: var(--brand-gold-light); font-weight:600; }
@@ -1171,7 +1177,7 @@
      existia. Agora a barra aparece sempre; o que é de celular é que se esconde. */
   .topbar { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
   .topbar-title { font-size:var(--fs-lg); font-weight:800; color:var(--brand-dark2); display:none; }
-  .hamburger-btn { display:none; background:var(--brand-dark2); color:var(--surface); border:none; border-radius:var(--r-md); width:36px; height:36px; font-size:var(--fs-md); cursor:pointer; }
+  .hamburger-btn { display:none; background:var(--brand-dark2); color:var(--txt-sobre-marca); border:none; border-radius:var(--r-md); width:36px; height:36px; font-size:var(--fs-md); cursor:pointer; }
   .sidebar-scrim { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:19; }
 
   @media (max-width: 900px) {
@@ -2396,11 +2402,15 @@ function renderPrestesAFechar() {
     });
   // Imóvel reservado cujo comprador JÁ é lead é a mesma negociação — aparecia
   // duas vezes, uma pelo lead e outra pelo imóvel, inflando a contagem.
+  // O mesmo negócio pode chegar por dois caminhos: pelo LEAD (comprador ou
+  // vendedor) e pelo IMÓVEL reservado. Contar os dois soma a comissão duas
+  // vezes. Em 29/08/2026 o Cód. 10842 apareceu duplicado porque a deduplicação
+  // só olhava o comprador — e ali o lead era o VENDEDOR, o Heber.
   const idsNaLista = new Set((DATA.leads || [])
     .filter(l => l.fase === 'Em Negociação' || l.fase === 'Proposta Enviada')
     .map(l => String(l.id)));
   const imoveis = (DATA.imoveis || [])
-    .filter(im => im.status === 'Reservado' && !idsNaLista.has(String(im.compradorLeadId)))
+    .filter(im => im.status === 'Reservado' && !leadDoImovelNaLista(im, idsNaLista))
     .map(im => ({ tipo: 'imovel', nome: im.nome, detalhe: im.corretorParceiro ? 'Parceria com ' + im.corretorParceiro : 'Comprador ainda não vinculado',
                   valor: im.comissaoThulioVenda, quando: null, sub: 'Reservado' }));
   const itens = [...leads, ...imoveis];
@@ -2627,7 +2637,7 @@ const FIN = (function calcularFinanceiro() {
   const reservadosSemLead = (DATA.imoveis || []).filter(im =>
     im.status === 'Reservado'
     && typeof im.comissaoThulioVenda === 'number'
-    && !idsEmNegociacao.has(String(im.compradorLeadId)));
+    && !leadDoImovelNaLista(im, idsEmNegociacao));
   return {
     negs, pagas, aguardando, porTipo, negociado, metaValor,
     comissaoPaga: negs.reduce((s, n) => s + recebidoDe(n), 0),
@@ -3404,6 +3414,12 @@ const imovelFechado = (im) => !!im && IMOVEL_FECHADO.indexOf(im.status) !== -1;
 function codigoDoImovel(im) {
   const m = String((im && im.nome) || '').match(/Cód\.\s*(\d+)/);
   return m ? m[1] : null;
+}
+// Um negócio é UM negócio. Se o imóvel tem lead ligado — como comprador OU
+// como proprietário — e esse lead já está na lista, o imóvel não entra de novo.
+function leadDoImovelNaLista(im, ids) {
+  if (!im || !ids) return false;
+  return ids.has(String(im.compradorLeadId)) || ids.has(String(im.proprietarioLeadId));
 }
 function imovelPorCodigoTexto(ref) {
   const cod = (String(ref || '').match(/(\d+)/) || [])[1];
@@ -5166,12 +5182,20 @@ const NEGOCIOS_LOCALIZADOS = (function () {
   function pintar(chave) {
     const lista = agrupar(chave);
     const maior = lista[0] ? lista[0].vol : 1;
-    const linhas = lista.map(x => `
+    // A lista tem 19 bairros. Mostrar todos empurra o resto da tela para longe
+    // e a cauda longa não muda decisão nenhuma. Ficam os 6 primeiros; o resto
+    // atrás de um clique, com o total ao lado para você saber se vale abrir.
+    const CORTE = 6;
+    const linha = (x) => `
       <div class="ov-linha">
         <span class="ov-nome">${esc(x.nome)}<i>${x.n} ${x.n === 1 ? 'venda' : 'vendas'} · ticket ${brl(x.ticket)}</i></span>
         <span class="ov-trilho"><span class="ov-preenche" style="width:${Math.round(x.vol / maior * 100)}%"></span></span>
         <span class="ov-val">${brl(x.vol)}<i>${(x.vol / volTotal * 100).toFixed(1).replace('.', ',')}% · ${brl(x.com)} de comissão</i></span>
-      </div>`).join('');
+      </div>`;
+    const resto = lista.slice(CORTE);
+    const linhas = lista.slice(0, CORTE).map(linha).join('') + (resto.length
+      ? `<details class="fech-nota"><summary>Ver os outros ${resto.length} ${chave === 'bairro' ? 'bairros' : 'lugares'} · ${brl(resto.reduce((a, x) => a + x.vol, 0))} somados</summary>${resto.map(linha).join('')}</details>`
+      : '');
     // Concentração: quanto dos três primeiros. É força e risco na mesma conta.
     const top3 = lista.slice(0, 3).reduce((s, x) => s + x.vol, 0);
     const nota = lista.length > 3
