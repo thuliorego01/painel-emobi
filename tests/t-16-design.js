@@ -161,4 +161,17 @@ module.exports = { nome: 'Design: uma escala só, sem px solto', rodar: async ()
       'a saudação voltou a listar as pendências que o banner já mostra em tamanho grande');
   })();
 
+  // TEXTO SOBRE FUNDO DA MARCA. Usar --surface (a cor do fundo da página) como
+  // cor de TEXTO funciona no tema claro por coincidência: ali ela é branca. No
+  // escuro ela vira #1B211A e o texto some — foi o que aconteceu com o número
+  // herói do banner, invisível no celular à noite em 29/08/2026. Fundo de marca
+  // é escuro nos dois temas, então a cor do texto não pode seguir o tema.
+  const usosSurface = (css.match(/color:\s*var\(--surface\)/g) || []).length;
+  assert(usosSurface === 0,
+    usosSurface + ' uso(s) de --surface como cor de TEXTO — some no tema escuro; use --txt-sobre-marca');
+  assert(/--txt-sobre-marca\s*:/.test(css), 'falta o token --txt-sobre-marca');
+  const blocoEscuro = (css.match(/@media \(prefers-color-scheme: dark\)[\s\S]*/) || [''])[0];
+  assert(!/--txt-sobre-marca\s*:/.test(blocoEscuro),
+    '--txt-sobre-marca foi redefinido no tema escuro — ele não deve mudar com o tema');
+
 }};

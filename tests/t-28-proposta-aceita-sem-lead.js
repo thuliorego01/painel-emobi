@@ -25,7 +25,7 @@ module.exports = {
       leadsEmNeg.filter(l => typeof l.comissaoPrevista === 'number')
         .reduce((s, l) => s + l.comissaoPrevista, 0) +
       reservados.filter(im => typeof im.comissaoThulioVenda === 'number'
-        && !leadsEmNeg.some(l => String(l.id) === String(im.compradorLeadId)))
+        && !leadsEmNeg.some(l => String(l.id) === String(im.compradorLeadId) || String(l.id) === String(im.proprietarioLeadId)))
         .reduce((s, im) => s + im.comissaoThulioVenda, 0);
 
     const fin = dom.window.eval('FIN');
@@ -43,6 +43,25 @@ module.exports = {
     }
     assert(!hint || !/nenhum lead/i.test(hint.textContent),
       'a dica ainda fala em "lead" — proposta via corretor parceiro não tem lead meu');
+
+    // O MESMO NEGÓCIO NÃO PODE SER CONTADO DUAS VEZES. Ele chega por dois
+    // caminhos — pelo lead e pelo imóvel reservado — e em 29/08/2026 o Cód.
+    // 10842 apareceu nos dois: o lead ligado a ele era o VENDEDOR (Heber), e a
+    // deduplicação só olhava o comprador. O card somou R$25.550 onde havia
+    // R$20.125, e quem viu foi o Thúlio, não o teste.
+    const idsPipeline = new Set(leadsEmNeg.map(l => String(l.id)));
+    (D.imoveis || []).filter(im => im.status === 'Reservado').forEach(im => {
+      const ligado = idsPipeline.has(String(im.compradorLeadId)) || idsPipeline.has(String(im.proprietarioLeadId));
+      const contado = (fin.reservadosSemLead || []).some(x => String(x.id) === String(im.id));
+      assert(!(ligado && contado),
+        `imóvel ${im.id} (${im.nome}) está no pipeline pelo lead E pelo imóvel — comissão contada duas vezes`);
+    });
+    // E a soma tem que fechar exatamente com a dos itens mostrados.
+    const somaItens =
+      leadsEmNeg.reduce((s, l) => s + (typeof l.comissaoPrevista === 'number' ? l.comissaoPrevista : 0), 0) +
+      (fin.reservadosSemLead || []).reduce((s, i) => s + (i.comissaoThulioVenda || 0), 0);
+    assert(fin.comissaoPrevista === somaItens,
+      `o total do pipeline (${fin.comissaoPrevista}) não bate com a soma dos itens (${somaItens})`);
 
     // O rótulo não pode prometer "aceita" quando a faixa também conta proposta
     // apenas ENVIADA. A Angélica foi o primeiro caso: proposta feita, ainda não
