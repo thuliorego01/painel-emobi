@@ -21,6 +21,7 @@ module.exports = {
     const meta = (DATA.metaComissao2026 && DATA.metaComissao2026.meta) || 0;
     if (!meta) return;
 
+    const brlFn = dom.window.eval('brl');
     const barra = doc.querySelector('#anoResumo .ano-barra:last-child');
     assert(barra, 'a barra da meta sumiu');
     const camadas = [...barra.querySelectorAll('.ritmo-preenche')];
@@ -40,6 +41,20 @@ module.exports = {
     assert(larg('encaminhado') === 0,
       'proposta do pipeline voltou para a barra da meta — só contrato assinado entra');
     const legenda = (barra.querySelector('.ano-legenda') || {}).textContent || '';
+
+    // As duas faixas têm que ser lidas na MESMA unidade. A legenda mostrava o
+    // recebido em % e o fechado em R$ — dava para ver que havia R$46.888 a
+    // receber e não dava para saber que isso é 20% da meta. Valor e percentual
+    // nos dois, ou o olho não compara.
+    if (FIN.comissaoAguardando > 0) {
+      const pctAR = Math.round(FIN.comissaoAguardando / meta * 100);
+      assert(legenda.indexOf(brlFn(FIN.comissaoAguardando)) !== -1,
+        `a legenda não mostra o valor de "fechado, a receber": "${legenda.trim()}"`);
+      assert(new RegExp('\\(' + pctAR + '%\\)').test(legenda),
+        `a legenda não mostra o percentual de "fechado, a receber" (${pctAR}%): "${legenda.trim()}"`);
+      assert(legenda.indexOf(brlFn(FIN.comissaoPaga)) !== -1,
+        'a legenda mostra o percentual do recebido mas não o valor — as duas faixas têm que estar na mesma unidade');
+    }
     assert(!/proposta/i.test(legenda),
       `a legenda da meta fala em proposta: "${legenda.trim()}"`);
 

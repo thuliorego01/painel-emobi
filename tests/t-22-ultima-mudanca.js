@@ -29,7 +29,10 @@ module.exports = {
     const aceitos = dias === 0 ? ['hoje'] : dias === 1 ? ['ontem'] : dias < 7 ? [`há ${dias} dias`, esperado] : [esperado];
     assert(aceitos.some(a => texto.includes(a)),
       `esperava a última mudança (${esperado}, ${dias}d atrás) e achei: "${texto}"`);
-    assert(texto.includes(hh), `faltou a hora da última mudança (${hh}): "${texto}"`);
+    // A hora só é exigida enquanto for hoje ou ontem: é quando ela responde
+    // "foi antes ou depois do que eu fiz?". Depois disso vira ruído.
+    if (dias <= 1) assert(texto.includes(hh), `faltou a hora da última mudança (${hh}): "${texto}"`);
+    else assert(!texto.includes(hh), `mudança de ${dias} dias atrás não precisa de hora: "${texto}"`);
 
     // E não pode ser a data de gravação do arquivo, quando as duas diferem.
     if (DATA.ultimaAtualizacao) {
