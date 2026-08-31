@@ -1766,8 +1766,11 @@ function ultimaMudancaReal() {
     const dias = Math.round((zero(hoje) - zero(d)) / 86400000);
     if (dias === 0) return 'hoje às ' + hh(d);
     if (dias === 1) return 'ontem às ' + hh(d);
+    // A hora só responde alguma pergunta enquanto for hoje ou ontem ("foi antes
+    // ou depois do que eu fiz?"). De dois dias em diante ela é ruído — e era
+    // incoerente: sumia entre 2 e 6 dias e voltava a partir de 7.
     if (dias < 7) return `há ${dias} dias · ${dd(d)}`;
-    return dd(d) + ' às ' + hh(d);
+    return `há ${dias} dias · ${dd(d)}`;
   }
   const u = ultimaMudancaReal();
   if (u) {
@@ -2339,8 +2342,8 @@ function renderAnoResumo() {
           <span class="ritmo-preenche fechado" style="width:${pctFechado}%"></span>
         </div>
         ${pctFechado > 0 ? `<div class="ano-legenda">
-          <span><i class="leg ${atrasado ? 'atras' : 'frente'}"></i>recebido ${Math.round(pct * 100)}%</span>
-          <span><i class="leg fechado"></i>fechado, a receber ${brl(areceber)}</span>
+          <span><i class="leg ${atrasado ? 'atras' : 'frente'}"></i>recebido ${brl(recebido)} <b>(${Math.round(pct * 100)}%)</b></span>
+          <span><i class="leg fechado"></i>fechado, a receber ${brl(areceber)} <b>(${Math.round(areceber / (meta || 1) * 100)}%)</b></span>
         </div>` : ''}
       </div>
     </div>
