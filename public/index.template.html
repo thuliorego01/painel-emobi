@@ -472,6 +472,12 @@
   .badge.descartado { background:var(--linha-tenue); color:var(--txt-fraco); }
   .lead-meta { font-size:var(--fs-xs); color: var(--muted); display:flex; gap:12px; flex-wrap:wrap; }
   .lead-meta b { color: var(--text-strong); }
+  /* Papel: comprador, vendedor, ambos. Tom neutro de propósito — ele diz o
+     LADO da mesa, não urgência; competir com a temperatura tiraria a leitura
+     de quem está quente. */
+  .papel { font-size: var(--fs-2xs); font-weight:700; text-transform:uppercase; letter-spacing:.3px;
+    padding:2px 8px; border-radius:var(--r-pill); background:var(--linha-tenue); color:var(--txt-apoio); }
+  .papel.indefinido { background:transparent; color:var(--txt-tenue); border:1px dashed var(--linha-media); }
   .temp { font-size: var(--fs-xs); font-weight:700; padding:2px 7px; border-radius:var(--r-pill); }
   .temp.quente { background:var(--quente-bg); color:var(--quente-txt); }
   .temp.morno  { background:var(--morno-bg); color:var(--morno-txt); }
@@ -2950,6 +2956,23 @@ function abrirBiModal(titulo, leads, nota) {
 const funilList = document.getElementById('funilList');
 // Calculado ao vivo a partir de DATA.leads (fase atual de cada lead) — nunca fica dessincronizado,
 // mesmo que DATA.funil não seja atualizado manualmente em algum dia.
+// PAPEL DO CLIENTE — comprador, vendedor, ou os dois.
+// Não dá para deduzir dos vínculos: a Caroline Evelin é `vendedorLeadId` de uma
+// venda antiga e HOJE é compradora. Vínculo é fato do passado; papel é fato do
+// presente. Por isso este é um dos poucos campos guardados que sobreviveram —
+// ele carrega informação que nenhuma conta descobre.
+// "A definir" é estado legítimo e visível: melhor admitir que não se sabe do
+// que rotular errado.
+const PAPEIS = ['Comprador', 'Vendedor', 'Ambos', 'A definir'];
+function papelDoLead(l) {
+  const p = l && l.papel;
+  return PAPEIS.indexOf(p) !== -1 ? p : 'A definir';
+}
+const compraNoFunil = (l) => {
+  const p = papelDoLead(l);
+  return p === 'Comprador' || p === 'Ambos';
+};
+
 const FASES_FUNIL = ["Novo Lead", "Primeiro Contato Feito", "Qualificado", "Visita Agendada", "Visita Realizada", "Proposta Enviada", "Em Negociação", "Fechado Ganho", "Fechado Perdido", "Inativo"];
 const funilCalculado = FASES_FUNIL.map(fase => [fase, DATA.leads.filter(l => l.fase === fase).length]);
 const maxFunil = Math.max(1, ...funilCalculado.map(f => f[1]));
@@ -3035,19 +3058,24 @@ funilCalculado.forEach(([label, count]) => {
 // Calculado ao vivo a partir de DATA.leads[].maiorFaseIndex (maior fase já alcançada por cada lead),
 // nunca precisa ser mantido manualmente em paralelo — elimina o risco de ficar desatualizado.
 const FUNIL_CONVERSAO_FASES = ["Novo Lead", "Primeiro Contato Feito", "Qualificado", "Visita Agendada", "Visita Realizada", "Proposta Enviada", "Em Negociação", "Fechado Ganho"];
-const totalCadastrados = DATA.leads.length;
-const alcancaramPorIndex = FUNIL_CONVERSAO_FASES.map((_, i) => DATA.leads.filter(l => (l.maiorFaseIndex || 0) >= (i + 1)).length);
+// As fases do funil (Novo Lead -> Visita -> Proposta -> Fechado) são a jornada
+// de quem COMPRA. Vendedor não percorre esse caminho: ele capta, anuncia,
+// recebe visita e recebe proposta. Contá-lo aqui inflava as etapas iniciais e
+// distorcia a queda entre "Visita Realizada" e "Proposta Enviada".
+const LEADS_COMPRA = DATA.leads.filter(compraNoFunil);
+const totalCadastrados = LEADS_COMPRA.length;
+const alcancaramPorIndex = FUNIL_CONVERSAO_FASES.map((_, i) => LEADS_COMPRA.filter(l => (l.maiorFaseIndex || 0) >= (i + 1)).length);
 const funilConversaoCalculado = FUNIL_CONVERSAO_FASES.map((fase, i) => {
   const alcancaram = alcancaramPorIndex[i];
   const proximo = alcancaramPorIndex[i + 1];
   const conversao = (proximo === undefined || alcancaram === 0) ? null : proximo / alcancaram;
   return { fase, alcancaram, conversao };
 });
-const taxaFechamentoCalc = totalCadastrados === 0 ? 0 : DATA.leads.filter(l => l.fase === 'Fechado Ganho').length / totalCadastrados;
-const taxaPerdaCalc = totalCadastrados === 0 ? 0 : DATA.leads.filter(l => l.fase === 'Fechado Perdido').length / totalCadastrados;
+const taxaFechamentoCalc = totalCadastrados === 0 ? 0 : LEADS_COMPRA.filter(l => l.fase === 'Fechado Ganho').length / totalCadastrados;
+const taxaPerdaCalc = totalCadastrados === 0 ? 0 : LEADS_COMPRA.filter(l => l.fase === 'Fechado Perdido').length / totalCadastrados;
 
 document.getElementById('amostraNota').textContent =
-  `⚠️ Amostra pequena (${totalCadastrados} leads cadastrados no total) — os % ficam mais confiáveis conforme mais leads entrarem no funil. Acompanhe a tendência mês a mês, não o valor isolado.`;
+  `⚠️ Amostra pequena (${totalCadastrados} clientes compradores) — os % ficam mais confiáveis conforme mais leads entrarem no funil. Clientes vendedores não entram nesta conta: o funil é a jornada de quem compra.`;
 const conversaoTabela = document.getElementById('conversaoTabela');
 funilConversaoCalculado.forEach(f => {
   // 0% com gente parada na fase é FILA, não gargalo: os leads acabaram de
@@ -3632,6 +3660,7 @@ function renderLeadCard(l, container) {
     </div>
     <div class="lead-meta">
       <span>${l.fase}</span>
+      <span class="papel ${papelDoLead(l) === 'A definir' ? 'indefinido' : ''}">${papelDoLead(l)}</span>
       ${l.valor !== null && l.valor !== undefined ? `<span>Valor: <b>${valorTxt}</b></span>` : ''}
       ${l.comissaoPrevista !== null && l.comissaoPrevista !== undefined ? `<span>Comissão: <b>${comissaoTxt}</b>${l.comissaoDetalhe ? `<details class="com-detalhe"><summary>como se chega nesse valor</summary>${esc(l.comissaoDetalhe)}</details>` : ''}</span>` : ''}
     </div>
@@ -3814,7 +3843,7 @@ if (leadsInativosArr.length === 0) {
     const situacao = situacaoLead(l);
     const badgeClass = situacao === 'Atrasado' ? 'atrasado' : (situacao === 'Em dia' ? 'emdia' : 'novo');
     elNome.textContent = l.nome;
-    elBadges.innerHTML = `<span class="badge ${badgeClass}">${situacao}</span> ${seloTemp} <span class="badge novo">${l.fase}</span>`;
+    elBadges.innerHTML = `<span class="badge ${badgeClass}">${situacao}</span> ${seloTemp} <span class="badge novo">${l.fase}</span> <span class="papel ${papelDoLead(l) === 'A definir' ? 'indefinido' : ''}">${papelDoLead(l)}</span>`;
     const valorTxt = (l.valor === null || l.valor === undefined) ? 'a definir' : brl(l.valor);
     elInfo.innerHTML = `<span>Valor: <b>${valorTxt}</b></span><span>Origem: <b>${l.origem || '—'}</b></span><span>Próxima ação: <b>${l.proximaAcao || '—'}</b></span>`;
     elObs.textContent = l.obs || '';
@@ -6215,9 +6244,9 @@ function resumirEvento(titulo) {
 (function renderTermometroFunil() {
   const el = document.getElementById('termometroFunil');
   if (!el) return;
-  const leads = DATA.leads || [];
+  const leads = (DATA.leads || []).filter(compraNoFunil);
   if (leads.length === 0) {
-    el.innerHTML = '<div class="estado-vazio">Sem leads cadastrados ainda.</div>';
+    el.innerHTML = '<div class="estado-vazio">Nenhum cliente comprador cadastrado ainda.</div>';
     return;
   }
   // Quantos leads já ALCANÇARAM cada fase (não quantos estão nela agora) —
