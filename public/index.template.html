@@ -2197,19 +2197,23 @@ function computeAcoesUrgentes() {
   const vgcDireto = valorVGV * comissaoTotalPct * 0.70; // venda direta (comprador + vendedor próprios): fica com 70% dos 5%
   const vgcParceria = valorVGV * comissaoTotalPct * 0.35; // venda com corretor parceiro: fica com 35% dos 5%
   const hojeD = new Date();
-  const fechamentosLeadsMes = (DATA.leads || []).filter(l => {
-    if (l.fase !== 'Fechado Ganho') return false;
-    if (!l.dataProximaAcao) return true;
-    const [y, m] = l.dataProximaAcao.split('-').map(Number);
+  // Fechamento é medido pela dataFechamento — a data em que o negócio fechou.
+  // Antes usava a dataProximaAcao, que é a data do PRÓXIMO passo, e ainda
+  // contava como "fechado neste mês" todo lead ganho que estivesse sem próxima
+  // ação marcada. Em 02/09/2026 o contador dizia 2 fechamentos em setembro com
+  // zero vendas no mês: eram a Camilla e a Patrícia, fechadas em agosto, cuja
+  // próxima ação de pós-venda caía em setembro.
+  const noMesCorrente = (iso) => {
+    if (!iso) return false;
+    const [y, m] = String(iso).split('-').map(Number);
     return y === hojeD.getFullYear() && (m - 1) === hojeD.getMonth();
-  }).length;
+  };
+  const fechamentosLeadsMes = (DATA.leads || [])
+    .filter(l => l.fase === 'Fechado Ganho' && noMesCorrente(l.dataFechamento)).length;
   // Tambem conta vendas do lado da captacao (imovel proprio vendido, mesmo sem lead comprador no CRM) —
   // sem isso, uma venda como a do Cod.10638 (comprador trazido por corretor parceiro) nao aparecia aqui.
-  const fechamentosImoveisMes = (DATA.imoveis || []).filter(im => {
-    if (im.status !== 'Vendido' || !im.dataVenda) return false;
-    const [y, m] = im.dataVenda.split('-').map(Number);
-    return y === hojeD.getFullYear() && (m - 1) === hojeD.getMonth();
-  }).length;
+  const fechamentosImoveisMes = (DATA.imoveis || [])
+    .filter(im => im.status === 'Vendido' && noMesCorrente(im.dataVenda)).length;
   const fechamentosMes = fechamentosLeadsMes + fechamentosImoveisMes;
   const captacoesAndamento = (DATA.imoveis || []).filter(im => im.status === 'Em Captação').length;
 
