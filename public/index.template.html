@@ -749,6 +749,21 @@
   .bi-modal-lead b { color: var(--text-strong); }
   .bi-modal-lead .bi-fase { font-size: var(--fs-sm); color:var(--txt-fraco); white-space:nowrap; }
   .bi-modal-vazio { font-size: var(--fs-sm); color:var(--txt-fraco); }
+  /* Fechamento não é lead. O que importa nele é o que foi vendido, por quanto e
+     quanto sobra para você — não a temperatura nem há quantos dias está parado. */
+  .fech-linha { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; padding:11px 0;
+    border-bottom:1px solid var(--fundo-sutil); }
+  .fech-linha:last-child { border-bottom:none; }
+  .fech-esq { min-width:0; }
+  .fech-nome { font-size: var(--fs-sm); font-weight:800; color: var(--text-strong); }
+  .fech-sub { margin-top:3px; font-size: var(--fs-xs); color:var(--txt-fraco); line-height:1.45; }
+  .fech-dir { text-align:right; white-space:nowrap; }
+  .fech-val { font-size: var(--fs-sm); font-weight:800; color: var(--text-strong); }
+  .fech-com { margin-top:2px; font-size: var(--fs-xs); color:var(--ok-txt); font-weight:700; }
+  .fech-total { display:flex; align-items:baseline; justify-content:space-between; gap:10px;
+    margin-top:12px; padding-top:11px; border-top:2px solid var(--linha-tenue);
+    font-size: var(--fs-sm); color:var(--txt-apoio); }
+  .fech-total b { color: var(--text-strong); }
   .pv-resumo b { color:var(--info-txt); }
   .pv-linha { padding:11px 0; border-bottom:1px solid var(--fundo-sutil); }
   .pv-linha:last-of-type { border-bottom:none; }
@@ -2214,13 +2229,23 @@ function computeAcoesUrgentes() {
     const [y, m] = String(iso).split('-').map(Number);
     return y === hojeD.getFullYear() && (m - 1) === hojeD.getMonth();
   };
-  const fechamentosLeadsMes = (DATA.leads || [])
-    .filter(l => l.fase === 'Fechado Ganho' && noMesCorrente(l.dataFechamento)).length;
-  // Tambem conta vendas do lado da captacao (imovel proprio vendido, mesmo sem lead comprador no CRM) —
-  // sem isso, uma venda como a do Cod.10638 (comprador trazido por corretor parceiro) nao aparecia aqui.
-  const fechamentosImoveisMes = (DATA.imoveis || [])
-    .filter(im => im.status === 'Vendido' && noMesCorrente(im.dataVenda)).length;
-  const fechamentosMes = fechamentosLeadsMes + fechamentosImoveisMes;
+  // Fechamento é o negócio registrado em listaNegociacoes: UMA linha por negócio,
+  // já com valor e comissão. Contar por lead E por imóvel dobrava o mesmo negócio
+  // sempre que ele tinha os dois lados no CRM — a venda do Cód.7560 entrava como
+  // lead 11 (João Paulo) e outra vez como imóvel 8. E deixava de fora a locação,
+  // que também é fechamento e não tem lead comprador nem imóvel "Vendido".
+  const fechamentosDoMes = (DATA.listaNegociacoes || []).filter(n =>
+    n && Number(n.ano) === hojeD.getFullYear() && (Number(n.mesNum) - 1) === hojeD.getMonth());
+  const fechamentosMes = fechamentosDoMes.length;
+  // Fechamento marcado no lead sem linha no financeiro é buraco, não é zero:
+  // aparece como aviso dentro do modal em vez de sumir da conta.
+  const idsNoFinanceiro = new Set();
+  fechamentosDoMes.forEach(n => {
+    if (n.compradorLeadId != null) idsNoFinanceiro.add(String(n.compradorLeadId));
+    if (n.vendedorLeadId != null) idsNoFinanceiro.add(String(n.vendedorLeadId));
+  });
+  const fechamentosSemRegistro = (DATA.leads || []).filter(l =>
+    l.fase === 'Fechado Ganho' && noMesCorrente(l.dataFechamento) && !idsNoFinanceiro.has(String(l.id)));
   const captacoesAndamento = (DATA.imoveis || []).filter(im => im.status === 'Em Captação').length;
 
   function grupo(itens) {
@@ -2277,8 +2302,8 @@ function computeAcoesUrgentes() {
     if (!item) return;
     const k = item.dataset.kpi;
     if (k === 'leads-ativos') abrirBiModal('Leads ativos', ativos);
-    if (k === 'fechamentos') abrirBiModal('Fechamentos no mês',
-      (DATA.leads || []).filter(l => l.fase === 'Fechado Ganho'));
+    if (k === 'fechamentos') abrirModalFechamentos(fechamentosDoMes, fechamentosSemRegistro,
+      MESES_NOME[hojeD.getMonth()] + ' de ' + hojeD.getFullYear());
     if (k === 'imoveis-ativos' || k === 'captacoes') {
       const lista = (DATA.imoveis || []).filter(im => k === 'captacoes'
         ? im.status === 'Em Captação'
@@ -2975,6 +3000,59 @@ function abrirBiModal(titulo, leads, nota) {
         const tempoTxt = parado === null ? '' : (parado === 0 ? ' · movimentou hoje' : ` · parado há ${parado}d`);
         return `<div class="bi-modal-lead"><span><b>${esc(l.nome)}</b> <span class="bi-fase">${esc(l.fase)} · ${esc(l.temperatura || '—')}${tempoTxt}</span></span>${wa}</div>`;
       }).join('');
+  }
+  over.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+// MODAL DE FECHAMENTOS — lista diferente, porque a pergunta é diferente.
+// Antes ele reaproveitava o modal de leads e mostrava "Quente · parado há 25d"
+// para negócios já assinados: fase e temperatura de quem fechou não dizem nada,
+// e "parado" soa como cobrança de um cliente que já comprou. Pior: listava todos
+// os ganhos do ano embaixo do título "Fechamentos no mês", então o número (2) e
+// a lista (5 nomes) discordavam na mesma tela.
+function abrirModalFechamentos(negocios, semRegistro, tituloMes) {
+  const over = document.getElementById('biModalOverlay');
+  if (!over) return;
+  document.getElementById('biModalTitulo').textContent = 'Fechamentos em ' + tituloMes;
+  const corpo = document.getElementById('biModalCorpo');
+  const diaBR = (iso) => {
+    const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+    return m ? m[3] + '/' + m[2] : '';
+  };
+  const aviso = (semRegistro && semRegistro.length)
+    ? `<div class="bi-modal-nota">${semRegistro.length === 1 ? 'Um cliente está' : semRegistro.length + ' clientes estão'} marcado${semRegistro.length === 1 ? '' : 's'} como Fechado Ganho neste mês sem linha no financeiro: ${semRegistro.map(l => esc(l.nome)).join(', ')}. Não ${semRegistro.length === 1 ? 'entra' : 'entram'} na conta até o negócio ser registrado.</div>`
+    : '';
+  if (!negocios.length) {
+    corpo.innerHTML = aviso + '<div class="bi-modal-vazio">Nenhum negócio fechado neste mês ainda.</div>';
+  } else {
+    const linhas = negocios.slice().sort((a, b) => String(b.data || '').localeCompare(String(a.data || '')))
+      .map(n => {
+        const dia = diaBR(n.data);
+        const sub = [esc(n.imovel || '—'), esc(n.tipo || 'Venda') + (dia ? ' · ' + dia : '')].join('<br>');
+        return `<div class="fech-linha">
+          <div class="fech-esq">
+            <div class="fech-nome">${esc(n.cliente || '—')}</div>
+            <div class="fech-sub">${sub}</div>
+          </div>
+          <div class="fech-dir">
+            <div class="fech-val">${brl(n.valor)}</div>
+            <div class="fech-com">sua parte ${brl(n.comissao)}</div>
+          </div>
+        </div>`;
+      }).join('');
+    // Aluguel não é volume de venda: somar R$4.500 de locação junto com R$390 mil
+    // de venda faz um número que não é nem uma coisa nem outra. A comissão, sim,
+    // soma tudo — ela entra no bolso do mesmo jeito.
+    const vendas = negocios.filter(n => n.tipo !== 'Locação');
+    const locacoes = negocios.length - vendas.length;
+    const somaVendas = vendas.reduce((a, n) => a + (n.valor || 0), 0);
+    const somaCom = negocios.reduce((a, n) => a + (n.comissao || 0), 0);
+    const esq = (negocios.length === 1 ? '1 negócio' : negocios.length + ' negócios') +
+      (vendas.length ? ` · ${brl(somaVendas)} vendidos` : '') +
+      (locacoes ? ` · ${locacoes === 1 ? '1 locação' : locacoes + ' locações'}` : '');
+    corpo.innerHTML = aviso + linhas +
+      `<div class="fech-total"><span>${esq}</span><b>${brl(somaCom)} de comissão</b></div>`;
   }
   over.classList.add('open');
   document.body.style.overflow = 'hidden';
