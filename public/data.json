@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-09-05T08:24:18-03:00",
+  "ultimaAtualizacao": "2026-09-06T07:07:07-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -313,7 +313,7 @@
       "valor": null,
       "comissaoPrevista": null,
       "proximaAcao": "Agendar a visita ao Francisco de Goya",
-      "dataProximaAcao": "2026-09-05",
+      "dataProximaAcao": "2026-09-08",
       "obs": "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso entre os dois, mas prefere condomínios mais novos — sugerido o Vivant (Lagoa Nova). Agendando visita para até o final da semana (10/07). Parceria: 5% dividido, sua parte 2,5%. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M. Retomada em 02/08: enviada opção no Francisco de Goya, aguardando retorno. [04/08] REATIVADO: gostou do Francisco de Goya e quer visitar. Saiu da inatividade, temperatura para Quente. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [22/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [26/08] Contato feito via WhatsApp. [29/08] Contato feito via WhatsApp. [02/09] Contato feito via WhatsApp.",
       "imoveisCompativeis": null,
       "visitaResumo": null,
@@ -541,16 +541,16 @@
       "telefone": "84999885255",
       "origem": "Instagram",
       "dataEntrada": "2026-07-30",
-      "fase": "Qualificado",
-      "maiorFaseIndex": 6,
+      "fase": "Em Negociação",
+      "maiorFaseIndex": 7,
       "temperatura": "Quente",
       "valor": 530000,
-      "comissaoPrevista": null,
-      "proximaAcao": "Cobrar o retorno da opção do Corais de Cotovelo",
-      "dataProximaAcao": "2026-09-05",
-      "obs": "Veio de um anúncio no Instagram como cliente VENDEDOR: captei o Cód. 10638 (Candelária) com ele e vendi em 29/07. Hoje é lead COMPRADOR — mesma pessoa, segunda jornada. Visita hoje às 18h a um apartamento no Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Cliente quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h. [30/07] Visitou o Residencial Cabugi: gostou da disposição e da metragem, mas NÃO aprovou a posição — apartamento quente. Quer ver outras unidades no mesmo condomínio. [31/07] Contato feito via WhatsApp. [04/08] Contato via WhatsApp. Proposta de R$530.000 no Corais Alto da Candelária, apartamento 103 — RECUSADA pela vendedora. Estudando nova proposta. [07/08] Desistiu por enquanto da proposta no Corais Alto da Candelária (apto 103). Procurando outras opções. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] Enviada opção do Corais de Cotovelo. [22/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [26/08] Contato feito via WhatsApp. [29/08] Contato feito via WhatsApp. [02/09] Contato feito via WhatsApp.",
+      "comissaoPrevista": 9275,
+      "proximaAcao": "Acompanhar a análise de documentação e a elaboração do contrato",
+      "dataProximaAcao": "2026-09-09",
+      "obs": "Veio de um anúncio no Instagram como cliente VENDEDOR: captei o Cód. 10638 (Candelária) com ele e vendi em 29/07. Hoje é lead COMPRADOR — mesma pessoa, segunda jornada. Visita hoje às 18h a um apartamento no Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Cliente quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h. [30/07] Visitou o Residencial Cabugi: gostou da disposição e da metragem, mas NÃO aprovou a posição — apartamento quente. Quer ver outras unidades no mesmo condomínio. [31/07] Contato feito via WhatsApp. [04/08] Contato via WhatsApp. Proposta de R$530.000 no Corais Alto da Candelária, apartamento 103 — RECUSADA pela vendedora. Estudando nova proposta. [07/08] Desistiu por enquanto da proposta no Corais Alto da Candelária (apto 103). Procurando outras opções. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] Enviada opção do Corais de Cotovelo. [22/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [26/08] Contato feito via WhatsApp. [29/08] Contato feito via WhatsApp. [02/09] Contato feito via WhatsApp. [05/09/2026] Proposta de R$530.000 no apartamento do Morada Mandacaru (Capim Macio) ACEITA pelo vendedor. Em análise de documentação e elaboração de contrato. Imóvel é captação da corretora Carla Andrade — parceria 50/50 na comissão. Sua parte prevista: R$9.275.",
       "imoveisCompativeis": [],
-      "interesse": "outras opções em Candelária, até ~R$530 mil — desistiu do Corais Alto da Candelária",
+      "interesse": "Apartamento no Morada Mandacaru, Capim Macio — proposta de R$530 mil aceita, parceria com a corretora Carla Andrade",
       "papel": "Ambos"
     },
     {
@@ -582,14 +582,14 @@
       "telefone": "84994769229",
       "origem": "Relacionamento",
       "dataEntrada": "2026-08-04",
-      "fase": "Visita Realizada",
+      "fase": "Visita Agendada",
       "maiorFaseIndex": 5,
       "temperatura": "Quente",
       "valor": 410000,
       "comissaoPrevista": 7175,
-      "proximaAcao": "Ajudar a decidir entre casa pronta e o lote N2-17 — a proposta depende dessa escolha",
-      "dataProximaAcao": "2026-09-05",
-      "obs": "Cliente de relacionamento: foi a VENDEDORA do Maria Bernadete (803), vendido em abril/2026 por R$635.000. Agora volta como COMPRADORA. Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já visitou 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta. [07/08] Trabalhando a formalização da proposta no N2-17. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [11/08] Aguardando a cliente voltar de Campina Grande, onde foi resolver assuntos pessoais. A proposta fica parada até a volta. [12/08] A proposta será no lote N2-17 do Alphaville Pium, em parceria com o corretor Alon Nunes. Valor da proposta: R$410.000,00. [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Vai visitar hoje 2 casas no Alphaville, das 15h às 17h, em parceria com os corretores Ângelo Andrade e Sâmara Diógenes. [19/08] Visitou apenas a casa da corretora Sâmara Diógenes. Está decidindo entre casa pronta e terreno para construir. [22/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [26/08] Cliente viajando, volta na sexta (28/08). Não é atraso — prazo remarcado para a volta dela. [29/08] Contato feito via WhatsApp. [02/09] Contato feito via WhatsApp.",
+      "proximaAcao": "Confirmar o horário da visita aos lotes do Alphaville Pium — crédito aprovado para aquisição + construção",
+      "dataProximaAcao": "2026-09-07",
+      "obs": "Cliente de relacionamento: foi a VENDEDORA do Maria Bernadete (803), vendido em abril/2026 por R$635.000. Agora volta como COMPRADORA. Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já visitou 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta. [07/08] Trabalhando a formalização da proposta no N2-17. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [11/08] Aguardando a cliente voltar de Campina Grande, onde foi resolver assuntos pessoais. A proposta fica parada até a volta. [12/08] A proposta será no lote N2-17 do Alphaville Pium, em parceria com o corretor Alon Nunes. Valor da proposta: R$410.000,00. [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Vai visitar hoje 2 casas no Alphaville, das 15h às 17h, em parceria com os corretores Ângelo Andrade e Sâmara Diógenes. [19/08] Visitou apenas a casa da corretora Sâmara Diógenes. Está decidindo entre casa pronta e terreno para construir. [22/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [26/08] Cliente viajando, volta na sexta (28/08). Não é atraso — prazo remarcado para a volta dela. [29/08] Contato feito via WhatsApp. [02/09] Contato feito via WhatsApp. [05/09/2026] Crédito APROVADO na modalidade aquisição + construção. Quer nova visita aos lotes do Alphaville Pium na segunda, 07/09 — pela leitura dela, visita de fechamento. Falta confirmar o horário.",
       "interesse": "lote N2-17, Alphaville Pium — proposta de R$410 mil, parceria com Alon Nunes",
       "imoveisCompativeis": [],
       "comissaoDetalhe": "5% sobre R$410.000 = R$20.500,00, dividido com o corretor Alon Nunes (R$10.250,00 cada); sua parte 70% = R$7.175,00.",
@@ -1647,15 +1647,7 @@
       "nota": "apenas os anos com mês de fechamento registrado na planilha original."
     }
   },
-  "agendaHoje": [
-    {
-      "data": "2026-09-03",
-      "hora": "10:00",
-      "horaFim": "10:45",
-      "titulo": "Visita ao Cód. 10881 (Terraço das Dunas, Tirol) — com o corretor Ivanaldo",
-      "local": "Rua Capitão Abdon Nunes, Tirol - Natal/RN"
-    }
-  ],
+  "agendaHoje": [],
   "agendaAmanha": [],
   "agendaProximos": [],
   "lembretes": [
@@ -1754,6 +1746,18 @@
       "data": "2026-09-25",
       "hora": "",
       "relacionado": "Chiquinho Lobo"
+    },
+    {
+      "texto": "Visita da Caroline Evelin aos lotes do Alphaville Pium — confirmar horário (crédito aprovado, visita de fechamento)",
+      "data": "2026-09-07",
+      "hora": "",
+      "relacionado": "Caroline Evelin"
+    },
+    {
+      "texto": "Acompanhar documentação e contrato do Morada Mandacaru — Renato Cássio, R$530 mil, parceria Carla Andrade",
+      "data": "2026-09-09",
+      "hora": "",
+      "relacionado": "Renato Cássio"
     }
   ],
   "prospeccaoCaptacao": [
@@ -4105,6 +4109,27 @@
       "tipo": "Correção",
       "leadId": 7,
       "resumo": "Correção de registro: a corretora parceira do Cód. 10842 é Natália Pimenta, e não Kryssia Aleixo como estava anotado desde a proposta de R$310 mil."
+    },
+    {
+      "data": "05/09/2026 11:48",
+      "lead": "Renato Cássio",
+      "tipo": "Proposta",
+      "leadId": 12,
+      "resumo": "PROPOSTA ACEITA — R$530.000 no apartamento do Morada Mandacaru, Capim Macio. Entrou em análise de documentação e elaboração de contrato. Captação da corretora Carla Andrade: parceria 50/50 sobre os 5% (R$26.500), sua parte R$9.275."
+    },
+    {
+      "data": "05/09/2026 11:48",
+      "lead": "Tácito Barreto",
+      "tipo": "Contato",
+      "leadId": 1,
+      "resumo": "Contato feito via WhatsApp."
+    },
+    {
+      "data": "05/09/2026 11:49",
+      "lead": "Caroline Evelin",
+      "tipo": "Agendamento",
+      "leadId": 14,
+      "resumo": "Crédito aprovado na modalidade aquisição + construção. Nova visita aos lotes do Alphaville Pium marcada para segunda, 07/09 — leitura dele é de visita para fechamento. Horário a confirmar."
     }
   ],
   "regraComissao": {
@@ -5161,7 +5186,6 @@
       "comissao": 2700
     }
   ],
-  "__gravadoEm": "2026-09-04T20:53:38.993Z",
   "negociosDesfeitos": [
     {
       "imovel": "Apartamento 3 Quartos Candelária 133m² (Cód. 7560)",
