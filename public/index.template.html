@@ -3808,7 +3808,22 @@ function ordenarPorTemperatura(arr) {
   });
 }
 
-const leadsAtivosArr = ordenarPorTemperatura(DATA.leads.filter(l => !FASES_INATIVAS.includes(l.fase)));
+// O card do Pipeline é o FUNIL DE COMPRA. Cliente vendedor não tem fase de
+// funil de compra: o negócio dele vive no imóvel, não no lead. O Heber Lima
+// aparecia aqui com "Em Negociação · R$310.000 · R$10.850" e até com um imóvel
+// compatível sobrando de quando ele também comprava — três informações de
+// comprador num cliente que só vende.
+const leadsAtivosTodos = DATA.leads.filter(l => !FASES_INATIVAS.includes(l.fase));
+// Só o VENDEDOR sai. "A definir" continua no funil de propósito: cliente que
+// acabou de entrar e ainda não teve o papel classificado não pode desaparecer
+// da tela por falta de informação. Ausência de dado nunca pode virar ausência
+// de pessoa.
+const ehSomenteVendedor = (l) => papelDoLead(l) === 'Vendedor';
+const leadsAtivosArr = ordenarPorTemperatura(leadsAtivosTodos.filter(l => !ehSomenteVendedor(l)));
+// Tirar do card não pode virar sumir da conta: o KPI "Leads Ativos" continua
+// contando todo mundo, então a diferença precisa estar escrita embaixo do card.
+// Número e lista discordando na mesma tela já nos custou caro uma vez.
+const vendedoresAtivosArr = leadsAtivosTodos.filter(ehSomenteVendedor);
 // "Fechado Ganho" saiu daqui: cliente que comprou não é lead inativo, é a
 // melhor base que existe. Ele passa a viver na seção de pós-venda.
 const leadsInativosArr = ordenarPorTemperatura(
@@ -3869,7 +3884,8 @@ function renderGrupoTemperatura(lista, container) {
 }
 
 if (leadsAtivosArr.length === 0) {
-  leadsCard.innerHTML = '<div class="estado-vazio">Nenhum lead ativo cadastrado ainda.</div>';
+  leadsCard.innerHTML = '<div class="estado-vazio">Nenhum comprador ativo no funil.</div>';
+  rodapeVendedores(leadsCard);
 } else {
   // Legenda: a faixa colorida à esquerda NÃO é a temperatura (essa já está no
   // selo do card) — é o cruzamento de temperatura com tempo parado. Sem esta
@@ -3893,6 +3909,21 @@ if (leadsAtivosArr.length === 0) {
     '</div>';
   leadsCard.appendChild(legenda);
   renderGrupoTemperatura(leadsAtivosArr, leadsCard);
+  rodapeVendedores(leadsCard);
+}
+
+// A nota que reconcilia o card com o KPI. Sem ela, "Leads Ativos: 10" com nove
+// cards na tela é uma contradição silenciosa.
+function rodapeVendedores(onde) {
+  if (!onde || !vendedoresAtivosArr.length) return;
+  const n = vendedoresAtivosArr.length;
+  const nota = document.createElement('div');
+  nota.className = 'urg-legenda';
+  nota.innerHTML = '<div class="legenda-linha">Fora deste funil: <b>' + n +
+    (n === 1 ? ' cliente vendedor ativo</b> (' : ' clientes vendedores ativos</b> (') +
+    vendedoresAtivosArr.map(l => esc(l.nome)).join(', ') +
+    '). O negócio de quem vende vive no imóvel, não no funil de compra — acompanhe em Imóveis e em "Prestes a fechar".</div>';
+  onde.appendChild(nota);
 }
 
 const inativosToggle = document.getElementById('inativosToggle');
