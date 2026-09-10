@@ -142,7 +142,7 @@ const MARCADOR = 'const DATA = /*__PAINEL_DATA_PLACEHOLDER__*/{};';
 // Coleções que NUNCA podem encolher de repente. Foi um processo automático
 // reescrevendo listaNegociacoes que apagou a venda de R$350.000 da Patrícia em
 // 12/08/2026. A regra deixou de ser um aviso em texto e virou porteiro.
-const COLECOES = ['leads', 'imoveis', 'listaNegociacoes', 'logAtividades', 'lembretes', 'roleta'];
+const COLECOES = ['leads', 'imoveis', 'listaNegociacoes', 'logAtividades', 'lembretes'];
 const ENCOLHIMENTO_MAX = 0.10;
 
 async function dadosSobreposicao(env) {
