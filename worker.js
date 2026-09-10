@@ -416,6 +416,20 @@ export default {
       }
       const base = await dadosVigentes(env, request);
       if (!base) return jsonResponse({ error: 'não consegui ler os dados vigentes' }, 500);
+      // CARIMBO DE VERSÃO. O canal faz ler-alterar-gravar. Enquanto só o Claude
+      // escrevia, duas gravações nunca se cruzavam. Depois que o painel passou
+      // a gravar sozinho (baixa de parcela, fase do processo), passaram a
+      // existir dois escritores — e em 10/09/2026 uma gravação inteira sumiu
+      // em silêncio: renome, fases de cinco negócios e seis parcelas.
+      // Quem grava agora diz em cima de QUAL versão está gravando. Se a base
+      // andou, a gravação é recusada com 409 e quem chamou recarrega e refaz.
+      // Perder por conflito avisado é irritante; perder em silêncio é pior.
+      if (body.baseadoEm && base.__gravadoEm && body.baseadoEm !== base.__gravadoEm) {
+        return jsonResponse({
+          error: 'a base mudou desde que você leu',
+          baseAtual: base.__gravadoEm, vocêLeu: body.baseadoEm
+        }, 409);
+      }
       const novo = JSON.parse(JSON.stringify(base));
       const errosOps = aplicarOps(novo, body.ops);
       if (errosOps.length) return jsonResponse({ error: 'operações inválidas', detalhes: errosOps }, 400);
@@ -458,8 +472,11 @@ export default {
         if (tpl.ok) {
           const texto = await tpl.text();
           if (texto.split(MARCADOR).length - 1 === 1) {
+            // __gravadoEm VAI junto de propósito. É o carimbo de versão: a tela
+            // devolve ele ao gravar, e o worker recusa (409) se a base andou
+            // desde que a página foi aberta. Sem ele, quem abriu o painel de
+            // manhã grava por cima do que entrou à tarde, em silêncio.
             const copia = JSON.parse(JSON.stringify(sobre));
-            delete copia.__gravadoEm;
             const json = JSON.stringify(copia).replace(/<\/script/gi, '<\\/script');
             return new Response(texto.replace(MARCADOR, 'const DATA = ' + json + ';'), {
               headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' }
