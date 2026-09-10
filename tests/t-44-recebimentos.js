@@ -53,12 +53,42 @@ module.exports = {
     abertos.forEach(n => assert(n.id !== undefined && n.id !== null,
       'negócio sem id em listaNegociacoes: ' + (n.cliente || '?')));
 
+    // Processo travado por terceiro não pode aparecer como cobrança atrasada:
+    // cobrar toda semana algo fora do seu alcance é ruído, e ruído faz a
+    // pessoa parar de olhar o painel inteiro.
+    const travados = abertos.filter(n => n.semDataPrevista || /travado/i.test(n.faseProcesso || ''));
+    travados.forEach(t => {
+      const linha = doc.querySelector('[data-rec="' + t.id + '"]');
+      assert(linha, 'negócio travado sumiu da lista: ' + t.cliente);
+      assert(!/venceu h[áa]/i.test(linha.textContent),
+        `"${t.cliente}" está travado por terceiro e aparece como cobrança vencida`);
+      assert(/sem data prevista/i.test(linha.textContent),
+        `"${t.cliente}" está travado e não diz que não há data prevista`);
+    });
+    if (travados.length) {
+      const ordem = [...doc.querySelectorAll('[data-rec]')].map(l => l.dataset.rec);
+      const primeiroTravado = ordem.indexOf(String(travados[0].id));
+      const naoTravados = abertos.filter(n => !(n.semDataPrevista || /travado/i.test(n.faseProcesso || '')));
+      naoTravados.forEach(n => assert(ordem.indexOf(String(n.id)) < primeiroTravado,
+        'travado tem que ficar no fim da fila — não é o que se persegue hoje'));
+    }
+
     const comFluxo = abertos.filter(n => Array.isArray(n.fluxoPagamento) && n.fluxoPagamento.some(p => !p.recebido))[0];
     if (!comFluxo) return;   // sem parcelado em aberto, o resto não se aplica hoje
 
     clicar(doc.querySelector('[data-rec="' + comFluxo.id + '"]'));
     const corpo = doc.getElementById('biModalCorpo');
     assert(/Falta receber/.test(corpo.textContent), 'o modal do recebimento não abriu');
+
+    // Os campos do processo são editáveis na própria tela: lista fechada onde a
+    // resposta é sempre uma das mesmas, texto livre onde cada caso é um caso.
+    ['modalidade', 'faseProcesso', 'comQuem', 'dataProximaCobranca'].forEach(c => {
+      assert(corpo.querySelector('[data-campo="' + c + '"]'), 'sumiu o campo "' + c + '" do processo');
+    });
+    assert(corpo.querySelector('[data-campo="modalidade"]').tagName === 'SELECT',
+      'modalidade tem que ser lista fechada, senão vira três grafias da mesma coisa');
+    assert(corpo.querySelector('[data-campo="comQuem"]').tagName === 'INPUT',
+      '"com quem está a bola" tem que ser texto livre — nenhuma lista prevê "Prefeitura, certidão de endereço"');
 
     const pend = corpo.querySelectorAll('[data-parcela]');
     assert(pend.length, 'as parcelas pendentes não estão clicáveis');
