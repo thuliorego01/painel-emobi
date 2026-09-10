@@ -27,7 +27,7 @@
        --surface aqui: funcionava no claro por coincidência e, no escuro,
        virava texto escuro sobre fundo escuro. O número herói do banner sumia. */
     --txt-sobre-marca: #F4F6F0;
-    --surface-2: #FCFCFA;
+    --surface-2: #F4F5EF;   /* fundo da página — precisa contrastar com o branco do card */
     --border-soft: #E9EBE4;
     --brand-dark: #10150F;
     --brand-dark2: #1D2717;
@@ -52,6 +52,7 @@
     --linha:       #E9EBE4;   /* borda padrão (= --border-soft) */
     --linha-forte: #E4E7DF;   /* borda que precisa se ver */
     --linha-tenue: #F1F2ED;   /* divisória entre linhas de lista */
+    --secao-linha: #E8EAE0;   /* borda da faixa da seção */
 
     --erro-txt:    #B4300F;   /* atrasado, perdido, quebrado */
     --erro-bg:     #FBE4E4;
@@ -145,6 +146,16 @@
     display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px;
   }
   .section-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand-gold); display:inline-block; }
+
+
+  /* SEÇÕES. A tela era branca sobre quase-branco: sem contraste, os blocos
+     corriam um no outro e não dava para ver onde uma seção terminava.
+     Duas mudanças, nenhuma linha de HTML: o fundo da página desceu um degrau
+     (o card branco agora se destaca) e o título de seção ganhou uma régua que
+     atravessa a largura, fechando o bloco anterior. */
+  .section-title { padding-bottom: 9px; border-bottom: 2px solid var(--secao-linha); margin: 30px 2px 14px; }
+  .section-title:first-of-type { margin-top: 6px; }
+  .tab-panel > .card, .tab-panel > .kpis, .tab-panel > .grid { margin-bottom: 18px; }
 
   .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; }
   .kpi {
@@ -333,6 +344,7 @@
       --linha:       #2C342A;
       --linha-forte: #394235;
       --linha-tenue: #232B21;
+      --secao-linha: #262E24;
 
       --erro-txt:    #E89080;
       --erro-bg:     #2A1A18;
@@ -6903,13 +6915,22 @@ function recebimentosAbertos() {
   return (DATA.listaNegociacoes || []).filter(n => aReceberDe(n) > 0);
 }
 
+// Grava dizendo em cima de QUAL versão está gravando. Se a base andou entre a
+// leitura e a gravação, o worker devolve 409 e nós recarregamos a página em vez
+// de escrever por cima — foi assim que uma gravação inteira sumiu em 10/09/2026.
 async function gravarNegociacao(id, campos, extras) {
   const ops = (extras || []).concat([
     { tipo: 'atualizar', colecao: 'listaNegociacoes', chave: 'id', valorChave: id, campos: campos }
   ]);
+  const corpo = { ops: ops };
+  const base = (typeof DATA !== 'undefined') && DATA.__gravadoEm;
+  if (base) corpo.baseadoEm = base;
   const r = await fetch('/api/dados/patch', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ops: ops })
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corpo)
   });
+  if (r.status === 409) {
+    throw new Error('esta tela está desatualizada — outra gravação entrou depois que você abriu. Recarregue a página (F5) e refaça: nada foi perdido.');
+  }
   if (!r.ok) throw new Error('o painel recusou a gravação (' + r.status + ')');
   return r.json();
 }
