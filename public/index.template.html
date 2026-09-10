@@ -749,6 +749,48 @@
   .bi-modal-lead b { color: var(--text-strong); }
   .bi-modal-lead .bi-fase { font-size: var(--fs-sm); color:var(--txt-fraco); white-space:nowrap; }
   .bi-modal-vazio { font-size: var(--fs-sm); color:var(--txt-fraco); }
+  /* RECEBIMENTOS EM ANDAMENTO — comissão já ganha que ainda não caiu.
+     "Aguardando" é o mesmo rótulo para dinheiro que chega semana que vem e
+     para dinheiro parado desde maio. Aqui a diferença aparece. */
+  .rec-linha { display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
+    padding:12px 0; border-bottom:1px solid var(--fundo-sutil); cursor:pointer; }
+  .rec-linha:last-child { border-bottom:none; }
+  .rec-linha:hover { background:var(--fundo-sutil); }
+  .rec-esq { min-width:0; }
+  .rec-nome { font-size: var(--fs-sm); font-weight:800; color: var(--text-strong); }
+  .rec-sub { margin-top:3px; font-size: var(--fs-xs); color:var(--txt-fraco); line-height:1.5; }
+  .rec-dir { text-align:right; white-space:nowrap; }
+  .rec-falta { font-size: var(--fs-sm); font-weight:800; color: var(--aviso-txt); }
+  .rec-prazo { margin-top:2px; font-size: var(--fs-xs); color:var(--txt-fraco); }
+  .rec-prazo.vencido { color:var(--erro-txt); font-weight:800; }
+  .rec-selo { display:inline-block; font-size: var(--fs-2xs); font-weight:800; padding:3px 9px;
+    border-radius:var(--r-pill); border:1px solid var(--linha-tenue); background:var(--info-bg); color:var(--info-txt); }
+  .rec-selo.sem { background:var(--aviso-bg); border-color:var(--aviso-linha); color:var(--aviso-txt); }
+  .rec-total { display:flex; align-items:baseline; justify-content:space-between; gap:10px;
+    margin-top:12px; padding-top:11px; border-top:2px solid var(--linha-tenue);
+    font-size: var(--fs-sm); color:var(--txt-apoio); }
+  .rec-total b { color: var(--text-strong); }
+  /* Trilha de fases: onde o processo está e o que falta. */
+  .rec-fases { display:flex; flex-wrap:wrap; gap:6px; margin:10px 0 4px; }
+  .rec-fase { font-size: var(--fs-xs); padding:5px 11px; border-radius:var(--r-pill);
+    border:1px solid var(--linha-tenue); color:var(--txt-fraco); background:var(--surface); }
+  .rec-fase.feita { color:var(--ok-txt); background:var(--ok-bg); }
+  .rec-fase.atual { color:var(--txt-sobre-marca); background:var(--brand-dark2); border-color:var(--brand-dark2); font-weight:800; }
+  /* Parcelas: clicar na pendente dá baixa e ela sai da lista de cobrança. */
+  .rec-parcela { display:flex; align-items:center; justify-content:space-between; gap:12px;
+    padding:10px 12px; margin-top:7px; border:1px solid var(--linha-tenue); border-radius:var(--r-md);
+    background:var(--surface); cursor:pointer; font-size: var(--fs-xs); }
+  .rec-parcela:hover { border-color:var(--brand-gold); background:var(--fundo-sutil); }
+  .rec-parcela b { color:var(--text-strong); }
+  .rec-parcela .rec-p-com { color:var(--ok-txt); font-weight:800; white-space:nowrap; }
+  .rec-recebidas { margin-top:9px; padding:9px 12px; border-radius:var(--r-md);
+    background:var(--ok-bg); border:1px solid var(--linha-tenue);
+    font-size: var(--fs-xs); color:var(--ok-txt); }
+  .rec-recebidas b { color:var(--text-strong); }
+  .rec-acoes { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+  .rec-btn { font-size: var(--fs-xs); font-weight:800; padding:7px 14px; border-radius:var(--r-pill);
+    border:1px solid var(--linha-forte); background:var(--surface); color:var(--text-strong); cursor:pointer; }
+  .rec-btn:hover { background:var(--fundo-sutil); }
   /* Fechamento não é lead. O que importa nele é o que foi vendido, por quanto e
      quanto sobra para você — não a temperatura nem há quantos dias está parado. */
   .fech-linha { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; padding:11px 0;
@@ -1392,6 +1434,12 @@
     </div>
 
     <div class="section-title"><span class="dot" aria-hidden="true"></span>Negociações 2026</div>
+    <div class="card" style="margin-bottom:14px;">
+      <h3>Recebimentos em andamento</h3>
+      <div style="font-size:var(--fs-xs);color:var(--txt-fraco);margin-bottom:4px;">Comissão que você já ganhou e ainda não caiu. Clique em um negócio para ver em que fase o processo está e dar baixa nas parcelas.</div>
+      <div id="recebimentosLista"></div>
+    </div>
+
     <div class="card">
       <h3>Vendas &amp; Locações</h3>
       <div class="legend">
@@ -1702,8 +1750,24 @@ const isDemo = false;
 // "pago" mentia para mais; como "aguardando" mentia para menos.
 // Onde existir comissaoRecebida, ela manda. Onde não existir, o status antigo
 // continua valendo — nenhuma linha existente muda de comportamento.
+// Quando o negócio tem FLUXO DE PAGAMENTO, ele manda. A comissão de cada
+// parcela é a fatia dela no valor da venda — conta, não campo guardado:
+//   R$137.000 de R$465.000 = 29,46% de R$16.275 = R$4.795.
+// Guardar a comissão parcela a parcela criaria um segundo número para a mesma
+// coisa, e dois números para a mesma coisa sempre divergem.
+function comissaoDaParcela(n, p) {
+  if (!n || !p || typeof n.valor !== 'number' || !n.valor) return 0;
+  return (p.valor / n.valor) * (n.comissao || 0);
+}
+function temFluxo(n) {
+  return !!(n && Array.isArray(n.fluxoPagamento) && n.fluxoPagamento.length);
+}
 function recebidoDe(n) {
   if (!n) return 0;
+  if (temFluxo(n)) {
+    return n.fluxoPagamento.filter(p => p && p.recebido)
+      .reduce((soma, p) => soma + comissaoDaParcela(n, p), 0);
+  }
   if (typeof n.comissaoRecebida === 'number') return n.comissaoRecebida;
   return n.status === 'pago' ? (n.comissao || 0) : 0;
 }
@@ -2984,6 +3048,7 @@ function alvoDe(e) {
 function abrirBiModal(titulo, leads, nota) {
   const over = document.getElementById('biModalOverlay');
   if (!over) return;
+  delete over.dataset.recAtual;   // modal compartilhado: desarma o de recebimentos
   document.getElementById('biModalTitulo').textContent = titulo;
   const corpo = document.getElementById('biModalCorpo');
   const cabecalho = nota ? `<div class="bi-modal-nota">${nota}</div>` : '';
@@ -3014,6 +3079,7 @@ function abrirBiModal(titulo, leads, nota) {
 function abrirModalFechamentos(negocios, semRegistro, tituloMes) {
   const over = document.getElementById('biModalOverlay');
   if (!over) return;
+  delete over.dataset.recAtual;   // modal compartilhado: desarma o de recebimentos
   document.getElementById('biModalTitulo').textContent = 'Fechamentos em ' + tituloMes;
   const corpo = document.getElementById('biModalCorpo');
   const diaBR = (iso) => {
@@ -6768,6 +6834,235 @@ function abrirProspeccao(id) {
 }
 
 
+
+
+// ============================================================================
+// RECEBIMENTOS EM ANDAMENTO
+//
+// Venda fechada não é dinheiro na conta. Financiamento e parcelamento direto
+// levam de 45 a 90 dias, e o painel só sabia dizer "aguardando" — o mesmo
+// rótulo para o que chega semana que vem e para os R$17.500 do Maio/2026, que
+// em 10/09/2026 estavam parados havia quatro meses sem ninguém saber por quê.
+//
+// O que este bloco faz: diz em que FASE o processo está, COM QUEM está a bola,
+// QUANDO você cobra de novo, e deixa dar baixa em cada parcela.
+// O que ele NÃO faz: dossiê de documentos, certidões, minuta de contrato.
+// Isso é esteira transacional e o Pipeimob faz melhor. A fronteira é essa:
+// o Pipeimob acompanha a transação, este painel acompanha o seu dinheiro.
+// ============================================================================
+
+const FASES_POR_MODALIDADE = {
+  'Financiamento': ['Documentação', 'Análise de crédito', 'Avaliação/engenharia', 'Contrato no banco', 'Registro em cartório', 'Liberação do recurso', 'Comissão paga'],
+  'Parcelamento direto': ['Contrato assinado', 'Parcelas em curso', 'Quitação', 'Comissão paga'],
+  'À vista': ['Contrato assinado', 'Escritura e registro', 'Comissão paga']
+};
+function fasesDe(n) {
+  return FASES_POR_MODALIDADE[(n && n.modalidade) || ''] || null;
+}
+function recDiasAte(iso) {
+  const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!m) return null;
+  const h = new Date();
+  return Math.round((Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3])) -
+                     Date.UTC(h.getFullYear(), h.getMonth(), h.getDate())) / 86400000);
+}
+function recDiasDesde(iso) { const d = recDiasAte(iso); return d === null ? null : -d; }
+const recHojeISO = () => dataLocalISO();
+// Somar dias em UTC e ler de volta com toISOString() devolve a data de ONTEM
+// para quem está em UTC-3 depois das 21h. Data local é montada em data local.
+function recMaisDias(iso, n) {
+  const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!m) return null;
+  return dataLocalISO(new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]) + n));
+}
+function recDataCurta(iso) {
+  const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? m[3] + '/' + m[2] : '';
+}
+// Todo negócio com dinheiro em aberto entra — não só os parcelados. Foi
+// justamente um SEM parcelamento registrado que ficou quatro meses invisível.
+function recebimentosAbertos() {
+  return (DATA.listaNegociacoes || []).filter(n => aReceberDe(n) > 0);
+}
+
+async function gravarNegociacao(id, campos, extras) {
+  const ops = (extras || []).concat([
+    { tipo: 'atualizar', colecao: 'listaNegociacoes', chave: 'id', valorChave: id, campos: campos }
+  ]);
+  const r = await fetch('/api/dados/patch', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ops: ops })
+  });
+  if (!r.ok) throw new Error('o painel recusou a gravação (' + r.status + ')');
+  return r.json();
+}
+
+function renderRecebimentos() {
+  const el = document.getElementById('recebimentosLista');
+  if (!el) return;
+  const abertos = recebimentosAbertos().slice().sort((a, b) => {
+    const da = recDiasAte(a.dataProximaCobranca), db = recDiasAte(b.dataProximaCobranca);
+    if (da !== null && db !== null) return da - db;
+    if (da !== null) return -1;
+    if (db !== null) return 1;
+    return String(a.data || '').localeCompare(String(b.data || ''));
+  });
+  if (!abertos.length) {
+    el.innerHTML = '<div class="bi-modal-vazio">Nenhuma comissão em aberto. Tudo que foi fechado já entrou.</div>';
+    return;
+  }
+  el.innerHTML = abertos.map(n => {
+    const falta = aReceberDe(n), recebido = recebidoDe(n);
+    const parado = recDiasDesde(n.data);
+    const atraso = recDiasAte(n.dataProximaCobranca);
+    const prazo = n.dataProximaCobranca
+      ? (atraso < 0
+          ? `<span class="rec-prazo vencido">cobrança venceu há ${-atraso}d</span>`
+          : `<span class="rec-prazo">cobrar em ${recDataCurta(n.dataProximaCobranca)}</span>`)
+      : '<span class="rec-prazo">sem data de cobrança</span>';
+    const fase = n.faseProcesso
+      ? `<span class="rec-selo">${esc(n.faseProcesso)}</span>`
+      : '<span class="rec-selo sem">fase não informada</span>';
+    const bola = n.comQuem ? ` · com ${esc(n.comQuem)}` : '';
+    return `<div class="rec-linha" data-rec="${esc(n.id)}" role="button" tabindex="0">
+      <div class="rec-esq">
+        <div class="rec-nome">${esc(n.cliente || '—')}</div>
+        <div class="rec-sub">${esc((n.imovel || '').slice(0, 60))}</div>
+        <div class="rec-sub">${fase}${bola}${parado !== null ? ` · fechado há ${parado}d` : ''}${recebido > 0 ? ` · ${brl(recebido)} já recebidos` : ''}</div>
+      </div>
+      <div class="rec-dir"><div class="rec-falta">${brl(falta)}</div>${prazo}</div>
+    </div>`;
+  }).join('') +
+  `<div class="rec-total"><span>${abertos.length === 1 ? '1 negócio' : abertos.length + ' negócios'} com comissão em aberto</span><b>${brl(abertos.reduce((s, n) => s + aReceberDe(n), 0))}</b></div>`;
+}
+
+function abrirRecebimento(id) {
+  const n = (DATA.listaNegociacoes || []).filter(x => String(x.id) === String(id))[0];
+  const over = document.getElementById('biModalOverlay');
+  if (!n || !over) return;
+  document.getElementById('biModalTitulo').textContent = n.cliente || 'Recebimento';
+  const corpo = document.getElementById('biModalCorpo');
+
+  const fases = fasesDe(n);
+  const trilha = fases
+    ? '<div class="rec-fases">' + fases.map(f => {
+        const i = fases.indexOf(n.faseProcesso), j = fases.indexOf(f);
+        const cls = (i !== -1 && j < i) ? ' feita' : (f === n.faseProcesso ? ' atual' : '');
+        return `<span class="rec-fase${cls}">${esc(f)}</span>`;
+      }).join('') + '</div>'
+    : '<div class="bi-modal-nota">Modalidade não informada — sem modalidade não dá para saber quais fases este processo tem. Me diga se é financiamento, parcelamento direto ou à vista.</div>';
+
+  const pendentes = temFluxo(n) ? n.fluxoPagamento.filter(p => !p.recebido) : [];
+  const pagas = temFluxo(n) ? n.fluxoPagamento.filter(p => p.recebido) : [];
+  const listaPend = pendentes.map(p => {
+    const i = n.fluxoPagamento.indexOf(p);
+    return `<div class="rec-parcela" data-parcela="${i}" role="button" tabindex="0">
+      <span><b>${esc(p.etapa)}</b> — ${brl(p.valor)}</span>
+      <span class="rec-p-com">sua parte ${brl(comissaoDaParcela(n, p))} · dar baixa</span>
+    </div>`;
+  }).join('');
+  const resumoPagas = pagas.length
+    ? `<div class="rec-recebidas">${pagas.length === 1 ? '1 parcela recebida' : pagas.length + ' parcelas recebidas'}: ${pagas.map(p => esc(p.etapa) + (p.dataRecebimento ? ' (' + recDataCurta(p.dataRecebimento) + ')' : '')).join(' · ')} — <b>${brl(recebidoDe(n))}</b> na sua conta.</div>`
+    : '';
+  const semFluxo = !temFluxo(n)
+    ? '<div class="bi-modal-nota">Sem parcelamento registrado. Se este negócio for pago em parcelas, me diga como e eu lanço — aí a baixa passa a ser um clique.</div>'
+    : '';
+
+  // Sem fase informada, o próximo passo é a PRIMEIRA fase — assim o processo
+  // começa a andar num clique, em vez de exigir que alguém preencha antes.
+  const proxima = fases ? fases[fases.indexOf(n.faseProcesso) + 1] : null;
+
+  corpo.innerHTML =
+    `<div class="bi-modal-lead"><span>Imóvel</span><b>${esc(n.imovel || '—')}</b></div>` +
+    `<div class="bi-modal-lead"><span>Venda</span><b>${brl(n.valor)}</b></div>` +
+    `<div class="bi-modal-lead"><span>Sua comissão</span><b>${brl(n.comissao)}</b></div>` +
+    `<div class="bi-modal-lead"><span>Falta receber</span><b>${brl(aReceberDe(n))}</b></div>` +
+    `<div class="bi-modal-lead"><span>Modalidade</span><b>${esc(n.modalidade || 'a informar')}</b></div>` +
+    `<div class="bi-modal-lead"><span>Com quem está</span><b>${esc(n.comQuem || 'a informar')}</b></div>` +
+    `<div class="bi-modal-lead"><span>Próxima cobrança</span><b>${n.dataProximaCobranca ? recDataCurta(n.dataProximaCobranca) : 'sem data'}</b></div>` +
+    trilha + resumoPagas + listaPend + semFluxo +
+    `<div class="rec-acoes">${proxima ? `<button class="rec-btn" data-avancar="${esc(n.id)}">Avançar para "${esc(proxima)}"</button>` : ''}` +
+    `<button class="rec-btn" data-cobrar="${esc(n.id)}">Cobrei hoje — voltar em 7 dias</button></div>`;
+
+  over.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  over.dataset.recAtual = String(n.id);
+}
+
+(function ligarRecebimentos() {
+  const lista = document.getElementById('recebimentosLista');
+  if (lista) {
+    const abrir = (e) => {
+      const linha = alvoDe(e).closest('[data-rec]');
+      if (linha) abrirRecebimento(linha.dataset.rec);
+    };
+    lista.addEventListener('click', abrir);
+    lista.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(e); } });
+  }
+
+  const over = document.getElementById('biModalOverlay');
+  if (over) over.addEventListener('click', async (e) => {
+    const id = over.dataset.recAtual;
+    if (!id) return;
+    const n = (DATA.listaNegociacoes || []).filter(x => String(x.id) === String(id))[0];
+    if (!n) return;
+    const alvo = alvoDe(e);
+    const hoje = recHojeISO();
+
+    const pAlvo = alvo.closest('[data-parcela]');
+    if (pAlvo) {
+      const i = Number(pAlvo.dataset.parcela);
+      const fluxo = JSON.parse(JSON.stringify(n.fluxoPagamento));
+      fluxo[i].recebido = true;
+      fluxo[i].dataRecebimento = hoje;
+      const novoRecebido = fluxo.filter(p => p.recebido).reduce((s, p) => s + comissaoDaParcela(n, p), 0);
+      const tudo = novoRecebido >= (n.comissao || 0) - 0.01;
+      const campos = { fluxoPagamento: fluxo, comissaoRecebida: Math.round(novoRecebido * 100) / 100 };
+      if (tudo) { campos.status = 'pago'; campos.dataProximaCobranca = null; }
+      try {
+        await gravarNegociacao(n.id, campos, [{ tipo: 'acrescentar', colecao: 'logAtividades', item: {
+          data: hoje.split('-').reverse().join('/') + ' 00:00', lead: n.cliente, tipo: 'Recebimento',
+          resumo: 'Baixa na parcela "' + fluxo[i].etapa + '" (' + brl(fluxo[i].valor) + ') do negócio ' + (n.imovel || '') + '. Comissão recebida: ' + brl(novoRecebido) + ' de ' + brl(n.comissao) + '.'
+        }}]);
+        Object.assign(n, campos);
+        abrirRecebimento(n.id); renderRecebimentos();
+      } catch (err) { window.alert('Não consegui gravar: ' + err.message); }
+      return;
+    }
+
+    const bAvancar = alvo.closest('[data-avancar]');
+    if (bAvancar) {
+      const fases = fasesDe(n);
+      if (!fases) return;
+      const prox = fases[fases.indexOf(n.faseProcesso) + 1];
+      if (!prox) return;
+      const campos = { faseProcesso: prox, dataProximaCobranca: recMaisDias(hoje, 7) };
+      try {
+        await gravarNegociacao(n.id, campos, [{ tipo: 'acrescentar', colecao: 'logAtividades', item: {
+          data: hoje.split('-').reverse().join('/') + ' 00:00', lead: n.cliente, tipo: 'Processo',
+          resumo: 'Processo de recebimento avançou para "' + prox + '" — ' + (n.imovel || '') + '.'
+        }}]);
+        Object.assign(n, campos);
+        abrirRecebimento(n.id); renderRecebimentos();
+      } catch (err) { window.alert('Não consegui gravar: ' + err.message); }
+      return;
+    }
+
+    const bCobrar = alvo.closest('[data-cobrar]');
+    if (bCobrar) {
+      const campos = { dataProximaCobranca: recMaisDias(hoje, 7) };
+      try {
+        await gravarNegociacao(n.id, campos, [{ tipo: 'acrescentar', colecao: 'logAtividades', item: {
+          data: hoje.split('-').reverse().join('/') + ' 00:00', lead: n.cliente, tipo: 'Cobrança',
+          resumo: 'Cobrança da comissão de ' + (n.imovel || '') + ' feita hoje' + (n.comQuem ? ' junto a ' + n.comQuem : '') + '. Próxima em 7 dias.'
+        }}]);
+        Object.assign(n, campos);
+        abrirRecebimento(n.id); renderRecebimentos();
+      } catch (err) { window.alert('Não consegui gravar: ' + err.message); }
+    }
+  });
+
+  renderRecebimentos();
+})();
 
 </script>
 </body>
