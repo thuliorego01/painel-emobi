@@ -766,6 +766,17 @@
   .rec-selo { display:inline-block; font-size: var(--fs-2xs); font-weight:800; padding:3px 9px;
     border-radius:var(--r-pill); border:1px solid var(--linha-tenue); background:var(--info-bg); color:var(--info-txt); }
   .rec-selo.sem { background:var(--aviso-bg); border-color:var(--aviso-linha); color:var(--aviso-txt); }
+  .rec-selo.travado { background:var(--fundo-sutil); border-color:var(--linha-forte); color:var(--txt-fraco); }
+  /* Campos do processo: lista fechada onde a resposta é sempre uma das mesmas,
+     texto livre onde cada caso é um caso. */
+  .rec-campos { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:10px; margin:12px 0 4px; }
+  .rec-campo { display:flex; flex-direction:column; gap:4px; }
+  .rec-campo label { font-size: var(--fs-2xs); font-weight:800; text-transform:uppercase;
+    letter-spacing:.6px; color:var(--txt-fraco); }
+  .rec-campo select, .rec-campo input { font-family:inherit; font-size: var(--fs-xs); color:var(--text-strong);
+    padding:8px 9px; border:1px solid var(--linha-forte); border-radius:var(--r-md); background:var(--surface); }
+  .rec-campo select:focus, .rec-campo input:focus { outline:2px solid var(--brand-gold); outline-offset:1px; }
+  .rec-venc { color:var(--txt-fraco); font-weight:400; }
   .rec-total { display:flex; align-items:baseline; justify-content:space-between; gap:10px;
     margin-top:12px; padding-top:11px; border-top:2px solid var(--linha-tenue);
     font-size: var(--fs-sm); color:var(--txt-apoio); }
@@ -6851,11 +6862,18 @@ function abrirProspeccao(id) {
 // o Pipeimob acompanha a transação, este painel acompanha o seu dinheiro.
 // ============================================================================
 
+// As fases usam as palavras que Thúlio usa de verdade — ITIV, engenharia,
+// conformidade, certidão. Lista com vocabulário de manual ninguém preenche.
 const FASES_POR_MODALIDADE = {
-  'Financiamento': ['Documentação', 'Análise de crédito', 'Avaliação/engenharia', 'Contrato no banco', 'Registro em cartório', 'Liberação do recurso', 'Comissão paga'],
-  'Parcelamento direto': ['Contrato assinado', 'Parcelas em curso', 'Quitação', 'Comissão paga'],
-  'À vista': ['Contrato assinado', 'Escritura e registro', 'Comissão paga']
+  'Financiamento': ['Documentação', 'Análise de crédito', 'Avaliação/engenharia', 'Conformidade', 'Contrato no banco', 'ITIV/ITBI', 'Registro em cartório', 'Liberação do recurso', 'Comissão paga'],
+  'Parcelamento direto': ['Contrato assinado', 'Parcelas em curso', 'Quitação', 'Escritura e registro', 'Comissão paga'],
+  'À vista': ['Contrato assinado', 'ITIV/ITBI', 'Escritura', 'Registro em cartório', 'Comissão paga']
 };
+// Estado que não é fase: o processo parou por algo fora do seu alcance. Cobrar
+// semanalmente algo que não depende de você é ruído — e ruído faz a pessoa
+// parar de olhar o painel inteiro.
+const FASE_TRAVADO = 'Travado — depende de terceiro';
+function estaTravado(n) { return !!(n && (n.faseProcesso === FASE_TRAVADO || n.semDataPrevista)); }
 function fasesDe(n) {
   return FASES_POR_MODALIDADE[(n && n.modalidade) || ''] || null;
 }
@@ -6900,6 +6918,7 @@ function renderRecebimentos() {
   const el = document.getElementById('recebimentosLista');
   if (!el) return;
   const abertos = recebimentosAbertos().slice().sort((a, b) => {
+    if (estaTravado(a) !== estaTravado(b)) return estaTravado(a) ? 1 : -1;
     const da = recDiasAte(a.dataProximaCobranca), db = recDiasAte(b.dataProximaCobranca);
     if (da !== null && db !== null) return da - db;
     if (da !== null) return -1;
@@ -6914,14 +6933,18 @@ function renderRecebimentos() {
     const falta = aReceberDe(n), recebido = recebidoDe(n);
     const parado = recDiasDesde(n.data);
     const atraso = recDiasAte(n.dataProximaCobranca);
-    const prazo = n.dataProximaCobranca
-      ? (atraso < 0
-          ? `<span class="rec-prazo vencido">cobrança venceu há ${-atraso}d</span>`
-          : `<span class="rec-prazo">cobrar em ${recDataCurta(n.dataProximaCobranca)}</span>`)
-      : '<span class="rec-prazo">sem data de cobrança</span>';
-    const fase = n.faseProcesso
-      ? `<span class="rec-selo">${esc(n.faseProcesso)}</span>`
-      : '<span class="rec-selo sem">fase não informada</span>';
+    const prazo = estaTravado(n)
+      ? '<span class="rec-prazo">sem data prevista</span>'
+      : (n.dataProximaCobranca
+          ? (atraso < 0
+              ? `<span class="rec-prazo vencido">cobrança venceu há ${-atraso}d</span>`
+              : `<span class="rec-prazo">cobrar em ${recDataCurta(n.dataProximaCobranca)}</span>`)
+          : '<span class="rec-prazo">sem data de cobrança</span>');
+    const fase = estaTravado(n)
+      ? `<span class="rec-selo travado">${esc(n.faseProcesso || 'travado')}</span>`
+      : (n.faseProcesso
+          ? `<span class="rec-selo">${esc(n.faseProcesso)}</span>`
+          : '<span class="rec-selo sem">fase não informada</span>');
     const bola = n.comQuem ? ` · com ${esc(n.comQuem)}` : '';
     return `<div class="rec-linha" data-rec="${esc(n.id)}" role="button" tabindex="0">
       <div class="rec-esq">
@@ -6955,8 +6978,11 @@ function abrirRecebimento(id) {
   const pagas = temFluxo(n) ? n.fluxoPagamento.filter(p => p.recebido) : [];
   const listaPend = pendentes.map(p => {
     const i = n.fluxoPagamento.indexOf(p);
+    const venc = p.vencimento
+      ? ` <span class="rec-venc">· vence ${recDataCurta(p.vencimento)}</span>`
+      : ' <span class="rec-venc">· sem data</span>';
     return `<div class="rec-parcela" data-parcela="${i}" role="button" tabindex="0">
-      <span><b>${esc(p.etapa)}</b> — ${brl(p.valor)}</span>
+      <span><b>${esc(p.etapa)}</b> — ${brl(p.valor)}${venc}</span>
       <span class="rec-p-com">sua parte ${brl(comissaoDaParcela(n, p))} · dar baixa</span>
     </div>`;
   }).join('');
@@ -6971,15 +6997,27 @@ function abrirRecebimento(id) {
   // começa a andar num clique, em vez de exigir que alguém preencha antes.
   const proxima = fases ? fases[fases.indexOf(n.faseProcesso) + 1] : null;
 
+  // Lista fechada onde a resposta é sempre uma das mesmas (modalidade, fase):
+  // evita "financiamento"/"Financiamento"/"finan." virarem três coisas e
+  // permite contar depois. Texto livre onde cada caso é um caso (com quem):
+  // "Prefeitura — certidão de endereço" não cabe em lista nenhuma.
+  const opcoes = (lista, atual) => ['<option value=""></option>']
+    .concat(lista.map(o => `<option value="${esc(o)}"${o === atual ? ' selected' : ''}>${esc(o)}</option>`)).join('');
+  const listaFases = (fases || []).concat(fases && fases.indexOf(FASE_TRAVADO) === -1 ? [FASE_TRAVADO] : []);
+  const campos =
+    '<div class="rec-campos">' +
+      `<div class="rec-campo"><label>Modalidade</label><select data-campo="modalidade">${opcoes(Object.keys(FASES_POR_MODALIDADE), n.modalidade)}</select></div>` +
+      `<div class="rec-campo"><label>Fase do processo</label><select data-campo="faseProcesso"${fases ? '' : ' disabled'}>${opcoes(listaFases, n.faseProcesso)}</select></div>` +
+      `<div class="rec-campo"><label>Com quem está a bola</label><input data-campo="comQuem" value="${esc(n.comQuem || '')}" placeholder="banco, cartório, comprador…"></div>` +
+      `<div class="rec-campo"><label>Próxima cobrança</label><input type="date" data-campo="dataProximaCobranca" value="${esc(n.dataProximaCobranca || '')}"></div>` +
+    '</div>';
+
   corpo.innerHTML =
     `<div class="bi-modal-lead"><span>Imóvel</span><b>${esc(n.imovel || '—')}</b></div>` +
     `<div class="bi-modal-lead"><span>Venda</span><b>${brl(n.valor)}</b></div>` +
     `<div class="bi-modal-lead"><span>Sua comissão</span><b>${brl(n.comissao)}</b></div>` +
     `<div class="bi-modal-lead"><span>Falta receber</span><b>${brl(aReceberDe(n))}</b></div>` +
-    `<div class="bi-modal-lead"><span>Modalidade</span><b>${esc(n.modalidade || 'a informar')}</b></div>` +
-    `<div class="bi-modal-lead"><span>Com quem está</span><b>${esc(n.comQuem || 'a informar')}</b></div>` +
-    `<div class="bi-modal-lead"><span>Próxima cobrança</span><b>${n.dataProximaCobranca ? recDataCurta(n.dataProximaCobranca) : 'sem data'}</b></div>` +
-    trilha + resumoPagas + listaPend + semFluxo +
+    campos + trilha + resumoPagas + listaPend + semFluxo +
     `<div class="rec-acoes">${proxima ? `<button class="rec-btn" data-avancar="${esc(n.id)}">Avançar para "${esc(proxima)}"</button>` : ''}` +
     `<button class="rec-btn" data-cobrar="${esc(n.id)}">Cobrei hoje — voltar em 7 dias</button></div>`;
 
@@ -7000,6 +7038,36 @@ function abrirRecebimento(id) {
   }
 
   const over = document.getElementById('biModalOverlay');
+  // Campo alterado grava na hora: não existe botão "salvar" para esquecer.
+  if (over) over.addEventListener('change', async (e) => {
+    const id = over.dataset.recAtual;
+    const campo = alvoDe(e).closest('[data-campo]');
+    if (!id || !campo) return;
+    const n = (DATA.listaNegociacoes || []).filter(x => String(x.id) === String(id))[0];
+    if (!n) return;
+    const chave = campo.dataset.campo;
+    const valor = campo.value || null;
+    const campos = {};
+    campos[chave] = valor;
+    // Trocar a modalidade invalida a fase antiga: as listas são outras.
+    if (chave === 'modalidade' && n.faseProcesso &&
+        (FASES_POR_MODALIDADE[valor] || []).indexOf(n.faseProcesso) === -1 &&
+        n.faseProcesso !== FASE_TRAVADO) {
+      campos.faseProcesso = null;
+    }
+    if (chave === 'faseProcesso') campos.semDataPrevista = (valor === FASE_TRAVADO) ? true : false;
+    const anterior = {};
+    Object.keys(campos).forEach(k => { anterior[k] = n[k]; });
+    Object.assign(n, campos);
+    abrirRecebimento(n.id); renderRecebimentos();
+    try {
+      await gravarNegociacao(n.id, campos);
+    } catch (err) {
+      Object.assign(n, anterior);          // não gravou, não vale
+      abrirRecebimento(n.id); renderRecebimentos();
+      window.alert('Não consegui gravar: ' + err.message);
+    }
+  });
   if (over) over.addEventListener('click', async (e) => {
     const id = over.dataset.recAtual;
     if (!id) return;
