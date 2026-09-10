@@ -769,6 +769,21 @@
   .bi-modal-lead b { color: var(--text-strong); }
   .bi-modal-lead .bi-fase { font-size: var(--fs-sm); color:var(--txt-fraco); white-space:nowrap; }
   .bi-modal-vazio { font-size: var(--fs-sm); color:var(--txt-fraco); }
+  /* HISTÓRICO DE PAGAMENTOS DO CONECTA TR. O painel sabia dizer quanto o
+     programa DEVE e nunca quanto ele já PAGOU — e é o pago que prova ao
+     indicador que a coisa é real. Enquanto era zero, era zero mesmo: 13
+     indicações e nenhum pagamento em treze meses de programa. */
+  .ctr-pg { margin-bottom: 16px; }
+  .ctr-pg-topo { display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px; }
+  .ctr-pg-total { font-size: var(--fs-xl); font-weight:800; color: var(--ok-txt); }
+  .ctr-pg-rot { font-size: var(--fs-2xs); font-weight:800; text-transform:uppercase; letter-spacing:.7px; color:var(--txt-fraco); }
+  .ctr-pg-linha { display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+    padding:9px 0; border-bottom:1px solid var(--fundo-sutil); font-size: var(--fs-xs); }
+  .ctr-pg-linha:last-child { border-bottom:none; }
+  .ctr-pg-quem { color: var(--text-strong); font-weight:800; }
+  .ctr-pg-quando { color:var(--txt-fraco); }
+  .ctr-pg-valor { color: var(--ok-txt); font-weight:800; white-space:nowrap; }
+  .ctr-pg-vazio { font-size: var(--fs-xs); color:var(--txt-fraco); line-height:1.6; }
   /* RECEBIMENTOS EM ANDAMENTO — comissão já ganha que ainda não caiu.
      "Aguardando" é o mesmo rótulo para dinheiro que chega semana que vem e
      para dinheiro parado desde maio. Aqui a diferença aparece. */
@@ -1672,6 +1687,7 @@
     </div>
     <div class="ctr-parada" id="ctrParadas" style="display:none;"></div>
     <div class="ctr-bonus" id="ctrBonus"></div>
+    <div class="card ctr-pg" id="ctrPagamentos"></div>
     <div style="font-size:var(--fs-xs);color:var(--txt-fraco);margin-bottom:14px;">Clique num card acima para ver só aquele grupo — clique de novo pra voltar a ver tudo.</div>
     <div class="card" id="ctrIndicadoresCard" style="margin-bottom:16px;">
       <h3>‍🤝‍🧑 Quem está indicando</h3>
@@ -5849,6 +5865,8 @@ new Chart(document.getElementById('chartHistoricoAno'), {
         captadas: minhas.filter(x => x.status === 'Captada' || x.status === 'Vendida').length,
         vendidas: minhas.filter(x => x.status === 'Vendida').length,
         aReceber: minhas.reduce((s, x) => s + (x.valorDevido || 0), 0),
+        // O que já entrou no bolso dele. "A receber" é promessa; isto é prova.
+        recebido: minhas.reduce((s, x) => s + (x.valorPago || 0), 0),
         // Quanto essa pessoa já colocou na sua carteira. O programa premia por
         // VENDA, então o número que importa para ela é quanto do estoque veio
         // dali — e é o que faz alguém indicar de novo.
@@ -5873,7 +5891,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
           <span class="ctr-ind-nome">${topo ? '🏆 ' : ''}${esc(s.ind.nome || '—')}</span>
           ${s.total === 0 ? '<span class="ctr-ind-zero">sem indicações</span>' : `<span class="ctr-ind-num">${s.total}</span>`}
         </div>
-        ${s.total > 0 ? `<div class="ctr-ind-meta">${s.captadas} captada(s) · ${s.vendidas} vendida(s)${s.aReceber > 0 ? ` · <b>${brl(s.aReceber)} a receber</b>` : ''}</div>` : ''}
+        ${s.total > 0 ? `<div class="ctr-ind-meta">${s.captadas} captada(s) · ${s.vendidas} vendida(s)${s.aReceber > 0 ? ` · <b>${brl(s.aReceber)} a receber</b>` : ''}${s.recebido > 0 ? ` · <b style="color:var(--ok-txt)">${brl(s.recebido)} já pagos</b>` : ''}</div>` : ''}
         ${s.vgv > 0 ? `<span class="ind-rendeu">${brl(s.vgv)} colocados na sua carteira</span>` : ''}
         ${bonusACada && s.captadas >= bonusACada - 1 ? `<span class="ind-rendeu">${s.captadas} de ${bonusACada} captações para o bônus</span>` : ''}
         ${s.paradas > 0 ? `<span class="ind-rendeu" style="color:var(--aviso-txt);">⏳ ${s.paradas} indicação${s.paradas === 1 ? '' : 'ões'} parada${s.paradas === 1 ? '' : 's'} esperando você</span>` : ''}
@@ -5946,6 +5964,44 @@ new Chart(document.getElementById('chartHistoricoAno'), {
   document.getElementById('ctrCaptadasHint').textContent = ctrTotalIndicacoes ? `${ctrPctCaptacao}% das indicações viraram captação` : 'sem indicações ainda';
   document.getElementById('ctrVendidas').textContent = ctrVendidas;
   document.getElementById('ctrValorDevido').textContent = brl(ctrValorDevido);
+
+  // ---- Bonificações pagas ----
+  // Zero aqui não é ausência de dado, é o fato mais importante do programa:
+  // enquanto ninguém recebeu, o Conecta TR é uma promessa. Por isso o vazio
+  // tem texto próprio em vez de sumir da tela.
+  (function pagamentosCtr() {
+    const el = document.getElementById('ctrPagamentos');
+    if (!el) return;
+    const pagas = ctrItens.filter(it => (it.valorPago || 0) > 0)
+      .slice().sort((a, b) => String(b.bonificacaoPagaEm || '').localeCompare(String(a.bonificacaoPagaEm || '')));
+    const total = pagas.reduce((soma, it) => soma + (it.valorPago || 0), 0);
+    const diaBR = (iso) => {
+      const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+      return m ? m[3] + '/' + m[2] + '/' + m[1] : 'data não registrada';
+    };
+    if (!pagas.length) {
+      el.innerHTML = '<h3>💸 Bonificações pagas</h3>' +
+        '<div class="ctr-pg-vazio">O programa ainda não pagou ninguém. ' +
+        (ctrValorDevido > 0
+          ? 'Há <b>' + brl(ctrValorDevido) + '</b> devidos esperando o recebimento da comissão.'
+          : 'Nenhuma indicação chegou a gerar bonificação até agora.') +
+        '</div>';
+      return;
+    }
+    el.innerHTML = '<h3>💸 Bonificações pagas</h3>' +
+      '<div class="ctr-pg-topo">' +
+        '<span><span class="ctr-pg-rot">Já pago pelo programa</span><br><span class="ctr-pg-total">' + brl(total) + '</span></span>' +
+        '<span style="text-align:right"><span class="ctr-pg-rot">' +
+          (pagas.length === 1 ? '1 bonificação' : pagas.length + ' bonificações') + '</span>' +
+          (ctrValorDevido > 0 ? '<br><span class="ctr-pg-quando">' + brl(ctrValorDevido) + ' ainda devidos</span>' : '') +
+        '</span>' +
+      '</div>' +
+      pagas.map(it => `<div class="ctr-pg-linha">
+        <span><span class="ctr-pg-quem">${esc(it.indicador || '—')}</span>
+          <span class="ctr-pg-quando">· ${esc(it.protocolo || '')} · ${diaBR(it.bonificacaoPagaEm)}</span></span>
+        <span class="ctr-pg-valor">${brl(it.valorPago)}</span>
+      </div>`).join('');
+  })();
   document.getElementById('ctrVgvCaptado').textContent = brl(ctrVgvCaptado);
   // R$0 devido não é o programa parado: é a regra. A bonificação só nasce
   // quando o imóvel VENDE. Sem dizer isso, o zero parece defeito.
