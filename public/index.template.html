@@ -74,15 +74,25 @@
     /* Temperatura é família PRÓPRIA, não estado. Lead Quente é boa notícia —
        pintá-lo com o vermelho de "atrasado" faz o olho ler perigo onde há
        oportunidade. E Frio é azul, não roxo: roxo já é o Conecta TR. */
-    --quente-txt:  #B4300F;
-    --quente-bg:   #FBE4E4;
-    --quente-linha:#F3CDBE;
-    --morno-txt:   #8A5A14;
-    --morno-bg:    #FDF6E8;
-    --morno-linha: #EBD9A8;
-    --frio-txt:    #33607F;
-    --frio-bg:     #EAF2F8;
-    --frio-linha:  #C6DBEA;
+    /* TEMPERATURA NÃO É COR. Até 13/09/2026 --quente-txt era #B4300F, o MESMO
+       hexadecimal de --erro-txt, e --morno-txt era #8A5A14, o mesmo de
+       --aviso-txt. Vermelho queria dizer "você está devendo contato" e também
+       "esse cliente está quente" — uma coisa ruim e uma boa, na mesma cor, no
+       mesmo cartão. A prova de que incomodava é que existia uma legenda
+       embaixo da lista explicando qual vermelho era qual.
+       Agora a cor fica com UM eixo só: urgência. A temperatura passa a ser
+       intensidade de tinta na mesma família neutra da marca, mais os pontos
+       (●●● / ●●○ / ●○○) do selo. Cor diz se você está devendo; forma diz o
+       quanto o cliente está quente. */
+    --quente-txt:  #2C3A24;
+    --quente-bg:   #E7EBDF;
+    --quente-linha:#CFD8C0;
+    --morno-txt:   #4A5240;
+    --morno-bg:    #F1F3EB;
+    --morno-linha: #DFE4D5;
+    --frio-txt:    #7C8375;
+    --frio-bg:     #F7F8F4;
+    --frio-linha:  #E9EBE4;
 
     /* As três faixas da meta são a MESMA coisa em três graus de certeza:
        dinheiro na conta, dinheiro fechado e dinheiro encaminhado. Por isso são
@@ -230,6 +240,36 @@
     .urgent-banner { flex-direction: column; align-items: flex-start; gap: 8px; padding: 14px 16px; }
     .meta-highlight { flex-direction: column; align-items: flex-start; gap: 10px; }
     .kpi .value { font-size:var(--fs-xl); }
+
+    /* ===== Celular: conferido em prints reais de 12/09/2026 ===== */
+
+    /* O par rótulo/valor era lado a lado. Num iPhone, "Valor em jogo no
+       pipeline" quebrava em três linhas e espremia o número ao ponto de
+       cortar dígitos: aparecia "R$ 9.442.78" no lugar de R$ 9.442.780.
+       Número cortado é número errado. Aqui o par empilha. */
+    .kpi-group-item { flex-direction: column; align-items: flex-start; gap: 3px; }
+    .kpi-group-vals { text-align: left; width: 100%; }
+    .kpi-group-value, .kpi-group-hint { overflow-wrap: anywhere; }
+    .kpi .value, .ano-val, .esteira-val { overflow-wrap: anywhere; }
+
+    /* A tabela da meta mensal tinha 4 colunas e min-width de 380px numa tela
+       de 390px: a coluna STATUS — justamente a que diz se o mês bateu —
+       ficava fora da tela, e nada indicava que dava para arrastar.
+       No celular cada mês vira um bloco. */
+    .table-scroll { overflow: visible; }
+    .mensal-table, .mensal-table tbody, .mensal-table tr, .mensal-table td { display: block; width: 100%; }
+    .mensal-table thead { display: none; }
+    .mensal-table tr { border: 1px solid var(--linha-tenue); border-radius: var(--r-md);
+      padding: 10px 12px; margin-bottom: 8px; }
+    .mensal-table td { border: none; padding: 2px 0; text-align: left; }
+    .mensal-table td:nth-child(1) { font-size: var(--fs-sm); font-weight: 800; color: var(--text-strong); }
+    .mensal-table td:nth-child(2)::before { content: 'Meta do mês: '; color: var(--txt-fraco); }
+    .mensal-table td:nth-child(3)::before { content: 'Recebido: '; color: var(--txt-fraco); }
+
+    /* Linha de negócio: valor e prazo colados no texto do imóvel. */
+    .rec-linha, .fech-linha { flex-direction: column; gap: 6px; }
+    .rec-dir, .fech-dir { text-align: left; white-space: normal; }
+    .rec-parcela { flex-direction: column; align-items: flex-start; gap: 4px; }
     .section-title { margin: 22px 2px 10px; font-size:var(--fs-md); }
 
     /* Cards com mais respiro — prioriza conforto de leitura mesmo com mais rolagem. */
@@ -370,15 +410,15 @@
       --info-bg:     #241E33;
       --info-linha:  #3D3355;
 
-      --quente-txt:  #E8907F;
-      --quente-bg:   #3A211E;
-      --quente-linha:#4A2A22;
-      --morno-txt:   #E0B368;
-      --morno-bg:    #332B18;
-      --morno-linha: #3A3222;
-      --frio-txt:    #8FBBD9;
-      --frio-bg:     #1C2A36;
-      --frio-linha:  #25313B;
+      --quente-txt:  #D6DEC8;
+      --quente-bg:   #232B1D;
+      --quente-linha:#333D2A;
+      --morno-txt:   #A7B098;
+      --morno-bg:    #1E241A;
+      --morno-linha: #2A3223;
+      --frio-txt:    #79806F;
+      --frio-bg:     #1A1E17;
+      --frio-linha:  #232A1F;
 
       --meta-caixa:    #D9BE8B;
       --meta-fechado:  #8C6D1F;
@@ -391,7 +431,7 @@
     body { background: #111510; }
     .card, .modal-content, .kpi, .busca-resultados { box-shadow: 0 2px 10px rgba(0,0,0,.35); }
     .lead-card, .ctr-linha, .imovel-linha, .temp-secao .lead-card { background: #20261E; }
-    .lead-card.urg-critica { background: linear-gradient(90deg, var(--quente-bg) 0%, #20261E 60%); }
+    .lead-card.urg-critica { background: linear-gradient(90deg, var(--erro-bg) 0%, #20261E 60%); }
     .semana-dia, .busca-wrap input, .filtros-imoveis select, .nota-box textarea, .sync-textarea,
     .ctr-idade, .ctr-grupo-qtd, .ctr-mini-chip, .bairro-qtd, .temp-contagem,
     .degrau-selo, .wa-link.registrar, .lembrete-btn, .tbl-mini th { border-color: #39423577; }
@@ -498,12 +538,12 @@
   .papel { font-size: var(--fs-2xs); font-weight:700; text-transform:uppercase; letter-spacing:.3px;
     padding:2px 8px; border-radius:var(--r-pill); background:var(--linha-tenue); color:var(--txt-apoio); }
   .papel.indefinido { background:transparent; color:var(--txt-tenue); border:1px dashed var(--linha-media); }
-  .temp { font-size: var(--fs-xs); font-weight:700; padding:2px 7px; border-radius:var(--r-pill); }
-  .temp.quente { background:var(--quente-bg); color:var(--quente-txt); }
-  .temp.morno  { background:var(--morno-bg); color:var(--morno-txt); }
-  /* Frio agora é AZUL. Era verde e colidia com o verde de "em dia" da faixa de
-     urgência — duas informações diferentes com a mesma cor no mesmo card. */
-  .temp.frio   { background:var(--frio-bg); color:var(--frio-txt); }
+  .temp { font-size: var(--fs-xs); font-weight:700; padding:2px 8px; border-radius:var(--r-pill);
+    display:inline-flex; align-items:center; gap:6px; border:1px solid transparent; }
+  .selo-pontos { font-size: var(--fs-2xs); letter-spacing:1.5px; line-height:1; opacity:.85; }
+  .temp.quente { background:var(--quente-bg); color:var(--quente-txt); border-color:var(--quente-linha); }
+  .temp.morno  { background:var(--morno-bg); color:var(--morno-txt); border-color:var(--morno-linha); }
+  .temp.frio   { background:var(--frio-bg); color:var(--frio-txt); border-color:var(--frio-linha); }
 
   /* ---- Bloco de temperatura: a separação estrutural do pipeline ----
      Temperatura = região colorida (grande, dominante).
@@ -517,9 +557,9 @@
 
   .temp-cab { display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin-bottom:12px; }
   .temp-bolinha { width:11px; height:11px; border-radius:50%; flex:0 0 auto; }
-  .t-quente .temp-bolinha { background:var(--erro-txt); }
-  .t-morno  .temp-bolinha { background:var(--aviso-txt); }
-  .t-frio   .temp-bolinha { background:var(--info-txt); }
+  .t-quente .temp-bolinha { background:var(--brand-dark2); }
+  .t-morno  .temp-bolinha { background:var(--txt-apoio); }
+  .t-frio   .temp-bolinha { background:var(--txt-tenue); }
   .t-neutro .temp-bolinha { background:var(--txt-tenue); }
   .temp-titulo { font-size: var(--fs-md); font-weight:700; letter-spacing:-.2px; }
   .t-quente .temp-titulo { color:var(--quente-txt); }
@@ -769,6 +809,28 @@
   .bi-modal-lead b { color: var(--text-strong); }
   .bi-modal-lead .bi-fase { font-size: var(--fs-sm); color:var(--txt-fraco); white-space:nowrap; }
   .bi-modal-vazio { font-size: var(--fs-sm); color:var(--txt-fraco); }
+  /* A ESTEIRA DO DINHEIRO. Antes, responder "onde está meu dinheiro agora"
+     exigia três abas e uma soma de cabeça: o pipeline no Início, os
+     recebimentos no Faturamento, os reservados em Imóveis. Aqui é uma faixa. */
+  /* Os blocos crescem com o valor. Para quem lê o painel de relance, proporção
+     informa antes do número: R$121.156 recebidos e R$7.175 de proposta em
+     retângulos idênticos obrigam a LER para comparar. O mínimo garante que o
+     bloco pequeno continue legível — proporção não pode virar ilegibilidade. */
+  .esteira { display:flex; flex-wrap:wrap; gap:10px; align-items:stretch; }
+  .esteira-bloco { flex:1 1 150px; }
+  .esteira-bloco { background:var(--fundo-sutil); border:1px solid var(--linha-tenue);
+    border-radius:var(--r-md); padding:12px 13px; min-width:0; }
+  .esteira-barra { height:4px; border-radius:var(--r-pill); background:var(--linha-tenue); margin-top:9px; overflow:hidden; }
+  .esteira-barra span { display:block; height:100%; background:var(--txt-tenue); border-radius:var(--r-pill); }
+  .esteira-bloco.destaque .esteira-barra span { background:var(--ok-txt); }
+  .esteira-bloco.destaque { background:var(--ok-bg); border-color:var(--linha-tenue); }
+  .esteira-rot { font-size:var(--fs-2xs); font-weight:800; text-transform:uppercase;
+    letter-spacing:.6px; color:var(--txt-fraco); }
+  .esteira-val { margin-top:5px; font-size:var(--fs-lg); font-weight:800; color:var(--text-strong);
+    line-height:1.15; overflow-wrap:anywhere; }
+  .esteira-bloco.destaque .esteira-val { color:var(--ok-txt); }
+  .esteira-sub { margin-top:3px; font-size:var(--fs-xs); color:var(--txt-fraco); line-height:1.45; }
+  .esteira-nota { margin-top:11px; font-size:var(--fs-xs); color:var(--txt-apoio); line-height:1.6; }
   /* HISTÓRICO DE PAGAMENTOS DO CONECTA TR. O painel sabia dizer quanto o
      programa DEVE e nunca quanto ele já PAGOU — e é o pago que prova ao
      indicador que a coisa é real. Enquanto era zero, era zero mesmo: 13
@@ -1359,6 +1421,8 @@
     <div class="tab-panel active" data-tab="inicio" id="panel-inicio" role="tabpanel">
       <div class="greeting-block" id="greetingBlock"></div>
       <div class="urgent-banner" id="urgentBanner"></div>
+      <div class="section-title"><span class="dot" aria-hidden="true"></span>Onde está o seu dinheiro</div>
+      <div class="card" style="margin-bottom:18px;"><div id="esteiraDinheiro"></div></div>
       <div class="section-title"><span class="dot" aria-hidden="true"></span>Como está o seu ano</div>
       <div class="card" style="margin-bottom:18px;"><div id="anoResumo"></div></div>
       <div class="section-title" id="prestesTitulo" style="display:none;"><span class="dot" aria-hidden="true"></span>Prestes a fechar</div>
@@ -1394,19 +1458,19 @@
   </div>
 
   <div class="tab-panel" data-tab="faturamento" id="panel-faturamento" role="tabpanel">
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>Meta &amp; Faturamento 2026</div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>Meta &amp; Faturamento <span class="ano-titulo"></span></div>
     <div id="pctAConfirmar"></div>
     <div class="kpis">
     <div class="kpi meta">
       <div class="icon">🎯</div>
-      <div class="label">Meta 2026 (vendas)</div>
+      <div class="label">Meta <span class="ano-titulo"></span> (vendas)</div>
       <div class="value" id="metaPct">—</div>
       <div class="bar-track"><div class="bar-fill" id="metaBar" style="width:0%"></div></div>
       <div class="hint" id="metaHint">—</div>
     </div>
     <div class="kpi meta">
       <div class="icon">💰</div>
-      <div class="label">Meta de Comissão 2026</div>
+      <div class="label">Meta de Comissão <span class="ano-titulo"></span></div>
       <div class="value" id="metaComissaoPct">—</div>
       <div class="bar-track"><div class="bar-fill" id="metaComissaoBar" style="width:0%"></div></div>
       <div class="hint" id="metaComissaoHint">—</div>
@@ -1451,11 +1515,11 @@
 
     <div class="grid2" style="margin-top:18px;">
       <div class="card">
-        <h3>Comissão Acumulada em 2026</h3>
+        <h3>Comissão Acumulada em <span class="ano-titulo"></span></h3>
         <div class="chart-wrap"><canvas id="chartComissaoLinha"></canvas></div>
       </div>
       <div class="card">
-        <h3>Valor Negociado x Meta 2026</h3>
+        <h3>Valor Negociado x Meta <span class="ano-titulo"></span></h3>
         <div class="chart-wrap"><canvas id="chartMetaLinha"></canvas></div>
       </div>
     </div>
@@ -1479,7 +1543,7 @@
       </div>
     </div>
 
-    <div class="section-title"><span class="dot" aria-hidden="true"></span>Negociações 2026</div>
+    <div class="section-title"><span class="dot" aria-hidden="true"></span>Negociações <span class="ano-titulo"></span></div>
     <div class="card" style="margin-bottom:14px;">
       <h3>Recebimentos em andamento</h3>
       <div style="font-size:var(--fs-xs);color:var(--txt-fraco);margin-bottom:4px;">Comissão que você já ganhou e ainda não caiu. Clique em um negócio para ver em que fase o processo está e dar baixa nas parcelas.</div>
@@ -1578,9 +1642,9 @@
         </div>
       </div>
     </div>
-    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>Ritmo de 2026</div>
+    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>Ritmo de <span class="ano-titulo"></span></div>
     <div class="card"><div id="ritmoAno"></div></div>
-    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>Histórico de Negociações (2020-2026)</div>
+    <div class="section-title" style="margin-top:22px;"><span class="dot" aria-hidden="true"></span>Histórico de Negociações (2020–<span class="ano-titulo"></span>)</div>
     <div id="historicoNotas" style="margin-bottom:10px;"></div>
     <div class="grid2" style="margin-top:10px;">
       <div class="card">
@@ -2435,7 +2499,7 @@ function computeAcoesUrgentes() {
 function renderAnoResumo() {
   const el = document.getElementById('anoResumo');
   if (!el) return;
-  const meta = (DATA.metaComissao2026 && DATA.metaComissao2026.meta) || 0;
+  const meta = META_COMISSAO || 0;
   const recebido = FIN.comissaoPaga;
   const areceber = FIN.comissaoAguardando;
   const f = fracaoAnoDecorrida();
@@ -2469,7 +2533,7 @@ function renderAnoResumo() {
       <div class="ano-item">
         <span class="ano-rot">Recebido em ${new Date().getFullYear()}</span>
         <span class="ano-val">${brl(recebido)}</span>
-        <span class="ano-sub">${Math.round(pct * 100)}% da meta de ${brl(meta)}</span>
+        <span class="ano-sub">${meta ? Math.round(pct * 100) + '% da meta de ' + brl(meta) : 'meta de ' + ANO_CORRENTE + ' ainda não definida'}</span>
       </div>
       <div class="ano-item">
         <span class="ano-rot">Fechado, a receber</span>
@@ -2477,9 +2541,11 @@ function renderAnoResumo() {
         <span class="ano-sub">${FIN.aguardando.length} ${FIN.aguardando.length === 1 ? 'negócio' : 'negócios'} esperando pagamento${FIN.semDataPrevista > 0 ? ` · ${brl(FIN.semDataPrevista)} sem data prevista` : ''}</span>
       </div>
       <div class="ano-item">
-        <span class="ano-rot">Falta para a meta</span>
-        <span class="ano-val">${brl(falta)}</span>
-        <span class="ano-sub">${brl(falta / mesesRestantes)}/mês nos ${mesesTexto(mesesRestantes)} que sobram</span>
+        <span class="ano-rot">${meta ? 'Falta para a meta' : 'Meta de ' + ANO_CORRENTE}</span>
+        <span class="ano-val">${meta ? brl(falta) : '—'}</span>
+        <span class="ano-sub">${meta
+          ? brl(falta / mesesRestantes) + '/mês nos ' + mesesTexto(mesesRestantes) + ' que sobram'
+          : 'ainda não definida — me diga a meta de vendas e a de comissão'}</span>
       </div>
     </div>
     <div class="ano-barras">
@@ -2764,11 +2830,58 @@ if (!temHoje && !temAmanha) {
 // R$2.624.100 em outro, na mesma tela, porque um campo guardado não tinha sido
 // atualizado depois da venda do Cód. 10638. Agora tudo deriva de
 // listaNegociacoes: não há dois números para a mesma coisa.
+// ============================================================================
+// A VIRADA DO ANO
+//
+// Até 12/09/2026 o painel era um painel de 2026: o título dizia "Meta 2026", a
+// meta vinha de DATA.meta2026, e todo número do ano somava listaNegociacoes
+// INTEIRA — o que dava certo só porque ali só havia negócios de 2026.
+//
+// Simulado em 05/01/2027, ele dizia "Recebido em 2027: R$114.111" para dinheiro
+// de 2026, mantinha o título "Meta 2026" e projetava R$8,3 milhões de comissão
+// porque dividia o ano todo por cinco dias decorridos.
+//
+// A regra, escrita de uma vez: VOLUME pertence ao ano do FECHAMENTO; DINHEIRO
+// pertence ao ano em que CAIU. A venda da Angélica é volume de 2026, e as duas
+// parcelas dela que vencem em 2027 são caixa de 2027. "A receber" não pertence
+// a ano nenhum: é estoque, e não zera na virada.
+// ============================================================================
+const ANO_CORRENTE = (new Date()).getFullYear();
+function metaDoAno(ano, qual) {
+  const porAno = (DATA.metas && DATA.metas[String(ano)]) || null;
+  if (porAno && typeof porAno[qual] === 'number') return porAno[qual];
+  // Reserva: as chaves antigas só valem para o ano que elas nomeiam.
+  if (ano === 2026) {
+    if (qual === 'vgv') return (DATA.meta2026 && DATA.meta2026.meta) || null;
+    if (qual === 'comissao') return (DATA.metaComissao2026 && DATA.metaComissao2026.meta) || null;
+  }
+  return null;   // null é "não definida" — diferente de zero, que é "a meta é zero"
+}
+const META_VGV = metaDoAno(ANO_CORRENTE, 'vgv');
+const META_COMISSAO = metaDoAno(ANO_CORRENTE, 'comissao');
+const temMeta = typeof META_COMISSAO === 'number' && META_COMISSAO > 0;
+
+// Do ano do FECHAMENTO.
+function negociosDoAno(ano) {
+  return (DATA.listaNegociacoes || []).filter(n => Number(n.ano) === Number(ano));
+}
+// Do ano do RECEBIMENTO. Com fluxo de pagamento, cada parcela tem a data em que
+// caiu — é ela que manda. Sem fluxo, vale o ano do negócio.
+function recebidoNoAno(ano) {
+  return (DATA.listaNegociacoes || []).reduce((soma, n) => {
+    if (temFluxo(n)) {
+      return soma + n.fluxoPagamento
+        .filter(p => p && p.recebido && String(p.dataRecebimento || '').slice(0, 4) === String(ano))
+        .reduce((s, p) => s + comissaoDaParcela(n, p), 0);
+    }
+    return soma + (Number(n.ano) === Number(ano) ? recebidoDe(n) : 0);
+  }, 0);
+}
+
 const FIN = (function calcularFinanceiro() {
-  const negs = DATA.listaNegociacoes || [];
+  const negs = negociosDoAno(ANO_CORRENTE);
   const soma = (arr, campo) => arr.reduce((s, n) => s + (n[campo] || 0), 0);
   const pagas = negs.filter(n => quitado(n));
-  const aguardando = negs.filter(n => !quitado(n));
   const porTipo = {};
   negs.forEach(n => {
     const t = n.tipo || 'Outro';
@@ -2778,7 +2891,7 @@ const FIN = (function calcularFinanceiro() {
   // "Negociado" = o que passou por venda ou locação de imóvel. Serviços avulsos
   // (Diversos) entram na comissão, mas não são volume de imóvel negociado.
   const negociado = ['Venda', 'Locação'].reduce((s, t) => s + ((porTipo[t] && porTipo[t].valor) || 0), 0);
-  const metaValor = (DATA.meta2026 && DATA.meta2026.meta) || 0;
+  const metaValor = META_VGV || 0;
   // Leads em negociação: a comissão só entra aqui quando você informa o valor.
   // Estimar por taxa média daria um número que parece medido e não é.
   const emNegociacao = (DATA.leads || []).filter(l => l.fase === 'Em Negociação' || l.fase === 'Proposta Enviada');
@@ -2793,10 +2906,14 @@ const FIN = (function calcularFinanceiro() {
     im.status === 'Reservado'
     && typeof im.comissaoThulioVenda === 'number'
     && !leadDoImovelNaLista(im, idsEmNegociacao));
+  // "A receber" é ESTOQUE: comissão de uma venda de 2026 continua devida em
+  // 2027. Filtrar isso por ano faria o dinheiro sumir da tela em 1º de janeiro.
+  const abertosTodosOsAnos = (DATA.listaNegociacoes || []).filter(n => !quitado(n));
   return {
-    negs, pagas, aguardando, porTipo, negociado, metaValor,
-    comissaoPaga: negs.reduce((s, n) => s + recebidoDe(n), 0),
-    comissaoAguardando: negs.reduce((s, n) => s + aReceberDe(n), 0),
+    negs, pagas, porTipo, negociado, metaValor,
+    aguardando: abertosTodosOsAnos,
+    comissaoPaga: recebidoNoAno(ANO_CORRENTE),
+    comissaoAguardando: abertosTodosOsAnos.reduce((s, n) => s + aReceberDe(n), 0),
     // O par em VOLUME do pipeline de comissão: quanto de imóvel está passando
     // pela mão dele agora. Mesma deduplicação — senão o negócio que chega pelo
     // lead E pelo imóvel reservado conta duas vezes, como já aconteceu.
@@ -2834,8 +2951,14 @@ function mesesTexto(m) {
   if (n === 1) return '1 mês';
   return (Number.isInteger(n) ? String(n) : n.toFixed(1).replace('.', ',')) + ' meses';
 }
+// Projetar o ano inteiro a partir de poucos dias é inventar. Em 05/01/2027 o
+// painel projetava R$8,3 milhões de comissão porque dividia por 1,4% de ano.
+// Abaixo de um mês decorrido não há ritmo para extrapolar — e dizer "ainda não
+// dá" é melhor do que dizer um número que parece medido.
+const PROJECAO_MIN = 1 / 12;
 function projecaoAnualComissao() {
   const f = fracaoAnoDecorrida();
+  if (f < PROJECAO_MIN) return null;
   return f > 0 ? FIN.comissaoPaga / f : 0;
 }
 
@@ -2843,15 +2966,19 @@ function projecaoAnualComissao() {
 renderAnoResumo();
 renderPrestesAFechar();
 
-const pct = Math.min(100, (FIN.negociado / DATA.meta2026.meta) * 100);
+const pct = META_VGV ? Math.min(100, (FIN.negociado / META_VGV) * 100) : 0;
 document.getElementById('metaPct').textContent = pct.toFixed(1) + '%';
 document.getElementById('metaBar').style.width = pct.toFixed(1) + '%';
-document.getElementById('metaHint').textContent = brl(FIN.negociado) + ' de ' + brl(FIN.metaValor) + ' • faltam ' + brl(FIN.saldoMeta);
+document.getElementById('metaHint').textContent = META_VGV
+  ? (brl(FIN.negociado) + ' de ' + brl(META_VGV) + ' • faltam ' + brl(FIN.saldoMeta))
+  : ('meta de ' + ANO_CORRENTE + ' ainda não definida — ' + brl(FIN.negociado) + ' negociados até aqui');
 
-const pctComissao = Math.min(100, (FIN.comissaoPaga / DATA.metaComissao2026.meta) * 100);
+const pctComissao = temMeta ? Math.min(100, (FIN.comissaoPaga / META_COMISSAO) * 100) : 0;
 document.getElementById('metaComissaoPct').textContent = pctComissao.toFixed(1) + '%';
 document.getElementById('metaComissaoBar').style.width = pctComissao.toFixed(1) + '%';
-document.getElementById('metaComissaoHint').textContent = brl(FIN.comissaoPaga) + ' de ' + brl(DATA.metaComissao2026.meta) + ' • faltam ' + brl(Math.max(0, DATA.metaComissao2026.meta - FIN.comissaoPaga));
+document.getElementById('metaComissaoHint').textContent = temMeta
+  ? (brl(FIN.comissaoPaga) + ' de ' + brl(META_COMISSAO) + ' • faltam ' + brl(Math.max(0, META_COMISSAO - FIN.comissaoPaga)))
+  : ('meta de ' + ANO_CORRENTE + ' ainda não definida — ' + brl(FIN.comissaoPaga) + ' recebidos até aqui');
 
 // ---- Meta Mensal de Comissao (CALCULADA AO VIVO) ----
 // Antes `mesesRestantes` e `metaMensalDinamica` eram valores gravados à mão em
@@ -2860,7 +2987,7 @@ document.getElementById('metaComissaoHint').textContent = brl(FIN.comissaoPaga) 
 // tudo sai da data de hoje + listaNegociacoes, então não há o que desatualizar.
 const MESES_NOME = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const hojeReal = new Date();
-const ANO_META = 2026;
+const ANO_META = ANO_CORRENTE;
 
 (function renderMetaMensal() {
   const mesAtual = hojeReal.getFullYear() === ANO_META ? hojeReal.getMonth() + 1 : 12;
@@ -2874,7 +3001,7 @@ const ANO_META = 2026;
   });
 
   const totalRecebido = Object.values(recebidoPorMes).reduce((s, v) => s + v, 0);
-  const metaAnual = (DATA.metaComissao2026 && DATA.metaComissao2026.meta) || 0;
+  const metaAnual = META_COMISSAO || 0;
   const mesesRestantes = mesesQueSobram(hojeReal);   // fração: o mês corrente entra pelo que falta dele
   const falta = Math.max(0, metaAnual - totalRecebido);
   const metaMensal = falta / mesesRestantes;
@@ -2976,11 +3103,11 @@ document.getElementById('comissaoAguardando').textContent = brl(FIN.comissaoAgua
   el.textContent = brl(v);
   if (!hint) return;
   if (!v) { hint.textContent = 'nenhum negócio em negociação'; return; }
-  const metaV = (DATA.meta2026 && DATA.meta2026.meta) || 0;
+  const metaV = META_VGV || 0;
   const pctMeta = metaV ? Math.round((FIN.negociado + v) / metaV * 100) : null;
   hint.textContent = `${n} ${n === 1 ? 'negócio' : 'negócios'} · ` +
     (pctMeta !== null
-      ? `levaria a Meta 2026 de ${Math.round(FIN.negociado / metaV * 100)}% para ${pctMeta}%`
+      ? `levaria a Meta ${ANO_CORRENTE} de ${Math.round(FIN.negociado / metaV * 100)}% para ${pctMeta}%`
       : 'volume ainda não assinado');
 })();
 
@@ -3052,7 +3179,7 @@ document.getElementById('totalNegociadoHint').textContent = (function () {
     aviso.className = 'neg-pendente';
     aviso.innerHTML = `⏳ <b>${brl(FIN.comissaoAguardando)}</b> de comissão já fechada, ainda não recebida` +
       (FIN.semDataPrevista > 0 ? ` (${brl(FIN.semDataPrevista)} sem data prevista)` : '') + ` — ` +
-      FIN.aguardando.map(n => esc(n.imovel) + (n.previsaoRecebimento ? ' (previsto: ' + esc(n.previsaoRecebimento) + ')' : ' (sem previsão de data)')).join('; ') + '.';
+      FIN.aguardando.map(n => esc(n.imovel) + textoPrevisao(n)).join('; ') + '.';
     negList.parentElement.appendChild(aviso);
   }
 })();
@@ -3781,8 +3908,11 @@ function renderLeadCard(l, container) {
   const tempClass = l.temperatura === 'Quente' ? 'quente' : (l.temperatura === 'Morno' ? 'morno' : 'frio');
   // Inativo não exibe temperatura: dizer "Morno" de quem parou há três semanas
   // afirma uma coisa que não é verdade hoje. O que ele era fica como história.
+  // Os pontos são o canal que substituiu a cor: ●●● quente, ●●○ morno, ●○○ frio.
+  // Dá para ler sem depender de matiz — inclusive por quem não distingue cor.
+  const PONTOS = { quente: '●●●', morno: '●●○', frio: '●○○' };
   const seloTemp = l.temperatura
-    ? `<span class="temp ${tempClass}">${l.temperatura}</span>`
+    ? `<span class="temp ${tempClass}"><span class="selo-pontos" aria-hidden="true">${PONTOS[tempClass]}</span>${l.temperatura}</span>`
     : (l.temperaturaAoInativar ? `<span class="temp parado">estava ${esc(l.temperaturaAoInativar)}</span>` : '');
   const escada = (function () {
     const d = degrauReativacao(l);
@@ -4008,17 +4138,16 @@ if (leadsAtivosArr.length === 0) {
   // a FAIXA do card diz se você está devendo contato (cadência).
   const legenda = document.createElement('div');
   legenda.className = 'urg-legenda';
+  // A legenda antiga existia para desfazer uma confusão que a cor criava:
+  // vermelho era "quente" e também "atrasado". Com a temperatura em pontos e a
+  // cor reservada à urgência, sobrou uma frase — e legenda curta é sinal de que
+  // o desenho passou a se explicar sozinho.
   legenda.innerHTML =
-    '<div class="legenda-linha"><b>Bloco colorido</b> = temperatura do cliente:' +
-      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--quente-txt)"></span>quente</span>' +
-      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--morno-txt)"></span>morno</span>' +
-      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--frio-txt)"></span>frio</span>' +
-    '</div>' +
-    '<div class="legenda-linha"><b>Faixa fina no card</b> = cadência (quanto tempo sem contato):' +
+    '<div class="legenda-linha"><b>Cor = urgência do contato:</b>' +
       '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--ok-txt)"></span>em dia</span>' +
-      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--aviso-txt)"></span>chegando no limite</span>' +
-      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--aviso-txt)"></span>passou do prazo</span>' +
-      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--erro-txt)"></span>muito atrasado</span>' +
+      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--aviso-txt)"></span>no limite</span>' +
+      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--erro-txt)"></span>atrasado</span>' +
+      '<span class="urg-legenda-item" style="margin-left:10px"><b>Pontos = temperatura:</b> ●●● quente · ●●○ morno · ●○○ frio</span>' +
     '</div>';
   leadsCard.appendChild(legenda);
   renderGrupoTemperatura(leadsAtivosArr, leadsCard);
@@ -4796,16 +4925,43 @@ function acumular(arr) {
 const comissaoAcumulada = acumular(comissaoPorMes);
 const valorAcumulado = acumular(valorPorMes);
 const metaLinear = MESES.map((_, i) => (FIN.metaValor / 12) * (i + 1));
-const metaComissaoLinear = MESES.map((_, i) => (DATA.metaComissao2026.meta / 12) * (i + 1));
+const metaComissaoLinear = MESES.map((_, i) => ((META_COMISSAO || 0) / 12) * (i + 1));
+
+// A META NO FORMATO DO ANO DELE.
+// A reta divide R$240.000 por 12 e cobra R$20.000 em março, mês em que ele
+// nunca fechou nada em ano nenhum. O painel já guarda seis anos de
+// sazonalidade: a mesma meta, distribuída no peso histórico de cada mês, é uma
+// segunda régua — mais justa em março, mais dura em abril.
+// As duas convivem de propósito. A reta é o combinado que ele fez consigo
+// mesmo e não deve sumir; a sazonal diz se ele está atrás do calendário ou
+// atrás de si mesmo, que são coisas diferentes.
+const metaComissaoSazonal = (function () {
+  const sh = (DATA.historico && DATA.historico.sazonalidadeHistorica) || null;
+  if (!sh || !Array.isArray(sh.meses) || sh.meses.length !== 12 || !META_COMISSAO) return null;
+  const medias = sh.meses.map(m => (m && typeof m.mediaComissao === 'number') ? m.mediaComissao : 0);
+  const total = medias.reduce((a, b) => a + b, 0);
+  if (total <= 0) return null;
+  let acumulado = 0;
+  return medias.map(v => { acumulado += (v / total) * META_COMISSAO; return Math.round(acumulado); });
+})();
 
 // ---- Projecao anual (ritmo atual) ----
 const mesAtualIdx = new Date().getMonth(); // 0-based
 const projecaoAnual = projecaoAnualComissao();
-document.getElementById('projecaoAnual').textContent = brl(projecaoAnual);
-const difMeta = projecaoAnual - DATA.metaComissao2026.meta;
-document.getElementById('projecaoAnualHint').textContent = difMeta >= 0
-  ? ('Acima da meta em ' + brl(difMeta))
-  : ('Abaixo da meta em ' + brl(Math.abs(difMeta)));
+if (projecaoAnual === null) {
+  document.getElementById('projecaoAnual').textContent = '—';
+  document.getElementById('projecaoAnualHint').textContent =
+    'cedo demais para projetar ' + ANO_CORRENTE + ' — menos de um mês de ritmo';
+} else if (!temMeta) {
+  document.getElementById('projecaoAnual').textContent = brl(projecaoAnual);
+  document.getElementById('projecaoAnualHint').textContent = 'meta de ' + ANO_CORRENTE + ' ainda não definida';
+} else {
+  document.getElementById('projecaoAnual').textContent = brl(projecaoAnual);
+  const difMeta = projecaoAnual - META_COMISSAO;
+  document.getElementById('projecaoAnualHint').textContent = difMeta >= 0
+    ? ('Acima da meta em ' + brl(difMeta))
+    : ('Abaixo da meta em ' + brl(Math.abs(difMeta)));
+}
 
 Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif";
 
@@ -4832,7 +4988,17 @@ new Chart(document.getElementById('chartComissaoLinha'), {
         pointRadius: 0,
         fill: false,
         tension: 0
-      }
+      },
+      ...(metaComissaoSazonal ? [{
+        label: 'Meta no seu ritmo histórico',
+        data: metaComissaoSazonal,
+        borderColor: BRAND.dark2,
+        borderDash: [2, 3],
+        borderWidth: 1.5,
+        pointRadius: 0,
+        fill: false,
+        tension: 0.25
+      }] : [])
     ]
   },
   options: {
@@ -4863,7 +5029,7 @@ new Chart(document.getElementById('chartMetaLinha'), {
         pointBackgroundColor: BRAND.dark2
       },
       {
-        label: 'Meta 2026 (ritmo linear)',
+        label: 'Meta ' + ANO_CORRENTE + ' (ritmo linear)',
         data: metaLinear,
         borderColor: BRAND.gold,
         borderDash: [6, 4],
@@ -5587,7 +5753,7 @@ new Chart(document.getElementById('chartHistoricoAno'), {
   const fracaoAno = diaDoAno / diasNoAno;
 
   const recebido = FIN.comissaoPaga;   // mesma fonte do Faturamento
-  const metaCom = (DATA.metaComissao2026 && DATA.metaComissao2026.meta) || 0;
+  const metaCom = META_COMISSAO || 0;
   if (!metaCom) { alvo.innerHTML = '<div class="ritmo-vazio">Meta de comissão do ano não definida.</div>'; return; }
 
   const pctMeta = recebido / metaCom;
@@ -6950,6 +7116,32 @@ const FASES_POR_MODALIDADE = {
 // parar de olhar o painel inteiro.
 const FASE_TRAVADO = 'Travado — depende de terceiro';
 function estaTravado(n) { return !!(n && (n.faseProcesso === FASE_TRAVADO || n.semDataPrevista)); }
+
+// PREVISÃO DE RECEBIMENTO. O resumo do faturamento lia n.previsaoRecebimento,
+// um campo que deixou de existir quando o fluxo de pagamento entrou — então
+// TODO negócio caía em "(sem previsão de data)". A mesma linha dizia
+// "R$17.500 sem data prevista" e logo em seguida marcava os seis assim.
+// A previsão de verdade é o vencimento da próxima parcela em aberto; na falta
+// dele, a data da próxima cobrança.
+function previsaoDe(n) {
+  if (!n) return null;
+  if (temFluxo(n)) {
+    const pendentes = n.fluxoPagamento
+      .filter(p => p && !p.recebido && p.vencimento)
+      .sort((a, b) => String(a.vencimento).localeCompare(String(b.vencimento)));
+    if (pendentes.length) return pendentes[0].vencimento;
+  }
+  return n.dataProximaCobranca || null;
+}
+function textoPrevisao(n) {
+  if (n && n.semDataPrevista) return ' (sem data prevista)';
+  const q = previsaoDe(n);
+  if (q) {
+    const m = String(q).match(/^(\d{4})-(\d{2})-(\d{2})/);
+    return m ? ' (previsto: ' + m[3] + '/' + m[2] + ')' : ' (previsto: ' + esc(q) + ')';
+  }
+  return ' (sem data de cobrança definida)';
+}
 function fasesDe(n) {
   return FASES_POR_MODALIDADE[(n && n.modalidade) || ''] || null;
 }
@@ -7217,6 +7409,93 @@ function abrirRecebimento(id) {
   renderRecebimentos();
 })();
 
+
+// O ano dos títulos vem do relógio, não do teclado. Em 1º de janeiro o painel
+// passa a se chamar pelo ano novo sozinho — antes ele dizia "Meta 2026" para
+// sempre, e um título errado contamina todo número embaixo dele.
+(function anoNosTitulos() {
+  Array.prototype.forEach.call(document.querySelectorAll('.ano-titulo'), el => {
+    el.textContent = String(ANO_CORRENTE);
+  });
+})();
+
+// ============================================================================
+// A ESTEIRA DO DINHEIRO — a mesma pergunta, todo dia, numa faixa só.
+//
+// O dinheiro vivo dele estava espalhado: proposta e contrato no Início,
+// comissão a receber no Faturamento, imóvel reservado em Imóveis. Responder
+// "onde está o meu dinheiro agora" custava três abas e uma soma de cabeça.
+//
+// Nada aqui é dado novo: é o que já existe, na ordem em que o dinheiro anda.
+// A deduplicação é a mesma do resto — um negócio que chega pelo lead E pelo
+// imóvel reservado conta uma vez só.
+// ============================================================================
+(function renderEsteira() {
+  const el = document.getElementById('esteiraDinheiro');
+  if (!el) return;
+
+  const propostas = (DATA.leads || []).filter(l => l.fase === 'Proposta Enviada');
+  const emContratoLeads = (DATA.leads || []).filter(l => l.fase === 'Em Negociação');
+  const idsNoContrato = new Set(emContratoLeads.map(l => String(l.id)));
+  const reservados = (DATA.imoveis || []).filter(im =>
+    im.status === 'Reservado' && typeof im.comissaoThulioVenda === 'number'
+    && !leadDoImovelNaLista(im, idsNoContrato));
+
+  const vProposta = propostas.reduce((s, l) => s + (l.comissaoPrevista || 0), 0);
+  const vContrato = emContratoLeads.reduce((s, l) => s + (l.comissaoPrevista || 0), 0)
+                  + reservados.reduce((s, im) => s + im.comissaoThulioVenda, 0);
+  const nContrato = emContratoLeads.length + reservados.length;
+
+  const abertos = (DATA.listaNegociacoes || []).filter(n => aReceberDe(n) > 0);
+  const vReceber = abertos.reduce((s, n) => s + aReceberDe(n), 0);
+  const travados = abertos.filter(estaTravado);
+  const vTravado = travados.reduce((s, n) => s + aReceberDe(n), 0);
+  const vencidos = abertos.filter(n => !estaTravado(n) && n.dataProximaCobranca && recDiasAte(n.dataProximaCobranca) < 0);
+
+  const vRecebido = FIN.comissaoPaga;
+
+
+  const qtd = (n, sing, plur) => n + ' ' + (n === 1 ? sing : plur);
+  // O maior dos quatro define a escala. Cresce em LARGURA (flex-grow) e ainda
+  // ganha uma barrinha, porque no celular os blocos empilham e a largura deixa
+  // de comparar nada.
+  const maior = Math.max(vProposta, vContrato, vReceber, vRecebido, 1);
+  const bloco = (rot, valor, sub, destaque) => {
+    const fatia = Math.max(0, Math.min(1, valor / maior));
+    // Cresce menos que o valor de propósito: proporção pura faria o bloco de
+    // R$7 mil sumir ao lado do de R$121 mil.
+    const peso = (1 + fatia * 2.2).toFixed(2);
+    return '<div class="esteira-bloco' + (destaque ? ' destaque' : '') + '" style="flex-grow:' + peso + '">' +
+      '<div class="esteira-rot">' + rot + '</div>' +
+      '<div class="esteira-val">' + brl(valor) + '</div>' +
+      '<div class="esteira-sub">' + sub + '</div>' +
+      '<div class="esteira-barra"><span style="width:' + Math.round(fatia * 100) + '%"></span></div>' +
+    '</div>';
+  };
+
+  el.innerHTML =
+    '<div class="esteira">' +
+      bloco('1 · Proposta na mesa', vProposta,
+        propostas.length ? qtd(propostas.length, 'cliente', 'clientes') : 'nenhuma agora') +
+      bloco('2 · Em contrato', vContrato,
+        nContrato ? qtd(nContrato, 'negócio', 'negócios') : 'nenhum agora') +
+      bloco('3 · Assinado, a receber', vReceber,
+        abertos.length
+          ? qtd(abertos.length, 'negócio', 'negócios') +
+            (vencidos.length ? ' · <b>' + qtd(vencidos.length, 'cobrança vencida', 'cobranças vencidas') + '</b>' : '') +
+            (vTravado ? ' · ' + brl(vTravado) + ' travado' : '')
+          : 'nada em aberto') +
+      bloco('4 · Recebido em ' + ANO_CORRENTE, vRecebido,
+        temMeta ? Math.round(vRecebido / META_COMISSAO * 100) + '% da meta' : 'meta do ano não definida', true) +
+    '</div>' +
+    // O total não soma os quatro: os três primeiros são o mesmo dinheiro
+    // andando, e somá-los com o que já entrou contaria duas vezes o que ainda
+    // nem chegou. O que vale dizer é quanto ainda está a caminho.
+    '<div class="esteira-nota">Dos blocos 1 a 3, <b>' + brl(vProposta + vContrato + vReceber) +
+      '</b> ainda estão a caminho — é o mesmo dinheiro andando da esquerda para a direita, não uma soma com o bloco 4.' +
+      (vencidos.length ? ' <b>' + qtd(vencidos.length, 'cobrança está vencida', 'cobranças estão vencidas') + '</b> no bloco 3.' : '') +
+    '</div>';
+})();
 </script>
 </body>
 </html>
