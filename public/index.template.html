@@ -84,6 +84,21 @@
        intensidade de tinta na mesma família neutra da marca, mais os pontos
        (●●● / ●●○ / ●○○) do selo. Cor diz se você está devendo; forma diz o
        quanto o cliente está quente. */
+    /* A COR VOLTOU — nos PONTOS, não no bloco.
+       Primeiro a temperatura usava exatamente os hexadecimais de erro e aviso:
+       vermelho queria dizer "atrasado" e "quente" ao mesmo tempo. Depois eu
+       tirei a cor inteira, e aí oito cartões cinzas ficaram ilegíveis de
+       relance — o remédio matou o paciente.
+       O acordo: a temperatura tem ramp PRÓPRIA (azul→âmbar→vermelho, os
+       matizes que qualquer um lê como frio/morno/quente) e vive só nos três
+       pontinhos e na bolinha da seção. A urgência continua dona da faixa do
+       cartão e da data. Dois sistemas, dois LUGARES fixos e dois formatos
+       diferentes — não é o matiz que separa os dois, é onde cada um mora.
+       Os tons são deliberadamente distintos dos de estado, para que lado a
+       lado ninguém confunda o vermelho do "quente" com o do "atrasado". */
+    --temp-quente: #D8402B;
+    --temp-morno:  #E0921A;
+    --temp-frio:   #2E7FB8;
     --quente-txt:  #2C3A24;
     --quente-bg:   #E7EBDF;
     --quente-linha:#CFD8C0;
@@ -410,6 +425,9 @@
       --info-bg:     #241E33;
       --info-linha:  #3D3355;
 
+      --temp-quente: #F4705C;
+      --temp-morno:  #EFB350;
+      --temp-frio:   #6FB2DE;
       --quente-txt:  #D6DEC8;
       --quente-bg:   #232B1D;
       --quente-linha:#333D2A;
@@ -540,7 +558,10 @@
   .papel.indefinido { background:transparent; color:var(--txt-tenue); border:1px dashed var(--linha-media); }
   .temp { font-size: var(--fs-xs); font-weight:700; padding:2px 8px; border-radius:var(--r-pill);
     display:inline-flex; align-items:center; gap:6px; border:1px solid transparent; }
-  .selo-pontos { font-size: var(--fs-2xs); letter-spacing:1.5px; line-height:1; opacity:.85; }
+  .selo-pontos { font-size: var(--fs-sm); letter-spacing:1px; line-height:1; }
+  .temp.quente .selo-pontos { color: var(--temp-quente); }
+  .temp.morno  .selo-pontos { color: var(--temp-morno); }
+  .temp.frio   .selo-pontos { color: var(--temp-frio); }
   .temp.quente { background:var(--quente-bg); color:var(--quente-txt); border-color:var(--quente-linha); }
   .temp.morno  { background:var(--morno-bg); color:var(--morno-txt); border-color:var(--morno-linha); }
   .temp.frio   { background:var(--frio-bg); color:var(--frio-txt); border-color:var(--frio-linha); }
@@ -557,9 +578,9 @@
 
   .temp-cab { display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin-bottom:12px; }
   .temp-bolinha { width:11px; height:11px; border-radius:50%; flex:0 0 auto; }
-  .t-quente .temp-bolinha { background:var(--brand-dark2); }
-  .t-morno  .temp-bolinha { background:var(--txt-apoio); }
-  .t-frio   .temp-bolinha { background:var(--txt-tenue); }
+  .t-quente .temp-bolinha { background:var(--temp-quente); }
+  .t-morno  .temp-bolinha { background:var(--temp-morno); }
+  .t-frio   .temp-bolinha { background:var(--temp-frio); }
   .t-neutro .temp-bolinha { background:var(--txt-tenue); }
   .temp-titulo { font-size: var(--fs-md); font-weight:700; letter-spacing:-.2px; }
   .t-quente .temp-titulo { color:var(--quente-txt); }
@@ -4143,11 +4164,15 @@ if (leadsAtivosArr.length === 0) {
   // cor reservada à urgência, sobrou uma frase — e legenda curta é sinal de que
   // o desenho passou a se explicar sozinho.
   legenda.innerHTML =
-    '<div class="legenda-linha"><b>Cor = urgência do contato:</b>' +
+    '<div class="legenda-linha"><b>Bolinhas = temperatura do cliente:</b>' +
+      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--temp-quente)"></span>●●● quente</span>' +
+      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--temp-morno)"></span>●●○ morno</span>' +
+      '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--temp-frio)"></span>●○○ frio</span>' +
+    '</div>' +
+    '<div class="legenda-linha"><b>Faixa do cartão = você está devendo contato:</b>' +
       '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--ok-txt)"></span>em dia</span>' +
       '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--aviso-txt)"></span>no limite</span>' +
       '<span class="urg-legenda-item"><span class="urg-legenda-cor" style="background:var(--erro-txt)"></span>atrasado</span>' +
-      '<span class="urg-legenda-item" style="margin-left:10px"><b>Pontos = temperatura:</b> ●●● quente · ●●○ morno · ●○○ frio</span>' +
     '</div>';
   leadsCard.appendChild(legenda);
   renderGrupoTemperatura(leadsAtivosArr, leadsCard);
