@@ -830,6 +830,23 @@
   .bi-modal-lead b { color: var(--text-strong); }
   .bi-modal-lead .bi-fase { font-size: var(--fs-sm); color:var(--txt-fraco); white-space:nowrap; }
   .bi-modal-vazio { font-size: var(--fs-sm); color:var(--txt-fraco); }
+  /* DE ONDE VEIO O NEGÓCIO — captação minha, imóvel do parceiro, ou os dois
+     lados meus. O painel sabia dizer se houve parceria, nunca de que lado ele
+     entrou. Sem isso não dá para saber se o gargalo é captação ou comprador,
+     e são investimentos de tempo completamente diferentes. */
+  .orig-linha { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-top:7px; }
+  .orig-chip { font-size:var(--fs-xs); font-weight:700; padding:4px 11px; border-radius:var(--r-pill);
+    border:1px solid var(--linha-tenue); background:var(--surface); color:var(--txt-fraco); cursor:pointer; }
+  .orig-chip:hover { border-color:var(--brand-gold); color:var(--text-strong); }
+  .orig-chip.ativo { background:var(--brand-dark2); border-color:var(--brand-dark2); color:var(--txt-sobre-marca); }
+  .orig-resumo { background:var(--fundo-sutil); border:1px solid var(--linha-tenue); border-radius:var(--r-md);
+    padding:12px 14px; margin-bottom:14px; font-size:var(--fs-xs); color:var(--txt-apoio); line-height:1.6; }
+  .orig-resumo b { color:var(--text-strong); }
+  .orig-barras { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; margin-top:10px; }
+  .orig-item { background:var(--surface); border:1px solid var(--linha-tenue); border-radius:var(--r-md); padding:10px 12px; }
+  .orig-item .orig-rot { font-size:var(--fs-2xs); font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--txt-fraco); }
+  .orig-item .orig-val { font-size:var(--fs-md); font-weight:800; color:var(--text-strong); margin-top:3px; }
+  .orig-item .orig-sub { font-size:var(--fs-xs); color:var(--txt-fraco); margin-top:2px; }
   /* A ESTEIRA DO DINHEIRO. Antes, responder "onde está meu dinheiro agora"
      exigia três abas e uma soma de cabeça: o pipeline no Início, os
      recebimentos no Faturamento, os reservados em Imóveis. Aqui é uma faixa. */
@@ -1577,6 +1594,7 @@
         <span><span class="status-dot pago"></span>Comissão paga</span>
         <span><span class="status-dot aguardando"></span>Aguardando pagamento</span>
       </div>
+      <div id="origemResumo" class="orig-resumo"></div>
       <div id="negList"></div>
     </div>
   </div>
@@ -3191,6 +3209,9 @@ document.getElementById('totalNegociadoHint').textContent = (function () {
             <div class="mes">${esc(n.mes)}</div>
           </div>`;
         negList.appendChild(row);
+        // Os chips ficam FORA da linha clicável: clicar num chip não pode
+        // abrir o detalhe do negócio junto.
+        if (n.tipo === 'Venda') negList.appendChild(linhaOrigem(n));
       });
     });
   // O que ainda não entrou merece destaque próprio: é dinheiro fechado que
@@ -7520,6 +7541,94 @@ function abrirRecebimento(id) {
       '</b> ainda estão a caminho — é o mesmo dinheiro andando da esquerda para a direita, não uma soma com o bloco 4.' +
       (vencidos.length ? ' <b>' + qtd(vencidos.length, 'cobrança está vencida', 'cobranças estão vencidas') + '</b> no bloco 3.' : '') +
     '</div>';
+})();
+
+// ============================================================================
+// DE ONDE VEIO O NEGÓCIO
+//
+// O painel sempre soube se uma venda teve parceria — mas nunca de que LADO
+// Thúlio entrou. Em 14/09/2026, de 10 vendas em parceria, só 2 registravam de
+// quem tinha sido a captação, escrito em texto livre. E as 76 vendas de 2020 a
+// 2025 não têm campo nenhum.
+//
+// A pergunta que isso responde vale tempo de verdade: se a comissão vem de
+// imóvel dos outros, o gargalo é CAPTAÇÃO; se vem das captações dele, o
+// gargalo é COMPRADOR. São investimentos de tempo opostos, e hoje ele decide
+// no escuro.
+// ============================================================================
+// Declaração de FUNÇÃO, não const: a lista de negócios é desenhada antes deste
+// bloco no arquivo, e um const aqui embaixo ainda estaria na zona morta quando
+// linhaOrigem() fosse chamada. Função sobe inteira; const não.
+function origensPossiveis() { return ['Captação minha', 'Imóvel do parceiro', 'Os dois lados meus']; }
+
+function linhaOrigem(n) {
+  const el = document.createElement('div');
+  el.className = 'orig-linha';
+  el.innerHTML = origensPossiveis().map(o =>
+    `<button class="orig-chip${n.origemNegocio === o ? ' ativo' : ''}" data-orig="${esc(o)}" data-neg="${esc(n.id)}">${esc(o)}</button>`
+  ).join('') + (n.origemNegocio ? '' : '<span style="color:var(--txt-fraco);font-size:var(--fs-xs)">origem não informada</span>');
+  return el;
+}
+
+function renderOrigemResumo() {
+  const el = document.getElementById('origemResumo');
+  if (!el) return;
+  const vendas = (DATA.listaNegociacoes || []).filter(n => n.tipo === 'Venda');
+  const comOrigem = vendas.filter(n => n.origemNegocio);
+  const falta = vendas.length - comOrigem.length;
+  if (!vendas.length) { el.innerHTML = ''; return; }
+
+  const grupo = {};
+  origensPossiveis().forEach(o => { grupo[o] = { qtd: 0, com: 0, vol: 0 }; });
+  comOrigem.forEach(n => {
+    const g = grupo[n.origemNegocio]; if (!g) return;
+    g.qtd++; g.com += (n.comissao || 0); g.vol += (n.valor || 0);
+  });
+  const totalCom = comOrigem.reduce((s, n) => s + (n.comissao || 0), 0);
+
+  // Enquanto faltar classificar, a conta é PARCIAL e tem que dizer isso. Uma
+  // porcentagem calculada sobre metade da amostra parece medida e não é.
+  const cabecalho = falta === 0
+    ? `<b>Todas as ${vendas.length} vendas classificadas.</b> De onde veio a sua comissão:`
+    : `<b>${comOrigem.length} de ${vendas.length} vendas classificadas</b> — faltam ${falta}. Os números abaixo são parciais e só valem quando a lista fechar. Clique nos botões de cada venda para dizer de onde ela veio.`;
+
+  el.innerHTML = cabecalho + (comOrigem.length ? '<div class="orig-barras">' + origensPossiveis().map(o => {
+    const g = grupo[o];
+    const pct = totalCom > 0 ? Math.round(g.com / totalCom * 100) : 0;
+    return `<div class="orig-item">
+      <div class="orig-rot">${esc(o)}</div>
+      <div class="orig-val">${brl(g.com)}</div>
+      <div class="orig-sub">${g.qtd === 1 ? '1 venda' : g.qtd + ' vendas'} · ${pct}% da comissão classificada</div>
+    </div>`;
+  }).join('') + '</div>' : '');
+}
+
+(function ligarOrigem() {
+  const lista = document.getElementById('negList');
+  if (!lista) return;
+  lista.addEventListener('click', async (e) => {
+    const chip = alvoDe(e).closest('[data-orig]');
+    if (!chip) return;
+    e.stopPropagation();
+    const id = chip.dataset.neg;
+    const n = (DATA.listaNegociacoes || []).filter(x => String(x.id) === String(id))[0];
+    if (!n) return;
+    // Clicar no chip já marcado desmarca: errar e não conseguir desfazer é o
+    // que faz alguém parar de clicar.
+    const novo = (n.origemNegocio === chip.dataset.orig) ? null : chip.dataset.orig;
+    const anterior = n.origemNegocio;
+    n.origemNegocio = novo;
+    chip.parentElement.replaceWith(linhaOrigem(n));
+    renderOrigemResumo();
+    try {
+      await gravarNegociacao(n.id, { origemNegocio: novo });
+    } catch (err) {
+      n.origemNegocio = anterior;
+      renderOrigemResumo();
+      window.alert('Não consegui gravar: ' + err.message);
+    }
+  });
+  renderOrigemResumo();
 })();
 </script>
 </body>
