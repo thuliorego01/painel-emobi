@@ -21,24 +21,31 @@ module.exports = {
   async rodar() {
     const tpl = fs.readFileSync(path.join(__dirname, '..', 'public', 'index.template.html'), 'utf8');
 
-    // 1. Nenhuma cor de temperatura pode repetir uma cor de estado.
+    // 1. A temperatura tem ramp PRÓPRIA e ela não pode repetir, hexadecimal
+    //    por hexadecimal, nenhuma cor de estado. Vermelho de "quente" e
+    //    vermelho de "atrasado" podem conviver — desde que não sejam o MESMO
+    //    vermelho, e desde que morem em lugares diferentes.
     const hex = (nome) => {
       const m = tpl.match(new RegExp('--' + nome + ':\\s*(#[0-9A-Fa-f]{3,8})'));
       return m ? m[1].toLowerCase() : null;
     };
     const estados = ['erro-txt', 'aviso-txt', 'ok-txt', 'info-txt'].map(hex).filter(Boolean);
-    ['quente-txt', 'morno-txt', 'frio-txt'].forEach(t => {
+    ['temp-quente', 'temp-morno', 'temp-frio'].forEach(t => {
       const c = hex(t);
       assert(c, 'sumiu o token --' + t);
       assert(estados.indexOf(c) === -1,
-        `--${t} (${c}) usa a mesma cor de um estado — vermelho não pode ser "quente" e "atrasado" ao mesmo tempo`);
+        `--${t} (${c}) é exatamente a cor de um estado — lado a lado ninguém distingue os dois sistemas`);
     });
 
-    // 2. As bolinhas do cabeçalho de temperatura também não podem usar
-    //    as cores de estado.
-    const bolinhas = (tpl.match(/\.t-(quente|morno|frio) \.temp-bolinha \{[^}]*\}/g) || []).join(' ');
-    assert(!/--erro-txt|--aviso-txt|--info-txt|--ok-txt/.test(bolinhas),
-      'as bolinhas de temperatura voltaram a usar as cores de estado');
+    // 2. A cor da temperatura vive nos PONTOS e na bolinha da seção. O fundo do
+    //    selo fica neutro: se o bloco inteiro voltar a ser vermelho, ele
+    //    compete com a faixa de urgência, que foi o problema original.
+    const seloBg = (tpl.match(/\.temp\.quente \{[^}]*\}/) || [''])[0];
+    assert(!/--temp-quente/.test(seloBg),
+      'o fundo do selo de temperatura voltou a usar a cor quente — ela é só dos pontos');
+    const pontos = (tpl.match(/\.temp\.(quente|morno|frio)\s+\.selo-pontos\s*\{[^}]*\}/g) || []).join(' ');
+    assert(/--temp-quente/.test(pontos) && /--temp-morno/.test(pontos) && /--temp-frio/.test(pontos),
+      'os pontos perderam a cor da temperatura — sem cor eles não se leem de relance');
 
     // 3. O selo tem que carregar os pontos — é o canal que substituiu a cor.
     const { doc } = await montar();
@@ -57,9 +64,10 @@ module.exports = {
     const leg = doc.querySelector('.urg-legenda');
     if (leg) {
       const t = leg.textContent.replace(/\s+/g, ' ');
-      assert(/Cor = urgência/i.test(t), 'a legenda não diz que cor é urgência');
-      assert(!/Bloco colorido = temperatura/i.test(t),
-        'a legenda voltou a dizer que o bloco colorido é temperatura');
+      assert(/Bolinhas = temperatura/i.test(t),
+        'a legenda não diz que as bolinhas são a temperatura');
+      assert(/Faixa do cartão/i.test(t),
+        'a legenda não diz onde mora a urgência — é o LUGAR que separa os dois sistemas, não o matiz');
     }
 
     // 5. A meta ganhou a segunda régua — o ritmo histórico dele — sem perder
