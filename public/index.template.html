@@ -263,6 +263,10 @@
        cortar dígitos: aparecia "R$ 9.442.78" no lugar de R$ 9.442.780.
        Número cortado é número errado. Aqui o par empilha. */
     .kpi-group-item { flex-direction: column; align-items: flex-start; gap: 3px; }
+    .fat-topo { grid-template-columns: 1fr; }
+    .fat-topo > :first-child { grid-column: auto; }
+    .fat-projecao { grid-template-columns: 1fr; }
+    .fat-proj-val { text-align: left; }
     .kpi-group-vals { text-align: left; width: 100%; }
     .kpi-group-value, .kpi-group-hint { overflow-wrap: anywhere; }
     .kpi .value, .ano-val, .esteira-val { overflow-wrap: anywhere; }
@@ -1099,6 +1103,28 @@
   .neg-mes { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:14px 0 4px;
     padding-bottom:5px; border-bottom:1px solid var(--linha-tenue); }
   .neg-mes:first-child { margin-top:2px; }
+  /* A aba Faturamento virou uma rolagem longa: 12 KPIs, 2 gráficos, a tabela
+     dos 12 meses, os recebimentos e mais 18 negócios do ano — e os botões de
+     origem, que eu acrescentei, esticaram outro tanto. Meses agora abrem por
+     clique; só o mês corrente vem aberto. O cabeçalho continua mostrando
+     quantidade e total, então fechado ele ainda informa. */
+  .neg-mes-bloco > summary { list-style:none; cursor:pointer; }
+  .neg-mes-bloco > summary::-webkit-details-marker { display:none; }
+  .neg-mes-bloco > summary .neg-mes { margin-bottom:0; }
+  .neg-mes-bloco > summary:hover .neg-mes-nome { color:var(--text-strong); }
+  .neg-mes-seta { font-size:var(--fs-2xs); color:var(--txt-tenue); transition:transform .15s ease; display:inline-block; }
+  .neg-mes-bloco[open] .neg-mes-seta { transform:rotate(90deg); }
+  /* Os botões de origem já cumpriram o papel na primeira passada. Depois disso
+     são 15 linhas de botão para uma tarefa feita — só aparecem quando pedido. */
+  /* Classificado não precisa continuar na tela: a informação serve ao
+     histórico e às contas, não ao olho de quem lê a lista todo dia. O que
+     aparece é só o que ainda FALTA marcar; o resto, sob demanda. */
+  .orig-linha { display:none; }
+  body.classificando .orig-linha.pendente { display:flex; }
+  body.revisando .orig-linha { display:flex; }
+  .orig-toggle { font-size:var(--fs-xs); font-weight:700; padding:6px 13px; border-radius:var(--r-pill);
+    border:1px solid var(--linha-forte); background:var(--surface); color:var(--text-strong); cursor:pointer; margin-top:10px; }
+  .orig-toggle:hover { background:var(--fundo-sutil); }
   .neg-mes-nome { font-size:var(--fs-2xs); font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--txt-fraco); }
   .neg-mes-tot { font-size: var(--fs-2xs); color:var(--txt-fraco); }
   .neg-mes-tot b { color: var(--text-strong); }
@@ -1291,6 +1317,41 @@
   .kpi-group-item.kpi-clickable:focus-visible { outline:2px solid var(--brand-gold); outline-offset:2px; }
   .kpi-group-item.kpi-clickable.active { background:var(--aviso-bg); }
   .kpi-group-item.kpi-clickable.active .kpi-group-value { color:var(--brand-gold-deep); }
+
+  /* ===== Topo da aba Faturamento: 3 caixas no lugar de 8 =====
+     A separação aqui não é decorativa — cada caixa responde uma pergunta
+     diferente: "onde quero chegar", "o que já é meu", "o que ainda não é".
+     Misturar as três numa fileira de oito quadradinhos iguais fazia o
+     pipeline parecer dinheiro no bolso. */
+  .kpi-group-titulo {
+    font-size:var(--fs-xs); font-weight:800; color:var(--muted);
+    text-transform:uppercase; letter-spacing:.4px;
+    padding-bottom:8px; margin-bottom:2px; border-bottom:1px solid var(--linha-tenue);
+  }
+  .kpi-group-rodape { font-size:var(--fs-xs); color:var(--txt-fraco); margin-top:8px; font-style:italic; }
+  .fat-topo { display:grid; grid-template-columns: minmax(0,1.25fr) minmax(0,1fr) minmax(0,1fr); gap:16px; align-items:start; }
+  .fat-topo > * { min-width:0; }
+  @media (max-width: 1100px) {
+    .fat-topo { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+    .fat-topo > :first-child { grid-column: 1 / -1; }
+  }
+  .fat-metas { gap:0; }
+  .fat-meta-linha { padding:9px 0; }
+  .fat-meta-linha:not(:last-child) { border-bottom:1px dashed var(--fundo-sutil); }
+  .fat-meta-topo { display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:6px; }
+  .fat-meta-nome { font-size:var(--fs-xs); color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.3px; }
+  .fat-meta-nome .icon { font-size:var(--fs-md); }
+  .fat-meta-pct { font-size:var(--fs-xl); font-weight:800; color:var(--text-strong); line-height:1; white-space:nowrap; }
+  .fat-meta-hint { font-size:var(--fs-xs); color:var(--txt-fraco); margin-top:5px; }
+  .fat-projecao {
+    margin-top:10px; padding:10px 12px; border-radius:var(--r-md);
+    background:var(--fundo-sutil);
+    display:grid; grid-template-columns: 1fr auto; align-items:baseline; gap:4px 12px;
+  }
+  .fat-proj-rot { font-size:var(--fs-xs); color:var(--muted); font-weight:600; }
+  .fat-proj-rot .icon { font-size:var(--fs-md); }
+  .fat-proj-val { font-size:var(--fs-lg); font-weight:800; color:var(--text-strong); text-align:right; white-space:nowrap; }
+  .fat-proj-hint { grid-column:1 / -1; font-size:var(--fs-2xs); color:var(--txt-fraco); }
 
   /* ===== Prototipo: layout com menu lateral ===== */
   .app-shell { display:flex; align-items:flex-start; gap:22px; }
@@ -1498,58 +1559,80 @@
   <div class="tab-panel" data-tab="faturamento" id="panel-faturamento" role="tabpanel">
     <div class="section-title"><span class="dot" aria-hidden="true"></span>Meta &amp; Faturamento <span class="ano-titulo"></span></div>
     <div id="pctAConfirmar"></div>
-    <div class="kpis">
-    <div class="kpi meta">
-      <div class="icon">🎯</div>
-      <div class="label">Meta <span class="ano-titulo"></span> (vendas)</div>
-      <div class="value" id="metaPct">—</div>
-      <div class="bar-track"><div class="bar-fill" id="metaBar" style="width:0%"></div></div>
-      <div class="hint" id="metaHint">—</div>
+    <!-- Eram oito caixas soltas, e o olho não sabia qual olhar primeiro. São as
+         mesmas oito contas, agrupadas por aquilo que de fato separa uma da
+         outra: a META (onde quero chegar), o que já é MEU (contrato assinado)
+         e o que AINDA NÃO É (proposta na mesa). Nenhum número saiu, e todos os
+         ids continuam os mesmos — o JS que preenche isto não mudou. -->
+    <div class="fat-topo">
+      <div class="kpi-group fat-metas">
+        <div class="fat-meta-linha">
+          <div class="fat-meta-topo">
+            <span class="fat-meta-nome"><span class="icon" aria-hidden="true">🎯</span> Meta <span class="ano-titulo"></span> — vendas</span>
+            <span class="fat-meta-pct" id="metaPct">—</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="metaBar" style="width:0%"></div></div>
+          <div class="fat-meta-hint" id="metaHint">—</div>
+        </div>
+        <div class="fat-meta-linha">
+          <div class="fat-meta-topo">
+            <span class="fat-meta-nome"><span class="icon" aria-hidden="true">💰</span> Meta <span class="ano-titulo"></span> — comissão</span>
+            <span class="fat-meta-pct" id="metaComissaoPct">—</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="metaComissaoBar" style="width:0%"></div></div>
+          <div class="fat-meta-hint" id="metaComissaoHint">—</div>
+        </div>
+        <div class="fat-projecao">
+          <div class="fat-proj-rot"><span class="icon" aria-hidden="true">🚀</span> Projeção da comissão no ritmo atual</div>
+          <div class="fat-proj-val" id="projecaoAnual">—</div>
+          <div class="fat-proj-hint" id="projecaoAnualHint">—</div>
+        </div>
+      </div>
+
+      <div class="kpi-group">
+        <div class="kpi-group-titulo">Fechado — contrato assinado</div>
+        <div class="kpi-group-item">
+          <div class="kpi-group-label"><span class="icon">🏠</span> Volume negociado <span class="ano-titulo"></span></div>
+          <div class="kpi-group-vals">
+            <div class="kpi-group-value" id="totalNegociado">—</div>
+            <div class="kpi-group-hint" id="totalNegociadoHint">—</div>
+          </div>
+        </div>
+        <div class="kpi-group-item">
+          <div class="kpi-group-label"><span class="icon">✅</span> Comissão recebida</div>
+          <div class="kpi-group-vals">
+            <div class="kpi-group-value" id="comissaoPaga">—</div>
+            <div class="kpi-group-hint">já entrou na conta</div>
+          </div>
+        </div>
+        <div class="kpi-group-item">
+          <div class="kpi-group-label"><span class="icon">⏳</span> Comissão a receber</div>
+          <div class="kpi-group-vals">
+            <div class="kpi-group-value" id="comissaoAguardando">—</div>
+            <div class="kpi-group-hint">venda fechada, dinheiro ainda não entrou</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-group">
+        <div class="kpi-group-titulo">Em negociação — ainda não é meu</div>
+        <div class="kpi-group-item">
+          <div class="kpi-group-label"><span class="icon">🏗️</span> VGV na mesa</div>
+          <div class="kpi-group-vals">
+            <div class="kpi-group-value" id="vgvEmNegociacao">—</div>
+            <div class="kpi-group-hint" id="vgvEmNegociacaoHint">—</div>
+          </div>
+        </div>
+        <div class="kpi-group-item">
+          <div class="kpi-group-label"><span class="icon">📈</span> Comissão prevista</div>
+          <div class="kpi-group-vals">
+            <div class="kpi-group-value" id="comissaoPrevista">—</div>
+            <div class="kpi-group-hint hint">leads em negociação</div>
+          </div>
+        </div>
+        <div class="kpi-group-rodape">Nada aqui entra na meta enquanto não houver contrato assinado.</div>
+      </div>
     </div>
-    <div class="kpi meta">
-      <div class="icon">💰</div>
-      <div class="label">Meta de Comissão <span class="ano-titulo"></span></div>
-      <div class="value" id="metaComissaoPct">—</div>
-      <div class="bar-track"><div class="bar-fill" id="metaComissaoBar" style="width:0%"></div></div>
-      <div class="hint" id="metaComissaoHint">—</div>
-    </div>
-    <div class="kpi">
-      <div class="icon">✅</div>
-      <div class="label">Comissão Paga</div>
-      <div class="value" id="comissaoPaga">—</div>
-      <div class="hint">recebida e finalizada</div>
-    </div>
-    <div class="kpi">
-      <div class="icon">⏳</div>
-      <div class="label">Aguardando Pagamento</div>
-      <div class="value" id="comissaoAguardando">—</div>
-      <div class="hint">negócio fechado, comissão a receber</div>
-    </div>
-    <div class="kpi">
-      <div class="icon">📈</div>
-      <div class="label">Pipeline — não entra na meta</div>
-      <div class="value" id="comissaoPrevista">—</div>
-      <div class="hint">leads em negociação</div>
-    </div>
-    <div class="kpi">
-      <div class="icon">🏗️</div>
-      <div class="label">VGV em negociação</div>
-      <div class="value" id="vgvEmNegociacao">—</div>
-      <div class="hint" id="vgvEmNegociacaoHint">—</div>
-    </div>
-    <div class="kpi">
-      <div class="icon">🏠</div>
-      <div class="label">Total Negociado no Ano</div>
-      <div class="value" id="totalNegociado">—</div>
-      <div class="hint" id="totalNegociadoHint">—</div>
-    </div>
-    <div class="kpi">
-      <div class="icon">🚀</div>
-      <div class="label">Projeção Anual (ritmo atual)</div>
-      <div class="value" id="projecaoAnual">—</div>
-      <div class="hint" id="projecaoAnualHint">—</div>
-    </div>
-  </div>
 
     <div class="grid2" style="margin-top:18px;">
       <div class="card">
@@ -3183,11 +3266,16 @@ document.getElementById('totalNegociadoHint').textContent = (function () {
     .forEach(mes => {
       const itens = porMes[mes];
       const totalCom = itens.reduce((s, n) => s + (n.comissao || 0), 0);
-      const cab = document.createElement('div');
-      cab.className = 'neg-mes';
-      cab.innerHTML = `<span class="neg-mes-nome">${esc(mes)}</span>` +
-        `<span class="neg-mes-tot">${itens.length} ${itens.length === 1 ? 'negócio' : 'negócios'} · <b>${brl(totalCom)}</b></span>`;
-      negList.appendChild(cab);
+      // Só o mês corrente nasce aberto. Os outros ficam a um clique, com o
+      // total visível no cabeçalho — fechar não pode custar informação.
+      const bloco = document.createElement('details');
+      bloco.className = 'neg-mes-bloco';
+      if (ordemMes[mes] === (new Date()).getMonth()) bloco.open = true;
+      const cab = document.createElement('summary');
+      cab.innerHTML = `<div class="neg-mes"><span class="neg-mes-nome"><span class="neg-mes-seta" aria-hidden="true">▸</span> ${esc(mes)}</span>` +
+        `<span class="neg-mes-tot">${itens.length} ${itens.length === 1 ? 'negócio' : 'negócios'} · <b>${brl(totalCom)}</b></span></div>`;
+      bloco.appendChild(cab);
+      negList.appendChild(bloco);
       itens.forEach(n => {
         const row = document.createElement('div');
         row.className = 'neg-row bi-clicavel';
@@ -3208,12 +3296,21 @@ document.getElementById('totalNegociadoHint').textContent = (function () {
             <div class="comissao">${brl(n.comissao)}</div>
             <div class="mes">${esc(n.mes)}</div>
           </div>`;
-        negList.appendChild(row);
+        bloco.appendChild(row);
         // Os chips ficam FORA da linha clicável: clicar num chip não pode
         // abrir o detalhe do negócio junto.
-        if (n.tipo === 'Venda') negList.appendChild(linhaOrigem(n));
+        if (n.tipo === 'Venda') bloco.appendChild(linhaOrigem(n));
       });
     });
+  // Se o mês corrente não teve negócio, nada abriria e a lista ficaria toda
+  // fechada — o que parece tela vazia. Nesse caso abre o mês mais recente.
+  (function garantirUmAberto() {
+    const blocos = negList.querySelectorAll('.neg-mes-bloco');
+    if (blocos.length && !negList.querySelector('.neg-mes-bloco[open]')) {
+      blocos[blocos.length - 1].open = true;
+    }
+  })();
+
   // O que ainda não entrou merece destaque próprio: é dinheiro fechado que
   // depende de terceiro (financiamento, cartório) e some no meio da lista.
   if (FIN.aguardando.length) {
@@ -3246,6 +3343,7 @@ function abrirNegociacao(n) {
       if (c) vinc.push(`<div class="bi-modal-lead"><span>Comprador</span><b>${esc(c.nome)}</b></div>`);
       return vinc.join('');
     })()}
+    ${n.origemNegocio ? `<div class="bi-modal-lead"><span>De onde veio</span><b>${esc(n.origemNegocio)}</b>${n.origemInferida ? '<i>deduzido de não haver parceria registrada — confirme se estiver errado</i>' : ''}</div>` : ''}
     ${n.nota ? `<div class="neg-modal-nota">${esc(n.nota)}</div>` : ''}`;
   over.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -7563,7 +7661,7 @@ function origensPossiveis() { return ['Captação minha', 'Imóvel do parceiro',
 
 function linhaOrigem(n) {
   const el = document.createElement('div');
-  el.className = 'orig-linha';
+  el.className = 'orig-linha' + (n.origemNegocio ? '' : ' pendente');
   el.innerHTML = origensPossiveis().map(o =>
     `<button class="orig-chip${n.origemNegocio === o ? ' ativo' : ''}" data-orig="${esc(o)}" data-neg="${esc(n.id)}">${esc(o)}</button>`
   ).join('') + (n.origemNegocio ? '' : '<span style="color:var(--txt-fraco);font-size:var(--fs-xs)">origem não informada</span>');
@@ -7592,7 +7690,13 @@ function renderOrigemResumo() {
     ? `<b>Todas as ${vendas.length} vendas classificadas.</b> De onde veio a sua comissão:`
     : `<b>${comOrigem.length} de ${vendas.length} vendas classificadas</b> — faltam ${falta}. Os números abaixo são parciais e só valem quando a lista fechar. Clique nos botões de cada venda para dizer de onde ela veio.`;
 
-  el.innerHTML = cabecalho + (comOrigem.length ? '<div class="orig-barras">' + origensPossiveis().map(o => {
+  // O botão de classificar só some quando não há mais o que classificar — e
+  // mesmo aí fica disponível, porque corrigir uma marcação errada é legítimo.
+  const rotuloToggle = () => falta > 0
+    ? 'Ver todas as origens (' + falta + (falta === 1 ? ' ainda por marcar)' : ' ainda por marcar)')
+    : 'Revisar a origem das vendas';
+  const botao = `<button class="orig-toggle" id="origToggle">${rotuloToggle()}</button>`;
+  el.innerHTML = cabecalho + botao + (comOrigem.length ? '<div class="orig-barras">' + origensPossiveis().map(o => {
     const g = grupo[o];
     const pct = totalCom > 0 ? Math.round(g.com / totalCom * 100) : 0;
     return `<div class="orig-item">
@@ -7601,6 +7705,15 @@ function renderOrigemResumo() {
       <div class="orig-sub">${g.qtd === 1 ? '1 venda' : g.qtd + ' vendas'} · ${pct}% da comissão classificada</div>
     </div>`;
   }).join('') + '</div>' : '');
+  const bt = document.getElementById('origToggle');
+  if (bt) bt.addEventListener('click', () => {
+    const ligado = document.body.classList.toggle('revisando');
+    bt.textContent = ligado ? 'Pronto, esconder os botões' : rotuloToggle();
+  });
+  // O que ainda falta marcar aparece sozinho — trabalho pendente não deve
+  // depender de alguém descobrir que existe um botão. O que já foi marcado
+  // fica guardado, não na tela.
+  document.body.classList.toggle('classificando', falta > 0);
 }
 
 (function ligarOrigem() {
