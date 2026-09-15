@@ -38,7 +38,9 @@ module.exports = {
     // 2. Hoje (2026) nada pode ter mudado de comportamento.
     {
       const { doc } = await montar({ quando: new Date('2026-09-12T10:00:00-03:00') });
-      assert(/Meta 2026 \(vendas\)/.test(doc.body.textContent), 'o título de 2026 deixou de dizer 2026');
+      // O rótulo já foi "Meta 2026 (vendas)" e hoje é "Meta 2026 — vendas". O que o
+      // teste guarda é o ANO no título da meta, não a redação em volta dele.
+      assert(/Meta 2026\b/.test(doc.body.textContent), 'o título de 2026 deixou de dizer 2026');
       assert(!/R\$ 0 de R\$ 0/.test(txt(doc, 'metaHint')), 'a meta de 2026 sumiu');
     }
 
@@ -53,7 +55,7 @@ module.exports = {
       Array.prototype.forEach.call(copia.querySelectorAll('script, style'), n => n.remove());
       const corpo = copia.textContent.replace(/\s+/g, ' ');
 
-      assert(/Meta 2027 \(vendas\)/.test(corpo), 'o título não acompanhou a virada do ano');
+      assert(/Meta 2027\b/.test(corpo), 'o título não acompanhou a virada do ano');
       assert(!/Meta 2026/.test(corpo), 'em 2027 ainda aparece "Meta 2026" em algum título');
       assert(/Recebido em 2027/.test(corpo), 'o rótulo do recebido não virou o ano');
 
