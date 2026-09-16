@@ -263,10 +263,6 @@
        cortar dígitos: aparecia "R$ 9.442.78" no lugar de R$ 9.442.780.
        Número cortado é número errado. Aqui o par empilha. */
     .kpi-group-item { flex-direction: column; align-items: flex-start; gap: 3px; }
-    .fat-topo { grid-template-columns: 1fr; }
-    .fat-topo > :first-child { grid-column: auto; }
-    .fat-projecao { grid-template-columns: 1fr; }
-    .fat-proj-val { text-align: left; }
     .kpi-group-vals { text-align: left; width: 100%; }
     .kpi-group-value, .kpi-group-hint { overflow-wrap: anywhere; }
     .kpi .value, .ano-val, .esteira-val { overflow-wrap: anywhere; }
@@ -1318,41 +1314,6 @@
   .kpi-group-item.kpi-clickable.active { background:var(--aviso-bg); }
   .kpi-group-item.kpi-clickable.active .kpi-group-value { color:var(--brand-gold-deep); }
 
-  /* ===== Topo da aba Faturamento: 3 caixas no lugar de 8 =====
-     A separação aqui não é decorativa — cada caixa responde uma pergunta
-     diferente: "onde quero chegar", "o que já é meu", "o que ainda não é".
-     Misturar as três numa fileira de oito quadradinhos iguais fazia o
-     pipeline parecer dinheiro no bolso. */
-  .kpi-group-titulo {
-    font-size:var(--fs-xs); font-weight:800; color:var(--muted);
-    text-transform:uppercase; letter-spacing:.4px;
-    padding-bottom:8px; margin-bottom:2px; border-bottom:1px solid var(--linha-tenue);
-  }
-  .kpi-group-rodape { font-size:var(--fs-xs); color:var(--txt-fraco); margin-top:8px; font-style:italic; }
-  .fat-topo { display:grid; grid-template-columns: minmax(0,1.25fr) minmax(0,1fr) minmax(0,1fr); gap:16px; align-items:start; }
-  .fat-topo > * { min-width:0; }
-  @media (max-width: 1100px) {
-    .fat-topo { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
-    .fat-topo > :first-child { grid-column: 1 / -1; }
-  }
-  .fat-metas { gap:0; }
-  .fat-meta-linha { padding:9px 0; }
-  .fat-meta-linha:not(:last-child) { border-bottom:1px dashed var(--fundo-sutil); }
-  .fat-meta-topo { display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:6px; }
-  .fat-meta-nome { font-size:var(--fs-xs); color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.3px; }
-  .fat-meta-nome .icon { font-size:var(--fs-md); }
-  .fat-meta-pct { font-size:var(--fs-xl); font-weight:800; color:var(--text-strong); line-height:1; white-space:nowrap; }
-  .fat-meta-hint { font-size:var(--fs-xs); color:var(--txt-fraco); margin-top:5px; }
-  .fat-projecao {
-    margin-top:10px; padding:10px 12px; border-radius:var(--r-md);
-    background:var(--fundo-sutil);
-    display:grid; grid-template-columns: 1fr auto; align-items:baseline; gap:4px 12px;
-  }
-  .fat-proj-rot { font-size:var(--fs-xs); color:var(--muted); font-weight:600; }
-  .fat-proj-rot .icon { font-size:var(--fs-md); }
-  .fat-proj-val { font-size:var(--fs-lg); font-weight:800; color:var(--text-strong); text-align:right; white-space:nowrap; }
-  .fat-proj-hint { grid-column:1 / -1; font-size:var(--fs-2xs); color:var(--txt-fraco); }
-
   /* ===== Prototipo: layout com menu lateral ===== */
   .app-shell { display:flex; align-items:flex-start; gap:22px; }
   .sidebar {
@@ -1559,80 +1520,58 @@
   <div class="tab-panel" data-tab="faturamento" id="panel-faturamento" role="tabpanel">
     <div class="section-title"><span class="dot" aria-hidden="true"></span>Meta &amp; Faturamento <span class="ano-titulo"></span></div>
     <div id="pctAConfirmar"></div>
-    <!-- Eram oito caixas soltas, e o olho não sabia qual olhar primeiro. São as
-         mesmas oito contas, agrupadas por aquilo que de fato separa uma da
-         outra: a META (onde quero chegar), o que já é MEU (contrato assinado)
-         e o que AINDA NÃO É (proposta na mesa). Nenhum número saiu, e todos os
-         ids continuam os mesmos — o JS que preenche isto não mudou. -->
-    <div class="fat-topo">
-      <div class="kpi-group fat-metas">
-        <div class="fat-meta-linha">
-          <div class="fat-meta-topo">
-            <span class="fat-meta-nome"><span class="icon" aria-hidden="true">🎯</span> Meta <span class="ano-titulo"></span> — vendas</span>
-            <span class="fat-meta-pct" id="metaPct">—</span>
-          </div>
-          <div class="bar-track"><div class="bar-fill" id="metaBar" style="width:0%"></div></div>
-          <div class="fat-meta-hint" id="metaHint">—</div>
-        </div>
-        <div class="fat-meta-linha">
-          <div class="fat-meta-topo">
-            <span class="fat-meta-nome"><span class="icon" aria-hidden="true">💰</span> Meta <span class="ano-titulo"></span> — comissão</span>
-            <span class="fat-meta-pct" id="metaComissaoPct">—</span>
-          </div>
-          <div class="bar-track"><div class="bar-fill" id="metaComissaoBar" style="width:0%"></div></div>
-          <div class="fat-meta-hint" id="metaComissaoHint">—</div>
-        </div>
-        <div class="fat-projecao">
-          <div class="fat-proj-rot"><span class="icon" aria-hidden="true">🚀</span> Projeção da comissão no ritmo atual</div>
-          <div class="fat-proj-val" id="projecaoAnual">—</div>
-          <div class="fat-proj-hint" id="projecaoAnualHint">—</div>
-        </div>
-      </div>
-
-      <div class="kpi-group">
-        <div class="kpi-group-titulo">Fechado — contrato assinado</div>
-        <div class="kpi-group-item">
-          <div class="kpi-group-label"><span class="icon">🏠</span> Volume negociado <span class="ano-titulo"></span></div>
-          <div class="kpi-group-vals">
-            <div class="kpi-group-value" id="totalNegociado">—</div>
-            <div class="kpi-group-hint" id="totalNegociadoHint">—</div>
-          </div>
-        </div>
-        <div class="kpi-group-item">
-          <div class="kpi-group-label"><span class="icon">✅</span> Comissão recebida</div>
-          <div class="kpi-group-vals">
-            <div class="kpi-group-value" id="comissaoPaga">—</div>
-            <div class="kpi-group-hint">já entrou na conta</div>
-          </div>
-        </div>
-        <div class="kpi-group-item">
-          <div class="kpi-group-label"><span class="icon">⏳</span> Comissão a receber</div>
-          <div class="kpi-group-vals">
-            <div class="kpi-group-value" id="comissaoAguardando">—</div>
-            <div class="kpi-group-hint">venda fechada, dinheiro ainda não entrou</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="kpi-group">
-        <div class="kpi-group-titulo">Em negociação — ainda não é meu</div>
-        <div class="kpi-group-item">
-          <div class="kpi-group-label"><span class="icon">🏗️</span> VGV na mesa</div>
-          <div class="kpi-group-vals">
-            <div class="kpi-group-value" id="vgvEmNegociacao">—</div>
-            <div class="kpi-group-hint" id="vgvEmNegociacaoHint">—</div>
-          </div>
-        </div>
-        <div class="kpi-group-item">
-          <div class="kpi-group-label"><span class="icon">📈</span> Comissão prevista</div>
-          <div class="kpi-group-vals">
-            <div class="kpi-group-value" id="comissaoPrevista">—</div>
-            <div class="kpi-group-hint hint">leads em negociação</div>
-          </div>
-        </div>
-        <div class="kpi-group-rodape">Nada aqui entra na meta enquanto não houver contrato assinado.</div>
-      </div>
+    <div class="kpis">
+    <div class="kpi meta">
+      <div class="icon">🎯</div>
+      <div class="label">Meta <span class="ano-titulo"></span> (vendas)</div>
+      <div class="value" id="metaPct">—</div>
+      <div class="bar-track"><div class="bar-fill" id="metaBar" style="width:0%"></div></div>
+      <div class="hint" id="metaHint">—</div>
     </div>
+    <div class="kpi meta">
+      <div class="icon">💰</div>
+      <div class="label">Meta de Comissão <span class="ano-titulo"></span></div>
+      <div class="value" id="metaComissaoPct">—</div>
+      <div class="bar-track"><div class="bar-fill" id="metaComissaoBar" style="width:0%"></div></div>
+      <div class="hint" id="metaComissaoHint">—</div>
+    </div>
+    <div class="kpi">
+      <div class="icon">✅</div>
+      <div class="label">Comissão Paga</div>
+      <div class="value" id="comissaoPaga">—</div>
+      <div class="hint">recebida e finalizada</div>
+    </div>
+    <div class="kpi">
+      <div class="icon">⏳</div>
+      <div class="label">Aguardando Pagamento</div>
+      <div class="value" id="comissaoAguardando">—</div>
+      <div class="hint">negócio fechado, comissão a receber</div>
+    </div>
+    <div class="kpi">
+      <div class="icon">📈</div>
+      <div class="label">Pipeline — não entra na meta</div>
+      <div class="value" id="comissaoPrevista">—</div>
+      <div class="hint">leads em negociação</div>
+    </div>
+    <div class="kpi">
+      <div class="icon">🏗️</div>
+      <div class="label">VGV em negociação</div>
+      <div class="value" id="vgvEmNegociacao">—</div>
+      <div class="hint" id="vgvEmNegociacaoHint">—</div>
+    </div>
+    <div class="kpi">
+      <div class="icon">🏠</div>
+      <div class="label">Total Negociado no Ano</div>
+      <div class="value" id="totalNegociado">—</div>
+      <div class="hint" id="totalNegociadoHint">—</div>
+    </div>
+    <div class="kpi">
+      <div class="icon">🚀</div>
+      <div class="label">Projeção Anual (ritmo atual)</div>
+      <div class="value" id="projecaoAnual">—</div>
+      <div class="hint" id="projecaoAnualHint">—</div>
+    </div>
+  </div>
 
     <div class="grid2" style="margin-top:18px;">
       <div class="card">
