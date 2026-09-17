@@ -26,23 +26,44 @@ module.exports = {
 
     const num = (i) => Number(blocos[i].querySelector('.esteira-val').textContent.replace(/\D/g, '') || 0);
 
-    // 1. Proposta na mesa = leads em "Proposta Enviada".
-    const esperaProposta = (D.leads || []).filter(l => l.fase === 'Proposta Enviada')
-      .reduce((s, l) => s + (l.comissaoPrevista || 0), 0);
-    assert(Math.abs(num(0) - Math.round(esperaProposta)) <= 1,
-      `bloco 1 mostra ${num(0)} e as propostas somam ${Math.round(esperaProposta)}`);
-
-    // 2. Em contrato dedupla lead e imóvel reservado — o mesmo negócio não
-    //    pode entrar duas vezes, que é o erro mais caro deste painel.
+    // 1 e 2. PROPOSTA E CONTRATO SÃO ETAPAS DIFERENTES. O status do imóvel é
+    //    'Reservado' nos dois casos, então quem separa é `propostaAceita`.
+    //    Sem o campo, o imóvel fica no degrau MENOS avançado (proposta):
+    //    chutar para cima transformaria proposta sem aceite em "em contrato",
+    //    que foi exatamente o que a tela fez em 17/09/2026 com o Cód. 10881.
     const emNeg = (D.leads || []).filter(l => l.fase === 'Em Negociação');
     const ids = new Set(emNeg.map(l => String(l.id)));
     const reservados = (D.imoveis || []).filter(im => im.status === 'Reservado'
       && typeof im.comissaoThulioVenda === 'number'
       && !(ids.has(String(im.compradorLeadId)) || ids.has(String(im.proprietarioLeadId))));
+    const resContrato = reservados.filter(im => im.propostaAceita === true);
+    const resProposta = reservados.filter(im => im.propostaAceita !== true);
+
+    const esperaProposta = (D.leads || []).filter(l => l.fase === 'Proposta Enviada')
+      .reduce((s, l) => s + (l.comissaoPrevista || 0), 0)
+      + resProposta.reduce((s, im) => s + im.comissaoThulioVenda, 0);
+    assert(Math.abs(num(0) - Math.round(esperaProposta)) <= 1,
+      `bloco 1 mostra ${num(0)} e as propostas somam ${Math.round(esperaProposta)}`);
+
     const esperaContrato = emNeg.reduce((s, l) => s + (l.comissaoPrevista || 0), 0)
-      + reservados.reduce((s, im) => s + im.comissaoThulioVenda, 0);
+      + resContrato.reduce((s, im) => s + im.comissaoThulioVenda, 0);
     assert(Math.abs(num(1) - Math.round(esperaContrato)) <= 1,
       `bloco 2 mostra ${num(1)} e o esperado é ${Math.round(esperaContrato)} — provável contagem dupla`);
+
+    // 2b. Nenhum imóvel pode estar nos dois blocos, e nenhum pode sumir dos dois:
+    //     a soma dos reservados tem que continuar inteira depois da separação.
+    const somaRes = reservados.reduce((s, im) => s + im.comissaoThulioVenda, 0);
+    const somaSeparada = resProposta.reduce((s, im) => s + im.comissaoThulioVenda, 0)
+      + resContrato.reduce((s, im) => s + im.comissaoThulioVenda, 0);
+    assert(Math.abs(somaRes - somaSeparada) < 0.01,
+      'a separação entre proposta e contrato perdeu ou duplicou imóvel reservado');
+
+    // 2c. Uma proposta viva não pode produzir "nenhuma agora" no bloco 1 —
+    //     foi assim que R$12.250 ficaram invisíveis como se não existissem.
+    if (esperaProposta > 0) {
+      assert(!/nenhuma agora/i.test(blocos[0].textContent),
+        'o bloco 1 diz "nenhuma agora" com proposta na mesa valendo dinheiro');
+    }
 
     // 3. A receber = tudo que está fechado e não caiu, de qualquer ano.
     const rec = (n) => (Array.isArray(n.fluxoPagamento) && n.fluxoPagamento.length && n.valor)
