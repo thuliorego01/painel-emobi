@@ -1,5 +1,5 @@
 {
-  "ultimaAtualizacao": "2026-09-06T07:07:07-03:00",
+  "ultimaAtualizacao": "2026-08-28T07:15:00-03:00",
   "meta2026": {
     "meta": 10000000
   },
@@ -249,6 +249,23 @@
       "bairro": "Lagoa Nova"
     },
     {
+      "imovel": "Apartamento 3 Quartos Candelária 133m² (Cód. 7560)",
+      "cliente": "João Paulo de Paula",
+      "valor": 390000,
+      "comissao": 19500,
+      "mes": "Agosto",
+      "mesNum": 8,
+      "ano": 2026,
+      "data": "2026-08-21",
+      "status": "aguardando",
+      "tipo": "Venda",
+      "compradorLeadId": 11,
+      "pctVenda": 0.05,
+      "observacaoComissao": "Sem parceria e SEM o repasse de 30%: os 5% ficam integralmente com Thúlio. Exceção pontual acordada neste negócio.",
+      "cidade": "Natal",
+      "bairro": "Candelária"
+    },
+    {
       "imovel": "Apartamento 12º andar — Condomínio Maria Gorette, Mossoró",
       "cliente": "Irmão de Thúlio (comprador)",
       "valor": 1400000,
@@ -265,39 +282,6 @@
       "observacaoComissao": "Sem repasse de 30% — os 50% da parceria ficam integralmente com Thúlio. Comissão total R$70.000 (5% de R$1.400.000), dividida com o corretor Baretta: R$35.000 para cada. Metade (R$17.500) recebida em maio/2026. A outra metade (R$17.500) está vinculada à venda do terreno no Américas, que o comprador deu como parte do pagamento — comissão GANHA, sem data de recebimento.",
       "cidade": "Mossoró",
       "bairro": "Nova Betânia"
-    },
-    {
-      "imovel": "Apartamento 2 Quartos Capim Macio 67m² (Cód. 10700)",
-      "cliente": "Chiquinho Lobo",
-      "valor": 465000,
-      "comissao": 16275,
-      "comissaoRecebida": 4795,
-      "mes": "Setembro",
-      "mesNum": 9,
-      "ano": 2026,
-      "data": "2026-09-04",
-      "status": "aguardando",
-      "tipo": "Venda",
-      "compradorLeadId": 23,
-      "imovelId": 34,
-      "pctVenda": 0.05,
-      "comissaoPelaRegra": 16275,
-      "ajusteComissao": 0,
-      "cidade": "Natal",
-      "bairro": "Capim Macio",
-      "fluxoPagamento": [
-        {
-          "etapa": "Ato da assinatura (sinal)",
-          "valor": 137000,
-          "recebido": true,
-          "dataRecebimento": "2026-09-04"
-        },
-        {
-          "etapa": "Financiamento",
-          "valor": 328000,
-          "recebido": false
-        }
-      ]
     }
   ],
   "leads": [
@@ -313,13 +297,12 @@
       "valor": null,
       "comissaoPrevista": null,
       "proximaAcao": "Agendar a visita ao Francisco de Goya",
-      "dataProximaAcao": "2026-09-08",
-      "obs": "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso entre os dois, mas prefere condomínios mais novos — sugerido o Vivant (Lagoa Nova). Agendando visita para até o final da semana (10/07). Parceria: 5% dividido, sua parte 2,5%. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M. Retomada em 02/08: enviada opção no Francisco de Goya, aguardando retorno. [04/08] REATIVADO: gostou do Francisco de Goya e quer visitar. Saiu da inatividade, temperatura para Quente. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [22/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [26/08] Contato feito via WhatsApp. [29/08] Contato feito via WhatsApp. [02/09] Contato feito via WhatsApp.",
+      "dataProximaAcao": "2026-08-29",
+      "obs": "Visitas realizadas em 02/07 aos 2 empreendimentos (Palazzo Di L'Acqua e Edifício Pedro Cardoso). Feedback em 06/07: gostou mais do Pedro Cardoso entre os dois, mas prefere condomínios mais novos — sugerido o Vivant (Lagoa Nova). Agendando visita para até o final da semana (10/07). Parceria: 5% dividido, sua parte 2,5%. Cliente adiou a compra (07/07): busca suspensa temporariamente, retomada com cadência de 15 dias. Perfil atualizado: apartamento ~150m², Lagoa Nova, até R$1,3M. Retomada em 02/08: enviada opção no Francisco de Goya, aguardando retorno. [04/08] REATIVADO: gostou do Francisco de Goya e quer visitar. Saiu da inatividade, temperatura para Quente. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [22/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [26/08] Contato feito via WhatsApp.",
       "imoveisCompativeis": null,
       "visitaResumo": null,
       "visitaDetalhe": "o mais novo que você tava procurando",
-      "interesse": "apartamento ~150m² em Lagoa Nova, até R$1,3M",
-      "papel": "Comprador"
+      "interesse": "apartamento ~150m² em Lagoa Nova, até R$1,3M"
     },
     {
       "id": 2,
@@ -340,8 +323,7 @@
       "imoveisCompativeis": null,
       "interesse": "apartamento no Edifício Bosque do Tirol",
       "dataInativacao": "2026-07-29",
-      "temperaturaAoInativar": "Morno",
-      "papel": "Comprador"
+      "temperaturaAoInativar": "Morno"
     },
     {
       "id": 3,
@@ -364,8 +346,7 @@
       "motivoPerda": "Não é o momento",
       "motivoDetalhe": "Sem retorno após a cadência completa. Encerrado o acompanhamento ativo com mensagem de despedida, deixando a porta aberta para retomada futura.",
       "dataInativacao": "2026-08-05",
-      "temperaturaAoInativar": "Frio",
-      "papel": "Comprador"
+      "temperaturaAoInativar": "Frio"
     },
     {
       "id": 4,
@@ -388,8 +369,7 @@
       "visitaDetalhe": "pra você trazer sua mãe dessa vez",
       "interesse": "casa em Capim Macio",
       "dataInativacao": "2026-07-25",
-      "temperaturaAoInativar": "Morno",
-      "papel": "Comprador"
+      "temperaturaAoInativar": "Morno"
     },
     {
       "id": 5,
@@ -403,16 +383,15 @@
       "valor": null,
       "comissaoPrevista": null,
       "proximaAcao": "Nova tentativa de reativação — se não responder, esfriar",
-      "dataProximaAcao": "2026-09-28",
-      "obs": "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08. [04/08] Clientes voltaram de viagem e o contato foi retomado. Temperatura de Frio para Morno. [06/08] Cód. 7454 saiu das opções — vendido pela concorrência. [06/08] Descartou as opções do Tirol. Critério estreitado: Candelária, no máximo Lagoa Nova, num raio de 2 km do IFRN Central. [10/08] Buscando outras opções dentro do critério estreitado. [19/08] Tentando reativar — cliente parou de responder desde o pedido de novas opções. [29/08] Contato feito via WhatsApp.",
+      "dataProximaAcao": "2026-08-26",
+      "obs": "Busca imóvel em Candelária ou Lagoa Nova até R$630 mil, com piso porcelanato. Já visitou o Porto Arena e gostou muito. Vai viajar no fim de julho — retomar contato em 01/08. [04/08] Clientes voltaram de viagem e o contato foi retomado. Temperatura de Frio para Morno. [06/08] Cód. 7454 saiu das opções — vendido pela concorrência. [06/08] Descartou as opções do Tirol. Critério estreitado: Candelária, no máximo Lagoa Nova, num raio de 2 km do IFRN Central. [10/08] Buscando outras opções dentro do critério estreitado. [19/08] Tentando reativar — cliente parou de responder desde o pedido de novas opções.",
       "imoveisCompativeis": [
         "Cód. 8024",
         "Cód. 5485",
         "Cód. 7560",
         "Cód. 10567"
       ],
-      "interesse": "apartamento em Candelária (no máximo Lagoa Nova), até R$630 mil, raio de 2 km do IFRN Central",
-      "papel": "Comprador"
+      "interesse": "apartamento em Candelária (no máximo Lagoa Nova), até R$630 mil, raio de 2 km do IFRN Central"
     },
     {
       "id": 6,
@@ -438,8 +417,7 @@
       "comissaoDetalhe": "6% sobre R$575.000 = R$34.500, dividido com a corretora Célia Cristina (R$17.250), sua parte 70% = R$12.075.",
       "posVendaFeitos": [
         7
-      ],
-      "papel": "Comprador"
+      ]
     },
     {
       "id": 7,
@@ -447,22 +425,20 @@
       "telefone": "84981319709",
       "origem": "Instagram",
       "dataEntrada": "2026-07-21",
-      "fase": "Em Negociação",
-      "maiorFaseIndex": 7,
-      "temperatura": "Quente",
-      "valor": 310000,
-      "comissaoPrevista": 5425,
-      "proximaAcao": "Cobrar a assinatura dos compradores para concluir o contrato",
-      "dataProximaAcao": "2026-09-08",
-      "obs": "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [31/07] Contato feito via WhatsApp. [31/07] Visita agendada para 01/08 às 10h, com o corretor parceiro André Brito. [01/08] Contato feito via WhatsApp. [01/08] A visita das 10h com o corretor André Brito NÃO aconteceu — cliente vai remarcar durante a semana. [07/08] Visita remarcada: 2 imóveis hoje, das 14h às 15h30, com o corretor parceiro André Brito da Abreu. [11/08] Enviadas 2 opções no Alto da Boa Vista — uma reformada e uma não reformada. [15/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [16/08] Fase corrigida para Visita Realizada: as 2 visitas com o André Brito aconteceram em 07/08 e depois disso ele já recebeu opções novas. [17/08] Captei o apartamento DELE: Cód. 10842, Renaissance Première, Nova Parnamirim, R$329.990. Ele é comprador e vendedor ao mesmo tempo — a compra provavelmente depende desta venda. [18/08] CONFIRMADO: ele condicionou a compra à venda do imóvel dele (Cód. 10842). A busca dele fica travada até esta venda sair. [22/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [26/08] Está fechando a compra dele com OUTRO corretor. Deixa de ser lead comprador: fica somente como VENDEDOR do Cód. 10842. [29/08] Contato feito via WhatsApp. [29/08] PROPOSTA de R$300.000 à vista no Cód. 10842, comprador da corretora Kryssia Aleixo. Thúlio negociando para fechar em R$310.000. [29/08] VENDA ACERTADA: proposta subiu para R$310.000 à vista e ele aceitou. Comprador da corretora Kryssia Aleixo. Segue para elaboração de contrato. Dez visitas em uma semana para chegar aqui. [02/09] Contato feito via WhatsApp.",
+      "fase": "Qualificado",
+      "maiorFaseIndex": 5,
+      "temperatura": "Morno",
+      "valor": null,
+      "comissaoPrevista": null,
+      "proximaAcao": "Vender o Cód. 10842 — ele agora é só vendedor",
+      "dataProximaAcao": "2026-08-29",
+      "obs": "Cliente sem pressa para comprar, mas pediu cadência de contato personalizada: a cada 2 dias (mais curta que o padrão de 7 dias p/ Morno). Critérios: apartamento em Tirol ou Barro Vermelho, mín. 80m², elevador, área de serviço, garagem livre. [31/07] Contato feito via WhatsApp. [31/07] Visita agendada para 01/08 às 10h, com o corretor parceiro André Brito. [01/08] Contato feito via WhatsApp. [01/08] A visita das 10h com o corretor André Brito NÃO aconteceu — cliente vai remarcar durante a semana. [07/08] Visita remarcada: 2 imóveis hoje, das 14h às 15h30, com o corretor parceiro André Brito da Abreu. [11/08] Enviadas 2 opções no Alto da Boa Vista — uma reformada e uma não reformada. [15/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [16/08] Fase corrigida para Visita Realizada: as 2 visitas com o André Brito aconteceram em 07/08 e depois disso ele já recebeu opções novas. [17/08] Captei o apartamento DELE: Cód. 10842, Renaissance Première, Nova Parnamirim, R$329.990. Ele é comprador e vendedor ao mesmo tempo — a compra provavelmente depende desta venda. [18/08] CONFIRMADO: ele condicionou a compra à venda do imóvel dele (Cód. 10842). A busca dele fica travada até esta venda sair. [22/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [26/08] Está fechando a compra dele com OUTRO corretor. Deixa de ser lead comprador: fica somente como VENDEDOR do Cód. 10842.",
       "imoveisCompativeis": [
         "Cód. 9995"
       ],
       "interesse": "Somente vendedor do Cód. 10842 — comprou com outro corretor",
       "imovelVendaId": 35,
-      "compraCondicionadaAVenda": true,
-      "comissaoDetalhe": "Venda do imóvel dele (Cód. 10842) por R$310.000. Comissão 5% = R$15.500, dividida 50/50 com a corretora Kryssia Aleixo; sua parte 70% da metade = R$5.425. Só entra na meta quando o contrato for assinado.",
-      "papel": "Vendedor"
+      "compraCondicionadaAVenda": true
     },
     {
       "id": 9,
@@ -476,11 +452,10 @@
       "valor": null,
       "comissaoPrevista": null,
       "proximaAcao": "Enviar novas opções em Capim Macio, acima de 150m²",
-      "dataProximaAcao": "2026-09-05",
-      "obs": "[01/08] Contato feito via WhatsApp. [04/08] Visita realizada ao Residencial Ariane (Cód. 10650). Cliente confirmou que quer Capim Macio — opção enviada, aguardando resposta. [07/08] Descartou a opção do Mar de Corais. Pediu outras opções. [10/08] Conferindo outras opções — perfil restrito a Capim Macio. [19/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [29/08] Contato feito via WhatsApp.",
+      "dataProximaAcao": "2026-08-26",
+      "obs": "[01/08] Contato feito via WhatsApp. [04/08] Visita realizada ao Residencial Ariane (Cód. 10650). Cliente confirmou que quer Capim Macio — opção enviada, aguardando resposta. [07/08] Descartou a opção do Mar de Corais. Pediu outras opções. [10/08] Conferindo outras opções — perfil restrito a Capim Macio. [19/08] Contato feito via WhatsApp (registrado em 1 clique no painel).",
       "imoveisCompativeis": [],
-      "interesse": "Apartamento acima de 150m², SOMENTE Capim Macio, condomínio até ~R$2.000",
-      "papel": "Comprador"
+      "interesse": "Apartamento acima de 150m², SOMENTE Capim Macio, condomínio até ~R$2.000"
     },
     {
       "id": 10,
@@ -504,8 +479,7 @@
       ],
       "interesse": "apartamento em Candelária, 3 dormitórios (1 suíte), até R$400 mil",
       "dataInativacao": "2026-07-29",
-      "temperaturaAoInativar": "Morno",
-      "papel": "Comprador"
+      "temperaturaAoInativar": "Morno"
     },
     {
       "id": 11,
@@ -513,14 +487,14 @@
       "telefone": "84994815995",
       "origem": "Relacionamento",
       "dataEntrada": "2026-07-29",
-      "fase": "Fechado Perdido",
+      "fase": "Fechado Ganho",
       "maiorFaseIndex": 8,
-      "temperatura": null,
+      "temperatura": "Quente",
       "valor": 390000,
       "comissaoPrevista": 19500,
-      "proximaAcao": "Retomar quando houver outro imóvel no perfil — ele chegou até a assinatura, não perdeu interesse",
-      "dataProximaAcao": "2026-09-18",
-      "obs": "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 - Corais de Ponta Negra R$525.000; Cód. 10572 - Corais Enseada de Ponta Negra R$420.000; Cód. 6830 - Corais da Enseada R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra (Cód. 9266, 10572, 6830) — descartou todas. Nova visita encaixada hoje às 11h30 no Cód. 7726 (Candelária). [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel (Cód. 7560) e do comprador prontas — liberado para solicitação de contrato. [31/07] Contato feito via WhatsApp. [01/08] Inteiro teor solicitado e já pago pelo comprador. Comissão: 5% sobre R$390.000 = R$19.500, venda sem parceria, sua parte 70% = R$13.650. [04/08] Contato via WhatsApp. Inteiro teor enviado ao correspondente; aguardando a solicitação de engenharia. [07/08] Aguardando a engenharia acontecer. Contrato em fase de elaboração. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [10/08] Vistoria da engenharia marcada para 11/08 às 16h15 no Residencial Apollo. [12/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] LEITURA DE CONTRATO hoje às 15h30, no condomínio Apollo. [19/08] Comissão acertada: os R$19.500,00 ficam integralmente com você — sem o repasse de 30%. É exceção à regra do ano. [21/08] CONTRATO ASSINADO pela vendedora. Negócio fechado — aguardando sinal e pagamento da comissão. [04/09/2026] Compra desfeita APÓS contrato assinado. O zelador do prédio danificou o imóvel (Cód. 7560) e ele desistiu. Não foi preço nem crédito: o negócio estava fechado.",
+      "proximaAcao": "Cobrar o sinal e o pagamento da comissão (R$19.500)",
+      "dataProximaAcao": "2026-08-25",
+      "obs": "Crédito aprovado. Visita hoje (29/07) a 3 opções em Ponta Negra (Cód. 9266 - Corais de Ponta Negra R$525.000; Cód. 10572 - Corais Enseada de Ponta Negra R$420.000; Cód. 6830 - Corais da Enseada R$500.000) e a uma opção no Villa Park Residencial, em parceria com a corretora Emmily Moraes. [30/07] Fez as 3 visitas em Ponta Negra (Cód. 9266, 10572, 6830) — descartou todas. Nova visita encaixada hoje às 11h30 no Cód. 7726 (Candelária). [30/07] Visitou o Cód. 7726 pela manhã — descartou. Aproveitou a proximidade para visitar o Cód. 7560 — gostou e fez proposta de R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel (Cód. 7560) e do comprador prontas — liberado para solicitação de contrato. [31/07] Contato feito via WhatsApp. [01/08] Inteiro teor solicitado e já pago pelo comprador. Comissão: 5% sobre R$390.000 = R$19.500, venda sem parceria, sua parte 70% = R$13.650. [04/08] Contato via WhatsApp. Inteiro teor enviado ao correspondente; aguardando a solicitação de engenharia. [07/08] Aguardando a engenharia acontecer. Contrato em fase de elaboração. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [10/08] Vistoria da engenharia marcada para 11/08 às 16h15 no Residencial Apollo. [12/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] LEITURA DE CONTRATO hoje às 15h30, no condomínio Apollo. [19/08] Comissão acertada: os R$19.500,00 ficam integralmente com você — sem o repasse de 30%. É exceção à regra do ano. [21/08] CONTRATO ASSINADO pela vendedora. Negócio fechado — aguardando sinal e pagamento da comissão.",
       "imoveisCompativeis": [
         "Cód. 7726",
         "Cód. 7560"
@@ -528,12 +502,7 @@
       "interesse": "apartamento em Candelária — proposta no Cód. 7560",
       "suaParteAcordada": 1,
       "comissaoDetalhe": "5% sobre R$390.000,00 = R$19.500,00, venda sem parceria. EXCEÇÃO: neste negócio você fica com 100% da comissão, sem o repasse de 30% que vale nos demais.",
-      "dataFechamento": null,
-      "papel": "Comprador",
-      "motivoPerda": "Negócio desfeito após o contrato",
-      "motivoDetalhe": "Contrato assinado. O zelador do prédio danificou o imóvel e o comprador desistiu. Perda de R$19.500 de comissão já contabilizada como ganha.",
-      "dataInativacao": "2026-09-04",
-      "temperaturaAoInativar": "Quente"
+      "dataFechamento": "2026-08-21"
     },
     {
       "id": 12,
@@ -541,17 +510,16 @@
       "telefone": "84999885255",
       "origem": "Instagram",
       "dataEntrada": "2026-07-30",
-      "fase": "Em Negociação",
-      "maiorFaseIndex": 7,
+      "fase": "Qualificado",
+      "maiorFaseIndex": 6,
       "temperatura": "Quente",
       "valor": 530000,
-      "comissaoPrevista": 9275,
-      "proximaAcao": "Acompanhar a análise de documentação e a elaboração do contrato",
-      "dataProximaAcao": "2026-09-09",
-      "obs": "Veio de um anúncio no Instagram como cliente VENDEDOR: captei o Cód. 10638 (Candelária) com ele e vendi em 29/07. Hoje é lead COMPRADOR — mesma pessoa, segunda jornada. Visita hoje às 18h a um apartamento no Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Cliente quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h. [30/07] Visitou o Residencial Cabugi: gostou da disposição e da metragem, mas NÃO aprovou a posição — apartamento quente. Quer ver outras unidades no mesmo condomínio. [31/07] Contato feito via WhatsApp. [04/08] Contato via WhatsApp. Proposta de R$530.000 no Corais Alto da Candelária, apartamento 103 — RECUSADA pela vendedora. Estudando nova proposta. [07/08] Desistiu por enquanto da proposta no Corais Alto da Candelária (apto 103). Procurando outras opções. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] Enviada opção do Corais de Cotovelo. [22/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [26/08] Contato feito via WhatsApp. [29/08] Contato feito via WhatsApp. [02/09] Contato feito via WhatsApp. [05/09/2026] Proposta de R$530.000 no apartamento do Morada Mandacaru (Capim Macio) ACEITA pelo vendedor. Em análise de documentação e elaboração de contrato. Imóvel é captação da corretora Carla Andrade — parceria 50/50 na comissão. Sua parte prevista: R$9.275.",
+      "comissaoPrevista": null,
+      "proximaAcao": "Cobrar o retorno da opção do Corais de Cotovelo",
+      "dataProximaAcao": "2026-08-29",
+      "obs": "Veio de um anúncio no Instagram como cliente VENDEDOR: captei o Cód. 10638 (Candelária) com ele e vendi em 29/07. Hoje é lead COMPRADOR — mesma pessoa, segunda jornada. Visita hoje às 18h a um apartamento no Residencial Cabugi, com o corretor parceiro Victor Bezerra. [30/07] Cliente quer visitar a unidade 103 do Corais Alto da Candelária — visita marcada para 31/07 às 16h. [30/07] Visitou o Residencial Cabugi: gostou da disposição e da metragem, mas NÃO aprovou a posição — apartamento quente. Quer ver outras unidades no mesmo condomínio. [31/07] Contato feito via WhatsApp. [04/08] Contato via WhatsApp. Proposta de R$530.000 no Corais Alto da Candelária, apartamento 103 — RECUSADA pela vendedora. Estudando nova proposta. [07/08] Desistiu por enquanto da proposta no Corais Alto da Candelária (apto 103). Procurando outras opções. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [19/08] Enviada opção do Corais de Cotovelo. [22/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [26/08] Contato feito via WhatsApp.",
       "imoveisCompativeis": [],
-      "interesse": "Apartamento no Morada Mandacaru, Capim Macio — proposta de R$530 mil aceita, parceria com a corretora Carla Andrade",
-      "papel": "Ambos"
+      "interesse": "outras opções em Candelária, até ~R$530 mil — desistiu do Corais Alto da Candelária"
     },
     {
       "id": 13,
@@ -573,8 +541,7 @@
       "comissaoDetalhe": "5% sobre R$122.500 = R$6.125, dividido com a corretora Natália Barbosa (R$3.062,50), sua parte 70% = R$2.143,75.",
       "posVendaFeitos": [
         7
-      ],
-      "papel": "Ambos"
+      ]
     },
     {
       "id": 14,
@@ -582,19 +549,18 @@
       "telefone": "84994769229",
       "origem": "Relacionamento",
       "dataEntrada": "2026-08-04",
-      "fase": "Visita Agendada",
+      "fase": "Visita Realizada",
       "maiorFaseIndex": 5,
       "temperatura": "Quente",
       "valor": 410000,
       "comissaoPrevista": 7175,
-      "proximaAcao": "Confirmar o horário da visita aos lotes do Alphaville Pium — crédito aprovado para aquisição + construção",
-      "dataProximaAcao": "2026-09-07",
-      "obs": "Cliente de relacionamento: foi a VENDEDORA do Maria Bernadete (803), vendido em abril/2026 por R$635.000. Agora volta como COMPRADORA. Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já visitou 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta. [07/08] Trabalhando a formalização da proposta no N2-17. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [11/08] Aguardando a cliente voltar de Campina Grande, onde foi resolver assuntos pessoais. A proposta fica parada até a volta. [12/08] A proposta será no lote N2-17 do Alphaville Pium, em parceria com o corretor Alon Nunes. Valor da proposta: R$410.000,00. [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Vai visitar hoje 2 casas no Alphaville, das 15h às 17h, em parceria com os corretores Ângelo Andrade e Sâmara Diógenes. [19/08] Visitou apenas a casa da corretora Sâmara Diógenes. Está decidindo entre casa pronta e terreno para construir. [22/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [26/08] Cliente viajando, volta na sexta (28/08). Não é atraso — prazo remarcado para a volta dela. [29/08] Contato feito via WhatsApp. [02/09] Contato feito via WhatsApp. [05/09/2026] Crédito APROVADO na modalidade aquisição + construção. Quer nova visita aos lotes do Alphaville Pium na segunda, 07/09 — pela leitura dela, visita de fechamento. Falta confirmar o horário.",
+      "proximaAcao": "Ajudar a decidir entre casa pronta e o lote N2-17 — a proposta depende dessa escolha",
+      "dataProximaAcao": "2026-08-28",
+      "obs": "Cliente de relacionamento: foi a VENDEDORA do Maria Bernadete (803), vendido em abril/2026 por R$635.000. Agora volta como COMPRADORA. Procura LOTE no Alphaville para construir casa térrea. Exigência firme: terreno PLANO. Já visitou 3 lotes. Está inclinada a fazer proposta no N2-17 do Alphaville Pium, lote do corretor Alon Nunes. [04/08] Trabalhando a questão para avançar até a proposta. [07/08] Trabalhando a formalização da proposta no N2-17. [10/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [11/08] Aguardando a cliente voltar de Campina Grande, onde foi resolver assuntos pessoais. A proposta fica parada até a volta. [12/08] A proposta será no lote N2-17 do Alphaville Pium, em parceria com o corretor Alon Nunes. Valor da proposta: R$410.000,00. [14/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [18/08] Vai visitar hoje 2 casas no Alphaville, das 15h às 17h, em parceria com os corretores Ângelo Andrade e Sâmara Diógenes. [19/08] Visitou apenas a casa da corretora Sâmara Diógenes. Está decidindo entre casa pronta e terreno para construir. [22/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [26/08] Cliente viajando, volta na sexta (28/08). Não é atraso — prazo remarcado para a volta dela.",
       "interesse": "lote N2-17, Alphaville Pium — proposta de R$410 mil, parceria com Alon Nunes",
       "imoveisCompativeis": [],
       "comissaoDetalhe": "5% sobre R$410.000 = R$20.500,00, dividido com o corretor Alon Nunes (R$10.250,00 cada); sua parte 70% = R$7.175,00.",
-      "visitaResumo": "Visitou a casa da Sâmara Diógenes — decidindo entre casa pronta e terreno",
-      "papel": "Ambos"
+      "visitaResumo": "Visitou a casa da Sâmara Diógenes — decidindo entre casa pronta e terreno"
     },
     {
       "id": 15,
@@ -608,12 +574,11 @@
       "valor": null,
       "comissaoPrevista": null,
       "proximaAcao": "Retomar a visita ao Polinésia quando o noivo voltar de viagem",
-      "dataProximaAcao": "2026-09-05",
-      "obs": "Visita agendada para 06/08 às 19h no Condomínio Polinésia (804, Bloco B), Candelária. Atenção: o imóvel NÃO está na carteira — captação recusada em 05/08 (proprietário já tem corretor). Indicação de Carlos Henrique, (84) 98132-4060 — ainda não cadastrado no Conecta TR. [07/08] A cliente desmarcou a visita de ontem (06/08) em cima da hora. Remarcar. [10/08] O noivo viajou. Ela quer esperar ele voltar para retomar a visita. [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel). [29/08] Contato feito via WhatsApp.",
+      "dataProximaAcao": "2026-08-25",
+      "obs": "Visita agendada para 06/08 às 19h no Condomínio Polinésia (804, Bloco B), Candelária. Atenção: o imóvel NÃO está na carteira — captação recusada em 05/08 (proprietário já tem corretor). Indicação de Carlos Henrique, (84) 98132-4060 — ainda não cadastrado no Conecta TR. [07/08] A cliente desmarcou a visita de ontem (06/08) em cima da hora. Remarcar. [10/08] O noivo viajou. Ela quer esperar ele voltar para retomar a visita. [18/08] Contato feito via WhatsApp (registrado em 1 clique no painel).",
       "interesse": "apartamento no Condomínio Polinésia (804, Bloco B), Candelária — imóvel de terceiro",
       "visitaResumo": "Visita ao Condomínio Polinésia, 804 Bloco B",
-      "imoveisCompativeis": [],
-      "papel": "Comprador"
+      "imoveisCompativeis": []
     },
     {
       "id": 16,
@@ -637,8 +602,7 @@
       "temperaturaAoInativar": "Morno",
       "dataInativacao": "2026-08-19",
       "motivoPerda": "Parou de responder",
-      "motivoDetalhe": "Mais de uma semana sem retorno após a visita ao Cód. 10652 e três tentativas de contato.",
-      "papel": "Comprador"
+      "motivoDetalhe": "Mais de uma semana sem retorno após a visita ao Cód. 10652 e três tentativas de contato."
     },
     {
       "id": 17,
@@ -659,8 +623,7 @@
       "dataInativacao": "2026-08-26",
       "motivoPerda": "Sem resposta",
       "motivoDetalhe": "Três tentativas sem retorno; inativado em 26/08.",
-      "temperaturaAoInativar": "Morno",
-      "papel": "Comprador"
+      "temperaturaAoInativar": "Morno"
     },
     {
       "id": 18,
@@ -681,8 +644,7 @@
       "interesse": "Casa 24, Condomínio Quatro Estações (Emaús, Parnamirim) — Cód. 8081, comprada por R$350.000",
       "posVendaFeitos": [
         7
-      ],
-      "papel": "Comprador"
+      ]
     },
     {
       "id": 19,
@@ -691,20 +653,18 @@
       "email": "raphaelaacl@gmail.com",
       "origem": "CRM Emobi",
       "dataEntrada": "2026-08-21",
-      "fase": "Visita Realizada",
-      "maiorFaseIndex": 5,
+      "fase": "Visita Agendada",
+      "maiorFaseIndex": 4,
       "temperatura": "Morno",
       "valor": null,
       "comissaoPrevista": null,
-      "proximaAcao": "Cadência de 7 dias — perguntar se ele segue interessado no Cód. 10842",
-      "dataProximaAcao": "2026-09-05",
-      "obs": "Cliente direto. Visita ao Cód. 10842 (Renaissance Première, Nova Parnamirim, R$329.990) marcada para 22/08 às 9h. Telefone ainda não informado. [26/08] Segue sem responder e sem preencher o feedback da visita de 22/08 ao Cód. 10842. [29/08] Continua sem dar notícias. Em vez de inativar, entra em CADÊNCIA DE 7 DIAS para descobrir se ele segue ou não. A visita de 22/08 aconteceu — a fase passa de \"Visita Agendada\" para \"Visita Realizada\", que é o que de fato ocorreu.",
+      "proximaAcao": "Última tentativa de contato — sem resposta até 28/08, inativar",
+      "dataProximaAcao": "2026-08-28",
+      "obs": "Cliente direto. Visita ao Cód. 10842 (Renaissance Première, Nova Parnamirim, R$329.990) marcada para 22/08 às 9h. Telefone ainda não informado. [26/08] Segue sem responder e sem preencher o feedback da visita de 22/08 ao Cód. 10842.",
       "imoveisCompativeis": [
         "Cód. 10842"
       ],
-      "interesse": "apartamento em Nova Parnamirim — visitando o Cód. 10842",
-      "cadenciaDias": 7,
-      "papel": "Comprador"
+      "interesse": "apartamento em Nova Parnamirim — visitando o Cód. 10842"
     },
     {
       "id": 20,
@@ -712,18 +672,17 @@
       "telefone": "84996925578",
       "origem": "Anúncio patrocinado",
       "dataEntrada": "2026-08-26",
-      "fase": "Visita Realizada",
+      "fase": "Em Negociação",
       "maiorFaseIndex": 7,
-      "temperatura": "Morno",
-      "valor": null,
-      "comissaoPrevista": null,
-      "comissaoDetalhe": null,
-      "proximaAcao": "Reabrir a busca — desistiu do Solar Candelária, entender o que mudou",
-      "dataProximaAcao": "2026-09-09",
-      "obs": "[26/08] Entrou pelo anúncio patrocinado do Renaissance Première (Cód. 10842). Não seguiu com aquele imóvel, mas foi convertida para visita ao Solar Candelária 1004-A, em parceria com o corretor Paulo Câmara. [26/08] Negociação em R$370.000,00, em fase de ELABORAÇÃO DE CONTRATO. [28/08] DESISTIU da compra do Solar Candelária 1004-A (parceria Paulo Câmara). Volta para Morno e sai da projeção de faturamento. Continua cliente — reabrir a busca. [02/09] Contato feito via WhatsApp.",
+      "temperatura": "Quente",
+      "valor": 370000,
+      "comissaoPrevista": 6825,
+      "comissaoDetalhe": "Comissão total acordada R$19.500,00 sobre a venda de R$370.000,00, dividida 50/50 com o corretor parceiro Paulo Câmara (R$9.750,00 cada). Sua parte após o repasse de 30% para a imobiliária: R$6.825,00.",
+      "proximaAcao": "Acompanhar a elaboração do contrato com o Paulo Câmara",
+      "dataProximaAcao": "2026-08-28",
+      "obs": "[26/08] Entrou pelo anúncio patrocinado do Renaissance Première (Cód. 10842). Não seguiu com aquele imóvel, mas foi convertida para visita ao Solar Candelária 1004-A, em parceria com o corretor Paulo Câmara. [26/08] Negociação em R$370.000,00, em fase de ELABORAÇÃO DE CONTRATO.",
       "imoveisCompativeis": [],
-      "interesse": "Apartamento na Candelária — busca reaberta",
-      "papel": "Comprador"
+      "interesse": "Apartamento na Candelária — fechando o Solar Candelária 1004-A"
     },
     {
       "id": 21,
@@ -731,60 +690,19 @@
       "telefone": "84999810624",
       "origem": "Conecta TR",
       "dataEntrada": "2026-08-26",
-      "fase": "Em Negociação",
-      "maiorFaseIndex": 7,
+      "fase": "Proposta Enviada",
+      "maiorFaseIndex": 6,
       "temperatura": "Quente",
-      "valor": 420000,
-      "comissaoPrevista": 14700,
-      "comissaoDetalhe": "5% sobre R$420.000,00 = R$21.000,00, venda sem parceria; sua parte 70% = R$14.700,00. Só entra na meta quando o contrato for assinado.",
-      "proximaAcao": "Acompanhar a elaboração do contrato do Cód. 10869 — R$420 mil",
-      "dataProximaAcao": "2026-09-04",
-      "obs": "[26/08] Indicada pelo Vitor Gabriel de Morais Farias no Conecta TR (IND-TR-2026-0016) como cliente compradora interessada no Condomínio Itatiaia. [26/08] Visitou o Cód. 10869 (Parque Itatiaia, 83m²) e FEZ PROPOSTA de R$380.000,00 — R$300.000,00 no ato e R$80.000,00 em 10 parcelas. Tabela: R$449.990,00 (15,6% abaixo). Thúlio vai alinhar com ela para tentar subir antes de levar ao proprietário João Carlos. [28/08] Proposta de R$380.000 RECUSADA pelo proprietário. Sai da projeção de faturamento; segue como lead ativo para uma nova tentativa. [29/08] PROPOSTA SUBIU PARA R$420.000 E FOI ACEITA pelo proprietário João Carlos. Fluxo: R$300.000 no contrato, R$15.000 em outubro, R$50.000 em novembro, R$20.000 em dezembro, R$20.000 em janeiro e R$15.000 em fevereiro. Venda feita integralmente por Thúlio, sem parceria. Segue para elaboração de contrato. [02/09] Em elaboração de contrato.",
+      "valor": 380000,
+      "comissaoPrevista": 13300,
+      "comissaoDetalhe": "Sobre a PROPOSTA de R$380.000,00 (ainda não aceita): 5% = R$19.000,00, sem parceria; sua parte 70% = R$13.300,00. Se o valor subir na negociação, este número sobe junto.",
+      "proximaAcao": "Alinhar com a Angélica para tentar subir a proposta antes de levar ao proprietário",
+      "dataProximaAcao": "2026-08-27",
+      "obs": "[26/08] Indicada pelo Vitor Gabriel de Morais Farias no Conecta TR (IND-TR-2026-0016) como cliente compradora interessada no Condomínio Itatiaia. [26/08] Visitou o Cód. 10869 (Parque Itatiaia, 83m²) e FEZ PROPOSTA de R$380.000,00 — R$300.000,00 no ato e R$80.000,00 em 10 parcelas. Tabela: R$449.990,00 (15,6% abaixo). Thúlio vai alinhar com ela para tentar subir antes de levar ao proprietário João Carlos.",
       "imoveisCompativeis": [
         "Cód. 10869"
       ],
-      "interesse": "Apartamento no Condomínio Itatiaia, Nova Parnamirim",
-      "papel": "Comprador"
-    },
-    {
-      "id": 22,
-      "nome": "Jessika Kamila",
-      "telefone": "84996027775",
-      "origem": "Instagram",
-      "dataEntrada": "2026-08-28",
-      "fase": "Fechado Perdido",
-      "maiorFaseIndex": 4,
-      "temperatura": null,
-      "proximaAcao": "",
-      "dataProximaAcao": null,
-      "obs": "[28/08] Chegou pela postagem do Cód. 10842 (Renaissance Première) e visitou o imóvel em 28/08 às 16h30. [28/08] Na visita o perfil dela ficou claro e não era o do 10842 — foram enviadas 2 opções. Gostou bastante do Jardim Arco Íris, opção do corretor parceiro Reiner Trindade. [31/08] Visita marcada para hoje às 11h, Av. Abel Cabral, 1873 — Nova Parnamirim. [02/09] Contato feito via WhatsApp. [02/09] PERDIDA: comprou um Novo Stillo com outro corretor. Veio do anúncio do Cód. 10842, visitou, foi reperfilada para o Jardim Arco Íris e fechou fora.",
-      "interesse": "Jardim Arco Íris, Nova Parnamirim — opção do corretor Reiner Trindade",
-      "imoveisCompativeis": [],
-      "papel": "Comprador",
-      "motivoPerda": "Comprou com outro corretor",
-      "motivoDetalhe": "Fechou a compra de um Novo Stillo com outro corretor em 02/09."
-    },
-    {
-      "id": 23,
-      "nome": "Chiquinho Lobo",
-      "telefone": "84991449970",
-      "origem": "Indicação",
-      "dataEntrada": "2026-08-31",
-      "fase": "Fechado Ganho",
-      "maiorFaseIndex": 8,
-      "temperatura": "Quente",
-      "proximaAcao": "Acompanhar o pagamento do sinal (R$137 mil) e a 1ª parcela da comissão",
-      "dataProximaAcao": "2026-09-11",
-      "obs": "[31/08] Entrou por indicação. Ainda sem perfil definido — qualificar. [31/08] Rodada de 5 visitas marcada para 01/09 pela manhã, todas com corretores parceiros: Mood Parque das Dunas (Fernanda Rebouças) 8h10, Estrela do Atlântico (Débora Oliveira) 9h, Maximum (Eleonora Pinto) 10h, Cristallo (Eleonora Pinto) 10h30 e Claude Monet (Lincoln Uchoa) 11h15. Cinco imóveis numa manhã: usar as respostas dele para fechar o perfil, que ainda está aberto. [01/09] Aproveitando deslocamento em Capim Macio, visitou o Paradise Village (Cód. 10700, imóvel próprio) e fez proposta de R$450.000 (tabela R$499.000). Aguardando devolutiva do proprietário Roberto Fischer. [02/09] PROPOSTA ACEITA no Cód. 10700 (Capim Macio, tabela R$499.000): contraproposta de R$465.000 aceita, sendo R$93.000 de recursos próprios (20%) e o restante financiado. Segue para análise de documentação e elaboração de contrato. Venda 100% de Thúlio, sem parceria — imóvel da própria carteira, proprietário Roberto Fischer.",
-      "imoveisCompativeis": [
-        "Cód. 10700"
-      ],
-      "interesse": "Cód. 10700 — Apartamento 2 quartos, Capim Macio",
-      "papel": "Comprador",
-      "valor": 465000,
-      "comissaoPrevista": 16275,
-      "comissaoDetalhe": "5% sobre R$465.000,00 = R$23.250,00, venda sem parceria (imóvel da própria carteira); sua parte 70% = R$16.275,00. Só entra na meta quando o contrato for assinado.",
-      "dataFechamento": "2026-09-04"
+      "interesse": "Apartamento no Condomínio Itatiaia, Nova Parnamirim"
     }
   ],
   "imoveis": [
@@ -802,7 +720,7 @@
       "link": "https://emobiimobiliaria.com.br/imovel/7762/apartamento-3-quartos-nova-parnamirim-parnamirim/",
       "status": "Disponível",
       "dataCaptacao": null,
-      "ultimaInteracaoProprietario": "2026-09-02",
+      "ultimaInteracaoProprietario": "2026-08-02",
       "obs": "Condomínio Vila Verde. Condomínio R$ 540,00 + IPTU R$ 120,00.",
       "tipoOperacao": "Venda"
     },
@@ -840,7 +758,7 @@
       "link": "https://emobiimobiliaria.com.br/imovel/8024/apartamento-2-quartos-lagoa-nova-natal/",
       "status": "Disponível",
       "dataCaptacao": null,
-      "ultimaInteracaoProprietario": "2026-09-02",
+      "ultimaInteracaoProprietario": "2026-08-02",
       "obs": "Condomínio Therra Mater. Em processo de escrituração. Condomínio R$ 850,00 + IPTU R$ 210,00.",
       "tipoOperacao": "Venda"
     },
@@ -877,15 +795,15 @@
       "proprietario": "Neilor Castiel",
       "telefone": "84996357380",
       "link": "https://emobiimobiliaria.com.br/imovel/9995/apartamento-3-quartos-tirol-natal/",
-      "status": "Disponível",
+      "status": "Reservado",
       "dataCaptacao": null,
-      "ultimaInteracaoProprietario": "2026-09-02",
-      "obs": "Potencial de reforma/valorização. Condomínio R$ 650,00 + IPTU R$ 223,00. [21/08] Visita realizada com o corretor parceiro Pedro Palitot e as clientes dele. PROPOSTA DE R$300.000,00 ACEITA pelo proprietário Neilor Castiel (tabela R$329.990,00) — 20% recursos próprios e 80% financiado. Segue para elaboração de contrato. Comissão total 5% = R$15.000,00, dividida com Pedro Palitot (R$7.500,00 cada); sua parte 70% = R$5.250,00. O lead comprador é do Pedro Palitot — não há ficha dele no meu CRM. Vira \"Vendido\" quando o contrato for assinado. [29/08] NEGÓCIO CAIU. O proprietário Neilor Castiel desistiu — pesou o excesso de exigências das clientes do corretor Pedro Palitot na elaboração do contrato. Imóvel volta a Disponível pelos R$329.990 de tabela.",
+      "ultimaInteracaoProprietario": "2026-08-21",
+      "obs": "Potencial de reforma/valorização. Condomínio R$ 650,00 + IPTU R$ 223,00. [21/08] Visita realizada com o corretor parceiro Pedro Palitot e as clientes dele. PROPOSTA DE R$300.000,00 ACEITA pelo proprietário Neilor Castiel (tabela R$329.990,00) — 20% recursos próprios e 80% financiado. Segue para elaboração de contrato. Comissão total 5% = R$15.000,00, dividida com Pedro Palitot (R$7.500,00 cada); sua parte 70% = R$5.250,00. O lead comprador é do Pedro Palitot — não há ficha dele no meu CRM. Vira \"Vendido\" quando o contrato for assinado.",
       "tipoOperacao": "Venda",
-      "corretorParceiro": null,
-      "valorNegociado": null,
-      "comissaoTotalVenda": null,
-      "comissaoThulioVenda": null
+      "corretorParceiro": "Pedro Palitot",
+      "valorNegociado": 300000,
+      "comissaoTotalVenda": 15000,
+      "comissaoThulioVenda": 5250
     },
     {
       "id": 6,
@@ -901,7 +819,7 @@
       "link": "https://emobiimobiliaria.com.br/imovel/7570/casa-4-quartos-lagoa-nova-natal/",
       "status": "Disponível",
       "dataCaptacao": null,
-      "ultimaInteracaoProprietario": "2026-09-02",
+      "ultimaInteracaoProprietario": "2026-08-02",
       "obs": "Escritório, lavabo, despensa, quintal. Sem condomínio (casa).",
       "tipoOperacao": "Venda"
     },
@@ -919,7 +837,7 @@
       "link": "https://emobiimobiliaria.com.br/imovel/9754/apartamento-3-quartos-neopolis-natal/",
       "status": "Disponível",
       "dataCaptacao": null,
-      "ultimaInteracaoProprietario": "2026-09-02",
+      "ultimaInteracaoProprietario": "2026-08-02",
       "obs": "Condomínio Central Park Condomínio Club. Condomínio R$ 650,00 + IPTU R$ 200,00. [30/07] Visita em 31/07 com cliente da corretora parceira Vanessa Oliveira — ela conduz a visita sozinha (parceira de confiança). Cobrar o feedback depois. [24/08] Visita marcada para 25/08 às 16h, com a corretora parceira Zagari Nascimento. Cobrar o feedback depois. [24/08] Proprietário identificado: Andrei Brettas, (71) 99356-7563 — DDD 71 (Bahia), provavelmente mora fora de Natal.",
       "tipoOperacao": "Venda"
     },
@@ -935,16 +853,16 @@
       "proprietario": "A definir",
       "telefone": null,
       "link": "https://emobiimobiliaria.com.br/imovel/7560/apartamento-3-quartos-candelaria-natal/",
-      "status": "Suspenso",
+      "status": "Vendido",
       "dataCaptacao": null,
       "ultimaInteracaoProprietario": "2026-08-21",
-      "obs": "Aceita financiamento e permuta. Condomínio R$ 850,00 + IPTU R$ 2.510,00/ano. [30/07] Proposta recebida do cliente João Paulo de Paula: R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel e do comprador (João Paulo de Paula) prontas — seguindo para solicitação de contrato. [07/08] Comprador: João Paulo de Paula (lead do CRM). [21/08] VENDIDO — contrato assinado pela vendedora. R$390.000,00 ao comprador João Paulo de Paula. [04/09/2026] Venda desfeita depois do contrato assinado: o zelador do prédio danificou o imóvel e o comprador (João Paulo de Paula) desistiu. Situação do imóvel a definir antes de voltar ao mercado — preço de R$419.990 é anterior ao dano.",
+      "obs": "Aceita financiamento e permuta. Condomínio R$ 850,00 + IPTU R$ 2.510,00/ano. [30/07] Proposta recebida do cliente João Paulo de Paula: R$390.000,00 (tabela R$419.990,00), sendo 20% recursos próprios e o restante via financiamento. [30/07] Documentação do imóvel e do comprador (João Paulo de Paula) prontas — seguindo para solicitação de contrato. [07/08] Comprador: João Paulo de Paula (lead do CRM). [21/08] VENDIDO — contrato assinado pela vendedora. R$390.000,00 ao comprador João Paulo de Paula.",
       "tipoOperacao": "Venda",
-      "compradorLeadId": null,
-      "dataVenda": null,
-      "comissaoTotalVenda": null,
-      "comissaoThulioVenda": null,
-      "comissaoConfirmada": null
+      "compradorLeadId": 11,
+      "dataVenda": "2026-08-21",
+      "comissaoTotalVenda": 19500,
+      "comissaoThulioVenda": 19500,
+      "comissaoConfirmada": false
     },
     {
       "id": 9,
@@ -960,7 +878,7 @@
       "link": "https://emobiimobiliaria.com.br/imovel/10558/casa-em-condominio-3-quartos-cajupiranga-parnamirim/",
       "status": "Disponível",
       "dataCaptacao": "2026-07-06",
-      "ultimaInteracaoProprietario": "2026-09-02",
+      "ultimaInteracaoProprietario": "2026-08-02",
       "obs": "Condomínio Ecoville 2 — casa duplex, espaço gourmet, pet friendly. Condomínio R$ 310,00. Aceita financiamento.",
       "tipoOperacao": "Venda"
     },
@@ -1001,7 +919,7 @@
       "link": "https://emobiimobiliaria.com.br/imovel/10594/casa-em-condominio-3-quartos-extremoz-extremoz/",
       "status": "Disponível",
       "dataCaptacao": "2026-07-13",
-      "ultimaInteracaoProprietario": "2026-09-02",
+      "ultimaInteracaoProprietario": "2026-08-02",
       "obs": "Casa de praia no Condomínio Oásis de Graçandu, litoral norte (Extremoz). Pet friendly. Infraestrutura: piscina, academia, quadras, salão de jogos, portaria 24h. Condomínio R$ 650,00.",
       "tipoOperacao": "Venda"
     },
@@ -1019,7 +937,7 @@
       "link": "https://emobiimobiliaria.com.br/imovel/9098/casa-em-condominio-4-quartos-nova-parnamirim-parnamirim/",
       "status": "Disponível",
       "dataCaptacao": "2026-07-13",
-      "ultimaInteracaoProprietario": "2026-09-02",
+      "ultimaInteracaoProprietario": "2026-08-02",
       "obs": "Condomínio Residencial Jardins, pet friendly. Condomínio R$ 820,00.",
       "tipoOperacao": "Venda"
     },
@@ -1057,7 +975,7 @@
       "link": "https://emobiimobiliaria.com.br/imovel/7442/lote-em-condominio-parque-das-nacoes-parnamirim/",
       "status": "Disponível",
       "dataCaptacao": "2026-07-13",
-      "ultimaInteracaoProprietario": "2026-09-02",
+      "ultimaInteracaoProprietario": "2026-08-02",
       "obs": "Condomínio Reserva YBY Natureza — 1º condomínio reserva do RN, fiação subterrânea, club house completo. Aceita negociação à vista. Condomínio R$ 470,00 + IPTU R$ 190,00.",
       "tipoOperacao": "Venda"
     },
@@ -1095,7 +1013,7 @@
       "link": "https://emobiimobiliaria.com.br/imovel/5463/apartamento-1-quarto-ponta-negra-natal/",
       "status": "Disponível",
       "dataCaptacao": "2026-07-13",
-      "ultimaInteracaoProprietario": "2026-09-02",
+      "ultimaInteracaoProprietario": "2026-08-02",
       "obs": "Condomínio Malbec, pronto para morar, vista para o mar. Perfil residencial (baixa rotatividade). Condomínio R$ 830,00 (água, gás, internet e TV inclusos). IPTU R$ 2.425,00.",
       "tipoOperacao": "Venda"
     },
@@ -1113,7 +1031,7 @@
       "link": "https://emobiimobiliaria.com.br/imovel/10627/apartamento-3-quartos-nova-parnamirim-parnamirim/",
       "status": "Suspenso",
       "dataCaptacao": "2026-07-13",
-      "ultimaInteracaoProprietario": "2026-09-02",
+      "ultimaInteracaoProprietario": "2026-08-17",
       "obs": "Condomínio California Gardens. Potencial de reforma/modernização. Condomínio R$ 530,00 + IPTU R$ 1.100,00/ano. Visita realizada hoje (22/07) às 9h, com corretor parceiro Ranniere Araújo (levando cliente próprio). Nova visita em 24/07 às 14h com a corretora parceira Katyanne Layse — clientes gostaram, cogitam uma segunda visita. Nova visita agendada para sexta-feira (31/07) às 14h — clientes Monique e Caio, com o corretor Madson Oliveira (CRECI/RN 3385). [17/08] A proprietária pediu para SUSPENDER a divulgação — vai avaliar se compensa vender. Captação mantida, sem anúncio.",
       "tipoOperacao": "Venda",
       "motivoSuspensao": "Proprietária vai avaliar se compensa vender",
@@ -1131,15 +1049,11 @@
       "proprietario": "Kris Araújo",
       "telefone": "84999810266",
       "link": "https://emobiimobiliaria.com.br/imovel/10641/apartamento-3-quartos-ponta-negra-natal/",
-      "status": "Reservado",
+      "status": "Disponível",
       "dataCaptacao": "2026-07-18",
-      "ultimaInteracaoProprietario": "2026-09-03",
-      "obs": "Condomínio Portamaris Club Condominium. Porteira fechada, totalmente mobiliado e reformado, pronto para morar, vista panorâmica para Ponta Negra. Pet friendly. Condomínio R$ 900,00. IPTU R$ 3.900,00. Estrutura completa de lazer (piscinas, academia, quadra, salão de festas). Originado de indicação do Conecta TR (protocolo IND-TR-2026-0005). Indicador: Klevisson Ranniere Meira de Araújo. [03/09] PROPOSTA de R$820.000 acertada (tabela R$849.990, -3,5%). Comprador é cliente do corretor parceiro Pedro Palitot. Comissão GLOBAL acordada em R$30.000 (não é o 5% padrão, que daria R$41.000): R$15.000 para cada lado; sua parte 70% = R$10.500. Em preparação de documentação, seguindo para elaboração de contrato. O lead comprador é do parceiro — não há ficha no meu CRM.",
-      "tipoOperacao": "Venda",
-      "corretorParceiro": "Pedro Palitot",
-      "valorNegociado": 820000,
-      "comissaoTotalVenda": 30000,
-      "comissaoThulioVenda": 10500
+      "ultimaInteracaoProprietario": "2026-08-02",
+      "obs": "Condomínio Portamaris Club Condominium. Porteira fechada, totalmente mobiliado e reformado, pronto para morar, vista panorâmica para Ponta Negra. Pet friendly. Condomínio R$ 900,00. IPTU R$ 3.900,00. Estrutura completa de lazer (piscinas, academia, quadra, salão de festas). Originado de indicação do Conecta TR (protocolo IND-TR-2026-0005). Indicador: Klevisson Ranniere Meira de Araújo.",
+      "tipoOperacao": "Venda"
     },
     {
       "id": 19,
@@ -1155,7 +1069,7 @@
       "link": "https://emobiimobiliaria.com.br/imovel/7731/casa-comercial-3-quartos-lagoa-nova-natal/",
       "status": "Disponível",
       "dataCaptacao": "2026-07-19",
-      "ultimaInteracaoProprietario": "2026-09-02",
+      "ultimaInteracaoProprietario": "2026-08-02",
       "obs": "Terreno de 416m² (450m² segundo o anúncio), potencial para uso comercial (clínicas, escritórios, comércio, alimentação) — vizinho à CEASA, próximo a Av. Capitão-Mor Gouveia, Av. Salgado Filho e BR-101. Documentação em fase de inventário extrajudicial. Pet friendly.",
       "tipoOperacao": "Venda"
     },
@@ -1196,7 +1110,7 @@
       "link": "https://emobiimobiliaria.com.br/imovel/5485/apartamento-3-quartos-candelaria-natal/",
       "status": "Disponível",
       "dataCaptacao": "2026-07-02",
-      "ultimaInteracaoProprietario": "2026-09-02",
+      "ultimaInteracaoProprietario": "2026-08-14",
       "obs": "Condomínio Porto Arena, exclusividade. Condomínio R$ 945,00 + IPTU R$ 299,00. [13/08] A cliente do corretor Caio Marinho cancelou a visita de hoje; remarcada para sábado 15/08 às 9h. [14/08] Visita antecipada do sábado para hoje às 17h.",
       "tipoOperacao": "Venda"
     },
@@ -1232,7 +1146,7 @@
       "link": "https://emobiimobiliaria.com.br/imovel/10650/apartamento-4-quartos-tirol-natal/",
       "status": "Disponível",
       "dataCaptacao": "2026-07-22",
-      "ultimaInteracaoProprietario": "2026-09-02",
+      "ultimaInteracaoProprietario": "2026-08-02",
       "obs": "Residencial Ariane. 1 apartamento por andar, depósito privativo na garagem, área de serviço independente, dependência completa. Condomínio R$ 2.500,00 (água inclusa). IPTU R$ 6.440,08/ano. Captação concluída e publicada hoje (22/07) — proprietário Duarte. Mesma proprietária do Cód. 10652 (Muriú).",
       "tipoOperacao": "Venda"
     },
@@ -1286,7 +1200,7 @@
       "link": "https://emobiimobiliaria.com.br/imovel/7726/apartamento-3-quartos-candelaria-natal/",
       "status": "Disponível",
       "dataCaptacao": "2026-07-23",
-      "ultimaInteracaoProprietario": "2026-09-02",
+      "ultimaInteracaoProprietario": "2026-08-02",
       "obs": "Residencial Polinésia. Condomínio R$ 680,00 + IPTU R$ 158,00. Preço baixou de R$ 279.990,00 para R$ 269.990,00. Pet friendly. Sol da manhã. Lazer: churrasqueira, salão de festas, playground, quadra poliesportiva, portaria com controle de acesso. Captação por indicação de Carlos Henrique (Conecta TR).",
       "tipoOperacao": "Venda"
     },
@@ -1304,7 +1218,7 @@
       "link": "https://emobiimobiliaria.com.br/imovel/10652/casa-em-condominio-4-quartos-muriu-ceara-mirim/",
       "status": "Disponível",
       "dataCaptacao": "2026-07-23",
-      "ultimaInteracaoProprietario": "2026-09-02",
+      "ultimaInteracaoProprietario": "2026-08-02",
       "obs": "Casa de praia beira-mar em condomínio exclusivo em Muriú (Ceará-Mirim, ~35min de Natal). Espaço gourmet, cozinha integrada à varanda, área verde com vista pro mar. Condomínio com piscina, churrasqueira, área verde e terraço para festas. Condomínio R$ 1.000,00 + IPTU R$ 700,00/ano. Pet friendly, mobiliado. Mesma proprietária do Cód. 10650 (Mariane Mororó).",
       "tipoOperacao": "Venda"
     },
@@ -1394,7 +1308,7 @@
       "link": null,
       "status": "Em Captação",
       "dataCaptacao": "2026-08-05",
-      "ultimaInteracaoProprietario": "2026-09-02",
+      "ultimaInteracaoProprietario": "2026-08-05",
       "obs": "Originado de indicação do Conecta TR (IND-TR-2026-0012, indicador Carlos Henrique) — captação ainda em andamento, não confirmada.",
       "tipoOperacao": "Venda"
     },
@@ -1410,29 +1324,11 @@
       "proprietario": "Roberto Fischer",
       "telefone": "84999982167",
       "link": "https://emobiimobiliaria.com.br/imovel/10700/apartamento-2-quartos-capim-macio-natal/",
-      "status": "Vendido",
+      "status": "Disponível",
       "dataCaptacao": null,
-      "ultimaInteracaoProprietario": "2026-09-02",
-      "obs": "Condomínio Paradise Village. Móveis planejados, 2 ar-condicionados, cooktop, forno, coifa e geladeira. Pet friendly. Condomínio R$ 635,00 · IPTU R$ 1.970,00 · taxa extra R$ 198,02 até dez/2027. [10/08] Captação com visita hoje às 15h. [21/08] Visita hoje às 14h com cliente da corretora Paola Oliveira. [01/09] Visita do cliente Chiquinho Lobo (lead por indicação). Proposta de R$450.000 recebida (tabela R$499.000, -9,8%). Aguardando devolutiva do proprietário Roberto Fischer. [02/09] PROPOSTA ACEITA em R$465.000 (tabela R$499.000, -6,8%). Comprador: Chiquinho Lobo, lead do CRM. R$93.000 de entrada e o restante financiado. Sem parceria — comissão 5% = R$23.250, sua parte R$16.275. Em análise de documentação.",
-      "tipoOperacao": "Venda",
-      "compradorLeadId": 23,
-      "valorNegociado": 465000,
-      "comissaoTotalVenda": 23250,
-      "comissaoThulioVenda": 16275,
-      "dataVenda": "2026-09-04",
-      "fluxoPagamento": [
-        {
-          "etapa": "Ato da assinatura (sinal)",
-          "valor": 137000,
-          "recebido": true,
-          "dataRecebimento": "2026-09-04"
-        },
-        {
-          "etapa": "Financiamento",
-          "valor": 328000,
-          "recebido": false
-        }
-      ]
+      "ultimaInteracaoProprietario": "2026-08-21",
+      "obs": "Condomínio Paradise Village. Móveis planejados, 2 ar-condicionados, cooktop, forno, coifa e geladeira. Pet friendly. Condomínio R$ 635,00 · IPTU R$ 1.970,00 · taxa extra R$ 198,02 até dez/2027. [10/08] Captação com visita hoje às 15h. [21/08] Visita hoje às 14h com cliente da corretora Paola Oliveira.",
+      "tipoOperacao": "Venda"
     },
     {
       "id": 35,
@@ -1447,10 +1343,10 @@
       "telefone": "84981319709",
       "proprietarioLeadId": 7,
       "link": "https://emobiimobiliaria.com.br/imovel/10842/apartamento-2-quartos-nova-parnamirim-parnamirim/",
-      "status": "Reservado",
+      "status": "Disponível",
       "dataCaptacao": "2026-08-17",
-      "ultimaInteracaoProprietario": "2026-09-02",
-      "obs": "Condomínio Renaissance Première. Reformado: sala ampliada e integrada à varanda, cozinha integrada, antiga dependência virou closet. Móveis planejados, piso laminado, vista para Natal. Vaga coberta e livre. Condomínio R$ 540,00 · IPTU R$ 650,00/ano. Aceita financiamento. [17/08] Captação com o Heber Lima, que também é lead COMPRADOR no pipeline — provável venda para comprar. [21/08] TRÊS visitas marcadas para 22/08: 9h (Raphael Augusto, direto), 9h30 (cliente da corretora Natália Pimenta) e 10h (cliente do corretor Thiago Lucena). [24/08] Quatro visitas no mesmo dia: Felipe Zumba (16h), Dani Med (16h30), Gianne Bezerra (17h) e cliente do corretor Pedro Palitot (18h30). [25/08] Um visitante citou HISTÓRICO DE ALAGAMENTOS no condomínio — informação nova, não estava no CRM. Confirmar com o proprietário Heber Lima. [28/08] Mais três visitas: Kayo Feitosa (16h), Jessika Kamila (16h30) e PCM Shows (17h). Já são dez visitas em uma semana. [29/08] PROPOSTA de R$300.000 à VISTA (tabela R$329.990, -9%). Comprador é cliente da corretora parceira Kryssia Aleixo. Ainda não aceita — Thúlio negociando para R$310.000. Décima visita da semana virou proposta. [29/08] PROPOSTA ACEITA em R$310.000 à vista (subiu de R$300.000; tabela R$329.990, -6%). Comprador é cliente da corretora parceira Kryssia Aleixo. Segue para elaboração de contrato. Comissão 5% = R$15.500, dividida com a parceira (R$7.750 cada); sua parte 70% = R$5.425. O lead comprador é dela — não há ficha no meu CRM.",
+      "ultimaInteracaoProprietario": "2026-08-24",
+      "obs": "Condomínio Renaissance Première. Reformado: sala ampliada e integrada à varanda, cozinha integrada, antiga dependência virou closet. Móveis planejados, piso laminado, vista para Natal. Vaga coberta e livre. Condomínio R$ 540,00 · IPTU R$ 650,00/ano. Aceita financiamento. [17/08] Captação com o Heber Lima, que também é lead COMPRADOR no pipeline — provável venda para comprar. [21/08] TRÊS visitas marcadas para 22/08: 9h (Raphael Augusto, direto), 9h30 (cliente da corretora Natália Pimenta) e 10h (cliente do corretor Thiago Lucena). [24/08] Quatro visitas no mesmo dia: Felipe Zumba (16h), Dani Med (16h30), Gianne Bezerra (17h) e cliente do corretor Pedro Palitot (18h30). [25/08] Um visitante citou HISTÓRICO DE ALAGAMENTOS no condomínio — informação nova, não estava no CRM. Confirmar com o proprietário Heber Lima.",
       "tipoOperacao": "Venda",
       "feedbacks": [
         {
@@ -1471,23 +1367,6 @@
           "notaPreco": 7,
           "comentario": "O imóvel é ótimo. Tamanho, projetados, reforma moderna, ta lindo. O IPTU barato, embora o condomínio não tenha nada e seja caro. Ponto a se pensar a infiltração nas janelas. O condomínio é velho pode surgir sempre bastante manutenção e o ponto de mais atenção a rua que alaga quando chove. E Natal chove bastante."
         }
-      ],
-      "corretorParceiro": "Natália Pimenta",
-      "valorNegociado": 310000,
-      "comissaoTotalVenda": 15500,
-      "comissaoThulioVenda": 5425,
-      "faseContrato": "Em assinatura",
-      "fluxoPagamento": [
-        {
-          "etapa": "Entrada",
-          "valor": 62000,
-          "recebido": false
-        },
-        {
-          "etapa": "Financiamento",
-          "valor": 248000,
-          "recebido": false
-        }
       ]
     },
     {
@@ -1502,32 +1381,10 @@
       "proprietario": "João Carlos",
       "telefone": "84994810673",
       "link": "https://emobiimobiliaria.com.br/imovel/10869/apartamento-3-quartos-nova-parnamirim-parnamirim/",
-      "status": "Reservado",
-      "dataCaptacao": "2026-08-26",
-      "ultimaInteracaoProprietario": "2026-09-02",
-      "obs": "Condomínio Parque Itatiaia. EXCLUSIVIDADE. Condomínio R$640,00 (água e gás inclusos) + IPTU R$662,00/ano. Quitado e escriturado. Pet friendly. Imóvel praticamente original — o argumento de venda é a liberdade de reformar do próprio jeito, sem herdar escolha de outro. Andar alto, ventilado. Lazer completo: piscinas adulto e infantil, churrasqueiras, salão de festas, salão de jogos, playground, beach tênis, espaço gourmet, portaria e segurança 24h. [26/08] Captado. [26/08] Visita da Angélica (indicação Conecta TR, Vitor Gabriel). PROPOSTA de R$380.000,00 — R$300.000 no ato e R$80.000 em 10 parcelas. Tabela R$449.990,00. Ainda não levada ao proprietário; Thúlio vai tentar subir o valor. [28/08] Proposta da Angélica (R$380.000) recusada pelo proprietário João Carlos. [28/08] Visita marcada para 29/08 às 9h30, cliente da corretora parceira Larissa Portela. [29/08] PROPOSTA DE R$420.000 ACEITA pelo proprietário João Carlos (tabela R$449.990, -6,7%). Compradora: Angélica, indicação Conecta TR do Vitor Gabriel. Fluxo: R$300.000 no contrato + R$15.000 out + R$50.000 nov + R$20.000 dez + R$20.000 jan + R$15.000 fev. Sem parceria — comissão 5% = R$21.000, sua parte R$14.700. Vira \"Vendido\" quando o contrato for assinado.",
-      "tipoOperacao": "Venda",
-      "compradorLeadId": 21,
-      "valorNegociado": 420000,
-      "comissaoTotalVenda": 21000,
-      "comissaoThulioVenda": 14700
-    },
-    {
-      "id": 37,
-      "nome": "Apartamento 3 Quartos Tirol 105m² (Cód. 10881)",
-      "tipo": "Apartamento",
-      "bairro": "Tirol",
-      "cidade": "Natal",
-      "endereco": "Rua Capitão Abdon Nunes, Tirol - Natal/RN",
-      "valor": 860000,
-      "detalhes": "3 quartos (2 suítes), 3 banheiros, 2 vagas, 105m² privativos, reformado com escritório e closet",
-      "proprietario": "Larissa Queiroz",
-      "telefone": "84988074185",
-      "link": "https://emobiimobiliaria.com.br/imovel/10881/apartamento-3-quartos-tirol-natal/",
       "status": "Disponível",
-      "dataCaptacao": "2026-09-03",
-      "ultimaInteracaoProprietario": "2026-09-03",
-      "obs": "Condomínio Terraço das Dunas, ao lado do Parque das Dunas. Condomínio R$1.100 + IPTU R$4.300/ano. Pet friendly, financiável. REFORMA FUNCIONAL é o argumento: a planta foi repensada — um quarto virou escritório e ampliou o closet da suíte principal. 2 suítes, lavabo, varanda fechada com vidro, cozinha americana, dependência completa, móveis planejados e climatização. Lazer: piscinas adulto e infantil, playground, salão de jogos, espaço gourmet e solário. [03/09] Captado. Visita marcada para hoje às 10h com o corretor Ivanaldo.",
+      "dataCaptacao": "2026-08-26",
+      "ultimaInteracaoProprietario": "2026-08-26",
+      "obs": "Condomínio Parque Itatiaia. EXCLUSIVIDADE. Condomínio R$640,00 (água e gás inclusos) + IPTU R$662,00/ano. Quitado e escriturado. Pet friendly. Imóvel praticamente original — o argumento de venda é a liberdade de reformar do próprio jeito, sem herdar escolha de outro. Andar alto, ventilado. Lazer completo: piscinas adulto e infantil, churrasqueiras, salão de festas, salão de jogos, playground, beach tênis, espaço gourmet, portaria e segurança 24h. [26/08] Captado. [26/08] Visita da Angélica (indicação Conecta TR, Vitor Gabriel). PROPOSTA de R$380.000,00 — R$300.000 no ato e R$80.000 em 10 parcelas. Tabela R$449.990,00. Ainda não levada ao proprietário; Thúlio vai tentar subir o valor.",
       "tipoOperacao": "Venda"
     }
   ],
@@ -1647,9 +1504,25 @@
       "nota": "apenas os anos com mês de fechamento registrado na planilha original."
     }
   },
-  "agendaHoje": [],
+  "agendaHoje": [
+    {
+      "data": "2026-08-28",
+      "hora": "16:00",
+      "horaFim": "17:00",
+      "titulo": "Visita - Kayo Feitosa",
+      "local": "Condomínio Renaissance Première, Rua Virginópolis, 58, Parque das Nações, Parnamirim - RN"
+    }
+  ],
   "agendaAmanha": [],
-  "agendaProximos": [],
+  "agendaProximos": [
+    {
+      "data": "2026-08-30",
+      "hora": "19:00",
+      "horaFim": "20:00",
+      "titulo": "Parcelamento Mais",
+      "local": ""
+    }
+  ],
   "lembretes": [
     {
       "texto": "Falar com Filipe Ideli sobre chegada da irmã e procura de apartamento em Tirol ou Petrópolis",
@@ -1712,52 +1585,23 @@
       "status": "Pendente"
     },
     {
-      "texto": "Acompanhar a elaboração do contrato do Cód. 10869 — Angélica, R$420 mil aceitos",
-      "data": "2026-09-02",
+      "texto": "Acompanhar elaboração do contrato — Cód. 9995 (Tirol), proposta de R$300 mil aceita por Neilor Castiel, parceria Pedro Palitot",
+      "data": "2026-08-25",
       "hora": "",
-      "relacionado": "Angélica"
+      "relacionado": "Imóvel Cód. 9995"
     },
     {
-      "texto": "Acompanhar a elaboração do contrato do Cód. 10842 — Heber Lima, R$310 mil, parceria Kryssia Aleixo",
-      "data": "2026-09-02",
+      "texto": "Contatar Angélica (indicação de Vitor Gabriel de Morais Farias via Conecta TR) — quer comprar no Condomínio Itatiaia, tel. (84) 99981-0624",
+      "data": "2026-08-26",
       "hora": "",
-      "relacionado": "Heber Lima"
+      "relacionado": "Angélica (indicação Conecta TR — Vitor Gabriel)",
+      "status": "Pendente"
     },
     {
-      "texto": "Acompanhar documentação e contrato do Cód. 10641 — R$820 mil, parceria Pedro Palitot",
-      "data": "2026-09-08",
+      "texto": "Acompanhar a elaboração do contrato do Solar Candelária 1004-A — Daniela Altoé, parceria Paulo Câmara",
+      "data": "2026-08-28",
       "hora": "",
-      "relacionado": "Imóvel Cód. 10641"
-    },
-    {
-      "texto": "Cobrar a assinatura dos compradores para concluir o contrato — Cód. 10842, Heber Lima",
-      "data": "2026-09-08",
-      "hora": "",
-      "relacionado": "Heber Lima"
-    },
-    {
-      "texto": "Definir a situação do Cód. 7560 com o proprietário — reparo, novo preço ou saída da carteira (dano causado pelo zelador)",
-      "data": "2026-09-08",
-      "hora": "",
-      "relacionado": "Imóvel Cód. 7560"
-    },
-    {
-      "texto": "Acompanhar o financiamento do Cód. 10700 — 2ª parte da comissão, R$11.480",
-      "data": "2026-09-25",
-      "hora": "",
-      "relacionado": "Chiquinho Lobo"
-    },
-    {
-      "texto": "Visita da Caroline Evelin aos lotes do Alphaville Pium — confirmar horário (crédito aprovado, visita de fechamento)",
-      "data": "2026-09-07",
-      "hora": "",
-      "relacionado": "Caroline Evelin"
-    },
-    {
-      "texto": "Acompanhar documentação e contrato do Morada Mandacaru — Renato Cássio, R$530 mil, parceria Carla Andrade",
-      "data": "2026-09-09",
-      "hora": "",
-      "relacionado": "Renato Cássio"
+      "relacionado": "Daniela Altoé"
     }
   ],
   "prospeccaoCaptacao": [
@@ -3844,292 +3688,6 @@
       "lead": "Cód. 10842 (Renaissance Première)",
       "tipo": "Outro",
       "resumo": "Feedback pós-visita respondido por Raquel Moura: quer comprar, curto prazo, nota de preço 7. Reforça alagamento na rua em dias de chuva (já registrado em obs)."
-    },
-    {
-      "data": "28/08/2026 08:50",
-      "lead": "Daniela Altoé",
-      "leadId": 20,
-      "tipo": "Outro",
-      "resumo": "DESISTIU da compra do Solar Candelária 1004-A (parceria Paulo Câmara). Volta para Morno, sai da projeção de faturamento e a busca é reaberta."
-    },
-    {
-      "data": "28/08/2026 08:50",
-      "lead": "Angélica",
-      "leadId": 21,
-      "tipo": "Proposta",
-      "resumo": "Proposta de R$380.000 no Cód. 10869 RECUSADA pelo proprietário João Carlos. Sai da projeção; segue ativa para nova tentativa."
-    },
-    {
-      "data": "28/08/2026 08:52",
-      "lead": "Sistema",
-      "tipo": "Outro",
-      "resumo": "REGRA NOVA: a barra da meta passa a contar apenas contrato assinado. Propostas do pipeline saíram da projeção de faturamento — decisão de Thúlio no dia em que uma proposta aceita (Daniela) e uma proposta enviada (Angélica) caíram no mesmo dia. Pipeline continua visível no card \"Prestes a fechar\"."
-    },
-    {
-      "data": "28/08/2026 08:55",
-      "lead": "Imóvel Cód. 10842",
-      "tipo": "Visita",
-      "resumo": "Três visitas hoje: Kayo Feitosa 16h, Jessika Kamila 16h30 e PCM Shows 17h. Décima visita do imóvel em uma semana, ainda sem proposta."
-    },
-    {
-      "data": "29/08/2026 18:50",
-      "lead": "Angélica",
-      "leadId": 21,
-      "tipo": "Proposta",
-      "resumo": "PROPOSTA ACEITA: subiu de R$380 mil para R$420.000 e o proprietário João Carlos aceitou. Fluxo: R$300 mil no contrato + parcelas até fevereiro. Venda sem parceria — comissão total R$21.000, sua parte R$14.700. Primeira indicação do Conecta TR a fechar negócio."
-    },
-    {
-      "data": "29/08/2026 18:50",
-      "lead": "Heber Lima",
-      "leadId": 7,
-      "tipo": "Proposta",
-      "resumo": "PROPOSTA de R$300.000 à vista no Cód. 10842 (tabela R$329.990), comprador da corretora Kryssia Aleixo. Thúlio negociando para R$310.000. Dez visitas na semana e enfim uma oferta."
-    },
-    {
-      "data": "29/08/2026 18:45",
-      "lead": "Tácito Barreto",
-      "leadId": 1,
-      "tipo": "Contato",
-      "resumo": "Contato feito via WhatsApp."
-    },
-    {
-      "data": "29/08/2026 18:45",
-      "lead": "Renato Cássio",
-      "leadId": 12,
-      "tipo": "Contato",
-      "resumo": "Contato feito via WhatsApp."
-    },
-    {
-      "data": "29/08/2026 18:45",
-      "lead": "Caroline Evelin",
-      "leadId": 14,
-      "tipo": "Contato",
-      "resumo": "Contato feito via WhatsApp."
-    },
-    {
-      "data": "29/08/2026 18:45",
-      "lead": "Maria Teresa",
-      "leadId": 15,
-      "tipo": "Contato",
-      "resumo": "Contato feito via WhatsApp."
-    },
-    {
-      "data": "29/08/2026 18:45",
-      "lead": "Maria Matos",
-      "leadId": 9,
-      "tipo": "Contato",
-      "resumo": "Contato feito via WhatsApp."
-    },
-    {
-      "data": "29/08/2026 18:45",
-      "lead": "Heber Lima",
-      "leadId": 7,
-      "tipo": "Contato",
-      "resumo": "Contato feito via WhatsApp."
-    },
-    {
-      "data": "29/08/2026 18:45",
-      "lead": "Daianne",
-      "leadId": 5,
-      "tipo": "Contato",
-      "resumo": "Contato feito via WhatsApp."
-    },
-    {
-      "data": "29/08/2026 19:05",
-      "lead": "Imóvel Cód. 9995",
-      "tipo": "Outro",
-      "resumo": "VENDA CANCELADA. Proposta de R$300.000 em parceria com Pedro Palitot caiu: o vendedor Neilor Castiel desistiu, principalmente pelas exigências das clientes do parceiro no contrato. Perda de R$5.250 do pipeline. Imóvel volta a Disponível."
-    },
-    {
-      "data": "29/08/2026 19:05",
-      "lead": "Daniela Altoé",
-      "leadId": 20,
-      "tipo": "Outro",
-      "resumo": "Confirmada a desistência da compra do Solar Candelária (parceria Paulo Câmara). Segue Morno, com a busca reaberta."
-    },
-    {
-      "data": "29/08/2026 19:15",
-      "lead": "Raphael Augusto",
-      "leadId": 19,
-      "tipo": "Outro",
-      "resumo": "Segue sem responder. Em vez de inativar, entra em cadência de 7 dias para confirmar se ainda tem interesse no Cód. 10842. Fase corrigida para Visita Realizada — a visita de 22/08 aconteceu."
-    },
-    {
-      "data": "29/08/2026 20:05",
-      "lead": "Heber Lima",
-      "leadId": 7,
-      "tipo": "Proposta",
-      "resumo": "PROPOSTA ACEITA no Cód. 10842: subiu de R$300.000 para R$310.000 à vista e o Heber aceitou. Comprador da corretora Kryssia Aleixo. Comissão total R$15.500, sua parte R$5.425. Segue para contrato. Foram dez visitas em uma semana até a primeira oferta."
-    },
-    {
-      "data": "31/08/2026 06:10",
-      "lead": "Jessika Kamila",
-      "leadId": 22,
-      "tipo": "Visita",
-      "resumo": "Lead nova pelo Instagram, veio da postagem do Cód. 10842 e visitou o imóvel em 28/08. O perfil dela não era o daquele apartamento — enviadas 2 opções e ela gostou do Jardim Arco Íris, opção do corretor parceiro Reiner Trindade. Visita marcada para 31/08 às 11h, Av. Abel Cabral 1873, Nova Parnamirim."
-    },
-    {
-      "data": "31/08/2026 19:45",
-      "lead": "Chiquinho Lobo",
-      "leadId": 23,
-      "tipo": "Outro",
-      "resumo": "Lead novo por indicação, (84) 99144-9970. Perfil ainda não definido."
-    },
-    {
-      "data": "31/08/2026 19:45",
-      "lead": "Sistema",
-      "tipo": "Visita",
-      "resumo": "Rodada de 5 visitas marcada para 01/09 pela manhã, cada uma com um corretor parceiro diferente: Mood Parque das Dunas (Fernanda Rebouças) 8h10, Estrela do Atlântico (Débora Oliveira) 9h, Maximum (Eleonora Pinto) 10h, Cristallo (Eleonora Pinto) 10h30 e Claude Monet (Lincoln Uchoa) 11h15."
-    },
-    {
-      "data": "31/08/2026 19:50",
-      "lead": "Chiquinho Lobo",
-      "leadId": 23,
-      "tipo": "Visita",
-      "resumo": "As cinco visitas de 01/09 são dele. Passa a Visita Agendada, temperatura Quente. Nenhum dos cinco imóveis é da carteira própria — todos de corretores parceiros."
-    },
-    {
-      "data": "31/08/2026 20:10",
-      "lead": "Sistema",
-      "tipo": "Outro",
-      "resumo": "Cada cliente passa a ter PAPEL: Comprador, Vendedor ou Ambos. O funil de conversão deixa de contar vendedores — aquelas fases são a jornada de quem compra, e vendedor inflava as etapas iniciais. Heber Lima marcado como Vendedor; Renato Cássio, Camilla Natasha e Caroline Evelin como Ambos; os outros 17 como Compradores."
-    },
-    {
-      "data": "01/09/2026 17:27",
-      "leadId": 23,
-      "lead": "Chiquinho Lobo",
-      "tipo": "Proposta",
-      "resumo": "Visita ao Paradise Village (Cód. 10700), aproveitando deslocamento em Capim Macio. Proposta de R$450.000 (tabela R$499.000, -9,8%). Aguardando devolutiva do proprietário Roberto Fischer."
-    },
-    {
-      "data": "02/09/2026 13:35",
-      "lead": "Tácito Barreto",
-      "leadId": 1,
-      "tipo": "Contato",
-      "resumo": "Contato feito via WhatsApp."
-    },
-    {
-      "data": "02/09/2026 13:35",
-      "lead": "Renato Cássio",
-      "leadId": 12,
-      "tipo": "Contato",
-      "resumo": "Contato feito via WhatsApp."
-    },
-    {
-      "data": "02/09/2026 13:35",
-      "lead": "Heber Lima",
-      "leadId": 7,
-      "tipo": "Contato",
-      "resumo": "Contato feito via WhatsApp. Contrato do Cód. 10842 em elaboração."
-    },
-    {
-      "data": "02/09/2026 13:35",
-      "lead": "Caroline Evelin",
-      "leadId": 14,
-      "tipo": "Contato",
-      "resumo": "Contato feito via WhatsApp."
-    },
-    {
-      "data": "02/09/2026 13:35",
-      "lead": "Daniela Altoé",
-      "leadId": 20,
-      "tipo": "Contato",
-      "resumo": "Contato feito via WhatsApp."
-    },
-    {
-      "data": "02/09/2026 13:35",
-      "lead": "Angélica",
-      "leadId": 21,
-      "tipo": "Contato",
-      "resumo": "Contrato do Cód. 10869 em elaboração."
-    },
-    {
-      "data": "02/09/2026 13:35",
-      "lead": "Jessika Kamila",
-      "leadId": 22,
-      "tipo": "Contato",
-      "resumo": "PERDIDA: comprou um Novo Stillo com outro corretor."
-    },
-    {
-      "data": "02/09/2026 13:35",
-      "lead": "Chiquinho Lobo",
-      "leadId": 23,
-      "tipo": "Contato",
-      "resumo": "PROPOSTA ACEITA no Cód. 10700: contraproposta de R$465.000 aceita (tabela R$499.000), R$93.000 de entrada e o restante financiado. Venda sem parceria, imóvel da própria carteira. Comissão total R$23.250, sua parte R$16.275. Fechou no dia seguinte à rodada de cinco visitas."
-    },
-    {
-      "data": "02/09/2026 13:35",
-      "lead": "Sistema",
-      "tipo": "Outro",
-      "resumo": "Rodada de follow-up com proprietários concluída — todos os imóveis atualizados e todos os proprietários contactados em 02/09."
-    },
-    {
-      "data": "03/09/2026 08:20",
-      "lead": "Imóvel Cód. 10881",
-      "tipo": "Outro",
-      "resumo": "CAPTAÇÃO NOVA: Apartamento 3 quartos, 105m², Terraço das Dunas (Tirol), R$860.000 — o imóvel mais caro da carteira. Proprietária Larissa Queiroz, (84) 98807-4185. Visita marcada para hoje às 10h com o corretor Ivanaldo."
-    },
-    {
-      "data": "03/09/2026 08:30",
-      "lead": "Imóvel Cód. 10641",
-      "tipo": "Proposta",
-      "resumo": "PROPOSTA de R$820.000 no Cód. 10641 (Portamares, Ponta Negra), comprador do corretor Pedro Palitot. Comissão global acordada R$30.000; sua parte R$10.500. Em preparação de documentação. Imóvel veio de indicação do Conecta TR — IND-TR-2026-0005, indicador Klevisson Ranniere: se a venda sair, ele tem direito a R$2.000 pela tabela (faixa de R$500 mil a R$1 milhão)."
-    },
-    {
-      "data": "04/09/2026 09:00",
-      "lead": "Chiquinho Lobo",
-      "tipo": "Fechamento",
-      "leadId": 23,
-      "resumo": "CONTRATO ASSINADO — Cód. 10700, Capim Macio, R$465.000. Fluxo: R$137.000 no ato da assinatura e R$328.000 no financiamento. A comissão de 5% incide sobre cada fluxo: R$6.850 no ato (sua parte R$4.795) e R$16.400 no financiamento (sua parte R$11.480). Aguardando o sinal."
-    },
-    {
-      "data": "04/09/2026 09:05",
-      "lead": "Heber Lima",
-      "tipo": "Negociação",
-      "leadId": 7,
-      "resumo": "Contrato em fase de assinatura — Cód. 10842, R$310.000. Falta apenas os compradores, da corretora parceira, assinarem. Fluxo: R$62.000 de entrada e R$248.000 no financiamento, com comissão de 5% sobre cada fluxo: R$3.100 na entrada (sua parte R$1.085) e R$12.400 no financiamento (sua parte R$4.340)."
-    },
-    {
-      "data": "04/09/2026 11:00",
-      "lead": "João Paulo de Paula",
-      "tipo": "Perda",
-      "leadId": 11,
-      "resumo": "VENDA DESFEITA APÓS CONTRATO ASSINADO — Cód. 7560, Candelária, R$390.000. O zelador do prédio danificou o imóvel e João Paulo desistiu da compra. Sai do faturamento de agosto: R$390.000 de VGV e R$19.500 de comissão que estavam como a receber. O imóvel volta para Suspenso até a situação do dano ser definida com o proprietário."
-    },
-    {
-      "data": "04/09/2026 11:05",
-      "lead": "Chiquinho Lobo",
-      "tipo": "Recebimento",
-      "leadId": 23,
-      "resumo": "1ª parcela da comissão recebida — R$4.795, referente aos R$137.000 pagos no ato da assinatura (5% = R$6.850, sua parte 70%). Falta R$11.480, atrelado à liberação do financiamento de R$328.000."
-    },
-    {
-      "data": "04/09/2026 11:40",
-      "lead": "Heber Lima",
-      "tipo": "Correção",
-      "leadId": 7,
-      "resumo": "Correção de registro: a corretora parceira do Cód. 10842 é Natália Pimenta, e não Kryssia Aleixo como estava anotado desde a proposta de R$310 mil."
-    },
-    {
-      "data": "05/09/2026 11:48",
-      "lead": "Renato Cássio",
-      "tipo": "Proposta",
-      "leadId": 12,
-      "resumo": "PROPOSTA ACEITA — R$530.000 no apartamento do Morada Mandacaru, Capim Macio. Entrou em análise de documentação e elaboração de contrato. Captação da corretora Carla Andrade: parceria 50/50 sobre os 5% (R$26.500), sua parte R$9.275."
-    },
-    {
-      "data": "05/09/2026 11:48",
-      "lead": "Tácito Barreto",
-      "tipo": "Contato",
-      "leadId": 1,
-      "resumo": "Contato feito via WhatsApp."
-    },
-    {
-      "data": "05/09/2026 11:49",
-      "lead": "Caroline Evelin",
-      "tipo": "Agendamento",
-      "leadId": 14,
-      "resumo": "Crédito aprovado na modalidade aquisição + construção. Nova visita aos lotes do Alphaville Pium marcada para segunda, 07/09 — leitura dele é de visita para fechamento. Horário a confirmar."
     }
   ],
   "regraComissao": {
@@ -4144,6 +3702,7 @@
       90
     ]
   },
+  "__gravadoEm": "2026-08-27T17:52:08.583Z",
   "negociosHistoricos": [
     {
       "ano": 2020,
@@ -5184,28 +4743,6 @@
       "cliente": "Maiara e Daniel",
       "valor": 4000,
       "comissao": 2700
-    }
-  ],
-  "negociosDesfeitos": [
-    {
-      "imovel": "Apartamento 3 Quartos Candelária 133m² (Cód. 7560)",
-      "cliente": "João Paulo de Paula",
-      "valor": 390000,
-      "comissao": 19500,
-      "mes": "Agosto",
-      "mesNum": 8,
-      "ano": 2026,
-      "data": "2026-08-21",
-      "status": "aguardando",
-      "tipo": "Venda",
-      "compradorLeadId": 11,
-      "pctVenda": 0.05,
-      "observacaoComissao": "Sem parceria e SEM o repasse de 30%: os 5% ficam integralmente com Thúlio. Exceção pontual acordada neste negócio.",
-      "cidade": "Natal",
-      "bairro": "Candelária",
-      "desfeitoEm": "2026-09-04",
-      "motivo": "Imóvel danificado pelo zelador do prédio depois do contrato assinado",
-      "comissaoPerdida": 19500
     }
   ]
 }

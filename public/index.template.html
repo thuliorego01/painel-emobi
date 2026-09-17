@@ -263,6 +263,10 @@
        cortar dígitos: aparecia "R$ 9.442.78" no lugar de R$ 9.442.780.
        Número cortado é número errado. Aqui o par empilha. */
     .kpi-group-item { flex-direction: column; align-items: flex-start; gap: 3px; }
+    .fat-topo { grid-template-columns: 1fr; }
+    .fat-topo > :first-child { grid-column: auto; }
+    .fat-projecao { grid-template-columns: 1fr; }
+    .fat-proj-val { text-align: left; }
     .kpi-group-vals { text-align: left; width: 100%; }
     .kpi-group-value, .kpi-group-hint { overflow-wrap: anywhere; }
     .kpi .value, .ano-val, .esteira-val { overflow-wrap: anywhere; }
@@ -896,6 +900,7 @@
   .rec-sub { margin-top:3px; font-size: var(--fs-xs); color:var(--txt-fraco); line-height:1.5; }
   .rec-dir { text-align:right; white-space:nowrap; }
   .rec-falta { font-size: var(--fs-sm); font-weight:800; color: var(--aviso-txt); }
+  .rec-falta.quitada { color: var(--ok-txt); font-weight:700; }
   .rec-prazo { margin-top:2px; font-size: var(--fs-xs); color:var(--txt-fraco); }
   .rec-prazo.vencido { color:var(--erro-txt); font-weight:800; }
   .rec-selo { display:inline-block; font-size: var(--fs-2xs); font-weight:800; padding:3px 9px;
@@ -1314,6 +1319,41 @@
   .kpi-group-item.kpi-clickable.active { background:var(--aviso-bg); }
   .kpi-group-item.kpi-clickable.active .kpi-group-value { color:var(--brand-gold-deep); }
 
+  /* ===== Topo da aba Faturamento: 3 caixas no lugar de 8 =====
+     A separação aqui não é decorativa — cada caixa responde uma pergunta
+     diferente: "onde quero chegar", "o que já é meu", "o que ainda não é".
+     Misturar as três numa fileira de oito quadradinhos iguais fazia o
+     pipeline parecer dinheiro no bolso. */
+  .kpi-group-titulo {
+    font-size:var(--fs-xs); font-weight:800; color:var(--muted);
+    text-transform:uppercase; letter-spacing:.4px;
+    padding-bottom:8px; margin-bottom:2px; border-bottom:1px solid var(--linha-tenue);
+  }
+  .kpi-group-rodape { font-size:var(--fs-xs); color:var(--txt-fraco); margin-top:8px; font-style:italic; }
+  .fat-topo { display:grid; grid-template-columns: minmax(0,1.25fr) minmax(0,1fr) minmax(0,1fr); gap:16px; align-items:start; }
+  .fat-topo > * { min-width:0; }
+  @media (max-width: 1100px) {
+    .fat-topo { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+    .fat-topo > :first-child { grid-column: 1 / -1; }
+  }
+  .fat-metas { gap:0; }
+  .fat-meta-linha { padding:9px 0; }
+  .fat-meta-linha:not(:last-child) { border-bottom:1px dashed var(--fundo-sutil); }
+  .fat-meta-topo { display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:6px; }
+  .fat-meta-nome { font-size:var(--fs-xs); color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.3px; }
+  .fat-meta-nome .icon { font-size:var(--fs-md); }
+  .fat-meta-pct { font-size:var(--fs-xl); font-weight:800; color:var(--text-strong); line-height:1; white-space:nowrap; }
+  .fat-meta-hint { font-size:var(--fs-xs); color:var(--txt-fraco); margin-top:5px; }
+  .fat-projecao {
+    margin-top:10px; padding:10px 12px; border-radius:var(--r-md);
+    background:var(--fundo-sutil);
+    display:grid; grid-template-columns: 1fr auto; align-items:baseline; gap:4px 12px;
+  }
+  .fat-proj-rot { font-size:var(--fs-xs); color:var(--muted); font-weight:600; }
+  .fat-proj-rot .icon { font-size:var(--fs-md); }
+  .fat-proj-val { font-size:var(--fs-lg); font-weight:800; color:var(--text-strong); text-align:right; white-space:nowrap; }
+  .fat-proj-hint { grid-column:1 / -1; font-size:var(--fs-2xs); color:var(--txt-fraco); }
+
   /* ===== Prototipo: layout com menu lateral ===== */
   .app-shell { display:flex; align-items:flex-start; gap:22px; }
   .sidebar {
@@ -1520,58 +1560,80 @@
   <div class="tab-panel" data-tab="faturamento" id="panel-faturamento" role="tabpanel">
     <div class="section-title"><span class="dot" aria-hidden="true"></span>Meta &amp; Faturamento <span class="ano-titulo"></span></div>
     <div id="pctAConfirmar"></div>
-    <div class="kpis">
-    <div class="kpi meta">
-      <div class="icon">🎯</div>
-      <div class="label">Meta <span class="ano-titulo"></span> (vendas)</div>
-      <div class="value" id="metaPct">—</div>
-      <div class="bar-track"><div class="bar-fill" id="metaBar" style="width:0%"></div></div>
-      <div class="hint" id="metaHint">—</div>
+    <!-- Eram oito caixas soltas, e o olho não sabia qual olhar primeiro. São as
+         mesmas oito contas, agrupadas por aquilo que de fato separa uma da
+         outra: a META (onde quero chegar), o que já é MEU (contrato assinado)
+         e o que AINDA NÃO É (proposta na mesa). Nenhum número saiu, e todos os
+         ids continuam os mesmos — o JS que preenche isto não mudou. -->
+    <div class="fat-topo">
+      <div class="kpi-group fat-metas">
+        <div class="fat-meta-linha">
+          <div class="fat-meta-topo">
+            <span class="fat-meta-nome"><span class="icon" aria-hidden="true">🎯</span> Meta <span class="ano-titulo"></span> — vendas</span>
+            <span class="fat-meta-pct" id="metaPct">—</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="metaBar" style="width:0%"></div></div>
+          <div class="fat-meta-hint" id="metaHint">—</div>
+        </div>
+        <div class="fat-meta-linha">
+          <div class="fat-meta-topo">
+            <span class="fat-meta-nome"><span class="icon" aria-hidden="true">💰</span> Meta <span class="ano-titulo"></span> — comissão</span>
+            <span class="fat-meta-pct" id="metaComissaoPct">—</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="metaComissaoBar" style="width:0%"></div></div>
+          <div class="fat-meta-hint" id="metaComissaoHint">—</div>
+        </div>
+        <div class="fat-projecao">
+          <div class="fat-proj-rot"><span class="icon" aria-hidden="true">🚀</span> Projeção da comissão no ritmo atual</div>
+          <div class="fat-proj-val" id="projecaoAnual">—</div>
+          <div class="fat-proj-hint" id="projecaoAnualHint">—</div>
+        </div>
+      </div>
+
+      <div class="kpi-group">
+        <div class="kpi-group-titulo">Fechado — contrato assinado</div>
+        <div class="kpi-group-item">
+          <div class="kpi-group-label"><span class="icon">🏠</span> Volume negociado <span class="ano-titulo"></span></div>
+          <div class="kpi-group-vals">
+            <div class="kpi-group-value" id="totalNegociado">—</div>
+            <div class="kpi-group-hint" id="totalNegociadoHint">—</div>
+          </div>
+        </div>
+        <div class="kpi-group-item">
+          <div class="kpi-group-label"><span class="icon">✅</span> Comissão recebida</div>
+          <div class="kpi-group-vals">
+            <div class="kpi-group-value" id="comissaoPaga">—</div>
+            <div class="kpi-group-hint">já entrou na conta</div>
+          </div>
+        </div>
+        <div class="kpi-group-item">
+          <div class="kpi-group-label"><span class="icon">⏳</span> Comissão a receber</div>
+          <div class="kpi-group-vals">
+            <div class="kpi-group-value" id="comissaoAguardando">—</div>
+            <div class="kpi-group-hint">venda fechada, dinheiro ainda não entrou</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-group">
+        <div class="kpi-group-titulo">Em negociação — ainda não é meu</div>
+        <div class="kpi-group-item">
+          <div class="kpi-group-label"><span class="icon">🏗️</span> VGV na mesa</div>
+          <div class="kpi-group-vals">
+            <div class="kpi-group-value" id="vgvEmNegociacao">—</div>
+            <div class="kpi-group-hint" id="vgvEmNegociacaoHint">—</div>
+          </div>
+        </div>
+        <div class="kpi-group-item">
+          <div class="kpi-group-label"><span class="icon">📈</span> Comissão prevista</div>
+          <div class="kpi-group-vals">
+            <div class="kpi-group-value" id="comissaoPrevista">—</div>
+            <div class="kpi-group-hint hint">leads em negociação</div>
+          </div>
+        </div>
+        <div class="kpi-group-rodape">Nada aqui entra na meta enquanto não houver contrato assinado.</div>
+      </div>
     </div>
-    <div class="kpi meta">
-      <div class="icon">💰</div>
-      <div class="label">Meta de Comissão <span class="ano-titulo"></span></div>
-      <div class="value" id="metaComissaoPct">—</div>
-      <div class="bar-track"><div class="bar-fill" id="metaComissaoBar" style="width:0%"></div></div>
-      <div class="hint" id="metaComissaoHint">—</div>
-    </div>
-    <div class="kpi">
-      <div class="icon">✅</div>
-      <div class="label">Comissão Paga</div>
-      <div class="value" id="comissaoPaga">—</div>
-      <div class="hint">recebida e finalizada</div>
-    </div>
-    <div class="kpi">
-      <div class="icon">⏳</div>
-      <div class="label">Aguardando Pagamento</div>
-      <div class="value" id="comissaoAguardando">—</div>
-      <div class="hint">negócio fechado, comissão a receber</div>
-    </div>
-    <div class="kpi">
-      <div class="icon">📈</div>
-      <div class="label">Pipeline — não entra na meta</div>
-      <div class="value" id="comissaoPrevista">—</div>
-      <div class="hint">leads em negociação</div>
-    </div>
-    <div class="kpi">
-      <div class="icon">🏗️</div>
-      <div class="label">VGV em negociação</div>
-      <div class="value" id="vgvEmNegociacao">—</div>
-      <div class="hint" id="vgvEmNegociacaoHint">—</div>
-    </div>
-    <div class="kpi">
-      <div class="icon">🏠</div>
-      <div class="label">Total Negociado no Ano</div>
-      <div class="value" id="totalNegociado">—</div>
-      <div class="hint" id="totalNegociadoHint">—</div>
-    </div>
-    <div class="kpi">
-      <div class="icon">🚀</div>
-      <div class="label">Projeção Anual (ritmo atual)</div>
-      <div class="value" id="projecaoAnual">—</div>
-      <div class="hint" id="projecaoAnualHint">—</div>
-    </div>
-  </div>
 
     <div class="grid2" style="margin-top:18px;">
       <div class="card">
@@ -1605,8 +1667,8 @@
 
     <div class="section-title"><span class="dot" aria-hidden="true"></span>Negociações <span class="ano-titulo"></span></div>
     <div class="card" style="margin-bottom:14px;">
-      <h3>Recebimentos em andamento</h3>
-      <div style="font-size:var(--fs-xs);color:var(--txt-fraco);margin-bottom:4px;">Comissão que você já ganhou e ainda não caiu. Clique em um negócio para ver em que fase o processo está e dar baixa nas parcelas.</div>
+      <h3>Vendas em andamento</h3>
+      <div style="font-size:var(--fs-xs);color:var(--txt-fraco);margin-bottom:4px;">Negócio fechado cujo processo ainda não terminou — esteja a comissão paga ou não. Clique em um negócio para ver a fase e dar baixa nas parcelas.</div>
       <div id="recebimentosLista"></div>
     </div>
 
@@ -2313,9 +2375,21 @@ function imovelDaProspeccao(pr) {
   return (DATA.imoveis || []).find(im => new RegExp('Cód\\.\\s*' + pr.imovelCaptadoCod + '\\b').test(im.nome)) || null;
 }
 
+// "Contato atrasado" é linguagem do FUNIL DE COMPRA — pressupõe alguém que eu
+// estou tentando fazer comprar. Heber Lima aparecia em ATENÇÃO HOJE como
+// "contato atrasado", exibindo a cadência de comprador que ele pediu em julho
+// ("a cada 2 dias"), quando desde agosto ele é só VENDEDOR: vendeu o imóvel
+// dele e a única pendência era o pagamento da comissão — que já vive em
+// Recebimentos. Cliente que só vende não tem prazo de funil de compra.
+// Declarada como `function` (hoisted) e sem depender de PAPEIS: computeAcoesUrgentes
+// roda no topo do script, antes das consts de papel — foi assim que uma const
+// lida antes da inicialização já derrubou 20 suítes de uma vez.
+function ehVendedorPuro(l) { return !!(l && l.papel === 'Vendedor'); }
+
 function computeAcoesUrgentes() {
   const diasSemContato = diasDesdeISO;
-  const leadsAtrasados = (DATA.leads || []).filter(l => situacaoLead(l) === 'Atrasado');
+  const leadsAtrasados = (DATA.leads || []).filter(l =>
+    situacaoLead(l) === 'Atrasado' && !ehVendedorPuro(l));
   const leadsReativar = leadsParaReativar();
   const imoveisAtrasados = (DATA.imoveis || []).filter(im =>
     im.status === 'Disponível' && im.ultimaInteracaoProprietario && diasSemContato(im.ultimaInteracaoProprietario) > 30
@@ -7250,8 +7324,24 @@ function recDataCurta(iso) {
 }
 // Todo negócio com dinheiro em aberto entra — não só os parcelados. Foi
 // justamente um SEM parcelamento registrado que ficou quatro meses invisível.
+// PROCESSO E DINHEIRO SÃO DUAS COISAS. A venda do Cód. 10567 (Residencial Luiz
+// Marques, parceria Ivanaldo Tavares) teve a comissão paga adiantada e sumiu
+// desta lista — mas o processo seguia na CONFORMIDADE, com escritura e registro
+// pela frente. Acompanhar só o que ainda deve dinheiro é acompanhar metade:
+// processo que trava depois do pagamento continua sendo problema seu, e é o
+// tipo de coisa que só reaparece quando o cliente liga reclamando.
+// Entra na lista quem ainda tem comissão a receber OU quem tem uma fase de
+// processo declarada que não é a última. Sem fase marcada, nada entra — os
+// negócios antigos, já pagos e sem acompanhamento, continuam fora.
+function processoEmAberto(n) {
+  if (!n || !n.faseProcesso) return false;
+  if (n.faseProcesso === FASE_TRAVADO) return true;
+  const fases = fasesDe(n);
+  if (!fases || !fases.length) return false;
+  return n.faseProcesso !== fases[fases.length - 1];
+}
 function recebimentosAbertos() {
-  return (DATA.listaNegociacoes || []).filter(n => aReceberDe(n) > 0);
+  return (DATA.listaNegociacoes || []).filter(n => aReceberDe(n) > 0 || processoEmAberto(n));
 }
 
 // Grava dizendo em cima de QUAL versão está gravando. Se a base andou entre a
@@ -7286,7 +7376,7 @@ function renderRecebimentos() {
     return String(a.data || '').localeCompare(String(b.data || ''));
   });
   if (!abertos.length) {
-    el.innerHTML = '<div class="bi-modal-vazio">Nenhuma comissão em aberto. Tudo que foi fechado já entrou.</div>';
+    el.innerHTML = '<div class="bi-modal-vazio">Nenhum processo em andamento. Tudo que foi fechado já entrou e já terminou.</div>';
     return;
   }
   el.innerHTML = abertos.map(n => {
@@ -7312,10 +7402,23 @@ function renderRecebimentos() {
         <div class="rec-sub">${esc((n.imovel || '').slice(0, 60))}</div>
         <div class="rec-sub">${fase}${bola}${parado !== null ? ` · fechado há ${parado}d` : ''}${recebido > 0 ? ` · ${brl(recebido)} já recebidos` : ''}</div>
       </div>
-      <div class="rec-dir"><div class="rec-falta">${brl(falta)}</div>${prazo}</div>
+      <div class="rec-dir">${falta > 0
+        ? `<div class="rec-falta">${brl(falta)}</div>${prazo}`
+        : `<div class="rec-falta quitada">comissão recebida</div><span class="rec-prazo">falta só terminar o processo</span>`}</div>
     </div>`;
   }).join('') +
-  `<div class="rec-total"><span>${abertos.length === 1 ? '1 negócio' : abertos.length + ' negócios'} com comissão em aberto</span><b>${brl(abertos.reduce((s, n) => s + aReceberDe(n), 0))}</b></div>`;
+  (function () {
+    // O número de linhas e o valor deixaram de medir a mesma coisa: há negócio
+    // aqui com R$0 a receber. Dizer "5 negócios com comissão em aberto · R$X"
+    // passaria a ser falso na contagem.
+    const comFalta = abertos.filter(n => aReceberDe(n) > 0);
+    const soma = comFalta.reduce((s, n) => s + aReceberDe(n), 0);
+    const qtd = abertos.length === 1 ? '1 processo em andamento' : abertos.length + ' processos em andamento';
+    const dinheiro = comFalta.length
+      ? `${comFalta.length === 1 ? '1 com comissão a receber' : comFalta.length + ' com comissão a receber'}`
+      : 'nenhum com comissão a receber';
+    return `<div class="rec-total"><span>${qtd} · ${dinheiro}</span><b>${brl(soma)}</b></div>`;
+  })();
 }
 
 function abrirRecebimento(id) {
