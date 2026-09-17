@@ -64,5 +64,35 @@ module.exports = {
     const bloco = (tpl.match(/const ehSomenteVendedor[\s\S]{0,260}/) || [''])[0];
     assert(/ehSomenteVendedor|papelDoLead/.test(bloco),
       'o card do funil voltou a listar todo lead ativo, sem olhar o papel do cliente');
+
+    // 6. TIRAR DO CARD NÃO BASTA — o alerta também fala a língua do funil.
+    //    O card do Pipeline já estava limpo quando o Heber reapareceu em
+    //    "ATENÇÃO HOJE" como "contato atrasado", exibindo a cadência de
+    //    comprador que ele pediu em julho ("a cada 2 dias"), sendo que desde
+    //    agosto ele só vende. Um lugar consertado e o outro não é pior do que
+    //    os dois errados: dá a impressão de que a regra existe.
+    const urgentes = dom.window.eval('computeAcoesUrgentes()');
+    (urgentes.leadsAtrasados || []).forEach(l => {
+      assert(l.papel !== 'Vendedor',
+        `"${l.nome}" é vendedor e está em ATENÇÃO HOJE como contato atrasado do funil de compra`);
+    });
+
+    // 7. E a regra tem que ser REGRA, não faxina de dado. Injeto um vendedor
+    //    com prazo estourado e cobro que o alerta continue sem ele — senão o
+    //    conserto de hoje dura só até alguém escrever uma data de próxima ação
+    //    numa ficha de vendedor.
+    const antes = (dom.window.eval('computeAcoesUrgentes()').leadsAtrasados || []).length;
+    dom.window.eval(`
+      DATA.leads.push({ id: 99901, nome: '__vendedor_de_teste__', papel: 'Vendedor',
+        fase: 'Vendedor', dataProximaAcao: '2020-01-01', proximaAcao: 'teste' });
+    `);
+    const depois = dom.window.eval('computeAcoesUrgentes()').leadsAtrasados || [];
+    dom.window.eval(`DATA.leads = DATA.leads.filter(l => l.id !== 99901);`);
+    assert(!depois.some(l => l.nome === '__vendedor_de_teste__'),
+      'um vendedor com prazo vencido entrou em ATENÇÃO HOJE como contato atrasado');
+    assert(depois.length === antes,
+      `o alerta passou de ${antes} para ${depois.length} atrasados ao receber um vendedor`);
+    assert(typeof dom.window.eval('ehVendedorPuro') === 'function',
+      'o corte por papel no alerta sumiu do painel');
   }
 };

@@ -10,8 +10,12 @@
 //   1. todo negócio com dinheiro em aberto aparece, tenha parcelamento ou não;
 //   2. a comissão de cada parcela é CONTA, nunca um segundo número guardado;
 //   3. dar baixa numa parcela some com ela da cobrança e soma no recebido;
-//   4. quitou tudo, o negócio sai da lista;
-//   5. gravação recusada não altera a tela.
+//   4. quitou tudo E o processo terminou, o negócio sai da lista;
+//   5. gravação recusada não altera a tela;
+//   6. comissão paga adiantada NÃO tira o negócio de vista enquanto o processo
+//      corre — foi o caso do Cód. 10567 (Residencial Luiz Marques, parceria
+//      Ivanaldo Tavares): comissão recebida, processo ainda na conformidade,
+//      e o negócio tinha sumido da única tela que acompanha processo.
 const { montar } = require('./ambiente');
 const assert = (c, m) => { if (!c) throw new Error(m); };
 
@@ -45,9 +49,63 @@ module.exports = {
         : (typeof n.comissaoRecebida === 'number' ? n.comissaoRecebida : (n.status === 'pago' ? (n.comissao || 0) : 0));
       return (n.comissao || 0) - rec > 0.01;
     });
+    // A lista não é mais só "quem me deve": é "processo que não terminou".
+    // Entra quem tem dinheiro a receber OU fase declarada que não é a última.
+    const FASES = w.eval('FASES_POR_MODALIDADE');
+    const TRAVADO = w.eval('FASE_TRAVADO');
+    const processoAberto = (n) => {
+      if (!n.faseProcesso) return false;
+      if (n.faseProcesso === TRAVADO) return true;
+      const fases = FASES[n.modalidade];
+      if (!fases || !fases.length) return false;
+      return n.faseProcesso !== fases[fases.length - 1];
+    };
+    const naLista = (D.listaNegociacoes || []).filter(n => abertos.indexOf(n) !== -1 || processoAberto(n));
     const linhas = doc.querySelectorAll('[data-rec]');
-    assert(linhas.length === abertos.length,
-      `o box mostra ${linhas.length} negócios e há ${abertos.length} com comissão em aberto`);
+    assert(linhas.length === naLista.length,
+      `o box mostra ${linhas.length} negócios e deveriam estar ${naLista.length} (com comissão em aberto ou processo em andamento)`);
+
+    // 1b. Negócio JÁ PAGO com processo correndo continua na tela — e não pode
+    //     aparecer com "R$ 0" em destaque, que lê como problema.
+    naLista.filter(n => abertos.indexOf(n) === -1).forEach(n => {
+      const linha = doc.querySelector('[data-rec="' + n.id + '"]');
+      assert(linha, `"${n.cliente}" tem processo em ${n.faseProcesso} e sumiu da lista depois que a comissão foi paga`);
+      assert(!/R\$\s*0(,00)?\b/.test(linha.textContent),
+        `"${n.cliente}" já recebeu a comissão e a tela destaca "R$ 0" como se faltasse dinheiro`);
+      assert(/recebida|recebido/i.test(linha.textContent),
+        `"${n.cliente}" não diz que a comissão já entrou`);
+    });
+
+    // 1d. A regra vale mesmo quando a base de hoje não tem nenhum caso assim:
+    //     injeto uma venda paga, com processo na conformidade, e cobro que ela
+    //     apareça. Sem isso, o teste só diria "não quebrou" — e a regra que
+    //     este arquivo protege deixaria de ser testada no dia em que o Cód.
+    //     10567 fosse encerrado.
+    w.eval(`
+      DATA.listaNegociacoes.push({
+        id: 99902, cliente: '__pago_em_processo__', imovel: 'Imóvel de teste',
+        valor: 200000, comissao: 7000, comissaoRecebida: 7000, status: 'pago',
+        modalidade: 'Financiamento', faseProcesso: 'Conformidade',
+        ano: 2026, mesNum: 9, data: '2026-09-01', tipo: 'Venda'
+      });
+      renderRecebimentos();
+    `);
+    const injetada = doc.querySelector('[data-rec="99902"]');
+    const textoInjetada = injetada ? injetada.textContent : '';
+    w.eval(`DATA.listaNegociacoes = DATA.listaNegociacoes.filter(n => n.id !== 99902); renderRecebimentos();`);
+    assert(injetada,
+      'venda com comissão paga e processo na conformidade não aparece em Vendas em andamento');
+    assert(/Conformidade/.test(textoInjetada),
+      'a venda paga aparece, mas sem dizer em que fase o processo está');
+    assert(!/R\$\s*0(,00)?\b/.test(textoInjetada),
+      'a venda paga aparece destacando "R$ 0" como se faltasse comissão');
+
+    // 1c. E o que já terminou de verdade fica FORA — senão a lista vira arquivo.
+    (D.listaNegociacoes || []).forEach(n => {
+      if (abertos.indexOf(n) !== -1 || processoAberto(n)) return;
+      assert(!doc.querySelector('[data-rec="' + n.id + '"]'),
+        `"${n.cliente}" está pago e com o processo encerrado, e continua ocupando a lista`);
+    });
 
     // 2. Todo negócio precisa de id — a baixa grava por id, nunca por nome.
     abertos.forEach(n => assert(n.id !== undefined && n.id !== null,
@@ -120,9 +178,9 @@ module.exports = {
     assert(gravacoes[gravacoes.length - 1].ops.some(o => o.colecao === 'logAtividades'),
       'baixa de parcela sem registro no histórico');
 
-    if (comFluxo.fluxoPagamento.every(p => p.recebido)) {
+    if (comFluxo.fluxoPagamento.every(p => p.recebido) && !processoAberto(comFluxo)) {
       assert(!doc.querySelector('[data-rec="' + comFluxo.id + '"]'),
-        'o negócio foi quitado e continua na lista de recebimentos em aberto');
+        'o negócio foi quitado, o processo terminou, e ele continua na lista');
     }
   }
 };
