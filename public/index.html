@@ -7627,10 +7627,25 @@ function abrirRecebimento(id) {
     im.status === 'Reservado' && typeof im.comissaoThulioVenda === 'number'
     && !leadDoImovelNaLista(im, idsNoContrato));
 
-  const vProposta = propostas.reduce((s, l) => s + (l.comissaoPrevista || 0), 0);
+  // PROPOSTA NA MESA E CONTRATO SÃO ETAPAS DIFERENTES, e o status do imóvel não
+  // sabia distinguir: todo "Reservado" caía no bloco 2. Em 17/09/2026 a esteira
+  // dizia "Proposta na mesa R$0 · nenhuma agora" com uma proposta viva de
+  // R$12.250 no Cód. 10881, que os vendedores ainda nem tinham aceitado — ela
+  // aparecia como contrato, ao lado do 9995, esse sim em leitura de contrato.
+  // O status continua 'Reservado' nos dois (mexer nele faria o imóvel sumir de
+  // sete outros lugares); quem separa é este campo, lido só aqui.
+  // Sem o campo, vale o degrau MENOS avançado: chutar para cima é como uma
+  // proposta que ninguém aceitou vira "em contrato" na tela.
+  const contratoFechou = (im) => im.propostaAceita === true;
+  const reservadosEmContrato = reservados.filter(contratoFechou);
+  const reservadosEmProposta = reservados.filter(im => !contratoFechou(im));
+
+  const vProposta = propostas.reduce((s, l) => s + (l.comissaoPrevista || 0), 0)
+                  + reservadosEmProposta.reduce((s, im) => s + im.comissaoThulioVenda, 0);
+  const nProposta = propostas.length + reservadosEmProposta.length;
   const vContrato = emContratoLeads.reduce((s, l) => s + (l.comissaoPrevista || 0), 0)
-                  + reservados.reduce((s, im) => s + im.comissaoThulioVenda, 0);
-  const nContrato = emContratoLeads.length + reservados.length;
+                  + reservadosEmContrato.reduce((s, im) => s + im.comissaoThulioVenda, 0);
+  const nContrato = emContratoLeads.length + reservadosEmContrato.length;
 
   const abertos = (DATA.listaNegociacoes || []).filter(n => aReceberDe(n) > 0);
   const vReceber = abertos.reduce((s, n) => s + aReceberDe(n), 0);
@@ -7662,7 +7677,7 @@ function abrirRecebimento(id) {
   el.innerHTML =
     '<div class="esteira">' +
       bloco('1 · Proposta na mesa', vProposta,
-        propostas.length ? qtd(propostas.length, 'cliente', 'clientes') : 'nenhuma agora') +
+        nProposta ? qtd(nProposta, 'negócio', 'negócios') + ' · ainda sem aceite' : 'nenhuma agora') +
       bloco('2 · Em contrato', vContrato,
         nContrato ? qtd(nContrato, 'negócio', 'negócios') : 'nenhum agora') +
       bloco('3 · Assinado, a receber', vReceber,
