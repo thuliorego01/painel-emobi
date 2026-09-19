@@ -100,6 +100,43 @@ module.exports = {
     assert(!/R\$\s*0(,00)?\b/.test(textoInjetada),
       'a venda paga aparece destacando "R$ 0" como se faltasse comissão');
 
+    // 1e. COMISSÃO INTEGRAL NÃO SAI EM FATIAS. Em dois negócios seguidos o
+    //     VENDEDOR pagou a comissão inteira num evento só, enquanto o comprador
+    //     seguia pagando o imóvel em parcelas. Ratear pelo fluxo segurava
+    //     dinheiro que já era dele — no Cód. 10641 mostraria R$2.048 de
+    //     R$10.500. O fluxo continua servindo de calendário do processo
+    //     (a escritura de 15/12 vira previsão), só não manda na comissão.
+    w.eval(`
+      DATA.listaNegociacoes.push({ id: 99903, cliente: '__comissao_integral__', imovel: 'Teste integral',
+        valor: 820000, comissao: 10500, status: 'aguardando', modalidade: 'À vista',
+        faseProcesso: 'Contrato assinado', ano: 2026, mesNum: 9, data: '2026-09-16', tipo: 'Venda',
+        gatilhoComissao: 'integral',
+        fluxoPagamento: [
+          { etapa: 'Sinal no ato', valor: 160000, vencimento: '2026-09-16', recebido: true, dataRecebimento: '2026-09-16' },
+          { etapa: 'Escritura', valor: 660000, vencimento: '2026-12-15', recebido: false, dataRecebimento: null }
+        ] });
+      renderRecebimentos();
+    `);
+    const nInt = w.eval('DATA.listaNegociacoes.find(x => x.id === 99903)');
+    const recInt = w.eval('recebidoDe(DATA.listaNegociacoes.find(x => x.id === 99903))');
+    const faltaInt = w.eval('aReceberDe(DATA.listaNegociacoes.find(x => x.id === 99903))');
+    w.eval('abrirRecebimento(99903)');
+    const corpoInt = doc.getElementById('biModalCorpo').textContent.replace(/\s+/g, ' ');
+    const temBotao = !!doc.querySelector('[data-baixa-integral]');
+    const textoParcela = (doc.querySelector('[data-parcela] .rec-p-com') || { textContent: '' }).textContent;
+    w.eval(`DATA.listaNegociacoes = DATA.listaNegociacoes.filter(n => n.id !== 99903); renderRecebimentos();`);
+
+    assert(recInt === 0,
+      `comissão integral com o sinal pago mostrou ${recInt} recebidos — ela não sai por parcela`);
+    assert(Math.abs(faltaInt - 10500) < 0.01,
+      `falta receber deveria ser a comissão inteira (10500) e veio ${faltaInt}`);
+    assert(/integral/i.test(corpoInt),
+      'a janela não avisa que a comissão deste negócio é integral');
+    assert(temBotao,
+      'sem o botão de baixa integral, não existe como registrar o recebimento desse tipo de negócio');
+    assert(!/sua parte/i.test(textoParcela),
+      `a parcela promete "sua parte" num negócio de comissão integral: "${textoParcela}"`);
+
     // 1c. E o que já terminou de verdade fica FORA — senão a lista vira arquivo.
     (D.listaNegociacoes || []).forEach(n => {
       if (abertos.indexOf(n) !== -1 || processoAberto(n)) return;
