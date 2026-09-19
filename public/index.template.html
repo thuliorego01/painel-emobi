@@ -942,6 +942,8 @@
   .rec-btn { font-size: var(--fs-xs); font-weight:800; padding:7px 14px; border-radius:var(--r-pill);
     border:1px solid var(--linha-forte); background:var(--surface); color:var(--text-strong); cursor:pointer; }
   .rec-btn:hover { background:var(--fundo-sutil); }
+  .rec-btn.destaque { background:var(--ok-bg); color:var(--ok-txt); border-color:var(--ok-linha); }
+  .rec-btn.destaque:hover { background:var(--ok-linha); }
   /* Fechamento não é lead. O que importa nele é o que foi vendido, por quanto e
      quanto sobra para você — não a temperatura nem há quantos dias está parado. */
   .fech-linha { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; padding:11px 0;
@@ -1996,9 +1998,19 @@ function comissaoDaParcela(n, p) {
 function temFluxo(n) {
   return !!(n && Array.isArray(n.fluxoPagamento) && n.fluxoPagamento.length);
 }
+// 'integral' = o vendedor paga a comissão toda de uma vez, num evento próprio.
+// Ausente = comportamento de sempre: a comissão acompanha o fluxo do comprador.
+function comissaoSegueOFluxo(n) { return !(n && n.gatilhoComissao === 'integral'); }
 function recebidoDe(n) {
   if (!n) return 0;
-  if (temFluxo(n)) {
+  // NEM TODA COMISSÃO SEGUE O PAGAMENTO DO COMPRADOR. Em dois negócios seguidos
+  // — Caroline Evelin e o Cód. 10641 — o VENDEDOR paga a comissão inteira de uma
+  // vez, disparada por um evento (o sinal), enquanto o comprador ainda vai
+  // pagar o resto meses depois. Ratear a comissão pelas parcelas nesses casos
+  // segura dinheiro que já é dele: no 10641 mostraria R$2.048 de R$10.500.
+  // O fluxo continua registrado — ele é o calendário do PROCESSO, com datas
+  // reais como a escritura de 15/12 — só deixa de mandar na comissão.
+  if (temFluxo(n) && comissaoSegueOFluxo(n)) {
     return n.fluxoPagamento.filter(p => p && p.recebido)
       .reduce((soma, p) => soma + comissaoDaParcela(n, p), 0);
   }
@@ -7446,7 +7458,9 @@ function abrirRecebimento(id) {
       : ' <span class="rec-venc">· sem data</span>';
     return `<div class="rec-parcela" data-parcela="${i}" role="button" tabindex="0">
       <span><b>${esc(p.etapa)}</b> — ${brl(p.valor)}${venc}</span>
-      <span class="rec-p-com">sua parte ${brl(comissaoDaParcela(n, p))} · dar baixa</span>
+      <span class="rec-p-com">${comissaoSegueOFluxo(n)
+        ? 'sua parte ' + brl(comissaoDaParcela(n, p)) + ' · dar baixa'
+        : 'pagamento do comprador · marcar como pago'}</span>
     </div>`;
   }).join('');
   const resumoPagas = pagas.length
@@ -7475,13 +7489,23 @@ function abrirRecebimento(id) {
       `<div class="rec-campo"><label>Próxima cobrança</label><input type="date" data-campo="dataProximaCobranca" value="${esc(n.dataProximaCobranca || '')}"></div>` +
     '</div>';
 
+  // Quando a comissão é integral, a tela precisa DIZER isso: sem o aviso, ver
+  // duas parcelas e um "falta receber" faz qualquer um supor que o dinheiro
+  // vem fatiado junto com elas.
+  const notaGatilho = comissaoSegueOFluxo(n) ? '' :
+    '<div class="bi-modal-nota">A comissão deste negócio é <b>integral</b>: o vendedor paga tudo de uma vez. As parcelas abaixo são o pagamento do COMPRADOR — servem de calendário do processo e não liberam comissão.</div>';
+  const baixaIntegral = (!comissaoSegueOFluxo(n) && aReceberDe(n) > 0)
+    ? `<button class="rec-btn destaque" data-baixa-integral="${esc(n.id)}">Recebi a comissão integral (${brl(aReceberDe(n))})</button>`
+    : '';
+
   corpo.innerHTML =
     `<div class="bi-modal-lead"><span>Imóvel</span><b>${esc(n.imovel || '—')}</b></div>` +
     `<div class="bi-modal-lead"><span>Venda</span><b>${brl(n.valor)}</b></div>` +
     `<div class="bi-modal-lead"><span>Sua comissão</span><b>${brl(n.comissao)}</b></div>` +
     `<div class="bi-modal-lead"><span>Falta receber</span><b>${brl(aReceberDe(n))}</b></div>` +
-    campos + trilha + resumoPagas + listaPend + semFluxo +
+    campos + trilha + notaGatilho + resumoPagas + listaPend + semFluxo +
     `<div class="rec-acoes">${proxima ? `<button class="rec-btn" data-avancar="${esc(n.id)}">Avançar para "${esc(proxima)}"</button>` : ''}` +
+    `${baixaIntegral}` +
     `<button class="rec-btn" data-cobrar="${esc(n.id)}">Cobrei hoje — voltar em 7 dias</button></div>`;
 
   over.classList.add('open');
@@ -7545,14 +7569,37 @@ function abrirRecebimento(id) {
       const fluxo = JSON.parse(JSON.stringify(n.fluxoPagamento));
       fluxo[i].recebido = true;
       fluxo[i].dataRecebimento = hoje;
-      const novoRecebido = fluxo.filter(p => p.recebido).reduce((s, p) => s + comissaoDaParcela(n, p), 0);
-      const tudo = novoRecebido >= (n.comissao || 0) - 0.01;
-      const campos = { fluxoPagamento: fluxo, comissaoRecebida: Math.round(novoRecebido * 100) / 100 };
+      // Com gatilho integral, marcar a parcela registra o PAGAMENTO DO COMPRADOR
+      // e nada mais: a comissão não sai em fatias, então não pode ganhar uma.
+      const segue = comissaoSegueOFluxo(n);
+      const novoRecebido = segue
+        ? fluxo.filter(p => p.recebido).reduce((s, p) => s + comissaoDaParcela(n, p), 0)
+        : recebidoDe(n);
+      const tudo = segue && novoRecebido >= (n.comissao || 0) - 0.01;
+      const campos = segue
+        ? { fluxoPagamento: fluxo, comissaoRecebida: Math.round(novoRecebido * 100) / 100 }
+        : { fluxoPagamento: fluxo };
       if (tudo) { campos.status = 'pago'; campos.dataProximaCobranca = null; }
       try {
         await gravarNegociacao(n.id, campos, [{ tipo: 'acrescentar', colecao: 'logAtividades', item: {
           data: hoje.split('-').reverse().join('/') + ' 00:00', lead: n.cliente, tipo: 'Recebimento',
-          resumo: 'Baixa na parcela "' + fluxo[i].etapa + '" (' + brl(fluxo[i].valor) + ') do negócio ' + (n.imovel || '') + '. Comissão recebida: ' + brl(novoRecebido) + ' de ' + brl(n.comissao) + '.'
+          resumo: 'Baixa na parcela "' + fluxo[i].etapa + '" (' + brl(fluxo[i].valor) + ') do negócio ' + (n.imovel || '') + '. ' + (segue
+            ? 'Comissão recebida: ' + brl(novoRecebido) + ' de ' + brl(n.comissao) + '.'
+            : 'Pagamento do comprador — a comissão deste negócio é integral e não sai por parcela.')
+        }}]);
+        Object.assign(n, campos);
+        abrirRecebimento(n.id); renderRecebimentos();
+      } catch (err) { window.alert('Não consegui gravar: ' + err.message); }
+      return;
+    }
+
+    const bIntegral = alvo.closest('[data-baixa-integral]');
+    if (bIntegral) {
+      const campos = { comissaoRecebida: n.comissao || 0, status: 'pago', dataRecebimento: hoje, dataProximaCobranca: null };
+      try {
+        await gravarNegociacao(n.id, campos, [{ tipo: 'acrescentar', colecao: 'logAtividades', item: {
+          data: hoje.split('-').reverse().join('/') + ' 00:00', lead: n.cliente, tipo: 'Recebimento',
+          resumo: 'Comissão integral de ' + brl(n.comissao) + ' recebida — ' + (n.imovel || '') + '.'
         }}]);
         Object.assign(n, campos);
         abrirRecebimento(n.id); renderRecebimentos();
